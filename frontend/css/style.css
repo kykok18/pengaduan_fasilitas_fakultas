@@ -1,0 +1,2989 @@
+/* =========================================================
+   FITK SIBER AHSAN
+   LANDING PAGE - FINAL CSS
+   ========================================================= */
+
+
+/* =========================================================
+   1. ROOT & RESET
+   ========================================================= */
+
+:root {
+    --green-dark: #05613f;
+    --green-main: #08764d;
+    --green: #0b8054;
+
+    --green-soft: #dff6e8;
+    --green-soft-2: #eaf9ef;
+    --green-bg: #f4faf6;
+
+    --text-dark: #174634;
+    --text-green: #086344;
+    --text-muted: #81958c;
+
+    --white: #ffffff;
+
+    --border: #dcebe2;
+
+    --shadow: 0 4px 14px rgba(5, 97, 63, 0.08);
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    margin: 0;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: var(--text-dark);
+
+    background: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+button {
+    font-family: inherit;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+
+/* =========================================================
+   2. NAVBAR
+   ========================================================= */
+
+.top-navbar {
+    height: 66px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 9px;
+
+    position: relative;
+    z-index: 20;
+
+    border-bottom: 1px solid #edf2ef;
+}
+
+
+.nav-left {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* Hamburger */
+
+.menu-btn {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #dce8e2;
+
+    background: #ffffff;
+
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #08764d;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    margin-right: 8px;
+}
+
+
+.menu-btn:hover {
+    background: var(--green-soft);
+}
+
+
+/* Logo */
+
+.brand-logo {
+    flex-shrink: 0;
+
+    margin-right: 7px;
+}
+
+
+.logo-circle {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: #e5f6eb;
+
+    border: 2px solid #08764d;
+
+    color: #08764d;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+}
+
+
+/* Nama FITK */
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.05;
+
+    min-width: 0;
+}
+
+
+.brand-text strong {
+    color: #07603f;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+.brand-text span {
+    color: #318064;
+
+    font-size: 5.8px;
+
+    margin-top: 2px;
+
+    white-space: nowrap;
+}
+
+
+.brand-text small {
+    color: #5c9b7d;
+
+    font-size: 5px;
+
+    margin-top: 2px;
+
+    white-space: nowrap;
+}
+
+
+/* Login */
+
+.login-btn {
+    flex-shrink: 0;
+
+    background: #05613f;
+
+    color: #ffffff;
+
+    border-radius: 7px;
+
+    padding: 7px 20px;
+
+    font-size: 9px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+
+.login-btn:hover {
+    background: #044e33;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   3. HERO
+   ========================================================= */
+
+.hero-original {
+    height: 164px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    /*
+       Ganti nama file sesuai gambar Figma kamu.
+
+       Struktur:
+       frontend/
+       ├── css/
+       │   └── style.css
+       └── assets/
+           └── images/
+               └── gedung-fitk.jpg
+    */
+
+    background-image:
+        url("../assets/images/gedung-fitk.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+}
+
+
+/*
+   Lapisan hijau transparan di atas foto
+*/
+
+.hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(214, 246, 226, 0.94) 0%,
+            rgba(211, 244, 224, 0.78) 45%,
+            rgba(211, 244, 224, 0.38) 100%
+        );
+}
+
+
+/* Isi Hero */
+
+.hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    padding:
+        23px
+        17px
+        15px;
+}
+
+
+.hero-small-title {
+    color: #086344;
+
+    font-size: 10px;
+
+    line-height: 1.2;
+
+    font-weight: 600;
+
+    margin-bottom: 1px;
+}
+
+
+.hero-content h1 {
+    margin: 0;
+
+    color: #086344;
+
+    font-size: 19px;
+
+    line-height: 1.06;
+
+    font-weight: 800;
+}
+
+
+.hero-content p {
+    width: 205px;
+
+    margin:
+        5px
+        0
+        0;
+
+    color: #377a5e;
+
+    font-size: 7px;
+
+    line-height: 1.45;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   4. STATISTICS
+   ========================================================= */
+
+.stats-original {
+    background: #05613f;
+
+    min-height: 191px;
+
+    padding:
+        40px
+        10px
+        24px;
+}
+
+
+.stats-wrapper {
+    width: 100%;
+
+    max-width: 360px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 4px;
+}
+
+
+.stat-original-card {
+    background: #ffffff;
+
+    border-radius: 8px;
+
+    min-height: 109px;
+
+    padding:
+        8px
+        6px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: flex-start;
+}
+
+
+.stat-original-icon {
+    width: 27px;
+    height: 27px;
+
+    flex-shrink: 0;
+
+    border-radius: 6px;
+
+    background: #dff6e8;
+
+    color: #08764d;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 13px;
+
+    margin-bottom: 9px;
+}
+
+
+.stat-original-card strong {
+    color: #075f40;
+
+    font-size: 18px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    margin-bottom: 5px;
+}
+
+
+.stat-original-card span {
+    color: #075f40;
+
+    font-size: 8px;
+
+    line-height: 1.35;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   5. GENERAL SECTION
+   ========================================================= */
+
+.section {
+    padding:
+        38px
+        0;
+}
+
+
+.section-light {
+    background: #f6faf8;
+}
+
+
+.section-title {
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+
+.section-title.left {
+    text-align: left;
+}
+
+
+.section-label {
+    color: var(--green-main);
+
+    font-size: 8px;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .3px;
+
+    margin-bottom: 4px;
+}
+
+
+.section-title h2,
+.section-heading-row h2 {
+    color: #194b3a;
+
+    font-size: 20px;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+
+    margin: 0 0 5px;
+}
+
+
+.section-title p {
+    color: var(--text-muted);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   6. LAYANAN UTAMA
+   ========================================================= */
+
+.service-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.service-card {
+    min-height: 53px;
+
+    width: 100%;
+
+    background: var(--green-soft);
+
+    border: 1px solid #c9ead6;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        7px
+        9px;
+
+    transition: .2s ease;
+}
+
+
+.service-card:hover {
+    background: #d6f2e1;
+
+    transform: translateY(-1px);
+}
+
+
+.service-icon {
+    width: 31px;
+    height: 31px;
+
+    flex-shrink: 0;
+
+    background: #c9efd8;
+
+    border-radius: 8px;
+
+    color: var(--green-main);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+}
+
+
+.service-content {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.service-content strong {
+    display: block;
+
+    color: #235743;
+
+    font-size: 9px;
+
+    line-height: 1.2;
+
+    font-weight: 800;
+}
+
+
+.service-content span {
+    display: block;
+
+    color: #82948d;
+
+    font-size: 7px;
+
+    line-height: 1.3;
+
+    margin-top: 2px;
+}
+
+
+.service-arrow {
+    color: #75a28f;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   7. KATEGORI PENGADUAN
+   ========================================================= */
+
+.category-container {
+    width: 100%;
+}
+
+
+.category-card {
+    min-height: 91px;
+
+    background: #ffffff;
+
+    border: 1px solid #e0e9e4;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    padding: 8px;
+
+    transition: .2s ease;
+}
+
+
+.category-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow);
+
+    border-color: #b7dcc8;
+}
+
+
+.category-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+
+    background: var(--green-soft);
+
+    color: var(--green-main);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 13px;
+
+    margin-bottom: 6px;
+}
+
+
+.category-card strong {
+    color: #235743;
+
+    font-size: 8px;
+
+    line-height: 1.2;
+}
+
+
+.category-card span {
+    color: #899991;
+
+    font-size: 6.5px;
+
+    line-height: 1.3;
+
+    margin-top: 3px;
+}
+
+
+/* =========================================================
+   8. ALUR PENGADUAN
+   ========================================================= */
+
+.process-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.process-card {
+    min-height: 51px;
+
+    background: var(--green-soft);
+
+    border: 1px solid #c9ead6;
+
+    border-radius: 8px;
+
+    padding:
+        7px
+        9px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.process-number {
+    width: 29px;
+    height: 29px;
+
+    flex-shrink: 0;
+
+    background: #ffffff;
+
+    color: var(--green-main);
+
+    border-radius: 7px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 7px;
+
+    font-weight: 800;
+}
+
+
+.process-card strong {
+    display: block;
+
+    color: #235743;
+
+    font-size: 8px;
+
+    line-height: 1.2;
+}
+
+
+.process-card span {
+    display: block;
+
+    color: #7e9289;
+
+    font-size: 6.5px;
+
+    line-height: 1.4;
+
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   9. CTA / ADA FASILITAS BERMASALAH
+   ========================================================= */
+
+.cta-section {
+    padding:
+        0
+        0
+        38px;
+}
+
+
+.cta-card {
+    background:
+        linear-gradient(
+            135deg,
+            #dff7e8,
+            #cfeedd
+        );
+
+    border: 1px solid #afd8c0;
+
+    border-radius: 9px;
+
+    padding:
+        15px
+        13px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(5, 97, 63, .06);
+}
+
+
+.cta-card h2 {
+    color: #194b3a;
+
+    font-size: 12px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    margin:
+        3px
+        0
+        4px;
+}
+
+
+.cta-card p {
+    color: #71887e;
+
+    font-size: 7px;
+
+    line-height: 1.4;
+
+    margin: 0;
+}
+
+
+.cta-card .btn-primary-fitk {
+    flex-shrink: 0;
+
+    font-size: 7px;
+
+    padding:
+        7px
+        9px;
+
+    border-radius: 6px;
+}
+
+
+/* =========================================================
+   10. BUTTON PRIMARY
+   ========================================================= */
+
+.btn-primary-fitk {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    background: var(--green-dark);
+
+    color: #ffffff;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    padding:
+        8px
+        12px;
+
+    font-size: 8px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+
+.btn-primary-fitk:hover {
+    background: #044e33;
+
+    color: #ffffff;
+}
+
+
+.btn-secondary-fitk {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    color: var(--green-dark);
+
+    border: 1px solid var(--green-dark);
+
+    border-radius: 7px;
+
+    padding:
+        8px
+        12px;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   11. PENGADUAN TERKINI
+   ========================================================= */
+
+.section-heading-row {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+
+.section-heading-row h2 {
+    margin-bottom: 0;
+
+    font-size: 18px;
+}
+
+
+.see-all {
+    color: var(--green-main);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.complaint-card {
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #dcebe2;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 3px 10px
+        rgba(5, 97, 63, .06);
+}
+
+
+.complaint-image {
+    width: 100%;
+
+    height: 120px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #dcefe5,
+            #f1f8f4
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #76a891;
+
+    font-size: 35px;
+
+    overflow: hidden;
+}
+
+
+.complaint-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.complaint-body {
+    padding:
+        9px;
+}
+
+
+.status-badge {
+    display: inline-block;
+
+    background: #e3f7ea;
+
+    color: #19704d;
+
+    border-radius: 20px;
+
+    padding:
+        3px
+        7px;
+
+    font-size: 6px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    text-transform: capitalize;
+}
+
+
+.complaint-body h3 {
+    color: #245743;
+
+    font-size: 9px;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+    margin:
+        6px
+        0
+        5px;
+}
+
+
+.complaint-meta {
+    color: #899891;
+
+    font-size: 6.5px;
+
+    line-height: 1.4;
+}
+
+
+.complaint-actions {
+    border-top: 1px solid #edf2ef;
+
+    margin-top: 8px;
+
+    padding-top: 7px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #87978f;
+
+    font-size: 6.5px;
+}
+
+
+.complaint-actions a {
+    color: var(--green-main);
+
+    font-weight: 700;
+}
+
+
+.empty-state {
+    text-align: center;
+
+    padding:
+        25px 10px;
+
+    color: #8b9a94;
+
+    font-size: 9px;
+}
+
+
+.empty-state.d-none {
+    display: none !important;
+}
+
+
+/* =========================================================
+   12. FAQ
+   ========================================================= */
+
+.faq-section {
+    background: #f5faf7;
+}
+
+
+.accordion {
+    width: 100%;
+}
+
+
+.accordion-item {
+    border:
+        1px solid #dcebe2 !important;
+
+    border-radius: 8px !important;
+
+    overflow: hidden;
+
+    margin-bottom: 7px;
+
+    background: #ffffff;
+}
+
+
+.accordion-button {
+    background: #ffffff;
+
+    color: #244d3d;
+
+    font-size: 8px;
+
+    line-height: 1.4;
+
+    font-weight: 700;
+
+    padding:
+        10px;
+
+    box-shadow: none !important;
+}
+
+
+.accordion-button:not(.collapsed) {
+    color: var(--green-dark);
+
+    background: #e6f8ed;
+
+    box-shadow: none;
+}
+
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+
+.accordion-button::after {
+    width: 10px;
+    height: 10px;
+
+    background-size: 10px;
+}
+
+
+.accordion-body {
+    color: #778a82;
+
+    background: #ffffff;
+
+    font-size: 7px;
+
+    line-height: 1.6;
+
+    padding:
+        10px;
+}
+
+
+/* =========================================================
+   13. FOOTER
+   ========================================================= */
+
+.footer {
+    background: var(--green-dark);
+
+    color: #d2e8dd;
+
+    padding:
+        28px
+        0
+        13px;
+}
+
+
+.footer-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 10px;
+}
+
+
+.footer-logo {
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: var(--green-dark);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+}
+
+
+.footer-brand strong {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    line-height: 1.2;
+}
+
+
+.footer-brand span {
+    display: block;
+
+    color: #a6c6b7;
+
+    font-size: 6.5px;
+
+    margin-top: 2px;
+}
+
+
+.footer p {
+    max-width: 260px;
+
+    color: #a9cabb;
+
+    font-size: 7px;
+
+    line-height: 1.6;
+
+    margin:
+        0
+        0
+        12px;
+}
+
+
+.footer h6 {
+    color: #ffffff;
+
+    font-size: 8px;
+
+    line-height: 1.2;
+
+    margin:
+        0
+        0
+        8px;
+}
+
+
+.footer a {
+    display: block;
+
+    color: #a9cabb;
+
+    font-size: 7px;
+
+    line-height: 1.3;
+
+    margin-bottom: 6px;
+}
+
+
+.footer a:hover {
+    color: #ffffff;
+}
+
+
+.footer-line {
+    height: 1px;
+
+    background:
+        rgba(255,255,255,.16);
+
+    margin:
+        17px
+        0
+        10px;
+}
+
+
+.footer-bottom {
+    color: #83aa99;
+
+    text-align: center;
+
+    font-size: 6px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   14. BOOTSTRAP OVERRIDE
+   Supaya Bootstrap tidak mengubah desain Figma
+   ========================================================= */
+
+.row {
+    --bs-gutter-x: .6rem;
+    --bs-gutter-y: .6rem;
+}
+
+
+.category-container .col-6,
+.category-container .col-md-3 {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+
+#complaintList .col-md-6,
+#complaintList .col-lg-4 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+/* =========================================================
+   15. DESKTOP
+   ========================================================= */
+
+/*
+   DESAIN KAMU MEMANG MOBILE.
+   Jadi ketika dibuka di laptop/Chrome desktop,
+   kita tetap menjaga ukuran seperti frame Figma.
+*/
+
+
+
+/* =========================================================
+   16. MOBILE KECIL
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .top-navbar {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+
+    .brand-text strong {
+        font-size: 7px;
+    }
+
+
+    .brand-text span {
+        font-size: 5px;
+    }
+
+
+    .brand-text small {
+        font-size: 4px;
+    }
+
+
+    .login-btn {
+        padding:
+            6px
+            16px;
+    }
+
+
+    .hero-content h1 {
+        font-size: 18px;
+    }
+
+
+    .hero-content p {
+        width: 195px;
+
+        font-size: 6.5px;
+    }
+
+
+    .stats-wrapper {
+        gap: 3px;
+    }
+
+
+    .stat-original-card {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+
+    .stat-original-card strong {
+        font-size: 17px;
+    }
+
+
+    .stat-original-card span {
+        font-size: 7px;
+    }
+
+}
+
+
+/* =========================================================
+   17. PREVENT HORIZONTAL OVERFLOW
+   ========================================================= */
+
+.container,
+.section,
+.hero-original,
+.stats-original,
+.cta-section,
+.footer {
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   18. UTILITY
+   ========================================================= */
+
+.d-none {
+    display: none !important;
+}
+
+
+.text-center {
+    text-align: center;
+}
+
+/* =========================================================
+   RESPONSIVE FIX
+   Tetap mempertahankan desain Figma,
+   tetapi halaman mengikuti ukuran layar.
+   ========================================================= */
+
+
+/* =========================================================
+   DEFAULT / MOBILE
+   ========================================================= */
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    overflow-x: hidden;
+}
+
+
+/* Semua section mengikuti lebar layar */
+
+.top-navbar,
+.hero-original,
+.stats-original,
+.section,
+.cta-section,
+.footer {
+    width: 100%;
+    max-width: none;
+}
+
+
+/* Konten tidak boleh terlalu lebar */
+
+.stats-wrapper,
+.container {
+    width: 100%;
+}
+
+
+/* =========================================================
+   TABLET
+   576px - 767px
+   ========================================================= */
+
+@media (min-width: 576px) {
+
+    .top-navbar {
+        height: 72px;
+
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+
+    .menu-btn {
+        width: 34px;
+        height: 34px;
+
+        font-size: 18px;
+    }
+
+
+    .logo-circle {
+        width: 38px;
+        height: 38px;
+
+        font-size: 15px;
+    }
+
+
+    .brand-text strong {
+        font-size: 10px;
+    }
+
+
+    .brand-text span {
+        font-size: 7px;
+    }
+
+
+    .brand-text small {
+        font-size: 6px;
+    }
+
+
+    .login-btn {
+        padding: 9px 25px;
+
+        font-size: 10px;
+    }
+
+
+    /* HERO */
+
+    .hero-original {
+        height: 260px;
+
+        background-position: center;
+    }
+
+
+    .hero-content {
+        max-width: 700px;
+
+        margin: 0 auto;
+
+        padding:
+            55px
+            35px;
+    }
+
+
+    .hero-small-title {
+        font-size: 13px;
+    }
+
+
+    .hero-content h1 {
+        font-size: 30px;
+    }
+
+
+    .hero-content p {
+        width: 330px;
+
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+
+    /* STATISTIK */
+
+    .stats-original {
+        padding:
+            45px
+            25px
+            35px;
+    }
+
+
+    .stats-wrapper {
+        max-width: 600px;
+
+        gap: 10px;
+    }
+
+
+    .stat-original-card {
+        min-height: 125px;
+
+        padding: 12px;
+    }
+
+
+    .stat-original-icon {
+        width: 32px;
+        height: 32px;
+
+        font-size: 15px;
+    }
+
+
+    .stat-original-card strong {
+        font-size: 22px;
+    }
+
+
+    .stat-original-card span {
+        font-size: 9px;
+    }
+
+
+    /* SECTION */
+
+    .section,
+    .cta-section {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+
+    .service-list,
+    .process-list {
+        max-width: 650px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    .category-container {
+        max-width: 650px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    .complaint-card {
+        max-width: 400px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    .footer {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   768px ke atas
+   ========================================================= */
+
+@media (min-width: 768px) {
+
+    body {
+        width: 100%;
+
+        max-width: 100%;
+
+        margin: 0;
+
+        background: #ffffff;
+
+        box-shadow: none;
+    }
+
+
+    /* =====================================================
+       NAVBAR
+       ===================================================== */
+
+    .top-navbar {
+        width: 100%;
+
+        height: 78px;
+
+        padding:
+            0
+            5%;
+
+        border-bottom: 1px solid #edf2ef;
+    }
+
+
+    .nav-left {
+        max-width: 1200px;
+    }
+
+
+    .menu-btn {
+        width: 38px;
+        height: 38px;
+
+        font-size: 19px;
+
+        margin-right: 12px;
+    }
+
+
+    .logo-circle {
+        width: 42px;
+        height: 42px;
+
+        font-size: 17px;
+    }
+
+
+    .brand-text strong {
+        font-size: 11px;
+    }
+
+
+    .brand-text span {
+        font-size: 7px;
+    }
+
+
+    .brand-text small {
+        font-size: 6px;
+    }
+
+
+    .login-btn {
+        padding:
+            10px
+            28px;
+
+        font-size: 11px;
+
+        border-radius: 8px;
+    }
+
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero-original {
+        width: 100%;
+
+        height: clamp(
+            270px,
+            32vw,
+            430px
+        );
+
+        background-size: cover;
+
+        background-position: center;
+    }
+
+
+    .hero-content {
+        width: 90%;
+
+        max-width: 1100px;
+
+        margin: 0 auto;
+
+        padding:
+            clamp(45px, 6vw, 80px)
+            0;
+    }
+
+
+    .hero-small-title {
+        font-size:
+            clamp(12px, 1.2vw, 17px);
+    }
+
+
+    .hero-content h1 {
+        font-size:
+            clamp(28px, 4vw, 52px);
+
+        line-height: 1.08;
+    }
+
+
+    .hero-content p {
+        width: min(
+            430px,
+            45%
+        );
+
+        font-size:
+            clamp(9px, 1vw, 13px);
+
+        line-height: 1.55;
+    }
+
+
+    /* =====================================================
+       STATISTIK
+       ===================================================== */
+
+    .stats-original {
+        width: 100%;
+
+        min-height: 220px;
+
+        padding:
+            55px
+            5%;
+    }
+
+
+    .stats-wrapper {
+        width: 100%;
+
+        max-width: 1100px;
+
+        margin: 0 auto;
+
+        gap:
+            clamp(8px, 1.5vw, 20px);
+    }
+
+
+    .stat-original-card {
+        min-height:
+            clamp(120px, 13vw, 155px);
+
+        padding:
+            clamp(10px, 1.5vw, 18px);
+
+        border-radius:
+            clamp(8px, 1vw, 13px);
+    }
+
+
+    .stat-original-icon {
+        width:
+            clamp(30px, 3vw, 42px);
+
+        height:
+            clamp(30px, 3vw, 42px);
+
+        border-radius: 9px;
+
+        font-size:
+            clamp(13px, 1.4vw, 19px);
+    }
+
+
+    .stat-original-card strong {
+        font-size:
+            clamp(20px, 2.5vw, 34px);
+
+        margin-bottom: 7px;
+    }
+
+
+    .stat-original-card span {
+        font-size:
+            clamp(8px, 1vw, 13px);
+
+        line-height: 1.4;
+    }
+
+
+    /* =====================================================
+       GENERAL SECTION
+       ===================================================== */
+
+    .section {
+        width: 100%;
+
+        padding:
+            65px
+            5%;
+    }
+
+
+    .section > .container,
+    .section > div:not(.container) {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    .section-title h2,
+    .section-heading-row h2 {
+        font-size:
+            clamp(20px, 2.5vw, 32px);
+    }
+
+
+    .section-title p {
+        font-size:
+            clamp(9px, 1vw, 13px);
+    }
+
+
+    /* =====================================================
+       LAYANAN
+       ===================================================== */
+
+    .service-list {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 12px;
+    }
+
+
+    .service-card {
+        min-height: 65px;
+
+        padding:
+            10px
+            13px;
+
+        border-radius: 10px;
+    }
+
+
+    .service-icon {
+        width: 38px;
+        height: 38px;
+
+        font-size: 15px;
+    }
+
+
+    .service-content strong {
+        font-size: 11px;
+    }
+
+
+    .service-content span {
+        font-size: 8px;
+    }
+
+
+    /* =====================================================
+       KATEGORI
+       ===================================================== */
+
+    .category-container {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 12px;
+    }
+
+
+    .category-container .col-6,
+    .category-container .col-md-3 {
+        width: auto;
+
+        padding:
+            0;
+    }
+
+
+    .category-card {
+        min-height: 125px;
+
+        padding: 15px;
+
+        border-radius: 10px;
+    }
+
+
+    .category-icon {
+        width: 40px;
+        height: 40px;
+
+        font-size: 16px;
+    }
+
+
+    .category-card strong {
+        font-size: 10px;
+    }
+
+
+    .category-card span {
+        font-size: 8px;
+    }
+
+
+    /* =====================================================
+       ALUR
+       ===================================================== */
+
+    .process-list {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 12px;
+    }
+
+
+    .process-card {
+        min-height: 125px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        justify-content: center;
+
+        padding: 15px;
+
+        border-radius: 10px;
+    }
+
+
+    .process-number {
+        width: 35px;
+        height: 35px;
+
+        font-size: 8px;
+    }
+
+
+    .process-card strong {
+        font-size: 10px;
+    }
+
+
+    .process-card span {
+        font-size: 8px;
+    }
+
+
+    /* =====================================================
+       CTA
+       ===================================================== */
+
+    .cta-section {
+        width: 100%;
+
+        padding:
+            0
+            5%
+            60px;
+    }
+
+
+    .cta-card {
+        max-width: 1100px;
+
+        margin: 0 auto;
+
+        padding:
+            25px
+            30px;
+
+        border-radius: 12px;
+    }
+
+
+    .cta-card h2 {
+        font-size: 17px;
+    }
+
+
+    .cta-card p {
+        font-size: 9px;
+
+        max-width: 500px;
+    }
+
+
+    .cta-card .btn-primary-fitk {
+        font-size: 9px;
+
+        padding:
+            10px
+            16px;
+    }
+
+
+    /* =====================================================
+       PENGADUAN TERKINI
+       ===================================================== */
+
+    #complaintList {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 18px;
+    }
+
+
+    #complaintList .col-md-6,
+    #complaintList .col-lg-4 {
+        width: auto;
+
+        padding: 0;
+    }
+
+
+    .complaint-image {
+        height: 180px;
+    }
+
+
+    .complaint-body h3 {
+        font-size: 11px;
+    }
+
+
+    .complaint-meta {
+        font-size: 8px;
+    }
+
+
+    .complaint-actions {
+        font-size: 8px;
+    }
+
+
+    /* =====================================================
+       FAQ
+       ===================================================== */
+
+    .faq-section .accordion {
+        max-width: 900px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    .accordion-button {
+        font-size: 10px;
+
+        padding:
+            14px;
+    }
+
+
+    .accordion-body {
+        font-size: 9px;
+
+        padding:
+            14px;
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    .footer {
+        width: 100%;
+
+        padding:
+            45px
+            5%
+            20px;
+    }
+
+
+    .footer > .container {
+        max-width: 1100px;
+
+        margin: 0 auto;
+    }
+
+
+    .footer-brand strong {
+        font-size: 11px;
+    }
+
+
+    .footer-brand span {
+        font-size: 8px;
+    }
+
+
+    .footer p {
+        font-size: 8px;
+    }
+
+
+    .footer h6 {
+        font-size: 10px;
+    }
+
+
+    .footer a {
+        font-size: 8px;
+    }
+
+
+    .footer-bottom {
+        font-size: 7px;
+    }
+
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1200px+
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    .hero-content {
+        max-width: 1150px;
+    }
+
+
+    .stats-wrapper {
+        max-width: 1150px;
+    }
+
+
+    .section > .container,
+    .section > div:not(.container) {
+        max-width: 1150px;
+    }
+
+
+    .cta-card {
+        max-width: 1150px;
+    }
+
+
+    #complaintList {
+        max-width: 1150px;
+    }
+
+
+    .footer > .container {
+        max-width: 1150px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .brand-text strong {
+        font-size: 7px;
+    }
+
+
+    .brand-text span {
+        font-size: 5px;
+    }
+
+
+    .brand-text small {
+        font-size: 4px;
+    }
+
+
+    .login-btn {
+        padding:
+            6px
+            15px;
+    }
+
+
+    .hero-content h1 {
+        font-size: 18px;
+    }
+
+
+    .hero-content p {
+        width: 190px;
+
+        font-size: 6.5px;
+    }
+
+
+    .stats-wrapper {
+        gap: 3px;
+    }
+
+
+    .stat-original-card {
+        min-height: 105px;
+
+        padding: 6px 5px;
+    }
+
+
+    .stat-original-icon {
+        width: 25px;
+        height: 25px;
+
+        font-size: 12px;
+
+        margin-bottom: 7px;
+    }
+
+
+    .stat-original-card strong {
+        font-size: 16px;
+    }
+
+
+    .stat-original-card span {
+        font-size: 6.8px;
+    }
+
+}
+
+/* =========================================================
+   RESPONSIVE CONTENT - BAGIAN BAWAH
+   ========================================================= */
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+.section,
+.cta-section,
+.faq-section {
+    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+
+/* Isi section mengikuti layar */
+
+.section > .container,
+.cta-section > .container,
+.faq-section > .container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   LAYANAN UTAMA
+   ========================================================= */
+
+.service-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+.service-card {
+    width: 100%;
+}
+
+
+/* =========================================================
+   KATEGORI
+   ========================================================= */
+
+.category-container {
+    width: 100%;
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+
+.category-container .col-6,
+.category-container .col-md-3 {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+
+.category-card {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ALUR PENGADUAN
+   ========================================================= */
+
+.process-list {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.process-card {
+    width: 100%;
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.cta-section {
+    width: 100%;
+}
+
+
+.cta-card {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   PENGADUAN TERKINI
+   ========================================================= */
+
+#complaintList {
+    width: 100%;
+}
+
+
+#complaintList .col-md-6,
+#complaintList .col-lg-4 {
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+.complaint-card {
+    width: 100%;
+}
+
+
+/* =========================================================
+   FAQ
+   ========================================================= */
+
+.faq-section .accordion {
+    width: 100%;
+}
+
+
+.accordion-item {
+    width: 100%;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    width: 100%;
+}
+
+
+.footer > .container {
+    width: 100%;
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 576px) {
+
+    .section,
+    .cta-section,
+    .faq-section {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+
+    /* Layanan */
+
+    .service-list {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    /* Kategori */
+
+    .category-container {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    /* Alur */
+
+    .process-list {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    /* Pengaduan */
+
+    #complaintList {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    #complaintList .col-md-6,
+    #complaintList .col-lg-4 {
+        width: 100%;
+        padding: 0;
+    }
+
+
+    .footer > .container {
+        max-width: 650px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 768px) {
+
+    .section,
+    .cta-section,
+    .faq-section {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+
+    /*
+       Semua isi dibuat punya lebar yang sama.
+       Jadi tidak ada bagian yang terlalu melebar
+       atau terlalu mepet ke pinggir.
+    */
+
+    .section > .container,
+    .section > .service-list,
+    .section > .category-container,
+    .section > .process-list,
+
+    .cta-section > .container,
+    .cta-section > .cta-card,
+
+    .faq-section > .container,
+    .faq-section .accordion {
+        width: 100%;
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    /* =====================================================
+       LAYANAN
+       ===================================================== */
+
+    .service-list {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+
+    .service-card {
+        min-height: 70px;
+
+        padding: 12px 14px;
+    }
+
+
+    .service-icon {
+        width: 40px;
+        height: 40px;
+
+        flex-shrink: 0;
+    }
+
+
+    .service-content strong {
+        font-size: 11px;
+    }
+
+
+    .service-content span {
+        font-size: 8px;
+    }
+
+
+    /* =====================================================
+       KATEGORI
+       ===================================================== */
+
+    .category-container {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+
+    .category-card {
+        min-height: 130px;
+
+        padding: 15px;
+    }
+
+
+    /* =====================================================
+       ALUR
+       ===================================================== */
+
+    .process-list {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 14px;
+    }
+
+
+    .process-card {
+        min-height: 130px;
+
+        padding: 15px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        justify-content: center;
+    }
+
+
+    /* =====================================================
+       PENGADUAN TERKINI
+       ===================================================== */
+
+    #complaintList {
+        width: 100%;
+
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 16px;
+    }
+
+
+    #complaintList .col-md-6,
+    #complaintList .col-lg-4 {
+        width: 100%;
+
+        padding: 0;
+    }
+
+
+    .complaint-card {
+        height: 100%;
+    }
+
+
+    .complaint-image {
+        width: 100%;
+
+        height: 180px;
+    }
+
+
+    /* =====================================================
+       CTA
+       ===================================================== */
+
+    .cta-card {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        padding: 24px 28px;
+    }
+
+
+    /* =====================================================
+       FAQ
+       ===================================================== */
+
+    .faq-section .accordion {
+        max-width: 900px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    .footer > .container {
+        max-width: 1100px;
+
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    .section > .container,
+    .section > .service-list,
+    .section > .category-container,
+    .section > .process-list,
+
+    .cta-section > .container,
+    .cta-section > .cta-card,
+
+    .footer > .container {
+        max-width: 1150px;
+    }
+
+
+    #complaintList {
+        max-width: 1150px;
+    }
+
+}
+
+/* =========================================================
+   LOGIN & REGISTER
+   ========================================================= */
+
+.auth-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.login-btn,
+.register-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 58px;
+
+    padding:
+        7px
+        13px;
+
+    border-radius: 7px;
+
+    font-size: 8px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: .2s ease;
+}
+
+
+/* Login */
+
+.login-btn {
+    background: #05613f;
+
+    color: #ffffff;
+
+    border: 1px solid #05613f;
+}
+
+
+.login-btn:hover {
+    background: #044e33;
+
+    color: #ffffff;
+}
+
+
+/* Register */
+
+.register-btn {
+    background: #ffffff;
+
+    color: #05613f;
+
+    border: 1px solid #05613f;
+}
+
+
+.register-btn:hover {
+    background: #dff6e8;
+
+    color: #05613f;
+}
+
+@media (min-width: 576px) {
+
+    .auth-buttons {
+        gap: 8px;
+    }
+
+    .login-btn,
+    .register-btn {
+        min-width: 70px;
+
+        padding:
+            9px
+            17px;
+
+        font-size: 9px;
+    }
+
+}
+
+
+@media (min-width: 768px) {
+
+    .auth-buttons {
+        gap: 10px;
+    }
+
+    .login-btn,
+    .register-btn {
+        min-width: 80px;
+
+        padding:
+            10px
+            20px;
+
+        font-size: 10px;
+
+        border-radius: 8px;
+    }
+
+}
