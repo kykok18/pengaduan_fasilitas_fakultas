@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 02 Okt 2026 pada 08.50
+-- Waktu pembuatan: 06 Okt 2026 pada 04.34
 -- Versi server: 8.4.11-0ubuntu0.26.04.1
 -- Versi PHP: 8.5.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Basis data: `pengaduan_fasilitas_kampusDB`
+-- Basis data: `pengaduan_fasilitas_fakultasDB`
 --
 
 -- --------------------------------------------------------
@@ -106,9 +106,20 @@ CREATE TABLE `users` (
   `nama` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `foto` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `role` enum('user','admin') NOT NULL DEFAULT 'user',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `users`
+--
+
+INSERT INTO `users` (`id_user`, `nama`, `email`, `password`, `foto`, `role`, `created_at`) VALUES
+(1, 'Budi', 'budi@gmail.com', '$2y$12$DjyGZ/XurtoVDtsGG1.EYuTtHWi6tajCoYk2SmKEf2YHUSeHHL1Sy', NULL, 'user', '2026-10-04 09:13:29'),
+(2, 'Andi', 'andi@gmail.com', '$2y$12$l.RYBrmev9K5V9nuRa0r6eIySmYw0yapyxvbnPT0hWxNt28nL1apu', NULL, 'user', '2026-10-04 09:14:43'),
+(3, 'kiki', 'kykok810@gmail.com', '$2y$12$BHc/on5162vUn4Nfqsya8OqHgHImU1KpLQnBg/z34HjpT3DWD74ZO', NULL, 'user', '2026-10-04 10:16:32'),
+(4, 'kiki', 'kiki810@gmail.com', '$2y$12$Th5TNP7kBwyUtMFDOhSeWeZhWyh4Tlmmuw2UIlIxNMIN/ZG2F9dE2', NULL, 'user', '2026-10-04 10:19:13');
 
 -- --------------------------------------------------------
 
@@ -120,7 +131,7 @@ CREATE TABLE `vote` (
   `id_vote` int NOT NULL,
   `id_pengaduan` int NOT NULL,
   `id_user` int NOT NULL,
-  `tipe_vote` enum('up','down') NOT NULL,
+  `tipe_vote` enum('upvote','downvote') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -219,7 +230,7 @@ ALTER TABLE `pengaduan`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `vote`
