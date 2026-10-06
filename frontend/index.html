@@ -3,1105 +3,474 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Pengaduan Fasilitas Kampus FITK</title>
-
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Bootstrap Icons -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        rel="stylesheet"
-    >
-
-    <!-- CSS CUSTOM -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome (Masih dipakai untuk icon kecil seperti panah, thumbs, dll) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Iconify (Untuk icon yang sama persis dengan Figma) -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<!-- =====================================================
-     NAVBAR
-===================================================== -->
+    <!-- Sidebar Overlay (Latar Gelap) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<nav class="top-navbar">
-
-    <div class="nav-left">
-
-        <button class="menu-btn" type="button">
-            <i class="bi bi-list"></i>
-        </button>
-
-        <div class="brand-logo">
-            <!-- GANTI dengan logo FITK kamu kalau sudah punya -->
-            <div class="logo-circle">
-                <i class="bi bi-building-fill"></i>
+    <!-- Sidebar Menu -->
+    <div class="sidebar" id="sidebar">
+        <!-- Bagian Header Sidebar (Logo & Teks) -->
+        <div class="sidebar-header">
+            <img src="img/logo-fitk.png" alt="Logo FITK" class="sidebar-logo">
+            <div class="sidebar-header-text">
+                <h3>FITK SIBER AHSAN</h3>
+                <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
             </div>
         </div>
 
-        <div class="brand-text">
+        <!-- Garis Pemisah -->
+        <div class="sidebar-divider"></div>
 
-            <strong>
-                FITK SIBER AHSAN
-            </strong>
-
-            <span>
-                Fakultas Ilmu Tarbiyah dan Keguruan
-            </span>
-
-            <small>
-                UIN Siber Syekh Nurjati Cirebon
-            </small>
-
-        </div>
-
+        <!-- Menu Navigasi Sidebar (ICON TABLER) -->
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active">
+                    <a href="index.html">
+                        <iconify-icon icon="tabler:home"></iconify-icon>
+                        <span>Beranda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tentang">
+                        <iconify-icon icon="tabler:info-circle"></iconify-icon>
+                        <span>Tentang</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#kategori">
+                        <iconify-icon icon="tabler:layout-grid"></iconify-icon>
+                        <span>Kategori</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#pengaduan">
+                        <iconify-icon icon="tabler:file-pencil"></iconify-icon>
+                        <span>Pengaduan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#faq">
+                        <iconify-icon icon="tabler:help-circle"></iconify-icon>
+                        <span>FAQ</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
-
-    <div class="auth-buttons">
-
-    <a href="login.html" class="login-btn">
-        Login
-    </a>
-
-    <a href="register.html" class="register-btn">
-        Register
-    </a>
-
-</div>
-
-</nav>
-
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
-<section class="hero-original">
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-
-        <div class="hero-small-title">
-
-            Selamat Datang di
-
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="nav-left">
+                <iconify-icon icon="tabler:menu-2" class="menu-toggle"></iconify-icon>
+                <div class="logo">
+                    <img src="img/logo-fitk.png" alt="Logo FITK" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-title">FITK SIBER AHSAN</span>
+                        <span class="logo-sub">Fakultas Ilmu Tarbiyah dan Keguruan</span>
+                        <span class="logo-sub highlight">UIN Siber Syekh Nurjati Cirebon</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <a href="register.html" class="btn btn-outline">Registrasi</a>
+                <a href="#" class="btn btn-primary">Login</a>
+            </div>
         </div>
+    </header>
 
+    <!-- Hero Section -->
+    <section class="hero" id="tentang">
+        <div class="container hero-content">
+            <h1>Selamat Datang di<br><span>Pengaduan Fasilitas</span><br>Kampus FITK</h1>
+            <p>Laporkan fasilitas yang bermasalah dengan mudah, cepat dan transparan. Bersama kita wujudkan kampus yang lebih nyaman.</p>
+        </div>
+    </section>
 
-        <h1>
+    <!-- Stats Section (ICON TABLER) -->
+    <section class="stats-section">
+        <div class="container stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <iconify-icon icon="tabler:file-plus"></iconify-icon>
+                </div>
+                <div class="stat-info">
+                    <h3>128</h3>
+                    <p>Pengaduan<br>Masuk</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <iconify-icon icon="tabler:clock"></iconify-icon>
+                </div>
+                <div class="stat-info">
+                    <h3>10</h3>
+                    <p>Sedang<br>Ditangani</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <iconify-icon icon="tabler:users"></iconify-icon>
+                </div>
+                <div class="stat-info">
+                    <h3>50</h3>
+                    <p>Fasilitas<br>Dilaporkan</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <iconify-icon icon="tabler:circle-check"></iconify-icon>
+                </div>
+                <div class="stat-info">
+                    <h3>59</h3>
+                    <p>Pengaduan<br>Selesai</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            Pengaduan Fasilitas
-            <br>
+    <!-- Layanan Utama Section (ICON TABLER) -->
+    <section class="section bg-light-green">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>Layanan Utama Pengaduan Kampus</h2>
+                <p>Dirancang untuk memberikan pelaporan fasilitas<br>cepat, mudah, transparan</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <iconify-icon icon="tabler:file-pencil"></iconify-icon>
+                    </div>
+                    <div class="service-text">
+                        <h4>Laporkan Fasilitas</h4>
+                        <p>Laporkan fasilitas yang bermasalah</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <iconify-icon icon="tabler:search"></iconify-icon>
+                    </div>
+                    <div class="service-text">
+                        <h4>Cari Pengaduan</h4>
+                        <p>Temukan laporan yang sudah ada</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <iconify-icon icon="tabler:thumb-up"></iconify-icon>
+                    </div>
+                    <div class="service-text">
+                        <h4>Dukung Pengaduan</h4>
+                        <p>Dukung laporan dengan masalah yang sama</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <iconify-icon icon="tabler:refresh"></iconify-icon>
+                    </div>
+                    <div class="service-text">
+                        <h4>Pantau Status</h4>
+                        <p>Pantau perkembangan hingga selesai</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            Kampus FITK
+    <!-- Kategori Section (ICON TABLER) -->
+    <section class="section bg-light-green" id="kategori">
+        <div class="container">
+            <div class="section-header">
+                <h2>Kategori Pengaduan</h2>
+            </div>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:presentation"></iconify-icon>
+                    </div>
+                    <h4>Ruang Kelas</h4>
+                    <p>Proyektor, Kursi, Meja, papan</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:wifi"></iconify-icon>
+                    </div>
+                    <h4>Wi-Fi</h4>
+                    <p>Internet lambat</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:bolt"></iconify-icon>
+                    </div>
+                    <h4>Listrik</h4>
+                    <p>Stopkontak, Saklar</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:air-conditioning"></iconify-icon>
+                    </div>
+                    <h4>AC</h4>
+                    <p>AC bocor, AC mati,<br>AC tidak dingin</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:shield-check"></iconify-icon>
+                    </div>
+                    <h4>Keamanan</h4>
+                    <p>CCTV dan keamanan lainnya</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:friends"></iconify-icon>
+                    </div>
+                    <h4>Toilet & Kebersihan</h4>
+                    <p>Kran, Air mampet, wastafel</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:building-mosque"></iconify-icon>
+                    </div>
+                    <h4>Mushola</h4>
+                    <p>Fasilitas ibadah</p>
+                </div>
+                <div class="category-card">
+                    <div class="cat-icon">
+                        <iconify-icon icon="tabler:elevator"></iconify-icon>
+                    </div>
+                    <h4>Lift</h4>
+                    <p>Fasilitas lift yang bermasalah</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        </h1>
+    <!-- Alur Pengaduan Section -->
+    <section class="section bg-light-green">
+        <div class="container">
+            <div class="section-header">
+                <h2>Bagaimana laporan diproses<br>hingga selesai?</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-number">01</div>
+                    <div class="timeline-content">
+                        <h4>Pengaduan Dikirim</h4>
+                        <p>Sampaikan masalah fasilitas dengan mengisi laporan dan menambahkan foto atau video sebagai bukti</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">02</div>
+                    <div class="timeline-content">
+                        <h4>Laporan Diperiksa</h4>
+                        <p>Admin memeriksa kelengkapan dan kebenaran informasi dalam laporan</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">03</div>
+                    <div class="timeline-content">
+                        <h4>Laporan Diverifikasi</h4>
+                        <p>Laporan yang sesuai diteruskan untuk ditindaklanjuti dan dilakukan perbaikan.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-number">04</div>
+                    <div class="timeline-content">
+                        <h4>Pengaduan Selesai</h4>
+                        <p>Setelah perbaikan selesai, status laporan diperbarui dan hasilnya dapat dilihat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- CTA Section -->
+    <section class="section bg-light-green">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Ada Fasilitas yang Bermasalah?</h2>
+                <p>Jangan biarkan masalah fasilitas terabaikan.<br>Sampaikan pengaduan dan bantu menciptakan<br>lingkungan kampus yang lebih baik.</p>
+                <a href="#" class="btn btn-primary">Buat Pengaduan</a>
+            </div>
+        </div>
+    </section>
 
-        <p>
+    <!-- Laporan Terkini Section -->
+    <section class="section bg-light-green" id="pengaduan">
+        <div class="container">
+            <div class="section-header-flex">
+                <h2>Pengaduan<br>Terkini</h2>
+                <a href="#" class="link-see-all">Lihat semua <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="reports-list">
+                <!-- Report Card 1 -->
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1595113316349-9fa4eb24f884?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="AC Rusak">
+                        <span class="badge badge-category">AC</span>
+                        <span class="badge badge-status status-proses">Diproses</span>
+                    </div>
+                    <div class="report-content">
+                        <h3>AC Tidak Panas</h3>
+                        <div class="report-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Ruang 202 , Lantai 2</span>
+                            <span><i class="fas fa-calendar-alt"></i> 5 September 2026</span>
+                        </div>
+                        <div class="report-footer">
+                            <div class="report-actions">
+                                <span><i class="fas fa-thumbs-up"></i> 20</span>
+                                <span><i class="fas fa-thumbs-down"></i> 1</span>
+                                <span><i class="fas fa-comment"></i> 5</span>
+                            </div>
+                            <a href="#" class="link-detail">Lihat detail <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
 
-            Laporkan fasilitas kampus yang bermasalah
-            dengan mudah, cepat dan transparan.
-            Bersama kita wujudkan kampus yang lebih nyaman.
+                <!-- Report Card 2 -->
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Toilet Rusak">
+                        <span class="badge badge-category">Toilet</span>
+                        <span class="badge badge-status status-perbaikan">Dalam Perbaikan</span>
+                    </div>
+                    <div class="report-content">
+                        <h3>Pintu Toilet Rusak</h3>
+                        <div class="report-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Gedung FITK , Lantai 1</span>
+                            <span><i class="fas fa-calendar-alt"></i> 20 September 2026</span>
+                        </div>
+                        <div class="report-footer">
+                            <div class="report-actions">
+                                <span><i class="fas fa-thumbs-up"></i> 10</span>
+                                <span><i class="fas fa-thumbs-down"></i> 2</span>
+                                <span><i class="fas fa-comment"></i> 15</span>
+                            </div>
+                            <a href="#" class="link-detail">Lihat detail <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
 
-        </p>
+                <!-- Report Card 3 -->
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kursi Rusak">
+                        <span class="badge badge-category">Ruang Kelas</span>
+                    </div>
+                    <div class="report-content">
+                        <h3>Kursi Rusak</h3>
+                        <div class="report-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> Ruang 302 , Lantai 3</span>
+                            <span><i class="fas fa-calendar-alt"></i> 15 September 2026</span>
+                        </div>
+                        <div class="report-footer">
+                            <div class="report-actions">
+                                <span><i class="fas fa-thumbs-up"></i> 8</span>
+                                <span><i class="fas fa-thumbs-down"></i> 1</span>
+                                <span><i class="fas fa-comment"></i> 6</span>
+                            </div>
+                            <a href="#" class="link-detail">Lihat detail <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <!-- FAQ Section -->
+    <section class="section bg-light-green" id="faq">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>FAQ</h2>
+                <p>Pertanyaan yang Sering Diajukan</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Apa itu Website Pengaduan Fasilitas Kampus FITK?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Website ini adalah platform untuk melaporkan kerusakan atau masalah fasilitas di lingkungan Kampus FITK.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Bagaimana cara membuat pengaduan?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Anda dapat mengklik tombol "Buat Pengaduan" dan mengisi formulir yang tersedia.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Bagaimana cara melihat status pengaduan?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Anda dapat memantau status melalui menu "Pantau Status" atau melihat daftar "Pengaduan Terkini".</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</section>
-
-
-
-<!-- =====================================================
-     STATISTIK
-===================================================== -->
-
-<section class="stats-original">
-
-    <div class="stats-wrapper">
-
-
-        <!-- CARD 1 -->
-
-        <div class="stat-original-card">
-
-            <div class="stat-original-icon">
-
-                <i class="bi bi-file-earmark-text-fill"></i>
-
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-container">
+            
+            <div class="footer-header">
+                <img src="img/logo-fitk.png" alt="Logo FITK" class="footer-logo">
+                <div class="footer-header-text">
+                    <h3>FITK SIBER AHSAN</h3>
+                    <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                    <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
+                </div>
             </div>
 
-
-            <strong id="totalPengaduan">
-                128
-            </strong>
-
-
-            <span>
-                Pengaduan
-                <br>
-                Masuk
-            </span>
-
-        </div>
-
-
-
-        <!-- CARD 2 -->
-
-        <div class="stat-original-card">
-
-            <div class="stat-original-icon">
-
-                <i class="bi bi-clock"></i>
-
-            </div>
-
-
-            <strong id="sedangDiproses">
-                10
-            </strong>
-
-
-            <span>
-                Sedang
-                <br>
-                Ditangani
-            </span>
-
-        </div>
-
-
-
-        <!-- CARD 3 -->
-
-        <div class="stat-original-card">
-
-            <div class="stat-original-icon">
-
-                <i class="bi bi-people-fill"></i>
-
-            </div>
-
-
-            <strong>
-                50
-            </strong>
-
-
-            <span>
-                Fasilitas
-                <br>
-                Dilaporkan
-            </span>
-
-        </div>
-
-
-
-        <!-- CARD 4 -->
-
-        <div class="stat-original-card">
-
-            <div class="stat-original-icon">
-
-                <i class="bi bi-check-circle-fill"></i>
-
-            </div>
-
-
-            <strong id="pengaduanSelesai">
-                59
-            </strong>
-
-
-            <span>
-                Pengaduan
-                <br>
-                Selesai
-            </span>
-
-        </div>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     LAYANAN UTAMA
-===================================================== -->
-
-<section class="section">
-
-    <div class="container narrow">
-
-        <div class="section-title">
-
-            <div class="section-label">
-                Layanan Utama
-            </div>
-
-            <h2>
-                Pengaduan Kampus Jadi Lebih Mudah
-            </h2>
-
-            <p>
-                Semua kebutuhan pengaduan fasilitas ada di satu tempat.
+            <p class="footer-desc">
+                Sampaikan laporan fasilitas kampus dengan mudah<br>
+                dan pantau proses penanganannya.
             </p>
 
-        </div>
-
-
-        <div class="service-list">
-
-
-            <!-- SERVICE 1 -->
-
-            <a href="login.html" class="service-card">
-
-                <div class="service-icon">
-                    <i class="bi bi-file-earmark-plus-fill"></i>
+            <div class="footer-links-wrapper">
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="#tentang">Tentang</a></li>
+                        <li><a href="#kategori">Kategori</a></li>
+                        <li><a href="#pengaduan">Pengaduan</a></li>
+                    </ul>
                 </div>
-
-                <div class="service-content">
-
-                    <strong>
-                        Laporkan Fasilitas
-                    </strong>
-
-                    <span>
-                        Buat laporan fasilitas yang bermasalah
-                    </span>
-
+                <div class="footer-links">
+                    <h4>Bantuan</h4>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
                 </div>
+            </div>
 
-                <i class="bi bi-chevron-right service-arrow"></i>
-
-            </a>
-
-
-            <!-- SERVICE 2 -->
-
-            <a href="#pengaduan-terkini" class="service-card">
-
-                <div class="service-icon">
-                    <i class="bi bi-search"></i>
-                </div>
-
-                <div class="service-content">
-
-                    <strong>
-                        Cari Pengaduan
-                    </strong>
-
-                    <span>
-                        Lihat pengaduan yang tersedia
-                    </span>
-
-                </div>
-
-                <i class="bi bi-chevron-right service-arrow"></i>
-
-            </a>
-
-
-            <!-- SERVICE 3 -->
-
-            <a href="login.html" class="service-card">
-
-                <div class="service-icon">
-                    <i class="bi bi-hand-thumbs-up-fill"></i>
-                </div>
-
-                <div class="service-content">
-
-                    <strong>
-                        Dukung Pengaduan
-                    </strong>
-
-                    <span>
-                        Berikan upvote atau downvote
-                    </span>
-
-                </div>
-
-                <i class="bi bi-chevron-right service-arrow"></i>
-
-            </a>
-
-
-            <!-- SERVICE 4 -->
-
-            <a href="login.html" class="service-card">
-
-                <div class="service-icon">
-                    <i class="bi bi-arrow-repeat"></i>
-                </div>
-
-                <div class="service-content">
-
-                    <strong>
-                        Pantau Status
-                    </strong>
-
-                    <span>
-                        Pantau perkembangan pengaduanmu
-                    </span>
-
-                </div>
-
-                <i class="bi bi-chevron-right service-arrow"></i>
-
-            </a>
-
+            <div class="footer-copyright">
+                <p>&copy; 2026 Website Pengaduan Fasilitas Kampus FITK. All rights reserved.</p>
+            </div>
 
         </div>
+    </footer>
 
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     KATEGORI
-===================================================== -->
-
-<section class="section section-light">
-
-    <div class="container">
-
-        <div class="section-title left">
-
-            <div class="section-label">
-                Kategori Pengaduan
-            </div>
-
-            <h2>
-                Laporkan Sesuai Jenis Fasilitas
-            </h2>
-
-        </div>
-
-
-        <div class="row g-3 category-container">
-
-
-            <!-- RUANG KELAS -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-easel2-fill"></i>
-                    </div>
-
-                    <strong>
-                        Ruang Kelas
-                    </strong>
-
-                    <span>
-                        Meja, kursi, papan tulis
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- WIFI -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-wifi"></i>
-                    </div>
-
-                    <strong>
-                        Wi-Fi
-                    </strong>
-
-                    <span>
-                        Jaringan & koneksi
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- LISTRIK -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-lightning-charge-fill"></i>
-                    </div>
-
-                    <strong>
-                        Listrik
-                    </strong>
-
-                    <span>
-                        Lampu & kelistrikan
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- AC -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-display-fill"></i>
-                    </div>
-
-                    <strong>
-                        AC
-                    </strong>
-
-                    <span>
-                        Pendingin ruangan
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- KEAMANAN -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-shield-lock-fill"></i>
-                    </div>
-
-                    <strong>
-                        Keamanan
-                    </strong>
-
-                    <span>
-                        Keamanan lingkungan
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- TOILET -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-droplet-fill"></i>
-                    </div>
-
-                    <strong>
-                        Toilet & Kebersihan
-                    </strong>
-
-                    <span>
-                        Sanitasi & kebersihan
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- MUSHOLA -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-moon-stars-fill"></i>
-                    </div>
-
-                    <strong>
-                        Mushola
-                    </strong>
-
-                    <span>
-                        Fasilitas ibadah
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- LIFT -->
-
-            <div class="col-6 col-md-3">
-
-                <div class="category-card">
-
-                    <div class="category-icon">
-                        <i class="bi bi-building-fill"></i>
-                    </div>
-
-                    <strong>
-                        Lift
-                    </strong>
-
-                    <span>
-                        Lift & akses gedung
-                    </span>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     CARA KERJA
-===================================================== -->
-
-<section class="section" id="cara-kerja">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <div class="section-label">
-                Bagaimana Laporan Diproses?
-            </div>
-
-            <h2>
-                Alur Pengaduan yang Jelas
-            </h2>
-
-        </div>
-
-
-        <div class="process-list">
-
-
-            <!-- 01 -->
-
-            <div class="process-card">
-
-                <div class="process-number">
-                    01
-                </div>
-
-                <div>
-
-                    <strong>
-                        Pengaduan Dikirim
-                    </strong>
-
-                    <span>
-                        Isi fasilitas, judul, deskripsi,
-                        dan foto bukti.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- 02 -->
-
-            <div class="process-card">
-
-                <div class="process-number">
-                    02
-                </div>
-
-                <div>
-
-                    <strong>
-                        Laporan Diperiksa
-                    </strong>
-
-                    <span>
-                        Laporan diperiksa dan divalidasi
-                        oleh pihak terkait.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- 03 -->
-
-            <div class="process-card">
-
-                <div class="process-number">
-                    03
-                </div>
-
-                <div>
-
-                    <strong>
-                        Laporan Diverifikasi
-                    </strong>
-
-                    <span>
-                        Pengaduan diteruskan untuk
-                        diproses.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- 04 -->
-
-            <div class="process-card">
-
-                <div class="process-number">
-                    04
-                </div>
-
-                <div>
-
-                    <strong>
-                        Pengaduan Selesai
-                    </strong>
-
-                    <span>
-                        Status diperbarui sampai
-                        laporan selesai.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     CTA
-===================================================== -->
-
-<section class="cta-section">
-
-    <div class="container">
-
-        <div class="cta-card">
-
-            <div>
-
-                <div class="section-label">
-                    Ada Fasilitas yang Bermasalah?
-                </div>
-
-                <h2>
-                    Laporkan agar segera ditindaklanjuti.
-                </h2>
-
-                <p>
-                    Jangan biarkan masalah fasilitas
-                    berlarut-larut.
-                </p>
-
-            </div>
-
-
-            <a href="login.html" class="btn-primary-fitk">
-
-                Buat Pengaduan
-
-                <i class="bi bi-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     PENGADUAN TERKINI
-===================================================== -->
-
-<section class="section" id="pengaduan-terkini">
-
-    <div class="container">
-
-        <div class="section-heading-row">
-
-            <div>
-
-                <div class="section-label">
-                    Pengaduan Terkini
-                </div>
-
-                <h2>
-                    Lihat Pengaduan yang Masuk
-                </h2>
-
-            </div>
-
-
-            <a href="login.html" class="see-all">
-
-                Lihat semua
-
-                <i class="bi bi-arrow-right"></i>
-
-            </a>
-
-        </div>
-
-
-        <div
-            class="row g-4"
-            id="complaintList"
-        >
-        </div>
-
-
-        <div
-            id="emptyState"
-            class="empty-state d-none"
-        >
-
-            Belum ada pengaduan yang tersedia.
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     FAQ
-===================================================== -->
-
-<section class="section faq-section">
-
-    <div class="container narrow">
-
-        <div class="section-title">
-
-            <div class="section-label">
-                Bantuan & FAQ
-            </div>
-
-            <h2>
-                Pertanyaan yang Sering Diajukan
-            </h2>
-
-        </div>
-
-
-        <div
-            class="accordion"
-            id="faqAccordion"
-        >
-
-
-            <!-- FAQ 1 -->
-
-            <div class="accordion-item">
-
-                <h2 class="accordion-header">
-
-                    <button
-                        class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#faq1"
-                    >
-
-                        Apa itu Website Pengaduan Fasilitas Kampus FITK?
-
-                    </button>
-
-                </h2>
-
-
-                <div
-                    id="faq1"
-                    class="accordion-collapse collapse"
-                    data-bs-parent="#faqAccordion"
-                >
-
-                    <div class="accordion-body">
-
-                        Website ini digunakan untuk membuat dan
-                        memantau pengaduan fasilitas kampus
-                        secara lebih terstruktur.
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- FAQ 2 -->
-
-            <div class="accordion-item">
-
-                <h2 class="accordion-header">
-
-                    <button
-                        class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#faq2"
-                    >
-
-                        Bagaimana cara membuat pengaduan?
-
-                    </button>
-
-                </h2>
-
-
-                <div
-                    id="faq2"
-                    class="accordion-collapse collapse"
-                    data-bs-parent="#faqAccordion"
-                >
-
-                    <div class="accordion-body">
-
-                        Login terlebih dahulu, kemudian isi
-                        informasi fasilitas, judul, deskripsi,
-                        dan bukti pengaduan.
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- FAQ 3 -->
-
-            <div class="accordion-item">
-
-                <h2 class="accordion-header">
-
-                    <button
-                        class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#faq3"
-                    >
-
-                        Bagaimana cara melihat status pengaduan?
-
-                    </button>
-
-                </h2>
-
-
-                <div
-                    id="faq3"
-                    class="accordion-collapse collapse"
-                    data-bs-parent="#faqAccordion"
-                >
-
-                    <div class="accordion-body">
-
-                        Setelah login, pengguna dapat melihat
-                        pengaduan yang dibuat dan memantau
-                        perkembangan statusnya.
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer class="footer">
-
-    <div class="container">
-
-        <div class="row g-5">
-
-
-            <!-- BRAND -->
-
-            <div class="col-lg-6">
-
-                <div class="footer-brand">
-
-                    <div class="footer-logo">
-
-                        <i class="bi bi-building-fill"></i>
-
-                    </div>
-
-
-                    <div>
-
-                        <strong>
-                            FITK SIBER AHSAN
-                        </strong>
-
-                        <span>
-                            Pengaduan Fasilitas Kampus
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <p>
-
-                    Temukan dan laporkan masalah fasilitas
-                    kampus dengan mudah, cepat, dan terpantau.
-
-                </p>
-
-            </div>
-
-
-
-            <!-- NAVIGASI -->
-
-            <div class="col-6 col-lg-3">
-
-                <h6>
-                    Navigasi
-                </h6>
-
-                <a href="#">
-                    Beranda
-                </a>
-
-                <a href="#pengaduan-terkini">
-                    Pengaduan
-                </a>
-
-                <a href="#cara-kerja">
-                    Cara Kerja
-                </a>
-
-            </div>
-
-
-
-            <!-- BANTUAN -->
-
-            <div class="col-6 col-lg-3">
-
-                <h6>
-                    Bantuan
-                </h6>
-
-                <a href="#faqAccordion">
-                    FAQ
-                </a>
-
-                <a href="login.html">
-                    Login
-                </a>
-
-                <a href="register.html">
-                    Daftar
-                </a>
-
-            </div>
-
-
-        </div>
-
-
-        <div class="footer-line"></div>
-
-
-        <div class="footer-bottom">
-
-            © 2026 Website Pengaduan Fasilitas Kampus FITK.
-            All rights reserved.
-
-        </div>
-
-    </div>
-
-</footer>
-
-
-
-<!-- =====================================================
-     BOOTSTRAP JS
-===================================================== -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-
-
-<!-- =====================================================
-     JS CUSTOM
-===================================================== -->
-
-<script src="js/app.js"></script>
-
+    <script src="javascript/app.js"></script>
 </body>
 </html>
-
