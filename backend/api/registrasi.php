@@ -45,18 +45,6 @@ $email = trim($data['email'] ?? "");
 $password = $data['password'] ?? "";
 $confirm_password = $data['confirm_password'] ?? "";
 
-// Validasi nama hanya boleh mengandung huruf dan spasi
-if (!preg_match('/^[a-zA-Z\s]+$/', $nama)) {
-    http_response_code(400);
-
-    echo json_encode([
-        "status" => "error",
-        "message" => "Nama hanya boleh mengandung huruf dan spasi"
-    ]);
-
-    exit();
-}
-
 //validasi input
 if ($nama === "" || $email === "" || $password === "" || $confirm_password === "") {
     http_response_code(400);
