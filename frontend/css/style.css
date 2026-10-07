@@ -24,6 +24,7 @@ body {
     color: var(--text-dark);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; /* Cegah scroll horizontal di body */
 }
 
 a {
@@ -105,7 +106,7 @@ ul {
 }
 
 /* ========================================= */
-/* --- NAVBAR (DIPERBAIKI AGAR RAPI) --- */
+/* --- NAVBAR (MOBILE FIRST) --- */
 /* ========================================= */
 .navbar {
     background-color: var(--white);
@@ -151,8 +152,8 @@ ul {
 }
 
 .logo-img {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     object-fit: contain;
     flex-shrink: 0;
@@ -169,47 +170,41 @@ ul {
 .logo-title {
     font-weight: 700;
     color: var(--dark-green-bg);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     line-height: 1.1;
-    white-space: nowrap;
     margin-bottom: 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
+/* PERUBAHAN: Hapus nowrap agar teks bisa turun ke bawah */
 .logo-sub {
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     color: var(--text-muted);
     line-height: 1.15;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;   /* Ganti dari nowrap */
+    word-break: break-word;
 }
 
 .logo-sub.highlight {
     color: #f5a623;
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .nav-actions {
     display: flex;
-    gap: 5px;
+    gap: 4px;
     flex-shrink: 0;
 }
 
 .nav-actions .btn {
-    padding: 6px 12px;
-    font-size: 0.7rem;
+    padding: 5px 10px;
+    font-size: 0.65rem;
 }
 
 /* --- Hero Section --- */
 .hero {
     position: relative;
     background: linear-gradient(to right, rgba(15, 107, 59, 0.9) 0%, rgba(15, 107, 59, 0.4) 100%), 
-            url('../img/hero-kampus.jpeg') center/cover;
+                url('../img/hero-kampus.jpeg') center/cover;
     padding: 40px 0 50px;
     text-align: left;
 }
@@ -239,19 +234,23 @@ ul {
     line-height: 1.6;
 }
 
-/* --- Stats Section (Horizontal Scroll di Mobile) --- */
+/* ========================================= */
+/* --- STATS SECTION (HORIZONTAL SCROLL) --- */
+/* ========================================= */
 .stats-section {
     background-color: var(--dark-green-bg);
-    padding: 25px 0 40px;
-    overflow: visible;
+    padding: 25px 0 35px;
+    overflow: hidden; /* Ubah dari visible ke hidden */
 }
 
 .stats-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    display: flex;              /* WAJIB Flexbox */
+    flex-wrap: nowrap;          /* JANGAN turun ke bawah */
+    overflow-x: auto;           /* Aktifkan scroll horizontal */
     gap: 12px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;         /* Tambah padding kiri */
+    padding-right: 15px;        /* Tambah padding kanan */
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -265,26 +264,26 @@ ul {
 }
 
 .stat-card {
-    flex: 0 0 auto;
-    width: 130px;
+    flex: 0 0 auto;              /* Jangan mengecil */
+    width: 120px;                /* Lebar tetap */
     background: var(--white);
-    padding: 15px 12px;
+    padding: 12px 10px;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     user-select: none;
     -webkit-user-select: none;
 }
 
 .stat-icon {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--primary-green);
     background: #e6f4ea;
-    width: 35px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -292,23 +291,23 @@ ul {
 }
 
 .stat-icon iconify-icon {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--primary-green);
 }
 
 .stat-info h3 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: var(--text-dark);
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-weight: 700;
 }
 
 .stat-info p {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: var(--text-dark);
     font-weight: 600;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
 /* --- Services Section --- */
@@ -325,9 +324,10 @@ ul {
     display: flex;
     align-items: center;
     gap: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #f0f0f0;
     transition: transform 0.3s ease;
     cursor: pointer;
-    box-shadow: var(--shadow);
 }
 
 .service-card:hover {
@@ -357,6 +357,7 @@ ul {
     color: var(--dark-green-bg);
     font-size: 0.95rem;
     margin-bottom: 3px;
+    font-weight: 600;
 }
 
 .service-text p {
@@ -562,6 +563,12 @@ ul {
 
 .status-perbaikan {
     background: #17a2b8;
+    color: var(--white);
+}
+
+/* Status Selesai (Hijau) */
+.status-selesai {
+    background: #28a745;
     color: var(--white);
 }
 
@@ -890,7 +897,7 @@ footer {
     background-color: #f0f0f0;
 }
 
-/* --- Iconify Styling (WAJIB agar icon tampil dengan benar) --- */
+/* --- Iconify Styling --- */
 iconify-icon {
     display: inline-flex;
     align-items: center;
@@ -913,7 +920,9 @@ iconify-icon {
     color: var(--primary-green);
 }
 
-/* --- Media Queries (Tablet & Desktop) --- */
+/* ========================================= */
+/* --- MEDIA QUERIES (TABLET & DESKTOP) --- */
+/* ========================================= */
 @media (min-width: 768px) {
     .container {
         padding: 0 20px;
@@ -927,7 +936,7 @@ iconify-icon {
         font-size: 1.6rem;
     }
 
-    /* NAVBAR DESKTOP - Logo & teks dibesarkan kembali */
+    /* NAVBAR DESKTOP */
     .logo-img {
         width: 55px;
         height: 55px;
@@ -939,6 +948,7 @@ iconify-icon {
 
     .logo-sub {
         font-size: 0.75rem;
+        white-space: normal;
     }
 
     .menu-toggle {
@@ -950,13 +960,15 @@ iconify-icon {
         font-size: 0.8rem;
     }
 
-    /* STATS DESKTOP */
+    /* STATS DESKTOP: Kembali 4 Kolom */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         overflow-x: visible;
         gap: 15px;
         padding-bottom: 0;
+        padding-left: 15px;
+        padding-right: 15px;
         user-select: auto;
     }
     
@@ -1040,6 +1052,4 @@ iconify-icon {
     .report-image {
         height: 220px;
     }
-    
 }
-
