@@ -102,7 +102,7 @@ CREATE TABLE `pengaduan` (
 --
 
 CREATE TABLE `users` (
-  `id_user` int NOT NULL,
+  `id_user` int NOT NULL AUTO_INCREMENT,
   `nama` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
