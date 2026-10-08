@@ -1,15 +1,40 @@
-/* --- Variables & Reset --- */
+/* ============================================================
+   STYLE.CSS — Landing Page Pengaduan Fasilitas FITK
+   ------------------------------------------------------------
+   Struktur file ini:
+   1. Variables & Reset
+   2. Base & Utility
+   3. Buttons
+   4. Navbar
+   5. Hero Section
+   6. Stats Section
+   7. Services Section
+   8. Category Section
+   9. Timeline Section
+   10. CTA Section
+   11. Reports Section
+   12. FAQ Section
+   13. Footer
+   14. Sidebar
+   15. Iconify Styling
+   16. Media Queries (Tablet & Desktop)
+   ============================================================ */
+
+
+/* ============================================================
+   1. VARIABLES & RESET
+   ============================================================ */
 :root {
-    --primary-green: #0f6b3b; 
-    --dark-green-bg: #0a4f2a; 
-    --mint-green: #a5d6a7;    
-    --light-green-bg: #e6f4ea; 
+    --primary-green: #0f6b3b;
+    --dark-green-bg: #0a4f2a;
+    --mint-green: #5CE0A8;
+    --light-green-bg: #DEF8E6;
     --text-dark: #1a1a1a;
-    --text-muted: #666;
+    --text-muted: #B0B0B0;
     --white: #ffffff;
     --border-radius: 12px;
-    --shadow: 0 4px 10px rgba(0,0,0,0.05);
-    --shadow-hover: 0 8px 15px rgba(0,0,0,0.1);
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -36,6 +61,10 @@ ul {
     list-style: none;
 }
 
+
+/* ============================================================
+   2. BASE & UTILITY
+   ============================================================ */
 .container {
     width: 100%;
     max-width: 1000px;
@@ -72,13 +101,15 @@ ul {
     line-height: 1.4;
 }
 
-/* --- Buttons --- */
+
+/* ============================================================
+   3. BUTTONS
+   ============================================================ */
 .btn {
     padding: 8px 16px;
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.8rem;
-    transition: all 0.3s ease;
     cursor: pointer;
     display: inline-block;
     text-align: center;
@@ -91,9 +122,6 @@ ul {
     border: 1px solid var(--primary-green);
 }
 
-.btn-primary:hover {
-    background-color: var(--dark-green-bg);
-}
 
 .btn-outline {
     background-color: var(--white);
@@ -101,13 +129,11 @@ ul {
     border: 1px solid var(--primary-green);
 }
 
-.btn-outline:hover {
-    background-color: #f0f0f0;
-}
 
-/* ========================================= */
-/* --- NAVBAR (MOBILE FIRST) --- */
-/* ========================================= */
+
+/* ============================================================
+   4. NAVBAR (Mobile First)
+   ============================================================ */
 .navbar {
     background-color: var(--white);
     padding: 10px 0;
@@ -175,12 +201,11 @@ ul {
     margin-bottom: 1px;
 }
 
-/* PERUBAHAN: Hapus nowrap agar teks bisa turun ke bawah */
 .logo-sub {
     font-size: 0.5rem;
-    color: var(--text-muted);
+    color: var(--dark-green-bg);
     line-height: 1.15;
-    white-space: normal;   /* Ganti dari nowrap */
+    white-space: normal; /* Teks bisa turun ke bawah */
     word-break: break-word;
 }
 
@@ -200,11 +225,17 @@ ul {
     font-size: 0.65rem;
 }
 
-/* --- Hero Section --- */
+
+/* ============================================================
+   5. HERO SECTION
+   ============================================================ */
 .hero {
     position: relative;
-    background: linear-gradient(to right, rgba(15, 107, 59, 0.9) 0%, rgba(15, 107, 59, 0.4) 100%), 
-                url('../img/hero-kampus.jpeg') center/cover;
+    background: linear-gradient(
+        to right,
+        rgba(15, 107, 59, 0.9) 0%,
+        rgba(15, 107, 59, 0.4) 100%
+    ), url('../img/hero-kampus.jpeg') center/cover;
     padding: 40px 0 50px;
     text-align: left;
 }
@@ -230,27 +261,30 @@ ul {
 .hero p {
     font-size: 0.8rem;
     margin: 0;
-    opacity: 0.95;
     line-height: 1.6;
+    color: #ffffff;              /* Putih solid */
+    opacity: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Shadow agar terbaca */
 }
 
-/* ========================================= */
-/* --- STATS SECTION (HORIZONTAL SCROLL) --- */
-/* ========================================= */
+
+/* ============================================================
+   6. STATS SECTION (Horizontal Scroll di Mobile)
+   ============================================================ */
 .stats-section {
     background-color: var(--dark-green-bg);
     padding: 25px 0 35px;
-    overflow: hidden; /* Ubah dari visible ke hidden */
+    overflow: hidden;
 }
 
 .stats-grid {
-    display: flex;              /* WAJIB Flexbox */
-    flex-wrap: nowrap;          /* JANGAN turun ke bawah */
-    overflow-x: auto;           /* Aktifkan scroll horizontal */
+    display: flex;              /* Flexbox agar bisa di-scroll */
+    flex-wrap: nowrap;          /* Jangan turun ke bawah */
+    overflow-x: auto;      /* Scroll horizontal */
     gap: 12px;
     padding-bottom: 10px;
-    padding-left: 15px;         /* Tambah padding kiri */
-    padding-right: 15px;        /* Tambah padding kanan */
+    padding-left: 15px;
+    padding-right: 15px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -264,8 +298,8 @@ ul {
 }
 
 .stat-card {
-    flex: 0 0 auto;              /* Jangan mengecil */
-    width: 120px;                /* Lebar tetap */
+    flex: 0 0 auto;             /* Jangan mengecil */
+    width: 120px;               /* Lebar tetap */
     background: var(--white);
     padding: 12px 10px;
     border-radius: 12px;
@@ -273,7 +307,7 @@ ul {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     user-select: none;
     -webkit-user-select: none;
 }
@@ -310,7 +344,10 @@ ul {
     line-height: 1.2;
 }
 
-/* --- Services Section --- */
+
+/* ============================================================
+   7. SERVICES SECTION
+   ============================================================ */
 .services-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -324,15 +361,10 @@ ul {
     display: flex;
     align-items: center;
     gap: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid #f0f0f0;
     transition: transform 0.3s ease;
     cursor: pointer;
-}
-
-.service-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
 }
 
 .service-icon {
@@ -365,7 +397,10 @@ ul {
     color: var(--text-muted);
 }
 
-/* --- Category Section --- */
+
+/* ============================================================
+   8. CATEGORY SECTION
+   ============================================================ */
 .category-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -387,10 +422,6 @@ ul {
     min-height: 130px;
 }
 
-.category-card:hover {
-    box-shadow: var(--shadow-hover);
-    border-color: var(--primary-green);
-}
 
 .cat-icon {
     font-size: 1.4rem;
@@ -416,7 +447,10 @@ ul {
     line-height: 1.3;
 }
 
-/* --- Timeline Section --- */
+
+/* ============================================================
+   9. TIMELINE SECTION
+   ============================================================ */
 .timeline {
     display: flex;
     flex-direction: column;
@@ -460,7 +494,10 @@ ul {
     line-height: 1.4;
 }
 
-/* --- CTA Section --- */
+
+/* ============================================================
+   10. CTA SECTION
+   ============================================================ */
 .cta-box {
     background: var(--white);
     padding: 25px 20px;
@@ -484,7 +521,10 @@ ul {
     line-height: 1.5;
 }
 
-/* --- Reports Section --- */
+
+/* ============================================================
+   11. REPORTS SECTION (Pengaduan Terkini)
+   ============================================================ */
 .section-header-flex {
     display: flex;
     justify-content: space-between;
@@ -566,9 +606,8 @@ ul {
     color: var(--white);
 }
 
-/* Status Selesai (Hijau) */
 .status-selesai {
-    background: #28a745;
+    background: #2E9368;
     color: var(--white);
 }
 
@@ -588,7 +627,7 @@ ul {
     flex-direction: column;
     gap: 5px;
     font-size: 0.7rem;
-    color: var(--text-muted);
+    color: #0B5E3B;
     margin-bottom: 12px;
 }
 
@@ -625,7 +664,10 @@ ul {
     gap: 3px;
 }
 
-/* --- FAQ Section --- */
+
+/* ============================================================
+   12. FAQ SECTION
+   ============================================================ */
 .faq-list {
     max-width: 100%;
     margin: 0 auto;
@@ -676,11 +718,18 @@ ul {
 }
 
 .faq-question i {
+    font-size: 16px;
+    width: 11.87480354309082px;
+    height: 11.268482208251953px;
+    color: #0B5E3B;
     transition: transform 0.3s ease;
-    font-size: 0.75rem;
+    flex-shrink: 0;
 }
 
-/* --- Footer --- */
+
+/* ============================================================
+   13. FOOTER
+   ============================================================ */
 footer {
     background-color: var(--dark-green-bg);
     color: var(--white);
@@ -702,8 +751,8 @@ footer {
 }
 
 .footer-logo {
-    width: 60px;
-    height: 60px;
+    width: 58.57px;
+    height: 57.44px;
     border-radius: 50%;
     object-fit: contain;
     background: var(--white);
@@ -720,18 +769,18 @@ footer {
 
 .footer-header-text p {
     font-size: 0.75rem;
-    color: #ccc;
+    color: #ffffff;
     line-height: 1.3;
 }
 
 .footer-header-text p.highlight {
-    color: #f5a623;
+    color: #D59A29;
     font-weight: 500;
 }
 
 .footer-desc {
     font-size: 0.85rem;
-    color: #ddd;
+    color: #ffffff;
     line-height: 1.6;
     margin-bottom: 30px;
 }
@@ -760,14 +809,11 @@ footer {
 
 .footer-links ul li a {
     font-size: 0.85rem;
-    color: #a5d6a7;
+    color: #D9D9D9;
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.footer-links ul li a:hover {
-    color: var(--white);
-}
 
 .footer-copyright {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -782,7 +828,10 @@ footer {
     margin: 0;
 }
 
-/* --- Sidebar --- */
+
+/* ============================================================
+   14. SIDEBAR
+   ============================================================ */
 .sidebar {
     position: fixed;
     top: 0;
@@ -791,7 +840,7 @@ footer {
     height: 100vh;
     background-color: var(--white);
     z-index: 9999;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
     overflow-y: auto;
     padding: 20px;
@@ -809,7 +858,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5); 
     z-index: 9998;
     opacity: 0;
     visibility: hidden;
@@ -887,17 +936,10 @@ footer {
     text-align: center;
 }
 
-.sidebar-nav ul li.active a {
-    background-color: var(--light-green-bg);
-    color: var(--dark-green-bg);
-    font-weight: 600;
-}
 
-.sidebar-nav ul li a:hover {
-    background-color: #f0f0f0;
-}
-
-/* --- Iconify Styling --- */
+/* ============================================================
+   15. ICONIFY STYLING (untuk semua icon dari Iconify)
+   ============================================================ */
 iconify-icon {
     display: inline-flex;
     align-items: center;
@@ -920,14 +962,17 @@ iconify-icon {
     color: var(--primary-green);
 }
 
-/* ========================================= */
-/* --- MEDIA QUERIES (TABLET & DESKTOP) --- */
-/* ========================================= */
+
+/* ============================================================
+   16. MEDIA QUERIES (Tablet & Desktop)
+   ============================================================ */
+
+/* === Tablet (min-width: 768px) === */
 @media (min-width: 768px) {
     .container {
         padding: 0 20px;
     }
-    
+
     .section {
         padding: 50px 0;
     }
@@ -936,7 +981,7 @@ iconify-icon {
         font-size: 1.6rem;
     }
 
-    /* NAVBAR DESKTOP */
+    /* --- Navbar Desktop --- */
     .logo-img {
         width: 55px;
         height: 55px;
@@ -960,7 +1005,7 @@ iconify-icon {
         font-size: 0.8rem;
     }
 
-    /* STATS DESKTOP: Kembali 4 Kolom */
+    /* --- Stats Desktop: kembali 4 kolom --- */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -971,13 +1016,13 @@ iconify-icon {
         padding-right: 15px;
         user-select: auto;
     }
-    
+
     .stat-card {
         width: auto;
         padding: 20px 15px;
         user-select: auto;
     }
-    
+
     .stat-icon {
         font-size: 1.3rem;
         width: 45px;
@@ -987,63 +1032,70 @@ iconify-icon {
     .stat-icon iconify-icon {
         font-size: 1.5rem;
     }
-    
+
     .stat-info h3 {
         font-size: 1.8rem;
     }
-    
+
     .stat-info p {
         font-size: 0.75rem;
     }
 
-    /* SERVICES DESKTOP */
+    /* --- Services Desktop --- */
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* CATEGORY DESKTOP */
+    /* --- Category Desktop --- */
     .category-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 15px;
     }
 
-    /* REPORT META DESKTOP */
+    /* --- Report Meta Desktop --- */
     .report-meta {
         flex-direction: row;
         gap: 15px;
     }
 
-    /* FOOTER DESKTOP */
+    /* --- Footer Desktop --- */
     .footer-header-text h3 {
         font-size: 1.1rem;
     }
+
     .footer-header-text p {
         font-size: 0.85rem;
     }
+
     .footer-desc {
         font-size: 0.9rem;
     }
+
     .footer-links-wrapper {
         gap: 100px;
     }
 
-    /* ICON DESKTOP */
+    /* --- Icon Desktop --- */
     .stat-icon iconify-icon {
         font-size: 1.6rem;
     }
+
     .service-icon iconify-icon {
         font-size: 1.5rem;
     }
+
     .cat-icon iconify-icon {
         font-size: 2rem;
     }
 }
 
+
+/* === Desktop Besar (min-width: 992px) === */
 @media (min-width: 992px) {
     .hero h1 {
         font-size: 2.2rem;
     }
-    
+
     .hero p {
         font-size: 0.85rem;
         max-width: 450px;
