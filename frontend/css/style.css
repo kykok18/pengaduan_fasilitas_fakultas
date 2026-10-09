@@ -1,7 +1,6 @@
 /* ============================================================
    STYLE.CSS — Landing Page Pengaduan Fasilitas FITK
    ------------------------------------------------------------
-   Struktur file ini:
    1. Variables & Reset
    2. Base & Utility
    3. Buttons
@@ -17,7 +16,7 @@
    13. Footer
    14. Sidebar
    15. Iconify Styling
-   16. Media Queries (Tablet & Desktop)
+   16. Media Queries
    ============================================================ */
 
 
@@ -49,7 +48,7 @@ body {
     color: var(--text-dark);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden; /* Cegah scroll horizontal di body */
+    overflow-x: hidden;
 }
 
 a {
@@ -122,7 +121,6 @@ ul {
     border: 1px solid var(--primary-green);
 }
 
-
 .btn-outline {
     background-color: var(--white);
     color: var(--text-dark);
@@ -130,9 +128,8 @@ ul {
 }
 
 
-
 /* ============================================================
-   4. NAVBAR (Mobile First)
+   4. NAVBAR
    ============================================================ */
 .navbar {
     background-color: var(--white);
@@ -205,7 +202,7 @@ ul {
     font-size: 0.5rem;
     color: var(--dark-green-bg);
     line-height: 1.15;
-    white-space: normal; /* Teks bisa turun ke bawah */
+    white-space: normal;
     word-break: break-word;
 }
 
@@ -227,17 +224,22 @@ ul {
 
 
 /* ============================================================
-   5. HERO SECTION
+   5. HERO SECTION (Sesuai Figma)
    ============================================================ */
 .hero {
     position: relative;
-    background: linear-gradient(
-        to right,
-        rgba(15, 107, 59, 0.9) 0%,
-        rgba(15, 107, 59, 0.4) 100%
-    ), url('../img/hero-kampus.jpeg') center/cover;
-    padding: 40px 0 50px;
+    min-height: 207.4px;              /* Sesuai Figma: Height 409.44px */
+    background: 
+        linear-gradient(
+            to right,
+            rgba(49, 159, 67, 0.14) 0%,      /* #319F43 dengan opacity 14% */
+            rgba(11, 94, 59, 0.7) 100%       /* #0B5E3B dengan opacity 70% */
+        ),
+        url('../img/hero-kampus.jpeg') center/cover;
+    padding: 40px 0;
     text-align: left;
+    display: flex;
+    align-items: center;
 }
 
 .hero-content {
@@ -262,86 +264,108 @@ ul {
     font-size: 0.8rem;
     margin: 0;
     line-height: 1.6;
-    color: #ffffff;              /* Putih solid */
+    color: #ffffff;
     opacity: 1;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Shadow agar terbaca */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-
 /* ============================================================
-   6. STATS SECTION (Horizontal Scroll di Mobile)
+   6. STATS SECTION
    ============================================================ */
 .stats-section {
     background-color: var(--dark-green-bg);
-    padding: 25px 0 35px;
+    padding: 30px 0;
     overflow: hidden;
 }
 
+/* Grid 4 kolom sejajar — anti overflow */
 .stats-grid {
-    display: flex;              /* Flexbox agar bisa di-scroll */
-    flex-wrap: nowrap;          /* Jangan turun ke bawah */
-    overflow-x: auto;      /* Scroll horizontal */
-    gap: 12px;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0 10px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
-.stats-grid::-webkit-scrollbar {
-    display: none;
-}
-
+/* Card putih */
 .stat-card {
-    flex: 0 0 auto;             /* Jangan mengecil */
-    width: 120px;               /* Lebar tetap */
-    background: var(--white);
-    padding: 12px 10px;
-    border-radius: 12px;
+    background: #FFFFFF;
+    width: 100%;
+    min-width: 0;
+    min-height: 130px;
+    border-radius: 10px;
+    padding: 12px 8px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     gap: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    user-select: none;
-    -webkit-user-select: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    text-align: left;
+    overflow: hidden;
 }
 
+/* Icon */
 .stat-icon {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--primary-green);
     background: #e6f4ea;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+    flex-shrink: 0;
 }
 
 .stat-icon iconify-icon {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: var(--primary-green);
 }
 
-.stat-info h3 {
-    font-size: 1.3rem;
-    color: var(--text-dark);
-    line-height: 1;
-    margin-bottom: 2px;
-    font-weight: 700;
+/* Wadah teks */
+.stat-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    text-align: left;
+    width: 100%;
+    min-width: 0;
 }
 
+/* Angka */
+.stat-info h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
+    margin: 0;
+    width: 100%;
+}
+
+/* Teks label */
 .stat-info p {
-    font-size: 0.6rem;
-    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
     font-weight: 600;
-    line-height: 1.2;
+    font-style: normal;
+    line-height: 13px;
+    letter-spacing: 0%;
+    color: #000000;
+    margin: 0;
+    width: 100%;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: none;
 }
 
 
@@ -363,8 +387,6 @@ ul {
     gap: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid #f0f0f0;
-    transition: transform 0.3s ease;
-    cursor: pointer;
 }
 
 .service-icon {
@@ -413,7 +435,6 @@ ul {
     padding: 20px 10px;
     border-radius: var(--border-radius);
     text-align: center;
-    transition: all 0.3s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -421,7 +442,6 @@ ul {
     justify-content: center;
     min-height: 130px;
 }
-
 
 .cat-icon {
     font-size: 1.4rem;
@@ -523,7 +543,7 @@ ul {
 
 
 /* ============================================================
-   11. REPORTS SECTION (Pengaduan Terkini)
+   11. REPORTS SECTION
    ============================================================ */
 .section-header-flex {
     display: flex;
@@ -719,8 +739,6 @@ ul {
 
 .faq-question i {
     font-size: 16px;
-    width: 11.87480354309082px;
-    height: 11.268482208251953px;
     color: #0B5E3B;
     transition: transform 0.3s ease;
     flex-shrink: 0;
@@ -811,9 +829,7 @@ footer {
     font-size: 0.85rem;
     color: #D9D9D9;
     text-decoration: none;
-    transition: color 0.3s;
 }
-
 
 .footer-copyright {
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -858,7 +874,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9998;
     opacity: 0;
     visibility: hidden;
@@ -927,7 +943,6 @@ footer {
     color: var(--primary-green);
     font-size: 0.95rem;
     font-weight: 500;
-    transition: all 0.2s ease;
 }
 
 .sidebar-nav ul li a iconify-icon {
@@ -938,7 +953,7 @@ footer {
 
 
 /* ============================================================
-   15. ICONIFY STYLING (untuk semua icon dari Iconify)
+   15. ICONIFY STYLING
    ============================================================ */
 iconify-icon {
     display: inline-flex;
@@ -966,8 +981,6 @@ iconify-icon {
 /* ============================================================
    16. MEDIA QUERIES (Tablet & Desktop)
    ============================================================ */
-
-/* === Tablet (min-width: 768px) === */
 @media (min-width: 768px) {
     .container {
         padding: 0 20px;
@@ -981,7 +994,7 @@ iconify-icon {
         font-size: 1.6rem;
     }
 
-    /* --- Navbar Desktop --- */
+    /* Navbar Desktop */
     .logo-img {
         width: 55px;
         height: 55px;
@@ -993,7 +1006,6 @@ iconify-icon {
 
     .logo-sub {
         font-size: 0.75rem;
-        white-space: normal;
     }
 
     .menu-toggle {
@@ -1005,60 +1017,58 @@ iconify-icon {
         font-size: 0.8rem;
     }
 
-    /* --- Stats Desktop: kembali 4 kolom --- */
+    /* Stats Desktop — perbesar */
+    .stats-section {
+        padding: 55px 0;
+    }
+
     .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        overflow-x: visible;
-        gap: 15px;
-        padding-bottom: 0;
-        padding-left: 15px;
-        padding-right: 15px;
-        user-select: auto;
+        gap: 10px;
+        padding: 0 15px;
     }
 
     .stat-card {
-        width: auto;
-        padding: 20px 15px;
-        user-select: auto;
+        padding: 14px 10px;
+        min-height: 141px;
     }
 
     .stat-icon {
-        font-size: 1.3rem;
-        width: 45px;
-        height: 45px;
+        font-size: 1.2rem;
+        width: 40px;
+        height: 40px;
     }
 
     .stat-icon iconify-icon {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .stat-info h3 {
-        font-size: 1.8rem;
+        font-size: 24px;
     }
 
     .stat-info p {
-        font-size: 0.75rem;
+        font-size: 12px;
+        line-height: 16px;
     }
 
-    /* --- Services Desktop --- */
+    /* Services Desktop */
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* --- Category Desktop --- */
+    /* Category Desktop */
     .category-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 15px;
     }
 
-    /* --- Report Meta Desktop --- */
+    /* Report Meta Desktop */
     .report-meta {
         flex-direction: row;
         gap: 15px;
     }
 
-    /* --- Footer Desktop --- */
+    /* Footer Desktop */
     .footer-header-text h3 {
         font-size: 1.1rem;
     }
@@ -1075,7 +1085,7 @@ iconify-icon {
         gap: 100px;
     }
 
-    /* --- Icon Desktop --- */
+    /* Icon Desktop */
     .stat-icon iconify-icon {
         font-size: 1.6rem;
     }
@@ -1089,8 +1099,6 @@ iconify-icon {
     }
 }
 
-
-/* === Desktop Besar (min-width: 992px) === */
 @media (min-width: 992px) {
     .hero h1 {
         font-size: 2.2rem;
