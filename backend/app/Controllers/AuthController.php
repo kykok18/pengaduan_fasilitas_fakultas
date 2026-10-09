@@ -89,4 +89,63 @@ class AuthController
             201
         );
     }
+
+
+    public function login()
+    {
+        // Ambil data JSON dari request
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        // Validasi format JSON
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            errorResponse("Format JSON tidak valid", 400);
+        }
+
+        // Validasi data request
+        if (!is_array($data)) {
+            errorResponse("Data request tidak valid", 400);
+        }
+
+        // Ambil email dan password
+        $email = trim($data['email'] ?? '');
+        $password = $data['password'] ?? '';
+
+        // Cari user berdasarkan email
+        $user = $this->userModel->findByEmail($email);
+
+        if ($user === false) {
+            errorResponse("Terjadi kesalahan pada server", 500);
+        }
+
+        if ($user === null) {
+            errorResponse("Email atau password salah", 401);
+        }
+
+        // Verifikasi password
+        if (!verifyPassword($password, $user['password'])) {
+            errorResponse("Email atau password salah", 401);
+        }
+
+        // Mulai session
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Perbarui ID session setelah login
+        session_regenerate_id(true);
+
+        // Simpan data user ke session
+        $_SESSION['id_user'] = $user['id_user'];
+        $_SESSION['nama'] = $user['nama'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['role'] = $user['role'];
+
+        // Response berhasil
+        successResponse("Login berhasil", [
+            "id_user" => $user['id_user'],
+            "nama" => $user['nama'],
+            "email" => $user['email'],
+            "role" => $user['role']
+        ]);
+    }
 }

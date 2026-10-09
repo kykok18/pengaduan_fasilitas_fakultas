@@ -72,4 +72,42 @@ class User
 
         return $id_user;
     }
+
+
+    public function findByEmail($email)
+    {
+        $query = "SELECT id_user, nama, email, password, role
+                FROM users
+                WHERE email = ?";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        // Jika query gagal disiapkan
+        if (!$stmt) {
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, "s", $email);
+
+        // Jika query gagal dijalankan
+        if (!mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if ($result === false) {
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        // Ambil data user
+        $user = mysqli_fetch_assoc($result);
+
+        mysqli_stmt_close($stmt);
+
+        // null berarti email tidak ditemukan
+        return $user ?: null;
+    }
 }

@@ -45,4 +45,23 @@ class AuthValidator
 
         return true;
     }
+
+    // login validation
+
+    public static function validateLogin($data){
+        $email = trim($data['email'] ?? '');
+        $password = $data['password'] ?? '';
+
+        // Validasi field wajib
+        if ($email === '' || $password === '') {
+            return "Email dan password harus diisi";
+        }
+
+        // Validasi format email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "Format email tidak valid";
+        }
+
+        return true;
+    }
 }
