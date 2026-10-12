@@ -107,11 +107,11 @@ class AuthController
         }
 
         // Validasi input login
-$validation = AuthValidator::validateLogin($data);
+        $validation = AuthValidator::validateLogin($data);
 
-if ($validation !== true) {
-    errorResponse($validation, 400);
-}
+        if ($validation !== true) {
+            errorResponse($validation, 400);
+        }
 
         // Ambil email dan password
         $email = trim($data['email'] ?? '');
