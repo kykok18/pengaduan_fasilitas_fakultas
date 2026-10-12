@@ -1,3 +1,4 @@
 .env
 /database/
 /frontend/
+/node_modules/
