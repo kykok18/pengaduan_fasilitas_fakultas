@@ -1,4 +1,4 @@
 .env
-/database/
-/frontend/
-/node_modules/
+database/
+frontend/
+node_modules/
