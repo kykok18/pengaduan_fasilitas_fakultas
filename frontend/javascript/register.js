@@ -151,41 +151,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================================
     // SUBMIT FORM — Kirim ke API
     // ============================================================
-    registerForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    hideMessage();
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideMessage();
 
-    const isFullnameValid = validateFullname();
-    const isEmailValid = validateEmail();
-    const isPasswordValid = validatePassword();
-    const isConfirmPasswordValid = validateConfirmPassword();
+        // 1. Jalankan validasi (INI YANG TADI HILANG)
+        const isFullnameValid = validateFullname();
+        const isEmailValid = validateEmail();
+        const isPasswordValid = validatePassword();
+        const isConfirmPasswordValid = validateConfirmPassword();
 
-    if (
-        !isFullnameValid ||
-        !isEmailValid ||
-        !isPasswordValid ||
-        !isConfirmPasswordValid
-    ) {
-        showMessage(
-            "Periksa kembali data yang kamu masukkan.",
-            "error"
-        );
+        // 2. Kalau ada yang tidak valid, stop
+        if (!isFullnameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
+            showMessage('Periksa kembali data yang kamu masukkan.', 'error');
 
-        const firstInvalid = registerForm.querySelector(
-            ".input-wrapper.invalid input"
-        );
+            const firstInvalid = registerForm.querySelector('.input-wrapper.invalid input');
+            if (firstInvalid) firstInvalid.focus();
 
-        if (firstInvalid) firstInvalid.focus();
-        return;
-    }
+            return;
+        }
 
-    const submitBtn = registerForm.querySelector(".btn-register");
-    const originalText = submitBtn.textContent;
+        // 3. Disable tombol saat loading
+        const submitBtn = registerForm.querySelector('.btn-register');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Memproses...';
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Memproses...";
-
-    try {
+        // 4. Kirim ke API
         const response = await apiRegister(
             fullnameInput.value.trim(),
             emailInput.value.trim(),
@@ -193,36 +185,27 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmPasswordInput.value
         );
 
-        if (response.ok && response.status === "success") {
+        // 5. Kembalikan tombol
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+
+        // 6. Handle response
+        if (response.ok && response.status === 'success') {
             showMessage(
-                response.message || "Registrasi berhasil! Silakan login.",
-                "success"
+                'Registrasi berhasil! Akun berhasil dibuat. Silakan masuk untuk melanjutkan.',
+                'success'
             );
 
-            registerForm.reset();
-
             setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1500);
+                window.location.href = 'login.html';
+            }, 2000);
 
         } else {
             showMessage(
-                response.message || "Registrasi gagal. Coba lagi.",
-                "error"
+                response.message || 'Registrasi gagal. Terjadi kesalahan pada sistem. Silakan coba lagi.',
+                'error'
             );
         }
+    });
 
-    } catch (error) {
-        console.error("Error registrasi:", error);
-
-        showMessage(
-            "Terjadi kesalahan saat registrasi.",
-            "error"
-        );
-
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-    }
-});
 });

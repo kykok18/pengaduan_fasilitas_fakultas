@@ -12,8 +12,8 @@
     --primary-green: #0f6b3b;
     --dark-green-bg: #0a4f2a;
     --mint-green: #5CE0A8;
-    --light-green-bg: #DEF8E6;
-    --text-dark: #1a1a1a;
+    --light-green-bg: #E6F4EA;
+    --text-dark: #0B5E3B;
     --text-muted: #888888;
     --white: #ffffff;
     --border-color: #D9D9D9;
@@ -109,7 +109,7 @@ body {
 }
 
 .register-title {
-    font-size: 1.15rem;
+    font-size: 16px;
     font-weight: 700;
     color: var(--text-dark);
     margin-bottom: 20px;
@@ -122,12 +122,12 @@ body {
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
     margin-bottom: 16px;
 }
 
 .form-group label {
-    font-size: 0.8rem;
+    font-size: 10px;
     font-weight: 600;
     color: var(--text-dark);
 }
@@ -137,30 +137,33 @@ body {
     margin-left: 2px;
 }
 
-/* Wrapper Input */
+/* --- Wrapper Input (Sesuai Figma) --- */
 .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    background: var(--white);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 0 14px;
+    background: #FFFFFF;                  /* Sesuai Figma */
+    border: 1px solid #D9D9D9;            /* Sesuai Figma */
+    border-radius: 10px;                  /* Sesuai Figma */
+    padding: 0 16px;
+    height: 57px;                         /* Sesuai Figma: Fixed 57px */
+    box-sizing: border-box;
+    width: 100%;                          /* Fill width */
     transition: border-color 0.2s ease;
 }
 
 .input-wrapper:focus-within {
-    border-color: var(--primary-green);
+    border-color: #1a1a1a;
 }
 
-/* State: Invalid (error) */
+/* State: Invalid */
 .input-wrapper.invalid {
-    border-color: var(--border-error);
+    border-color: #E53935;
 }
 
 /* State: Valid */
 .input-wrapper.valid {
-    border-color: var(--border-valid);
+    border-color: #2E9368;
 }
 
 /* Icon di kiri */

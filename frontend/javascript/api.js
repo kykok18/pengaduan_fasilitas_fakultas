@@ -1,4 +1,3 @@
-
 const API_BASE_URL = "http://localhost:8000/backend/api";
 
 async function apiRegister(nama, email, password, confirmPassword) {
