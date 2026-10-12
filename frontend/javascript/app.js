@@ -4,6 +4,43 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+/* ============================================================
+   SKELETON LOADING — Muncul hanya saat fetch API
+   ============================================================ */
+async function loadLandingData() {
+    const sections = [
+        { skeleton: 'statsSkeleton', content: 'statsContent' },
+        { skeleton: 'layananSkeleton', content: 'layananContent' },
+        { skeleton: 'kategoriSkeleton', content: 'kategoriContent' },
+        { skeleton: 'pengaduanSkeleton', content: 'pengaduanContent' }
+    ];
+
+    // Fungsi helper: tampilkan konten, sembunyikan skeleton
+    function showContent({ skeleton, content }) {
+        const skeletonEl = document.getElementById(skeleton);
+        const contentEl = document.getElementById(content);
+        if (skeletonEl) skeletonEl.classList.add('skeleton-hidden');
+        if (contentEl) contentEl.classList.remove('skeleton-hidden');
+    }
+
+    try {
+        // Fetch data dari API — skeleton tampil selama ini
+        // (Ganti endpoint sesuai kebutuhan. Kalau belum ada, bisa pakai /api/profile.php
+        //  untuk memicu loading, atau pakai Promise.all untuk fetch beberapa endpoint)
+        const response = await apiGetProfile();
+
+        // Baik sukses maupun gagal — tampilkan konten
+        sections.forEach(showContent);
+
+    } catch (error) {
+        console.warn('API tidak tersedia:', error);
+        // Fallback: tetap tampilkan konten
+        sections.forEach(showContent);
+    }
+}
+
+loadLandingData();
+
     // ============================================================
     // 1. FAQ ACCORDION
     // ============================================================

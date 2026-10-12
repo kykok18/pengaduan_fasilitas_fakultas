@@ -14,7 +14,8 @@
     <!-- Iconify (untuk icon utama, dari Figma) -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
-    <!-- CSS Kita Sendiri -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/skeleton.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -22,12 +23,9 @@
     <!-- ============================================ -->
     <!-- SIDEBAR                                     -->
     <!-- ============================================ -->
-    <!-- Latar gelap saat sidebar terbuka -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Menu sidebar (muncul dari kiri) -->
     <aside class="sidebar" id="sidebar">
-        <!-- Header sidebar (logo & teks) -->
         <div class="sidebar-header">
             <img src="img/logo-fitk.png" alt="Logo FITK" class="sidebar-logo">
             <div class="sidebar-header-text">
@@ -37,10 +35,8 @@
             </div>
         </div>
 
-        <!-- Garis pemisah -->
         <div class="sidebar-divider"></div>
 
-        <!-- Menu navigasi -->
         <nav class="sidebar-nav">
             <ul>
                 <li>
@@ -79,11 +75,10 @@
 
 
     <!-- ============================================ -->
-    <!-- NAVBAR (HEADER)                             -->
+    <!-- NAVBAR                                      -->
     <!-- ============================================ -->
     <header class="navbar">
         <div class="container nav-container">
-            <!-- Kiri: tombol menu + logo -->
             <div class="nav-left">
                 <iconify-icon icon="tabler:menu-2" class="menu-toggle"></iconify-icon>
                 <div class="logo">
@@ -95,7 +90,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Kanan: tombol Registrasi & Login -->
             <div class="nav-actions">
                 <a href="register.html" class="btn btn-outline" id="btnRegistrasi">Registrasi</a>
                 <a href="login.html" class="btn btn-primary" id="btnLogin">Login</a>
@@ -108,7 +102,7 @@
 
 
     <!-- ============================================ -->
-    <!-- HERO SECTION                                -->
+    <!-- HERO SECTION (Statis — tanpa skeleton)     -->
     <!-- ============================================ -->
     <section class="hero" id="beranda">
         <div class="container hero-content">
@@ -123,52 +117,52 @@
 
 
     <!-- ============================================ -->
-    <!-- STATS SECTION                               -->
+    <!-- STATS SECTION (Dengan Skeleton)             -->
     <!-- ============================================ -->
     <section class="stats-section">
-        <div class="container stats-grid">
+        <div class="container">
 
-            <!-- Card 1 -->
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <iconify-icon icon="tabler:file-plus"></iconify-icon>
-                </div>
-                <div class="stat-info">
-                    <h3>128</h3>
-                    <p>Pengaduan<br>Masuk</p>
+            <!-- SKELETON (default terlihat) -->
+            <div id="statsSkeleton" class="skeleton-container">
+                <div class="skeleton-stats-grid">
+                    <div class="skeleton skeleton-stat-card"></div>
+                    <div class="skeleton skeleton-stat-card"></div>
+                    <div class="skeleton skeleton-stat-card"></div>
+                    <div class="skeleton skeleton-stat-card"></div>
                 </div>
             </div>
 
-            <!-- Card 2 -->
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <iconify-icon icon="tabler:clock"></iconify-icon>
-                </div>
-                <div class="stat-info">
-                    <h3>10</h3>
-                    <p>Sedang<br>Ditangani</p>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <iconify-icon icon="tabler:users"></iconify-icon>
-                </div>
-                <div class="stat-info">
-                    <h3>50</h3>
-                    <p>Fasilitas<br>Dilaporkan</p>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <iconify-icon icon="tabler:circle-check"></iconify-icon>
-                </div>
-                <div class="stat-info">
-                    <h3>59</h3>
-                    <p>Pengaduan<br>Selesai</p>
+            <!-- KONTEN ASLI (default hidden) -->
+            <div id="statsContent" class="skeleton-hidden">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><iconify-icon icon="tabler:file-plus"></iconify-icon></div>
+                        <div class="stat-info">
+                            <h3>128</h3>
+                            <p>Pengaduan<br>Masuk</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><iconify-icon icon="tabler:clock"></iconify-icon></div>
+                        <div class="stat-info">
+                            <h3>10</h3>
+                            <p>Sedang<br>Ditangani</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><iconify-icon icon="tabler:users"></iconify-icon></div>
+                        <div class="stat-info">
+                            <h3>50</h3>
+                            <p>Fasilitas<br>Dilaporkan</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><iconify-icon icon="tabler:circle-check"></iconify-icon></div>
+                        <div class="stat-info">
+                            <h3>59</h3>
+                            <p>Pengaduan<br>Selesai</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -177,156 +171,145 @@
 
 
     <!-- ============================================ -->
-    <!-- LAYANAN UTAMA SECTION                       -->
+    <!-- LAYANAN UTAMA (Dengan Skeleton)             -->
     <!-- ============================================ -->
     <section class="section bg-light-green" id="tentang">
         <div class="container">
-            <div class="section-header text-center">
-                <h2>Layanan Utama Pengaduan Kampus</h2>
-                <p>Dirancang untuk memberikan pelaporan fasilitas<br>cepat, mudah, transparan</p>
+
+            <!-- SKELETON -->
+            <div id="layananSkeleton" class="skeleton-container">
+                <div class="section-header text-center">
+                    <div class="skeleton skeleton-hero-title" style="margin: 0 auto 8px;"></div>
+                    <div class="skeleton skeleton-hero-text" style="margin: 0 auto; width: 60%;"></div>
+                </div>
+                <div class="skeleton-service-card"></div>
+                <div class="skeleton-service-card"></div>
+                <div class="skeleton-service-card"></div>
+                <div class="skeleton-service-card"></div>
             </div>
 
-            <div class="services-grid">
-
-                <!-- Layanan 1 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <iconify-icon icon="tabler:file-pencil"></iconify-icon>
-                    </div>
-                    <div class="service-text">
-                        <h4>Laporkan Fasilitas</h4>
-                        <p>Laporkan fasilitas yang bermasalah</p>
-                    </div>
+            <!-- KONTEN ASLI -->
+            <div id="layananContent" class="skeleton-hidden">
+                <div class="section-header text-center">
+                    <h2>Layanan Utama Pengaduan Kampus</h2>
+                    <p>Dirancang untuk memberikan pelaporan fasilitas<br>cepat, mudah, transparan</p>
                 </div>
 
-                <!-- Layanan 2 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <iconify-icon icon="tabler:search"></iconify-icon>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon"><iconify-icon icon="tabler:file-pencil"></iconify-icon></div>
+                        <div class="service-text">
+                            <h4>Laporkan Fasilitas</h4>
+                            <p>Laporkan fasilitas yang bermasalah</p>
+                        </div>
                     </div>
-                    <div class="service-text">
-                        <h4>Cari Pengaduan</h4>
-                        <p>Temukan laporan yang sudah ada</p>
+                    <div class="service-card">
+                        <div class="service-icon"><iconify-icon icon="tabler:search"></iconify-icon></div>
+                        <div class="service-text">
+                            <h4>Cari Pengaduan</h4>
+                            <p>Temukan laporan yang sudah ada</p>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Layanan 3 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <iconify-icon icon="tabler:thumb-up"></iconify-icon>
+                    <div class="service-card">
+                        <div class="service-icon"><iconify-icon icon="tabler:thumb-up"></iconify-icon></div>
+                        <div class="service-text">
+                            <h4>Dukung Pengaduan</h4>
+                            <p>Dukung laporan dengan masalah yang sama</p>
+                        </div>
                     </div>
-                    <div class="service-text">
-                        <h4>Dukung Pengaduan</h4>
-                        <p>Dukung laporan dengan masalah yang sama</p>
-                    </div>
-                </div>
-
-                <!-- Layanan 4 -->
-                <div class="service-card">
-                    <div class="service-icon">
-                        <iconify-icon icon="tabler:refresh"></iconify-icon>
-                    </div>
-                    <div class="service-text">
-                        <h4>Pantau Status</h4>
-                        <p>Pantau perkembangan hingga selesai</p>
+                    <div class="service-card">
+                        <div class="service-icon"><iconify-icon icon="tabler:refresh"></iconify-icon></div>
+                        <div class="service-text">
+                            <h4>Pantau Status</h4>
+                            <p>Pantau perkembangan hingga selesai</p>
+                        </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </section>
 
 
     <!-- ============================================ -->
-    <!-- KATEGORI SECTION                            -->
+    <!-- KATEGORI SECTION (Dengan Skeleton)          -->
     <!-- ============================================ -->
     <section class="section bg-light-green" id="kategori">
         <div class="container">
-            <div class="section-header">
-                <h2>Kategori Pengaduan</h2>
+
+            <!-- SKELETON -->
+            <div id="kategoriSkeleton" class="skeleton-container">
+                <div class="section-header">
+                    <div class="skeleton skeleton-hero-title"></div>
+                </div>
+                <div class="skeleton-category-grid">
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                    <div class="skeleton skeleton-category-card"></div>
+                </div>
             </div>
 
-            <div class="category-grid">
-
-                <!-- Kategori 1 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:presentation"></iconify-icon>
-                    </div>
-                    <h4>Ruang Kelas</h4>
-                    <p>Proyektor, Kursi, Meja, papan</p>
+            <!-- KONTEN ASLI -->
+            <div id="kategoriContent" class="skeleton-hidden">
+                <div class="section-header">
+                    <h2>Kategori Pengaduan</h2>
                 </div>
 
-                <!-- Kategori 2 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:wifi"></iconify-icon>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:presentation"></iconify-icon></div>
+                        <h4>Ruang Kelas</h4>
+                        <p>Proyektor, Kursi, Meja, papan</p>
                     </div>
-                    <h4>Wi-Fi</h4>
-                    <p>Internet lambat</p>
-                </div>
-
-                <!-- Kategori 3 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:bolt"></iconify-icon>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:wifi"></iconify-icon></div>
+                        <h4>Wi-Fi</h4>
+                        <p>Internet lambat</p>
                     </div>
-                    <h4>Listrik</h4>
-                    <p>Stopkontak, Saklar</p>
-                </div>
-
-                <!-- Kategori 4 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:air-conditioning"></iconify-icon>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:bolt"></iconify-icon></div>
+                        <h4>Listrik</h4>
+                        <p>Stopkontak, Saklar</p>
                     </div>
-                    <h4>AC</h4>
-                    <p>AC bocor, AC mati,<br>AC tidak dingin</p>
-                </div>
-
-                <!-- Kategori 5 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:shield-check"></iconify-icon>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:air-conditioning"></iconify-icon></div>
+                        <h4>AC</h4>
+                        <p>AC bocor, AC mati,<br>AC tidak dingin</p>
                     </div>
-                    <h4>Keamanan</h4>
-                    <p>CCTV dan keamanan lainnya</p>
-                </div>
-
-                <!-- Kategori 6 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:friends"></iconify-icon>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:shield-check"></iconify-icon></div>
+                        <h4>Keamanan</h4>
+                        <p>CCTV dan keamanan lainnya</p>
                     </div>
-                    <h4>Toilet & Kebersihan</h4>
-                    <p>Kran, Air mampet, wastafel</p>
-                </div>
-
-                <!-- Kategori 7 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:building-mosque"></iconify-icon>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:friends"></iconify-icon></div>
+                        <h4>Toilet & Kebersihan</h4>
+                        <p>Kran, Air mampet, wastafel</p>
                     </div>
-                    <h4>Mushola</h4>
-                    <p>Fasilitas ibadah</p>
-                </div>
-
-                <!-- Kategori 8 -->
-                <div class="category-card">
-                    <div class="cat-icon">
-                        <iconify-icon icon="tabler:elevator"></iconify-icon>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:building-mosque"></iconify-icon></div>
+                        <h4>Mushola</h4>
+                        <p>Fasilitas ibadah</p>
                     </div>
-                    <h4>Lift</h4>
-                    <p>Fasilitas lift yang bermasalah</p>
+                    <div class="category-card">
+                        <div class="cat-icon"><iconify-icon icon="tabler:elevator"></iconify-icon></div>
+                        <h4>Lift</h4>
+                        <p>Fasilitas lift yang bermasalah</p>
+                    </div>
                 </div>
-
             </div>
+
         </div>
     </section>
 
 
     <!-- ============================================ -->
-    <!-- ALUR PENGADUAN SECTION                      -->
+    <!-- ALUR PENGADUAN (Statis — tanpa skeleton)   -->
     <!-- ============================================ -->
     <section class="section bg-light-green">
         <div class="container">
@@ -335,8 +318,6 @@
             </div>
 
             <div class="timeline">
-
-                <!-- Step 1 -->
                 <div class="timeline-item">
                     <div class="timeline-number">01</div>
                     <div class="timeline-content">
@@ -344,8 +325,6 @@
                         <p>Sampaikan masalah fasilitas dengan mengisi laporan dan menambahkan foto atau video sebagai bukti</p>
                     </div>
                 </div>
-
-                <!-- Step 2 -->
                 <div class="timeline-item">
                     <div class="timeline-number">02</div>
                     <div class="timeline-content">
@@ -353,8 +332,6 @@
                         <p>Admin memeriksa kelengkapan dan kebenaran informasi dalam laporan</p>
                     </div>
                 </div>
-
-                <!-- Step 3 -->
                 <div class="timeline-item">
                     <div class="timeline-number">03</div>
                     <div class="timeline-content">
@@ -362,8 +339,6 @@
                         <p>Laporan yang sesuai diteruskan untuk ditindaklanjuti dan dilakukan perbaikan.</p>
                     </div>
                 </div>
-
-                <!-- Step 4 -->
                 <div class="timeline-item">
                     <div class="timeline-number">04</div>
                     <div class="timeline-content">
@@ -371,14 +346,13 @@
                         <p>Setelah perbaikan selesai, status laporan diperbarui dan hasilnya dapat dilihat</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
 
     <!-- ============================================ -->
-    <!-- CTA SECTION                                 -->
+    <!-- CTA SECTION (Statis — tanpa skeleton)      -->
     <!-- ============================================ -->
     <section class="section bg-light-green">
         <div class="container">
@@ -392,104 +366,141 @@
 
 
     <!-- ============================================ -->
-    <!-- PENGADUAN TERKINI SECTION                   -->
+    <!-- PENGADUAN TERKINI (Dengan Skeleton)         -->
     <!-- ============================================ -->
     <section class="section bg-light-green" id="pengaduan">
         <div class="container">
-            <div class="section-header-flex">
-                <h2>Pengaduan<br>Terkini</h2>
-                <a href="login.html" class="link-see-all">
-                    Lihat semua <i class="fas fa-arrow-right"></i>
-                </a>
+
+            <!-- SKELETON -->
+            <div id="pengaduanSkeleton" class="skeleton-container">
+                <div class="section-header-flex">
+                    <div class="skeleton skeleton-hero-title" style="width: 40%;"></div>
+                </div>
+
+                <!-- Report Card Skeleton 1 -->
+                <div class="skeleton-report-card">
+                    <div class="skeleton skeleton-report-image"></div>
+                    <div class="skeleton-report-body">
+                        <div class="skeleton skeleton-report-title"></div>
+                        <div class="skeleton skeleton-report-text"></div>
+                        <div class="skeleton skeleton-report-text" style="width: 50%;"></div>
+                        <div class="skeleton-report-footer">
+                            <div class="skeleton skeleton-report-footer-item"></div>
+                            <div class="skeleton skeleton-report-footer-item"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Report Card Skeleton 2 -->
+                <div class="skeleton-report-card">
+                    <div class="skeleton skeleton-report-image"></div>
+                    <div class="skeleton-report-body">
+                        <div class="skeleton skeleton-report-title"></div>
+                        <div class="skeleton skeleton-report-text"></div>
+                        <div class="skeleton-report-footer">
+                            <div class="skeleton skeleton-report-footer-item"></div>
+                            <div class="skeleton skeleton-report-footer-item"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="reports-list">
+            <!-- KONTEN ASLI -->
+            <div id="pengaduanContent" class="skeleton-hidden">
+                <div class="section-header-flex">
+                    <h2>Pengaduan<br>Terkini</h2>
+                    <a href="login.html" class="link-see-all">
+                        Lihat semua <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
 
-                <!-- === Report Card 1: AC === -->
-                <div class="report-card">
-                    <div class="report-image">
-                        <img src="img/foto-ac.jpeg" alt="AC Rusak">
-                        <span class="badge badge-category">AC</span>
-                        <span class="badge badge-status status-proses">Diproses</span>
-                    </div>
-                    <div class="report-content">
-                        <h3>AC Tidak Panas</h3>
-                        <div class="report-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> Ruang 202, Lantai 2</span>
-                            <span><i class="fas fa-calendar-alt"></i> 5 September 2026</span>
+                <div class="reports-list">
+                    <!-- Report Card 1 -->
+                    <div class="report-card">
+                        <div class="report-image">
+                            <img src="img/foto-ac.jpeg" alt="AC Rusak">
+                            <span class="badge badge-category">AC</span>
+                            <span class="badge badge-status status-proses">Diproses</span>
                         </div>
-                        <div class="report-footer">
-                            <div class="report-actions">
-                                <span><i class="fas fa-thumbs-up"></i> 20</span>
-                                <span><i class="fas fa-thumbs-down"></i> 1</span>
-                                <span><i class="fas fa-comment"></i> 5</span>
+                        <div class="report-content">
+                            <h3>AC Tidak Panas</h3>
+                            <div class="report-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Ruang 202, Lantai 2</span>
+                                <span><i class="fas fa-calendar-alt"></i> 5 September 2026</span>
                             </div>
-                            <a href="login.html" class="link-detail">
-                                Lihat detail <i class="fas fa-arrow-right"></i>
-                            </a>
+                            <div class="report-footer">
+                                <div class="report-actions">
+                                    <span><i class="fas fa-thumbs-up"></i> 20</span>
+                                    <span><i class="fas fa-thumbs-down"></i> 1</span>
+                                    <span><i class="fas fa-comment"></i> 5</span>
+                                </div>
+                                <a href="login.html" class="link-detail">
+                                    Lihat detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Card 2 -->
+                    <div class="report-card">
+                        <div class="report-image">
+                            <img src="img/foto-toilet.jpeg" alt="Toilet Rusak">
+                            <span class="badge badge-category">Toilet</span>
+                            <span class="badge badge-status status-perbaikan">Dalam Perbaikan</span>
+                        </div>
+                        <div class="report-content">
+                            <h3>Pintu Toilet Rusak</h3>
+                            <div class="report-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Gedung FITK, Lantai 1</span>
+                                <span><i class="fas fa-calendar-alt"></i> 20 September 2026</span>
+                            </div>
+                            <div class="report-footer">
+                                <div class="report-actions">
+                                    <span><i class="fas fa-thumbs-up"></i> 10</span>
+                                    <span><i class="fas fa-thumbs-down"></i> 2</span>
+                                    <span><i class="fas fa-comment"></i> 15</span>
+                                </div>
+                                <a href="login.html" class="link-detail">
+                                    Lihat detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Card 3 -->
+                    <div class="report-card">
+                        <div class="report-image">
+                            <img src="img/foto-ruang-kelas.jpeg" alt="Kursi Rusak">
+                            <span class="badge badge-category">Ruang Kelas</span>
+                            <span class="badge badge-status status-selesai">Selesai</span>
+                        </div>
+                        <div class="report-content">
+                            <h3>Kursi Rusak</h3>
+                            <div class="report-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> Ruang 302, Lantai 3</span>
+                                <span><i class="fas fa-calendar-alt"></i> 15 September 2026</span>
+                            </div>
+                            <div class="report-footer">
+                                <div class="report-actions">
+                                    <span><i class="fas fa-thumbs-up"></i> 8</span>
+                                    <span><i class="fas fa-thumbs-down"></i> 1</span>
+                                    <span><i class="fas fa-comment"></i> 6</span>
+                                </div>
+                                <a href="login.html" class="link-detail">
+                                    Lihat detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- === Report Card 2: Toilet === -->
-                <div class="report-card">
-                    <div class="report-image">
-                        <img src="img/foto-toilet.jpeg" alt="Toilet Rusak">
-                        <span class="badge badge-category">Toilet</span>
-                        <span class="badge badge-status status-perbaikan">Dalam Perbaikan</span>
-                    </div>
-                    <div class="report-content">
-                        <h3>Pintu Toilet Rusak</h3>
-                        <div class="report-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> Gedung FITK, Lantai 1</span>
-                            <span><i class="fas fa-calendar-alt"></i> 20 September 2026</span>
-                        </div>
-                        <div class="report-footer">
-                            <div class="report-actions">
-                                <span><i class="fas fa-thumbs-up"></i> 10</span>
-                                <span><i class="fas fa-thumbs-down"></i> 2</span>
-                                <span><i class="fas fa-comment"></i> 15</span>
-                            </div>
-                            <a href="login.html" class="link-detail">
-                                Lihat detail <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- === Report Card 3: Ruang Kelas === -->
-                <div class="report-card">
-                    <div class="report-image">
-                        <img src="img/foto-ruang-kelas.jpeg" alt="Kursi Rusak">
-                        <span class="badge badge-category">Ruang Kelas</span>
-                        <span class="badge badge-status status-selesai">Selesai</span>
-                    </div>
-                    <div class="report-content">
-                        <h3>Kursi Rusak</h3>
-                        <div class="report-meta">
-                            <span><i class="fas fa-map-marker-alt"></i> Ruang 302, Lantai 3</span>
-                            <span><i class="fas fa-calendar-alt"></i> 15 September 2026</span>
-                        </div>
-                        <div class="report-footer">
-                            <div class="report-actions">
-                                <span><i class="fas fa-thumbs-up"></i> 8</span>
-                                <span><i class="fas fa-thumbs-down"></i> 1</span>
-                                <span><i class="fas fa-comment"></i> 6</span>
-                            </div>
-                            <a href="login.html" class="link-detail">
-                                Lihat detail <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
         </div>
     </section>
 
 
     <!-- ============================================ -->
-    <!-- FAQ SECTION                                 -->
+    <!-- FAQ SECTION (Statis — tanpa skeleton)      -->
     <!-- ============================================ -->
     <section class="section bg-light-green" id="faq">
         <div class="container">
@@ -499,8 +510,6 @@
             </div>
 
             <div class="faq-list">
-
-                <!-- FAQ 1 -->
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Apa itu Website Pengaduan Fasilitas Kampus FITK?</span>
@@ -511,18 +520,16 @@
                     </div>
                 </div>
 
-                <!-- FAQ 2 -->
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Bagaimana cara membuat pengaduan?</span>
-                       <i class="fas fa-chevron-down"></i>
+                        <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
                         <p>Login, pilih Buat Pengaduan, isi detail masalah, tambahkan lokasi serta foto/video sebagai bukti, lalu kirim.</p>
                     </div>
                 </div>
 
-                <!-- FAQ 3 -->
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Bagaimana cara melihat status pengaduan?</span>
@@ -532,19 +539,16 @@
                         <p>Status pengaduan dapat dilihat melalui detail pengaduan.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
 
     <!-- ============================================ -->
-    <!-- FOOTER                                      -->
+    <!-- FOOTER (Statis — tanpa skeleton)           -->
     <!-- ============================================ -->
     <footer>
         <div class="container footer-container">
-
-            <!-- Logo & Deskripsi -->
             <div class="footer-header">
                 <img src="img/logo-fitk.png" alt="Logo FITK" class="footer-logo">
                 <div class="footer-header-text">
@@ -558,7 +562,6 @@
                 Sampaikan laporan fasilitas kampus dengan mudah dan pantau proses penanganannya.
             </p>
 
-            <!-- Navigasi & Bantuan -->
             <div class="footer-links-wrapper">
                 <div class="footer-links">
                     <h4>Navigasi</h4>
@@ -577,15 +580,13 @@
                 </div>
             </div>
 
-            <!-- Copyright -->
             <div class="footer-copyright">
                 <p>&copy; 2026 Website Pengaduan Fasilitas Kampus FITK. All rights reserved.</p>
             </div>
-
         </div>
     </footer>
 
-    <!-- JavaScript Kita -->
+    <!-- JavaScript -->
     <script src="javascript/api.js"></script>
     <script src="javascript/app.js"></script>
 </body>

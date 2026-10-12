@@ -1,10 +1,5 @@
 /* ============================================================
-   REGISTER.CSS — Halaman Registrasi FITK
-   ------------------------------------------------------------
-   Sesuai Figma:
-   - Container: 331px width, border 1px #D9D9D9
-   - Background page: #F4F6F5 (abu-abu terang) & #DEF8E6 (hijau pucat)
-   - Semua state: default, error (red border), valid (green border)
+   REGISTER.CSS — Halaman Registrasi FITK (FINAL)
    ============================================================ */
 
 /* --- Variables & Reset --- */
@@ -19,7 +14,7 @@
     --border-color: #D9D9D9;
     --border-error: #E53935;
     --border-valid: #2E9368;
-    --bg-page: #F4F6F5;
+    --bg-page: #E6F4EA;
 }
 
 * {
@@ -46,14 +41,17 @@ body {
 .register-page {
     width: 100%;
     max-width: 400px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    margin: 0 auto;
+    padding: 40px 16px;
+    box-sizing: border-box;
 }
 
-
 /* ============================================================
-   HEADER BRAND (Logo & Teks Fakultas)
+   HEADER BRAND
    ============================================================ */
 .brand {
     width: 100%;
@@ -95,9 +93,8 @@ body {
     font-weight: 500;
 }
 
-
 /* ============================================================
-   CARD REGISTRASI (Kotak Putih dengan Border)
+   CARD REGISTRASI
    ============================================================ */
 .register-card {
     width: 100%;
@@ -114,7 +111,6 @@ body {
     color: var(--text-dark);
     margin-bottom: 20px;
 }
-
 
 /* ============================================================
    FORM
@@ -137,62 +133,70 @@ body {
     margin-left: 2px;
 }
 
-/* --- Wrapper Input (Sesuai Figma) --- */
+/* ============================================================
+   INPUT WRAPPER & INPUT (SINGLE DEFINITION)
+   ============================================================ */
 .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    background: #FFFFFF;                  /* Sesuai Figma */
-    border: 1px solid #D9D9D9;            /* Sesuai Figma */
-    border-radius: 10px;                  /* Sesuai Figma */
-    padding: 0 16px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    padding-left: 16px;                    /* Sesuai Figma: Padding Left 5px */
+    padding-right: 20px;                  /* Sesuai Figma: Padding Right 20px */
     height: 57px;                         /* Sesuai Figma: Fixed 57px */
     box-sizing: border-box;
     width: 100%;                          /* Fill width */
     transition: border-color 0.2s ease;
 }
 
-.input-wrapper:focus-within {
-    border-color: #1a1a1a;
-}
-
-/* State: Invalid */
-.input-wrapper.invalid {
-    border-color: #E53935;
-}
-
-/* State: Valid */
-.input-wrapper.valid {
-    border-color: #2E9368;
-}
-
-/* Icon di kiri */
-.input-icon {
-    color: #B0B0B0;
-    font-size: 1.1rem;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-
-.input-wrapper.invalid .input-icon {
-    color: var(--border-error);
-}
-
-/* Input Field */
+/* Input field — teks yang diketik */
 .input-wrapper input {
     flex: 1;
     border: none;
     outline: none;
     background: transparent;
-    padding: 13px 0;
-    font-size: 0.85rem;
-    color: var(--text-dark);
+    padding: 0;
     font-family: 'Poppins', sans-serif;
+    font-size: 10px;                       /* SAMA dengan placeholder (sesuai Figma) */
+    font-weight: 400;                      /* Regular, sesuai Figma */
+    line-height: 100%;                     /* Sesuai Figma */
+    letter-spacing: 0%;                    /* Sesuai Figma */
+    color: #1a1a1a;                        /* Hitam — teks yang diketik */
+    caret-color: #1a1a1a;                  /* Hitam — kursor */
     min-width: 0;
+    height: 100%;
 }
 
 .input-wrapper input::placeholder {
-    color: #B0B0B0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;                  /* Sesuai Figma */
+    font-weight: 400;                 /* Regular, sesuai Figma */
+    line-height: 100%;                /* Sesuai Figma */
+    letter-spacing: 0%;               /* Sesuai Figma */
+    color: #A2A2A2;                   /* Abu sedang, sesuai Figma */
+    opacity: 1;                       /* Paksa opacity penuh (Firefox default bikin pudar) */
+}
+
+/* Focus state — tetap abu-abu */
+.input-wrapper:focus-within {
+    border-color: #D9D9D9;
+}
+
+/* Invalid state — merah */
+.input-wrapper.invalid {
+    border-color: #E53935;
+}
+
+/* Valid state — tetap abu-abu */
+.input-wrapper.valid {
+    border-color: #D9D9D9;
+}
+
+
+.input-wrapper.invalid .input-icon {
+    color: var(--border-error);
 }
 
 /* Toggle Password (Mata) */
@@ -200,7 +204,7 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: #666;
+    color: #1a1a1a;
     font-size: 1.1rem;
     padding: 4px;
     display: flex;
@@ -212,7 +216,6 @@ body {
 .toggle-password:hover {
     color: var(--primary-green);
 }
-
 
 /* ============================================================
    ERROR MESSAGE
@@ -229,18 +232,18 @@ body {
     display: block;
 }
 
-
 /* ============================================================
    NOTIFIKASI FORM (Success / Error)
    ============================================================ */
 .form-message {
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 16px;
-    text-align: center;
     display: none;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .form-message:not([hidden]) {
@@ -249,9 +252,30 @@ body {
 
 /* Success */
 .form-message.success {
-    background-color: #E8F5E9;
-    color: #2E7D32;
+    background-color: #E8F9EF;
+    color: #0F6B3B;
     border: 1px solid #A5D6A7;
+    padding-left: 60px;
+    position: relative;
+    text-align: left;
+}
+
+.form-message.success::before {
+    content: '✓';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #0F6B3B;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
 }
 
 /* Error */
@@ -259,8 +283,28 @@ body {
     background-color: #FFEBEE;
     color: #C62828;
     border: 1px solid #EF9A9A;
+    padding-left: 60px;
+    position: relative;
+    text-align: left;
 }
 
+.form-message.error::before {
+    content: '✕';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #C62828;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+}
 
 /* ============================================================
    TOMBOL REGISTRASI
@@ -284,7 +328,6 @@ body {
     background-color: var(--dark-green-bg);
 }
 
-
 /* ============================================================
    LINK LOGIN
    ============================================================ */
@@ -305,12 +348,9 @@ body {
     text-decoration: underline;
 }
 
-
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE — Mobile Kecil
    ============================================================ */
-
-/* === Mobile Kecil === */
 @media (max-width: 400px) {
     body {
         padding: 24px 12px;
@@ -339,8 +379,7 @@ body {
     }
 
     .input-wrapper input {
-        padding: 12px 0;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 
     .btn-register {
@@ -350,80 +389,8 @@ body {
 }
 
 /* ============================================================
-   NOTIFIKASI FORM (Success / Error)
+   RESPONSIVE — Desktop
    ============================================================ */
-.form-message {
-    display: none;                /* Hidden default */
-    padding: 14px 18px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    line-height: 1.4;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.form-message:not([hidden]) {
-    display: block;               /* Tampil kalau tidak hidden */
-}
-
-/* === Success === */
-.form-message.success {
-    background-color: #E8F9EF;                    /* Hijau muda */
-    color: #0F6B3B;                               /* Hijau tua */
-    border: 1px solid #A5D6A7;
-    padding-left: 60px;                           /* Ruang untuk icon */
-    position: relative;
-    text-align: left;
-}
-
-.form-message.success::before {
-    content: '✓';
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #0F6B3B;
-    color: #ffffff;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-/* === Error === */
-.form-message.error {
-    background-color: #FFEBEE;                    /* Merah muda */
-    color: #C62828;                               /* Merah tua */
-    border: 1px solid #EF9A9A;
-    padding-left: 60px;                           /* Ruang untuk icon */
-    position: relative;
-    text-align: left;
-}
-
-.form-message.error::before {
-    content: '✕';
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #C62828;
-    color: #ffffff;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-/* === Desktop === */
 @media (min-width: 768px) {
     body {
         padding: 60px 20px;

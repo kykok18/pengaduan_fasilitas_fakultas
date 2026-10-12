@@ -1,6 +1,6 @@
-const API_BASE_URL = "http://localhost:8000/backend/api";
+const API_BASE_URL = "/backend/api";
 
-async function apiRegister(nama, email, password, confirmPassword) {
+async function registrasi(nama, email, password, confirmPassword) {
     try {
         const response = await fetch(
             `${API_BASE_URL}/registrasi.php`,
