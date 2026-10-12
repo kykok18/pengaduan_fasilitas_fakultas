@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registrasi Akun | FITK SIBER AHSAN</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/register.css">
+
+    <!-- JavaScript -->  
+<script src="js/api.js"></script>
+<script src="js/register.js" defer></script>
+
+</head>
+
+<body>
+    <main class="register-page">
+
+        <!-- ============================================ -->
+        <!-- HEADER BRAND (Logo & Teks Fakultas)         -->
+        <!-- ============================================ -->
+        <header class="brand">
+            <img 
+                src="img/logo-fitk.png" 
+                alt="Logo UIN Siber Syekh Nurjati Cirebon" 
+                class="brand-logo">
+
+            <div class="brand-info">
+                <h1>FITK SIBER AHSAN</h1>
+                <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                <p class="brand-university">UIN Siber Syekh Nurjati Cirebon</p>
+            </div>
+        </header>
+
+        <!-- ============================================ -->
+        <!-- FORM REGISTRASI                             -->
+        <!-- ============================================ -->
+        <section class="register-card">
+            <h2 class="register-title">Registrasi Akun</h2>
+
+            <form id="registerForm" novalidate>
+
+                <!-- === Nama Lengkap === -->
+                <div class="form-group">
+                    <label for="fullname">Nama Lengkap<span>*</span></label>
+                    <div class="input-wrapper" id="fullnameWrapper">
+                        <iconify-icon icon="mdi:account-outline" class="input-icon"></iconify-icon>
+                        <input
+                            type="text"
+                            id="fullname"
+                            name="fullname"
+                            placeholder="Masukkan Nama Lengkap"
+                            autocomplete="name"
+                            required>
+                    </div>
+                    <small class="error-message" id="fullnameError"></small>
+                </div>
+
+                <!-- === Email === -->
+                <div class="form-group">
+                    <label for="email">E-mail<span>*</span></label>
+                    <div class="input-wrapper" id="emailWrapper">
+                        <iconify-icon icon="mdi:email-outline" class="input-icon"></iconify-icon>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Masukkan E-mail"
+                            autocomplete="email"
+                            required>
+                    </div>
+                    <small class="error-message" id="emailError"></small>
+                </div>
+
+                <!-- === Password === -->
+                <div class="form-group">
+                    <label for="password">Password<span>*</span></label>
+                    <div class="input-wrapper" id="passwordWrapper">
+                        <iconify-icon icon="mdi:lock-outline" class="input-icon"></iconify-icon>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Buat Password (Minimal 8 Karakter)"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required>
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="password"
+                            aria-label="Tampilkan password"
+                            aria-pressed="false">
+                            <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+                        </button>
+                    </div>
+                    <small class="error-message" id="passwordError"></small>
+                </div>
+
+                <!-- === Konfirmasi Password === -->
+                <div class="form-group">
+                    <label for="confirmPassword">Konfirmasi Password<span>*</span></label>
+                    <div class="input-wrapper" id="confirmPasswordWrapper">
+                        <iconify-icon icon="mdi:lock-outline" class="input-icon"></iconify-icon>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Ulangi Password"
+                            autocomplete="new-password"
+                            required>
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            data-target="confirmPassword"
+                            aria-label="Tampilkan konfirmasi password"
+                            aria-pressed="false">
+                            <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+                        </button>
+                    </div>
+                    <small class="error-message" id="confirmPasswordError"></small>
+                </div>
+
+                <!-- === Notifikasi Form (Success/Error) === -->
+                <div id="formMessage" class="form-message" role="status" aria-live="polite" hidden></div>
+
+                <!-- === Tombol Registrasi === -->
+                <button type="submit" class="btn-register">Registrasi</button>
+
+                <!-- === Link Login === -->
+                <p class="login-text">
+                    Sudah punya akun? <a href="login.html">Masuk di sini</a>
+                </p>
+
+            </form>
+        </section>
+    </main>
+
+<script src="javascript/api.js"></script>
+<script src="javascript/register.js" defer></script>
+</body>
+</html>

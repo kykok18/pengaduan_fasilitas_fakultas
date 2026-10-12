@@ -1,0 +1,348 @@
+/* ============================================================
+   LOGIN.CSS — Halaman Login FITK (Responsive)
+   ============================================================ */
+
+/* --- Variables & Reset --- */
+:root {
+    --primary-green: #0f6b3b;
+    --dark-green-bg: #0a4f2a;
+    --mint-green: #5CE0A8;
+    --light-green-bg: #DEF8E6;
+    --text-dark: #1a1a1a;
+    --text-muted: #888888;
+    --white: #ffffff;
+    --border-color: #D9D9D9;
+    --bg-page: #F4F6F5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* ============================================================
+   CONTAINER LOGIN
+   ============================================================ */
+/* --- Container Utama (Tanpa Background, Tanpa Border) --- */
+.login-container {
+    width: 100%;
+    max-width: 331px;
+    min-height: 668px;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+.login-logo {
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    margin-bottom: 24px;
+}
+
+
+/* ============================================================
+   NAMA FAKULTAS & UNIVERSITAS
+   ============================================================ */
+.login-fakultas {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    line-height: 1.3;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+}
+
+.login-universitas {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #C89B3C;
+    margin-bottom: 48px;
+    letter-spacing: 0.3px;
+}
+
+
+/* ============================================================
+   JUDUL FORM
+   ============================================================ */
+.login-judul {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 8px;
+    align-self: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+.login-deskripsi {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    line-height: 1.5;
+    margin-bottom: 36px;
+    align-self: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+
+/* ============================================================
+   FORM LOGIN
+   ============================================================ */
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: left;
+}
+
+/* Wrapper Input */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0 16px;
+    transition: border-color 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary-green);
+}
+
+.input-icon {
+    color: #B0B0B0;
+    font-size: 1rem;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 16px 0;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    min-width: 0;
+}
+
+.input-wrapper input::placeholder {
+    color: #B0B0B0;
+}
+
+/* Tombol Toggle Password */
+.toggle-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 1.05rem;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toggle-password:hover {
+    color: var(--primary-green);
+}
+
+
+/* ============================================================
+   TOMBOL LOGIN
+   ============================================================ */
+.btn-login {
+    width: 100%;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+    background-color: var(--dark-green-bg);
+}
+
+
+/* ============================================================
+   PEMBATAS "atau"
+   ============================================================ */
+.pembatas {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 24px 0;
+    gap: 12px;
+}
+
+.pembatas::before,
+.pembatas::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--border-color);
+}
+
+.pembatas span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+
+/* ============================================================
+   TOMBOL REGISTRASI
+   ============================================================ */
+.btn-registrasi {
+    display: block;
+    width: 100%;
+    background-color: var(--white);
+    color: var(--primary-green);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-registrasi:hover {
+    border-color: var(--primary-green);
+    background-color: #F9FDFB;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* === Mobile Kecil (max-width: 400px) === */
+@media (max-width: 400px) {
+    body {
+        padding: 20px 12px;
+    }
+
+    .login-container {
+        padding: 32px 20px;
+        min-height: auto;                /* Biar tidak dipaksa 668px */
+        border-radius: 14px;
+    }
+
+    .login-logo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 16px;
+    }
+
+    .login-fakultas {
+        font-size: 0.85rem;
+    }
+
+    .login-universitas {
+        font-size: 0.7rem;
+        margin-bottom: 32px;
+    }
+
+    .login-judul {
+        font-size: 1.5rem;
+    }
+
+    .login-deskripsi {
+        font-size: 0.8rem;
+        margin-bottom: 24px;
+    }
+
+    .input-wrapper input {
+        padding: 14px 0;
+        font-size: 0.9rem;
+    }
+
+    .btn-login,
+    .btn-registrasi {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+}
+
+/* === Tablet (min-width: 481px) dan Mobile Sedang (401px - 480px) === */
+@media (min-width: 401px) and (max-width: 480px) {
+    body {
+        padding: 30px 16px;
+    }
+
+    .login-container {
+        min-height: auto;
+    }
+}
+
+/* === Desktop (min-width: 768px) === */
+@media (min-width: 768px) {
+    body {
+        padding: 60px 20px;
+        align-items: center;             /* Center vertikal */
+    }
+
+    .login-container {
+        max-width: 360px;                /* Sedikit lebih lebar di desktop */
+        padding: 44px 32px;
+    }
+
+    .login-logo {
+        width: 140px;
+        height: 140px;
+    }
+
+    .login-judul {
+        font-size: 2rem;
+    }
+}

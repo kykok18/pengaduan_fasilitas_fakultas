@@ -1,0 +1,437 @@
+/* ============================================================
+   REGISTER.CSS — Halaman Registrasi FITK
+   ------------------------------------------------------------
+   Sesuai Figma:
+   - Container: 331px width, border 1px #D9D9D9
+   - Background page: #F4F6F5 (abu-abu terang) & #DEF8E6 (hijau pucat)
+   - Semua state: default, error (red border), valid (green border)
+   ============================================================ */
+
+/* --- Variables & Reset --- */
+:root {
+    --primary-green: #0f6b3b;
+    --dark-green-bg: #0a4f2a;
+    --mint-green: #5CE0A8;
+    --light-green-bg: #DEF8E6;
+    --text-dark: #1a1a1a;
+    --text-muted: #888888;
+    --white: #ffffff;
+    --border-color: #D9D9D9;
+    --border-error: #E53935;
+    --border-valid: #2E9368;
+    --bg-page: #F4F6F5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   PAGE WRAPPER
+   ============================================================ */
+.register-page {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ============================================================
+   HEADER BRAND (Logo & Teks Fakultas)
+   ============================================================ */
+.brand {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 0 4px;
+}
+
+.brand-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.brand-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.brand-info h1 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin-bottom: 2px;
+}
+
+.brand-info p {
+    font-size: 0.7rem;
+    color: var(--text-dark);
+    line-height: 1.3;
+}
+
+.brand-university {
+    color: #C89B3C !important;
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   CARD REGISTRASI (Kotak Putih dengan Border)
+   ============================================================ */
+.register-card {
+    width: 100%;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 28px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.register-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+
+/* ============================================================
+   FORM
+   ============================================================ */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group label span {
+    color: var(--border-error);
+    margin-left: 2px;
+}
+
+/* Wrapper Input */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0 14px;
+    transition: border-color 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary-green);
+}
+
+/* State: Invalid (error) */
+.input-wrapper.invalid {
+    border-color: var(--border-error);
+}
+
+/* State: Valid */
+.input-wrapper.valid {
+    border-color: var(--border-valid);
+}
+
+/* Icon di kiri */
+.input-icon {
+    color: #B0B0B0;
+    font-size: 1.1rem;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.input-wrapper.invalid .input-icon {
+    color: var(--border-error);
+}
+
+/* Input Field */
+.input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 13px 0;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    min-width: 0;
+}
+
+.input-wrapper input::placeholder {
+    color: #B0B0B0;
+}
+
+/* Toggle Password (Mata) */
+.toggle-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 1.1rem;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toggle-password:hover {
+    color: var(--primary-green);
+}
+
+
+/* ============================================================
+   ERROR MESSAGE
+   ============================================================ */
+.error-message {
+    font-size: 0.7rem;
+    color: var(--border-error);
+    min-height: 0;
+    line-height: 1.3;
+    display: none;
+}
+
+.error-message:not(:empty) {
+    display: block;
+}
+
+
+/* ============================================================
+   NOTIFIKASI FORM (Success / Error)
+   ============================================================ */
+.form-message {
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+    display: none;
+}
+
+.form-message:not([hidden]) {
+    display: block;
+}
+
+/* Success */
+.form-message.success {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #A5D6A7;
+}
+
+/* Error */
+.form-message.error {
+    background-color: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #EF9A9A;
+}
+
+
+/* ============================================================
+   TOMBOL REGISTRASI
+   ============================================================ */
+.btn-register {
+    width: 100%;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-register:hover {
+    background-color: var(--dark-green-bg);
+}
+
+
+/* ============================================================
+   LINK LOGIN
+   ============================================================ */
+.login-text {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+
+.login-text a {
+    color: var(--primary-green);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* === Mobile Kecil === */
+@media (max-width: 400px) {
+    body {
+        padding: 24px 12px;
+    }
+
+    .register-card {
+        padding: 24px 16px;
+        border-radius: 14px;
+    }
+
+    .register-title {
+        font-size: 1.05rem;
+    }
+
+    .brand-logo {
+        width: 44px;
+        height: 44px;
+    }
+
+    .brand-info h1 {
+        font-size: 0.85rem;
+    }
+
+    .brand-info p {
+        font-size: 0.65rem;
+    }
+
+    .input-wrapper input {
+        padding: 12px 0;
+        font-size: 0.8rem;
+    }
+
+    .btn-register {
+        padding: 13px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================================
+   NOTIFIKASI FORM (Success / Error)
+   ============================================================ */
+.form-message {
+    display: none;                /* Hidden default */
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-message:not([hidden]) {
+    display: block;               /* Tampil kalau tidak hidden */
+}
+
+/* === Success === */
+.form-message.success {
+    background-color: #E8F9EF;                    /* Hijau muda */
+    color: #0F6B3B;                               /* Hijau tua */
+    border: 1px solid #A5D6A7;
+    padding-left: 60px;                           /* Ruang untuk icon */
+    position: relative;
+    text-align: left;
+}
+
+.form-message.success::before {
+    content: '✓';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #0F6B3B;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* === Error === */
+.form-message.error {
+    background-color: #FFEBEE;                    /* Merah muda */
+    color: #C62828;                               /* Merah tua */
+    border: 1px solid #EF9A9A;
+    padding-left: 60px;                           /* Ruang untuk icon */
+    position: relative;
+    text-align: left;
+}
+
+.form-message.error::before {
+    content: '✕';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #C62828;
+    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* === Desktop === */
+@media (min-width: 768px) {
+    body {
+        padding: 60px 20px;
+        align-items: center;
+    }
+
+    .register-page {
+        max-width: 420px;
+    }
+
+    .register-card {
+        padding: 32px 24px;
+    }
+}

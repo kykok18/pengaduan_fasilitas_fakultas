@@ -97,8 +97,11 @@
             </div>
             <!-- Kanan: tombol Registrasi & Login -->
             <div class="nav-actions">
-                <a href="register.html" class="btn btn-outline">Registrasi</a>
-                <a href="login.html" class="btn btn-primary">Login</a>
+                <a href="register.html" class="btn btn-outline" id="btnRegistrasi">Registrasi</a>
+                <a href="login.html" class="btn btn-primary" id="btnLogin">Login</a>
+
+                <span class="user-name" id="userName" style="display: none; font-size: 0.75rem; font-weight: 600; color: var(--dark-green-bg); align-self: center;"></span>
+                <button class="btn btn-outline" id="btnLogout" style="display: none;">Logout</button>
             </div>
         </div>
     </header>
@@ -583,6 +586,7 @@
     </footer>
 
     <!-- JavaScript Kita -->
+    <script src="javascript/api.js"></script>
     <script src="javascript/app.js"></script>
 </body>
 </html>

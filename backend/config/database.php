@@ -1,8 +1,8 @@
 <?php
 
 $host = "localhost";
-$user = "kykok";
-$pw = "kykok18";
+$user = "root";
+$pw = " ";
 $db = "pengaduan_fasilitas_fakultasDB";
 
 $conn = mysqli_connect($host, $user, $pw, $db);
