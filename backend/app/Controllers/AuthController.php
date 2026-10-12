@@ -106,6 +106,13 @@ class AuthController
             errorResponse("Data request tidak valid", 400);
         }
 
+        // Validasi input login
+$validation = AuthValidator::validateLogin($data);
+
+if ($validation !== true) {
+    errorResponse($validation, 400);
+}
+
         // Ambil email dan password
         $email = trim($data['email'] ?? '');
         $password = $data['password'] ?? '';
