@@ -110,4 +110,39 @@ class User
         // null berarti email tidak ditemukan
         return $user ?: null;
     }
+
+        public function findById($id_user)
+    {
+        $query = "
+            SELECT id_user, nama, email, role
+            FROM users
+            WHERE id_user = ?
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $id_user);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if ($result === false) {
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $user = mysqli_fetch_assoc($result);
+
+        mysqli_stmt_close($stmt);
+
+        return $user ?: null;
+    }
 }

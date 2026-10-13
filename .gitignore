@@ -1,3 +1,4 @@
 .env
 database/
 node_modules/
+server.js/
