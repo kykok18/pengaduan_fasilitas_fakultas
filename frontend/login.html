@@ -8,10 +8,10 @@
     <!-- Font Google (Poppins) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome (untuk icon mata & email) -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Iconify (opsional, kalau mau pakai icon dari Iconify) -->
+    <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
     <!-- CSS -->
@@ -21,123 +21,115 @@
 <body>
 
     <!-- ============================================ -->
-    <!-- CONTAINER LOGIN                              -->
+    <!-- LOGIN PAGE — Split Screen                    -->
     <!-- ============================================ -->
-    <main class="login-container">
+    <main class="login-page">
 
         <!-- ============================================ -->
-        <!-- SKELETON (default terlihat)                 -->
+        <!-- KIRI: Branding (Hijau Pucat)               -->
         <!-- ============================================ -->
-        <div id="loginSkeleton" class="skeleton-container">
-            <div class="skeleton-register-page">
+        <aside class="login-branding">
+            <!-- SKELETON KIRI -->
+            <div id="brandingSkeleton" class="skeleton-container">
+                <div class="skeleton skeleton-brand-logo-lg"></div>
+                <div class="skeleton skeleton-brand-title-lg" style="margin: 24px auto 8px;"></div>
+                <div class="skeleton skeleton-brand-sub-lg" style="margin: 0 auto;"></div>
+            </div>
 
-                <!-- Brand Header -->
-                <div class="skeleton-brand">
-                    <div class="skeleton skeleton-brand-logo"></div>
-                    <div class="skeleton-brand-text">
-                        <div class="skeleton skeleton-brand-title"></div>
-                        <div class="skeleton skeleton-brand-sub"></div>
-                    </div>
+            <!-- KONTEN ASLI -->
+            <div id="brandingContent" class="skeleton-hidden">
+                <img src="img/logo-fitk.png" alt="Logo FITK SIBER AHSAN" class="branding-logo">
+                <h1 class="branding-fakultas">FAKULTAS ILMU TARBIYAH DAN KEGURUAN</h1>
+                <p class="branding-universitas">UIN SIBER SYEKH NURJATI CIREBON</p>
+            </div>
+        </aside>
+
+
+        <!-- ============================================ -->
+        <!-- KANAN: Form Login (Putih)                  -->
+        <!-- ============================================ -->
+        <section class="login-form-section">
+
+            <!-- SKELETON KANAN -->
+            <div id="loginSkeleton" class="skeleton-container">
+                <div class="skeleton skeleton-form-title"></div>
+                <div class="skeleton skeleton-form-subtitle"></div>
+
+                <div class="skeleton-form-group" style="margin-top: 32px;">
+                    <div class="skeleton skeleton-form-label-sm"></div>
+                    <div class="skeleton skeleton-form-input"></div>
                 </div>
 
-                <!-- Kartu Login -->
-                <div class="skeleton-register-card">
-                    <div class="skeleton skeleton-register-title"></div>
+                <div class="skeleton-form-group">
+                    <div class="skeleton skeleton-form-label-sm"></div>
+                    <div class="skeleton skeleton-form-input"></div>
+                </div>
 
-                    <!-- Input 1: Email -->
-                    <div class="skeleton-form-group">
-                        <div class="skeleton skeleton-form-label" style="width: 25%;"></div>
-                        <div class="skeleton skeleton-form-input"></div>
+                <div class="skeleton skeleton-form-button"></div>
+            </div>
+
+            <!-- KONTEN ASLI -->
+            <div id="loginContent" class="skeleton-hidden">
+
+                <!-- Judul -->
+                <h2 class="login-judul">Selamat Datang!</h2>
+                <p class="login-deskripsi">Masuk ke akun Anda untuk melaporkan<br>pengaduan fasilitas kampus FITK</p>
+
+                <!-- Form -->
+                <form class="login-form" id="loginForm">
+
+                    <!-- Input Email -->
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-wrapper">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Masukkan E-mail"
+                                required
+                            >
+                        </div>
                     </div>
 
-                    <!-- Input 2: Password -->
-                    <div class="skeleton-form-group">
-                        <div class="skeleton skeleton-form-label" style="width: 30%;"></div>
-                        <div class="skeleton skeleton-form-input"></div>
+                    <!-- Input Password -->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Masukkan Password"
+                                required
+                            >
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                id="togglePassword"
+                                aria-label="Lihat password"
+                            >
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Tombol Login -->
-                    <div class="skeleton skeleton-form-button"></div>
+                    <button type="submit" class="btn-login">Login</button>
 
-                    <!-- Link Registrasi -->
-                    <div class="skeleton skeleton-form-link"></div>
+                </form>
+
+                <!-- Pembatas "atau" -->
+                <div class="pembatas">
+                    <span>atau</span>
                 </div>
+
+                <!-- Tombol Registrasi -->
+                <a href="register.html" class="btn-registrasi">Registrasi</a>
 
             </div>
-        </div>
 
-
-        <!-- ============================================ -->
-        <!-- KONTEN ASLI (default hidden)                -->
-        <!-- ============================================ -->
-        <div id="loginContent" class="skeleton-hidden">
-
-            <!-- Logo FITK -->
-            <img src="img/logo-fitk.png" alt="Logo FITK SIBER AHSAN" class="login-logo">
-
-            <!-- Nama Fakultas & Universitas -->
-            <h1 class="login-fakultas">FAKULTAS ILMU TARBIYAH DAN KEGURUAN</h1>
-            <p class="login-universitas">UIN SIBER SYEKH NURJATI CIREBON</p>
-
-            <!-- Judul Form -->
-            <h2 class="login-judul">Selamat Datang!</h2>
-            <p class="login-deskripsi">Masuk ke akun Anda untuk melaporkan pengaduan fasilitas kampus FITK</p>
-
-            <!-- Form Login -->
-            <form class="login-form" id="loginForm">
-
-                <!-- Input Email -->
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Masukkan E-mail"
-                            required
-                        >
-                    </div>
-                </div>
-
-                <!-- Input Password -->
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Masukkan Password"
-                            required
-                        >
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            id="togglePassword"
-                            aria-label="Lihat password"
-                        >
-                            <i class="fas fa-eye-slash"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tombol Login -->
-                <button type="submit" class="btn-login">Login</button>
-
-            </form>
-
-            <!-- Pembatas "atau" -->
-            <div class="pembatas">
-                <span>atau</span>
-            </div>
-
-            <!-- Tombol Registrasi -->
-            <a href="register.html" class="btn-registrasi">Registrasi</a>
-
-        </div>
+        </section>
 
     </main>
 

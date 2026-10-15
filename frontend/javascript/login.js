@@ -1,41 +1,30 @@
 /* ============================================================
    LOGIN.JS — Integrasi Login ke Backend
-   Skeleton muncul HANYA saat fetch API berlangsung.
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const loginSkeleton = document.getElementById('loginSkeleton');
-    const loginContent = document.getElementById('loginContent');
-
-    // Helper: sembunyikan skeleton, tampilkan konten
-    function showLoginContent() {
-        if (loginSkeleton) loginSkeleton.classList.add('skeleton-hidden');
-        if (loginContent) loginContent.classList.remove('skeleton-hidden');
-    }
-
     /* ============================================================
-       CEK SESSION — Skeleton tampil selama fetch berlangsung
+       SKELETON — Hilang saat window.load (jaringan lambat = lama)
        ============================================================ */
-    async function checkSessionAndLoad() {
-        try {
-            const response = await apiGetProfile();
+    const loginSkeleton = document.getElementById('loginSkeleton');
+    const brandingSkeleton = document.getElementById('brandingSkeleton');
+    const loginContent = document.getElementById('loginContent');
+    const brandingContent = document.getElementById('brandingContent');
 
-            // Kalau sudah login → redirect ke index
-            if (response.ok && response.status === 'success') {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            showLoginContent();
-
-        } catch (error) {
-            console.warn('API tidak tersedia:', error);
-            showLoginContent();
-        }
+    function showContent() {
+        if (loginSkeleton) loginSkeleton.classList.add('skeleton-hidden');
+        if (brandingSkeleton) brandingSkeleton.classList.add('skeleton-hidden');
+        if (loginContent) loginContent.classList.remove('skeleton-hidden');
+        if (brandingContent) brandingContent.classList.remove('skeleton-hidden');
     }
 
-    checkSessionAndLoad();
+    window.addEventListener('load', () => {
+        setTimeout(showContent, 200);
+    });
+
+    // Fallback
+    setTimeout(showContent, 8000);
 
 
     /* ============================================================
@@ -46,8 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
 
+
     /* ============================================================
-       TOGGLE PASSWORD
+       TOGGLE PASSWORD (Icon mata)
        ============================================================ */
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', () => {
@@ -56,17 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const icon = togglePassword.querySelector('i');
             if (isPassword) {
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            } else {
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
         });
     }
 
+
     /* ============================================================
-       SUBMIT FORM
+       SUBMIT FORM — Kirim ke API
        ============================================================ */
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {

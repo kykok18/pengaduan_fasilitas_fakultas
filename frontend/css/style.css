@@ -274,7 +274,7 @@ ul {
    ============================================================ */
 .stats-section {
     background-color: var(--dark-green-bg);
-    padding: 30px 0;
+    padding: 30px 0; 
     overflow: hidden;
 }
 
@@ -282,7 +282,7 @@ ul {
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 6px;
+    gap: 10px;
     padding: 0 10px;
     width: 100%;
     margin: 0 auto;
@@ -293,10 +293,10 @@ ul {
 .stat-card {
     background: #FFFFFF;
     width: 100%;
-    min-width: 0;
-    min-height: 130px;
+    min-width: 85px;
+    min-height: 141px;
     border-radius: 10px;
-    padding: 12px 8px;
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
