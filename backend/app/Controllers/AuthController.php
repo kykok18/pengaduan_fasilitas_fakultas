@@ -53,15 +53,22 @@ class AuthController
         // Cek email
         $emailExists = $this->userModel->emailExists($email);
 
+        if ($emailExists === null) {
+            errorResponse(
+                "Terjadi kesalahan pada server",
+                500
+            );
+        }
+
         if ($emailExists === true) {
             errorResponse(
                 "Email sudah terdaftar",
-                400
+                409
             );
         }
 
         // Hash password
-       $password_hash = hashPassword($password);
+               $password_hash = hashPassword($password);
 
         // Simpan user
         $id_user = $this->userModel->create(

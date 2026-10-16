@@ -1,6 +1,15 @@
 <?php
 
+header('Content-Type: application/json; charset=utf-8');
+
 require_once __DIR__ . '/../app/Helpers/response.php';
+
+// Logout hanya menerima request POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Allow: POST');
+
+    errorResponse('Method not allowed', 405);
+}
 
 // Mulai session jika belum aktif
 if (session_status() === PHP_SESSION_NONE) {
@@ -9,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Pastikan pengguna sudah login
 if (!isset($_SESSION['id_user'])) {
-    errorResponse("Pengguna belum login", 401);
+    errorResponse('Pengguna belum login', 401);
 }
 
 // Hapus seluruh data session
@@ -22,11 +31,14 @@ if (ini_get('session.use_cookies')) {
     setcookie(
         session_name(),
         '',
-        time() - 42000,
-        $params['path'],
-        $params['domain'],
-        $params['secure'],
-        $params['httponly']
+        [
+            'expires' => time() - 42000,
+            'path' => $params['path'],
+            'domain' => $params['domain'],
+            'secure' => $params['secure'],
+            'httponly' => $params['httponly'],
+            'samesite' => $params['samesite'] ?? 'Lax'
+        ]
     );
 }
 
@@ -34,4 +46,4 @@ if (ini_get('session.use_cookies')) {
 session_destroy();
 
 // Kirim respons berhasil
-successResponse("Logout berhasil");
+successResponse('Logout berhasil');
