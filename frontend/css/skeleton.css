@@ -1,0 +1,486 @@
+/* ============================================================
+   SKELETON.CSS — Loading Placeholder
+   ------------------------------------------------------------
+   Dipakai di:
+   - Landing Page (index.html)
+   - Login Page (login.html)
+   - Register Page (register.html)
+   ============================================================ */
+
+
+/* ============================================================
+   BASE SKELETON
+   ============================================================ */
+.skeleton {
+    background-color: #D9D9D9;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Animasi shimmer (kilau bergerak) */
+.skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        transparent 100%
+    );
+    animation: skeletonShimmer 1.5s infinite;
+}
+
+@keyframes skeletonShimmer {
+    0%   { left: -100%; }
+    100% { left: 100%; }
+}
+
+
+/* ============================================================
+   SKELETON UNTUK HERO
+   ============================================================ */
+.skeleton-hero-title {
+    height: 24px;
+    width: 60%;
+    margin-bottom: 10px;
+}
+
+.skeleton-hero-title-lg {
+    height: 32px;
+    width: 75%;
+    margin-bottom: 12px;
+}
+
+.skeleton-hero-text {
+    height: 12px;
+    width: 90%;
+    margin-bottom: 6px;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK STATS (4 CARD)
+   ============================================================ */
+.skeleton-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0 10px;
+    width: 100%;
+    max-width: 406px;
+    margin: 0 auto;
+}
+
+.skeleton-stat-card {
+    background: #E8E8E8;
+    border-radius: 10px;
+    min-height: 130px;
+    width: 100%;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK LAYANAN (4 CARD FULL WIDTH)
+   ============================================================ */
+.skeleton-service-card {
+    height: 70px;
+    border-radius: 12px;
+    background: #E0E0E0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK KATEGORI (2 KOLOM × 4 BARIS)
+   ============================================================ */
+.skeleton-category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 15px;
+}
+
+.skeleton-category-card {
+    height: 130px;
+    border-radius: 12px;
+    background: #E8E8E8;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK TIMELINE (4 BARIS)
+   ============================================================ */
+.skeleton-timeline-item {
+    height: 70px;
+    border-radius: 12px;
+    background: #E0E0E0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK CTA (BANNER BESAR)
+   ============================================================ */
+.skeleton-cta-box {
+    height: 130px;
+    border-radius: 12px;
+    background: #E0E0E0;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK PENGADUAN TERKINI (REPORT CARD)
+   ============================================================ */
+.skeleton-report-card {
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+}
+
+.skeleton-report-image {
+    width: 100%;
+    height: 180px;
+    background: #E0E0E0;
+}
+
+.skeleton-report-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.skeleton-report-title {
+    height: 16px;
+    width: 50%;
+    border-radius: 4px;
+}
+
+.skeleton-report-text {
+    height: 12px;
+    width: 70%;
+    border-radius: 4px;
+}
+
+.skeleton-report-footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    margin-top: 6px;
+}
+
+.skeleton-report-footer-item {
+    height: 12px;
+    width: 40px;
+    border-radius: 4px;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK FAQ
+   ============================================================ */
+.skeleton-faq-item {
+    height: 50px;
+    border-radius: 8px;
+    background: #E0E0E0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK FOOTER
+   ============================================================ */
+.skeleton-footer-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #E0E0E0;
+}
+
+.skeleton-footer-title {
+    height: 16px;
+    width: 40%;
+    border-radius: 4px;
+    background: #E0E0E0;
+    margin-bottom: 6px;
+}
+
+.skeleton-footer-text {
+    height: 10px;
+    width: 60%;
+    border-radius: 4px;
+    background: #E0E0E0;
+    margin-bottom: 4px;
+}
+
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.skeleton-container {
+    display: block;
+    width: 100%;
+}
+
+.skeleton-hidden {
+    display: none !important;
+}
+
+
+/* ============================================================
+   SKELETON UNTUK HALAMAN REGISTER & LOGIN
+   ============================================================ */
+
+/* Wrapper skeleton — FULL WIDTH */
+.skeleton-register-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding: 40px 16px;
+}
+
+/* Brand Header (logo + teks) */
+.skeleton-brand {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+
+.skeleton-brand-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #D9D9D9;
+    flex-shrink: 0;
+}
+
+.skeleton-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.skeleton-brand-title {
+    width: 70%;
+    height: 14px;
+    border-radius: 4px;
+    background: #D9D9D9;
+}
+
+.skeleton-brand-sub {
+    width: 90%;
+    height: 10px;
+    border-radius: 4px;
+    background: #E0E0E0;
+}
+
+/* Kartu Form — FULL WIDTH */
+.skeleton-register-card {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 16px;
+    padding: 28px 20px;
+    box-sizing: border-box;
+}
+
+.skeleton-register-title {
+    width: 50%;
+    height: 20px;
+    border-radius: 4px;
+    background: #D9D9D9;
+    margin-bottom: 24px;
+}
+
+/* Grup Input (label + input) */
+.skeleton-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+    width: 100%;
+}
+
+.skeleton-form-label {
+    width: 35%;
+    height: 12px;
+    border-radius: 4px;
+    background: #E0E0E0;
+}
+
+.skeleton-form-input {
+    width: 100%;
+    height: 57px;
+    border-radius: 10px;
+    background: #D9D9D9;
+    display: block;
+}
+
+/* Tombol */
+.skeleton-form-button {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    background: #D9D9D9;
+    margin-top: 8px;
+    display: block;
+}
+
+/* Link bawah */
+.skeleton-form-link {
+    width: 60%;
+    height: 12px;
+    border-radius: 4px;
+    background: #E0E0E0;
+    margin: 20px auto 0;
+    display: block;
+}
+
+
+/* ============================================================
+   SKELETON KHUSUS LOGIN (tanpa brand header)
+   ============================================================ */
+
+/* Container skeleton login — sama seperti login-container */
+#loginSkeleton {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 16px;
+    box-sizing: border-box;
+}
+
+/* Override padding skeleton-register-page (karena parent sudah punya padding) */
+#loginSkeleton .skeleton-register-page {
+    padding: 0;
+}
+
+/* Konten login full width */
+#loginContent {
+    width: 100%;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (min-width: 768px) {
+    .skeleton-category-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
+
+    .skeleton-report-image {
+        height: 220px;
+    }
+
+    .skeleton-service-card {
+        height: 80px;
+    }
+}
+
+@media (max-width: 400px) {
+    .skeleton-register-page {
+        padding: 24px 12px;
+    }
+
+    .skeleton-register-card {
+        padding: 24px 16px;
+    }
+
+    .skeleton-brand-logo {
+        width: 44px;
+        height: 44px;
+    }
+
+    #loginSkeleton {
+        padding: 24px 12px;
+    }
+}
+
+/* ============================================================
+   SKELETON KHUSUS LOGIN (Split Screen)
+   ============================================================ */
+
+/* Skeleton branding (kiri) */
+.skeleton-brand-logo-lg {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: #C8E6D0;
+    margin: 0 auto;
+}
+
+.skeleton-brand-title-lg {
+    width: 70%;
+    height: 18px;
+    border-radius: 4px;
+    background: #C8E6D0;
+    margin: 0 auto;
+}
+
+.skeleton-brand-sub-lg {
+    width: 50%;
+    height: 14px;
+    border-radius: 4px;
+    background: #D5EBDB;
+    margin: 0 auto;
+}
+
+/* Skeleton form login (kanan) */
+.skeleton-form-title {
+    width: 50%;
+    height: 28px;
+    border-radius: 6px;
+    background: #E0E0E0;
+    margin-bottom: 12px;
+}
+
+.skeleton-form-subtitle {
+    width: 80%;
+    height: 14px;
+    border-radius: 4px;
+    background: #E8E8E8;
+}
+
+.skeleton-form-label-sm {
+    width: 25%;
+    height: 12px;
+    border-radius: 4px;
+    background: #E0E0E0;
+    margin-bottom: 8px;
+}
+
+/* Pastikan skeleton login full width */
+#loginSkeleton,
+#brandingSkeleton {
+    width: 100%;
+}
+
+#loginContent,
+#brandingContent {
+    width: 100%;
+}

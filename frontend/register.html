@@ -15,137 +15,152 @@
     <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
 
     <!-- CSS -->
+    <link rel="stylesheet" href="css/skeleton.css">
     <link rel="stylesheet" href="css/register.css">
 
-    <!-- JavaScript -->  
-<script src="javascript/api.js"></script>
-<script src="javascript/register.js" defer></script>
-
+    <!-- JavaScript -->
+    <script src="javascript/api.js"></script>
+    <script src="javascript/register.js" defer></script>
 </head>
 
 <body>
     <main class="register-page">
 
         <!-- ============================================ -->
-        <!-- HEADER BRAND (Logo & Teks Fakultas)         -->
+        <!-- SKELETON (default terlihat)                 -->
         <!-- ============================================ -->
-        <header class="brand">
-            <img 
-                src="img/logo-fitk.png" 
-                alt="Logo UIN Siber Syekh Nurjati Cirebon" 
-                class="brand-logo">
+        <div id="registerSkeleton" class="skeleton-container">
+            <div class="skeleton-register-page">
 
-            <div class="brand-info">
-                <h1>FITK SIBER AHSAN</h1>
-                <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
-                <p class="brand-university">UIN Siber Syekh Nurjati Cirebon</p>
+                <!-- Brand Header -->
+                <div class="skeleton-brand">
+                    <div class="skeleton skeleton-brand-logo"></div>
+                    <div class="skeleton-brand-text">
+                        <div class="skeleton skeleton-brand-title"></div>
+                        <div class="skeleton skeleton-brand-sub"></div>
+                        <div class="skeleton skeleton-brand-sub" style="width: 70%;"></div>
+                    </div>
+                </div>
+
+                <!-- Kartu Registrasi -->
+                <div class="skeleton-register-card">
+                    <div class="skeleton skeleton-register-title"></div>
+
+                    <!-- Input 1: Nama Lengkap -->
+                    <div class="skeleton-form-group">
+                        <div class="skeleton skeleton-form-label"></div>
+                        <div class="skeleton skeleton-form-input"></div>
+                    </div>
+
+                    <!-- Input 2: Email -->
+                    <div class="skeleton-form-group">
+                        <div class="skeleton skeleton-form-label" style="width: 25%;"></div>
+                        <div class="skeleton skeleton-form-input"></div>
+                    </div>
+
+                    <!-- Input 3: Password -->
+                    <div class="skeleton-form-group">
+                        <div class="skeleton skeleton-form-label" style="width: 30%;"></div>
+                        <div class="skeleton skeleton-form-input"></div>
+                    </div>
+
+                    <!-- Input 4: Konfirmasi Password -->
+                    <div class="skeleton-form-group">
+                        <div class="skeleton skeleton-form-label" style="width: 45%;"></div>
+                        <div class="skeleton skeleton-form-input"></div>
+                    </div>
+
+                    <!-- Tombol Registrasi -->
+                    <div class="skeleton skeleton-form-button"></div>
+
+                    <!-- Link Login -->
+                    <div class="skeleton skeleton-form-link"></div>
+                </div>
+
             </div>
-        </header>
+        </div>
+
 
         <!-- ============================================ -->
-        <!-- FORM REGISTRASI                             -->
+        <!-- KONTEN ASLI (default hidden)                -->
         <!-- ============================================ -->
-        <section class="register-card">
-            <h2 class="register-title">Registrasi Akun</h2>
+        <div id="registerContent" class="skeleton-hidden">
 
-            <form id="registerForm" novalidate>
-
-                <!-- === Nama Lengkap === -->
-                <div class="form-group">
-                    <label for="fullname">Nama Lengkap<span>*</span></label>
-                    <div class="input-wrapper" id="fullnameWrapper">
-                        <iconify-icon icon="mdi:account-outline" class="input-icon"></iconify-icon>
-                        <input
-                            type="text"
-                            id="fullname"
-                            name="fullname"
-                            placeholder="Masukkan Nama Lengkap"
-                            autocomplete="name"
-                            required>
-                    </div>
-                    <small class="error-message" id="fullnameError"></small>
+            <!-- Header Brand -->
+            <header class="brand">
+                <img src="img/logo-fitk.png" alt="Logo UIN Siber Syekh Nurjati Cirebon" class="brand-logo">
+                <div class="brand-info">
+                    <h1>FITK SIBER AHSAN</h1>
+                    <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                    <p class="brand-university">UIN Siber Syekh Nurjati Cirebon</p>
                 </div>
+            </header>
 
-                <!-- === Email === -->
-                <div class="form-group">
-                    <label for="email">E-mail<span>*</span></label>
-                    <div class="input-wrapper" id="emailWrapper">
-                        <iconify-icon icon="mdi:email-outline" class="input-icon"></iconify-icon>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Masukkan E-mail"
-                            autocomplete="email"
-                            required>
+            <!-- Form Registrasi -->
+            <section class="register-card">
+                <h2 class="register-title">Registrasi Akun</h2>
+
+                <form id="registerForm" novalidate>
+
+                    <!-- Nama Lengkap -->
+                    <div class="form-group">
+                        <label for="fullname">Nama Lengkap<span>*</span></label>
+                        <div class="input-wrapper" id="fullnameWrapper">
+                            <input type="text" id="fullname" name="fullname" placeholder="Masukkan Nama Lengkap" autocomplete="name" required>
+                        </div>
+                        <small class="error-message" id="fullnameError"></small>
                     </div>
-                    <small class="error-message" id="emailError"></small>
-                </div>
 
-                <!-- === Password === -->
-                <div class="form-group">
-                    <label for="password">Password<span>*</span></label>
-                    <div class="input-wrapper" id="passwordWrapper">
-                        <iconify-icon icon="mdi:lock-outline" class="input-icon"></iconify-icon>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Buat Password (Minimal 8 Karakter)"
-                            autocomplete="new-password"
-                            minlength="8"
-                            required>
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            data-target="password"
-                            aria-label="Tampilkan password"
-                            aria-pressed="false">
-                            <iconify-icon icon="mdi:eye-outline"></iconify-icon>
-                        </button>
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email">E-mail<span>*</span></label>
+                        <div class="input-wrapper" id="emailWrapper">
+                            <input type="email" id="email" name="email" placeholder="Masukkan E-mail" autocomplete="email" required>
+                        </div>
+                        <small class="error-message" id="emailError"></small>
                     </div>
-                    <small class="error-message" id="passwordError"></small>
-                </div>
 
-                <!-- === Konfirmasi Password === -->
-                <div class="form-group">
-                    <label for="confirmPassword">Konfirmasi Password<span>*</span></label>
-                    <div class="input-wrapper" id="confirmPasswordWrapper">
-                        <iconify-icon icon="mdi:lock-outline" class="input-icon"></iconify-icon>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            placeholder="Ulangi Password"
-                            autocomplete="new-password"
-                            required>
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            data-target="confirmPassword"
-                            aria-label="Tampilkan konfirmasi password"
-                            aria-pressed="false">
-                            <iconify-icon icon="mdi:eye-outline"></iconify-icon>
-                        </button>
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password">Password<span>*</span></label>
+                        <div class="input-wrapper" id="passwordWrapper">
+                            <input type="password" id="password" name="password" placeholder="Buat Password (Minimal 8 Karakter)" autocomplete="new-password" minlength="8" required>
+                            <button type="button" class="toggle-password" data-target="password" aria-label="Tampilkan password">
+                                <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+                            </button>
+                        </div>
+                        <small class="error-message" id="passwordError"></small>
                     </div>
-                    <small class="error-message" id="confirmPasswordError"></small>
-                </div>
 
-                <!-- === Notifikasi Form (Success/Error) === -->
-                <div id="formMessage" class="form-message" role="status" aria-live="polite" hidden></div>
+                    <!-- Konfirmasi Password -->
+                    <div class="form-group">
+                        <label for="confirmPassword">Konfirmasi Password<span>*</span></label>
+                        <div class="input-wrapper" id="confirmPasswordWrapper">
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Ulangi Password" autocomplete="new-password" required>
+                            <button type="button" class="toggle-password" data-target="confirmPassword" aria-label="Tampilkan konfirmasi password" aria-pressed="false">
+                                <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+                            </button>
+                        </div>
+                        <small class="error-message" id="confirmPasswordError"></small>
+                    </div>
 
-                <!-- === Tombol Registrasi === -->
-                <button type="submit" class="btn-register">Registrasi</button>
+                    <!-- Notifikasi -->
+                    <div id="formMessage" class="form-message" role="status" aria-live="polite" hidden></div>
 
-                <!-- === Link Login === -->
-                <p class="login-text">
-                    Sudah punya akun? <a href="login.html">Masuk di sini</a>
-                </p>
+                    <!-- Tombol Registrasi -->
+                    <button type="submit" class="btn-register">Registrasi</button>
 
-            </form>
-        </section>
+                    <!-- Link Login -->
+                    <p class="login-text">
+                        Sudah punya akun? <a href="login.html">Masuk di sini</a>
+                    </p>
+
+                </form>
+            </section>
+
+        </div>
+
     </main>
-
 
 </body>
 </html>

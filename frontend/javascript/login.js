@@ -4,12 +4,41 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    /* ============================================================
+       SKELETON — Hilang saat window.load (jaringan lambat = lama)
+       ============================================================ */
+    const loginSkeleton = document.getElementById('loginSkeleton');
+    const brandingSkeleton = document.getElementById('brandingSkeleton');
+    const loginContent = document.getElementById('loginContent');
+    const brandingContent = document.getElementById('brandingContent');
+
+    function showContent() {
+        if (loginSkeleton) loginSkeleton.classList.add('skeleton-hidden');
+        if (brandingSkeleton) brandingSkeleton.classList.add('skeleton-hidden');
+        if (loginContent) loginContent.classList.remove('skeleton-hidden');
+        if (brandingContent) brandingContent.classList.remove('skeleton-hidden');
+    }
+
+    window.addEventListener('load', () => {
+        setTimeout(showContent, 200);
+    });
+
+    // Fallback
+    setTimeout(showContent, 8000);
+
+
+    /* ============================================================
+       ELEMEN FORM
+       ============================================================ */
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
 
-    // Toggle password (mata)
+
+    /* ============================================================
+       TOGGLE PASSWORD (Icon mata)
+       ============================================================ */
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', () => {
             const isPassword = passwordInput.type === 'password';
@@ -17,16 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const icon = togglePassword.querySelector('i');
             if (isPassword) {
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            } else {
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
         });
     }
 
-    // Submit form login
+
+    /* ============================================================
+       SUBMIT FORM — Kirim ke API
+       ============================================================ */
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
