@@ -1,4 +1,17 @@
+# Environment dan rahasia
 .env
-database/
+.env.*
+!.env.example
+
+# Dependensi Node.js
 node_modules/
-server.js/
+
+# Log
+*.log
+npm-debug.log*
+
+# File sementara
+*.tmp
+*.swp
+.DS_Store
+

@@ -1,513 +1,289 @@
-# API Contract
+# Kontrak API
 
-Website Pengaduan Fasilitas Fakultas
+**Proyek:** Website Pengaduan Fasilitas Fakultas  
+**Versi:** 1.1  
+**Pembaruan:** 15 Oktober 2026  
+**Cakupan:** API pengguna (`user`), bukan API admin  
+**Backend:** PHP Native + MySQL  
+**Autentikasi:** PHP Session  
+**Status dokumen:** Kontrak kerja yang membedakan endpoint tersedia dan rencana
 
-Versi: 1.0
-Tanggal pembaruan: 9 Oktober 2026
-Cakupan: API untuk pengguna (user)
-Backend: PHP Native, MySQL, REST-style API
-Autentikasi: PHP Session
+## 1. Tujuan dan aturan status
 
-## 1. Tujuan
+Dokumen ini menjadi acuan bersama backend dan frontend mengenai URL, metode HTTP, request, response, autentikasi, dan validasi.
 
-Dokumen ini menjadi kesepakatan antara backend dan frontend mengenai
-endpoint, format request, format response, autentikasi, serta kode
-status HTTP pada API Website Pengaduan Fasilitas Fakultas.
+Status endpoint dalam dokumen ini:
+- **Tersedia:** file endpoint ditemukan pada proyek yang diaudit. Ini tidak otomatis berarti semua skenario sudah lulus pengujian.
+- **Direncanakan:** belum ditemukan implementasi endpoint pada proyek yang diaudit; jangan dipanggil frontend sebelum backend dibuat dan diuji.
 
-Dokumen ini hanya mencakup API user. API admin berada di luar
-cakupan dokumen ini dan akan dibuat terpisah.
+API admin tidak termasuk cakupan dokumen ini.
 
-## 2. Base URL
+## 2. Base URL dan URL aktual
 
-URL pengembangan lokal:
+Server pengembangan yang digunakan:
 
+```text
 http://localhost:8000
+```
 
-Contoh endpoint registrasi berdasarkan file PHP saat ini:
+Frontend saat ini memanggil API melalui `frontend/javascript/api.js` dengan base URL:
 
-POST http://localhost:8000/api/registrasi.php
+```text
+/backend/api
+```
 
-Catatan rute: Backend saat ini menggunakan file PHP seperti
-api/registrasi.php dan api/login.php. Endpoint lain dalam dokumen
-ini merupakan kontrak yang perlu disesuaikan dengan nama file/routing
-yang diterapkan. Jangan menganggap endpoint yang belum dibuat sudah
-aktif.
+Karena itu, gunakan URL aktual berikut saat pengembangan lokal:
 
-## 3. Format Umum
+| Method | URL aktual | Status |
+|---|---|---|
+| POST | `http://localhost:8000/backend/api/registrasi.php` | Tersedia |
+| POST | `http://localhost:8000/backend/api/login.php` | Tersedia |
+| POST | `http://localhost:8000/backend/api/logout.php` | Tersedia |
+| GET | `http://localhost:8000/backend/api/dashboard.php` | Tersedia |
 
-### 3.1 Request JSON
+**Penting:** kontrak ini menggunakan path file PHP yang benar-benar ada, bukan alias logis seperti `/api/registrasi`. Jangan menghapus ekstensi `.php` atau mengganti base URL sampai routing backend dan konfigurasi frontend diubah bersama-sama.
 
-Untuk request yang mengirim data JSON, gunakan header:
+## 3. Format request dan response
 
+### 3.1 JSON
+
+Untuk request yang mengirim JSON, gunakan:
+
+```http
 Content-Type: application/json
 Accept: application/json
+```
 
-Contoh:
+Contoh body login:
 
+```json
 {
-"email": "user@example.com",
-"password": "Rahasia123"
+  "email": "user@example.com",
+  "password": "Rahasia123"
 }
+```
 
-Untuk endpoint unggah foto, gunakan multipart/form-data.
+### 3.2 Response umum
 
-### 3.2 Response JSON
+Bentuk response sukses yang digunakan helper backend:
 
-Respons berhasil:
-
+```json
 {
-"status": "success",
-"message": "Permintaan berhasil",
-"data": {}
+  "status": "success",
+  "message": "Permintaan berhasil",
+  "data": {}
 }
+```
 
-Respons gagal:
+Bentuk response error:
 
+```json
 {
-"status": "error",
-"message": "Permintaan tidak dapat diproses"
+  "status": "error",
+  "message": "Permintaan tidak dapat diproses"
 }
+```
 
-Field data berisi objek atau daftar data pada respons berhasil.
-Respons error tidak wajib menyertakan data.
+Nilai `message` menyesuaikan hasil operasi. Response error dapat tidak memiliki field `data`. Frontend sebaiknya memeriksa HTTP status dan `status`, bukan hanya teks pesan.
 
-## 4. Autentikasi dan Session
+## 4. Session dan autentikasi
 
-API menggunakan PHP Session, bukan Bearer Token/JWT.
+- Autentikasi menggunakan PHP Session, bukan Bearer Token/JWT.
+- Setelah login berhasil, server membuat session dan mengirim cookie session.
+- Request berikutnya ke endpoint privat harus mengirim kembali cookie session.
+- Karena frontend dan backend saat ini berjalan pada origin yang sama, request `fetch` menggunakan `credentials: "same-origin"`.
+- Endpoint privat menolak request tanpa session yang valid dengan `401 Unauthorized`.
+- Logout mengakhiri session di server. Menghapus data pengguna dari `localStorage` saja tidak cukup untuk melakukan logout.
+- Data `localStorage` bukan bukti autentikasi dan tidak boleh digunakan backend sebagai pengganti pemeriksaan session.
 
-Setelah login berhasil, server membuat session dan mengirim cookie
-session.
-
-Client harus menyimpan serta mengirim kembali cookie tersebut pada
-request yang memerlukan autentikasi.
-
-Di Postman, pastikan cookie dari respons login tersimpan dan dikirim
-pada request berikutnya.
-
-Endpoint yang memerlukan login harus menolak request tanpa session
-yang valid dengan 401 Unauthorized.
-
-Logout mengakhiri session dan menghapus cookie/session yang terkait.
-
-## 5. Aturan Data
+## 5. Endpoint yang tersedia
 
 ### 5.1 Registrasi
 
-Field wajib: nama, email, password, confirm_password.
-
-Email harus memiliki format yang valid dan belum digunakan.
-
-Password minimal 8 karakter serta mengandung huruf besar, huruf
-kecil, dan angka.
-
-password harus sama dengan confirm_password.
-
-confirm_password hanya untuk validasi request dan tidak disimpan
-ke database.
-
-Role pengguna baru adalah user.
-
-Password disimpan menggunakan hash, bukan teks asli.
-
-### 5.2 Pengaduan
-
-Status awal pengaduan adalah diajukan.
-
-Status pengaduan yang dikenal dalam skema: diajukan, diproses,
-selesai, ditolak.
-
-Pengguna hanya boleh mengubah atau menghapus pengaduan miliknya,
-sesuai aturan bisnis yang diterapkan backend.
-
-Field dan aturan unggah foto perlu disepakati pada implementasi
-endpoint pengaduan.
-
-### 5.3 Vote
-
-Nilai tipe_vote yang diperbolehkan: - upvote - downvote
-
-## 6. Daftar Endpoint User
-
-Daftar ini mencakup kontrak endpoint user. Status implementasi tiap
-endpoint tidak otomatis berarti sudah tersedia di backend.
-
-            No. Method        Endpoint kontrak                 Fungsi        Autentikasi
-
-              1 POST          `/api/registrasi`                Membuat akun  Tidak
-                                                               user
-
-              2 POST          `/api/login`                     Login user    Tidak
-
-              3 POST          `/api/logout`                    Logout user   Ya
-
-              4 GET           `/api/pengaduan`                 Melihat       Sesuai
-                                                               daftar        kebijakan
-                                                               pengaduan     aplikasi
-
-              5 POST          `/api/pengaduan`                 Membuat       Ya
-                                                               pengaduan
-
-              6 GET           `/api/pengaduan/{id}`            Melihat       Sesuai
-                                                               detail        kebijakan
-                                                               pengaduan     aplikasi
-
-              7 PUT           `/api/pengaduan/{id}`            Mengubah      Ya
-                                                               pengaduan
-                                                               milik sendiri
-
-              8 DELETE        `/api/pengaduan/{id}`            Menghapus     Ya
-                                                               pengaduan
-                                                               milik sendiri
-
-              9 POST          `/api/pengaduan/{id}/vote`       Memberikan    Ya
-                                                               atau mengubah
-                                                               vote
-
-             10 GET           `/api/pengaduan/{id}/komentar`   Melihat       Sesuai
-                                                               komentar      kebijakan
-                                                               pengaduan     aplikasi
-
-             11 POST          `/api/pengaduan/{id}/komentar`   Menambahkan   Ya
-                                                               komentar
-
-             12 GET           `/api/pengaduan/riwayat`         Melihat       Ya
-                                                               riwayat
-                                                               pengaduan
-                                                               user
-
-             13 GET           `/api/profile`                   Melihat       Ya
-                                                               profil user
-
-             14 PUT           `/api/profile`                   Mengubah      Ya
-                                                               profil user
-
-             15 POST          `/api/profile/photo`             Mengunggah    Ya
-                                                               foto profil
-
-             16 PUT           `/api/profile/password`          Mengubah      Ya
-                                                               password
-
-Nama endpoint di tabel mengikuti kontrak logis tanpa ekstensi .php.
-Jika implementasi tetap menggunakan file PHP langsung, frontend dan
-backend harus menyepakati path aktual, misalnya /api/login.php.
-Jangan mencampur kedua format pada integrasi.
-
-## 7. Detail Request dan Response
-
-### 7.1 Registrasi User
-
-Method: POST
-Endpoint kontrak: /api/registrasi
-Autentikasi: Tidak
+**Method:** `POST`  
+**URL:** `/backend/api/registrasi.php`  
+**Autentikasi:** Tidak  
+**Status:** Tersedia
 
 Request:
 
+```json
 {
-"nama": "Andi Saputra",
-"email": "andi@example.com",
-"password": "Andi12345",
-"confirm_password": "Andi12345"
+  "nama": "Andi Saputra",
+  "email": "andi@example.com",
+  "password": "Andi12345",
+  "confirm_password": "Andi12345"
 }
+```
 
-Respons berhasil: 201 Created
+Aturan:
+- `nama`, `email`, `password`, dan `confirm_password` wajib diisi.
+- Email harus valid dan belum digunakan.
+- Password minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka.
+- `password` harus sama dengan `confirm_password`.
+- `confirm_password` hanya untuk validasi, tidak disimpan ke database.
+- Role akun baru adalah `user`.
+- Password harus disimpan sebagai hash dan tidak dikembalikan dalam response.
 
+Response sukses yang disepakati:
+
+```json
 {
-"status": "success",
-"message": "Registrasi berhasil",
-"data": {
-"id_user": 1,
-"nama": "Andi Saputra",
-"email": "andi@example.com",
-"role": "user"
+  "status": "success",
+  "message": "Registrasi berhasil",
+  "data": {
+    "id_user": 1,
+    "nama": "Andi Saputra",
+    "email": "andi@example.com",
+    "role": "user"
+  }
 }
-}
+```
 
-Kemungkinan error: - 400 Bad Request: input wajib kosong, format email
-tidak valid, password tidak memenuhi aturan, konfirmasi password tidak
-cocok, atau email sudah terdaftar. - 405 Method Not Allowed: method
-selain POST. - 500 Internal Server Error: terjadi kesalahan
-server/database.
+Status yang digunakan: `201 Created` untuk registrasi berhasil; `400 Bad Request` untuk input tidak valid; `405 Method Not Allowed` untuk metode selain POST; `500 Internal Server Error` untuk kegagalan internal. Jika implementasi membedakan email duplikat dengan `409 Conflict`, frontend harus menerima status tersebut juga dan kontrak diperbarui secara konsisten.
 
-### 7.2 Login User
+### 5.2 Login
 
-Method: POST
-Endpoint kontrak: /api/login
-Autentikasi: Tidak
+**Method:** `POST`  
+**URL:** `/backend/api/login.php`  
+**Autentikasi:** Tidak  
+**Status:** Tersedia
 
 Request:
 
+```json
 {
-"email": "andi@example.com",
-"password": "Andi12345"
+  "email": "andi@example.com",
+  "password": "Andi12345"
 }
+```
 
-Respons berhasil: 200 OK
+Response sukses:
 
+```json
 {
-"status": "success",
-"message": "Login berhasil",
-"data": {
-"id_user": 1,
-"nama": "Andi Saputra",
-"email": "andi@example.com",
-"role": "user"
+  "status": "success",
+  "message": "Login berhasil",
+  "data": {
+    "id_user": 1,
+    "nama": "Andi Saputra",
+    "email": "andi@example.com",
+    "role": "user"
+  }
 }
-}
+```
 
-Server membuat session login. Password maupun hash password tidak boleh
-dikirim kembali dalam respons.
+Server membuat session setelah kredensial valid dan seharusnya meregenerasi session ID setelah login. Password maupun hash password tidak boleh dikirim dalam response.
 
-Kemungkinan error: - 400 Bad Request: email/password kosong atau
-format email tidak valid. - 401 Unauthorized: email atau password
-salah. - 405 Method Not Allowed: method selain POST. -
-500 Internal Server Error: terjadi kesalahan server/database.
+Status: `200 OK` untuk login berhasil; `400 Bad Request` untuk input tidak valid; `401 Unauthorized` untuk email/password salah; `405 Method Not Allowed` untuk metode selain POST; `500 Internal Server Error` untuk kegagalan internal.
 
-### 7.3 Logout User
+### 5.3 Logout
 
-Method: POST
-Endpoint kontrak: /api/logout
-Autentikasi: Ya
+**Method:** `POST`  
+**URL:** `/backend/api/logout.php`  
+**Autentikasi:** Session aktif  
+**Status:** Tersedia
 
-Mengakhiri session user yang sedang login.
+Logout mengakhiri session dan menghapus cookie session yang terkait.
 
-Respons berhasil:
+Response sukses:
 
+```json
 {
-"status": "success",
-"message": "Logout berhasil",
-"data": null
+  "status": "success",
+  "message": "Logout berhasil",
+  "data": null
 }
+```
 
-### 7.4 Daftar Pengaduan
+Jika tidak ada session aktif, implementasi saat ini dapat merespons `401 Unauthorized`. Frontend tetap harus menangani kondisi tersebut dan tidak menganggap penghapusan `localStorage` sebagai bukti bahwa session server sudah berakhir.
 
-Method: GET
-Endpoint kontrak: /api/pengaduan
+### 5.4 Dashboard
 
-Mengambil daftar pengaduan yang dapat dilihat pengguna. Struktur filter,
-pagination, dan urutan data ditetapkan saat implementasi.
+**Method:** `GET`  
+**URL:** `/backend/api/dashboard.php`  
+**Autentikasi:** Session aktif  
+**Status:** Tersedia
 
-Contoh bentuk respons:
+Endpoint ini dilindungi middleware autentikasi. Request tanpa session valid harus menghasilkan `401 Unauthorized`.
 
-{
-"status": "success",
-"message": "Daftar pengaduan berhasil diambil",
-"data": [
-{
-"id_pengaduan": 1,
-"judul": "Kursi kelas rusak",
-"deskripsi": "Beberapa kursi mengalami kerusakan.",
-"status": "diajukan",
-"created_at": "2026-10-09 10:00:00"
-}
-]
-}
+**Catatan:** bentuk dan sumber data dashboard harus mengikuti response aktual `DashboardController` dan model dashboard. Jangan menganggap angka statis pada halaman `frontend/index.html` sebagai data database. Sebelum frontend mengonsumsi endpoint ini, dokumentasikan contoh response aktual hasil pengujian.
 
-### 7.5 Membuat Pengaduan
+## 6. Endpoint yang direncanakan, belum tersedia
 
-Method: POST
-Endpoint kontrak: /api/pengaduan
-Autentikasi: Ya
+Endpoint berikut berasal dari kebutuhan fitur yang tercantum pada kontrak sebelumnya. File implementasinya belum ditemukan pada ZIP yang diaudit, sehingga statusnya **direncanakan**, bukan endpoint aktif. Jangan integrasikan ke frontend sampai request/response final ditetapkan dan endpoint diuji.
 
-Field inti yang berkaitan dengan skema database:
+| Method | Path rencana | Fungsi | Autentikasi |
+|---|---|---|---|
+| GET | `/backend/api/pengaduan.php` | Daftar pengaduan | Kebijakan visibilitas perlu ditetapkan |
+| POST | `/backend/api/pengaduan.php` | Membuat pengaduan | Ya |
+| GET | `/backend/api/pengaduan_detail.php?id={id}` | Detail pengaduan | Kebijakan visibilitas perlu ditetapkan |
+| PUT | `/backend/api/pengaduan_update.php?id={id}` | Mengubah pengaduan milik sendiri | Ya |
+| DELETE | `/backend/api/pengaduan_hapus.php?id={id}` | Menghapus pengaduan milik sendiri | Ya |
+| POST | `/backend/api/vote.php` | Memberi/mengubah vote | Ya |
+| GET | `/backend/api/komentar.php?id_pengaduan={id}` | Daftar komentar | Kebijakan visibilitas perlu ditetapkan |
+| POST | `/backend/api/komentar.php` | Menambah komentar | Ya |
+| GET | `/backend/api/riwayat_pengaduan.php` | Riwayat pengaduan user | Ya |
+| GET | `/backend/api/profile.php` | Melihat profil user | Ya |
+| PUT | `/backend/api/profile.php` | Mengubah profil user | Ya |
+| POST | `/backend/api/profile_photo.php` | Mengunggah foto profil | Ya |
+| PUT | `/backend/api/profile_password.php` | Mengubah password | Ya |
 
-{
-"id_fasilitas": 1,
-"judul": "Kursi kelas rusak",
-"deskripsi": "Beberapa kursi mengalami kerusakan."
-}
+Path pada tabel ini adalah **usulan penamaan file PHP**, bukan URL yang sudah berjalan. Sebelum mengimplementasikan fitur, backend dan frontend harus menyepakati path final, nama field, format response, kode status, dan aturan akses. Hindari memakai path berbentuk `/pengaduan/{id}` tanpa router yang benar-benar mendukung parameter tersebut.
 
-Foto, jika diwajibkan oleh aturan implementasi, dikirim sebagai unggahan
-file. Status awal otomatis diajukan dan id_user diambil dari
-session, bukan dipercaya dari request client.
+## 7. Aturan data untuk fitur pengaduan mendatang
 
-Respons berhasil yang diharapkan: 201 Created.
+Aturan berikut merupakan kebutuhan bisnis yang harus dipertahankan saat endpoint dibuat:
 
-### 7.6 Detail Pengaduan
+- Status awal pengaduan: `diajukan`.
+- Status yang dikenal: `diajukan`, `diproses`, `selesai`, `ditolak`.
+- `id_user` harus diambil dari session, bukan dipercaya dari body request.
+- Pengguna hanya boleh mengubah atau menghapus pengaduan miliknya, sesuai aturan bisnis final.
+- `tipe_vote` hanya menerima `upvote` atau `downvote`.
+- Nama field komentar, aturan foto, ukuran/jenis file, serta perilaku perubahan atau pembatalan vote perlu ditetapkan sebelum endpoint diimplementasikan.
+- Request unggah file menggunakan `multipart/form-data`, bukan JSON.
 
-Method: GET
-Endpoint kontrak: /api/pengaduan/{id}
+## 8. Kode status HTTP
 
-Mengambil detail pengaduan berdasarkan ID. Ganti {id} dengan ID
-pengaduan sebenarnya.
+| Status | Penggunaan |
+|---|---|
+| `200 OK` | Request berhasil, misalnya login atau mengambil data |
+| `201 Created` | Data baru berhasil dibuat |
+| `400 Bad Request` | Input tidak valid |
+| `401 Unauthorized` | Belum login atau kredensial salah |
+| `403 Forbidden` | Pengguna tidak berhak melakukan tindakan |
+| `404 Not Found` | Resource atau endpoint tidak ditemukan |
+| `405 Method Not Allowed` | Metode HTTP tidak didukung |
+| `409 Conflict` | Konflik data, misalnya email sudah digunakan, jika dipakai konsisten oleh backend |
+| `500 Internal Server Error` | Kesalahan internal server |
 
-### 7.7 Mengubah Pengaduan
-
-Method: PUT
-Endpoint kontrak: /api/pengaduan/{id}
-Autentikasi: Ya
-
-Mengubah data pengaduan milik user yang sedang login. Backend harus
-memeriksa kepemilikan pengaduan dan hanya menerima field yang diizinkan.
-
-### 7.8 Menghapus Pengaduan
-
-Method: DELETE
-Endpoint kontrak: /api/pengaduan/{id}
-Autentikasi: Ya
-
-Menghapus pengaduan sesuai aturan bisnis. Backend harus memeriksa
-kepemilikan pengaduan sebelum menghapus.
-
-### 7.9 Vote Pengaduan
-
-Method: POST
-Endpoint kontrak: /api/pengaduan/{id}/vote
-Autentikasi: Ya
-
-Request:
-
-{
-"tipe_vote": "upvote"
-}
-
-tipe_vote hanya menerima upvote atau downvote. Aturan apakah vote
-dapat diubah atau dibatalkan perlu konsisten antara frontend dan
-backend.
-
-### 7.10 Melihat Komentar
-
-Method: GET
-Endpoint kontrak: /api/pengaduan/{id}/komentar
-
-Mengambil daftar komentar untuk pengaduan yang ditentukan.
-
-### 7.11 Menambahkan Komentar
-
-Method: POST
-Endpoint kontrak: /api/pengaduan/{id}/komentar
-Autentikasi: Ya
-
-Contoh request:
-
-{
-"isi_komentar": "Semoga segera diperbaiki."
-}
-
-Nama field final perlu disamakan dengan kolom dan implementasi tabel
-komentar.
-
-### 7.12 Riwayat Pengaduan User
-
-Method: GET
-Endpoint kontrak: /api/pengaduan/riwayat
-Autentikasi: Ya
-
-Mengambil pengaduan yang dibuat oleh user yang sedang login. Identitas
-user diambil dari session.
-
-### 7.13 Melihat Profil
-
-Method: GET
-Endpoint kontrak: /api/profile
-Autentikasi: Ya
-
-Mengambil profil user yang sedang login. Password tidak boleh disertakan
-dalam respons.
-
-### 7.14 Mengubah Profil
-
-Method: PUT
-Endpoint kontrak: /api/profile
-Autentikasi: Ya
-
-Field profil yang dapat diubah perlu disepakati dengan frontend. Email
-harus tetap divalidasi dan aturan keunikan email harus diterapkan jika
-email dapat diubah.
-
-### 7.15 Mengunggah Foto Profil
-
-Method: POST
-Endpoint kontrak: /api/profile/photo
-Autentikasi: Ya
-
-Request menggunakan multipart/form-data. Nama field file yang
-digunakan frontend dan backend harus disepakati sebelum integrasi.
-
-Backend perlu memvalidasi jenis dan ukuran file serta tidak mempercayai
-nama file dari client.
-
-### 7.16 Mengubah Password
-
-Method: PUT
-Endpoint kontrak: /api/profile/password
-Autentikasi: Ya
-
-Contoh bentuk request:
-
-{
-"password_lama": "Andi12345",
-"password_baru": "Andi67890",
-"confirm_password": "Andi67890"
-}
-
-Backend harus memverifikasi password lama, menerapkan aturan password
-baru, mencocokkan konfirmasi password, lalu menyimpan hash password
-baru. Nama field final harus disepakati bersama frontend.
-
-## 8. Kode Status HTTP
-
-                                Status Penggunaan
-
-                              `200 OK` Request berhasil
-
-                         `201 Created` Data baru berhasil dibuat
-
-                     `400 Bad Request` Input tidak valid
-
-                    `401 Unauthorized` Belum login atau kredensial
-                                       salah
-
-                       `403 Forbidden` Tidak memiliki izin mengakses
-                                       resource
-
-                       `404 Not Found` Resource tidak ditemukan
-
-              `405 Method Not Allowed` Method HTTP tidak didukung
-
-                        `409 Conflict` Konflik data, misalnya email
-                                       sudah digunakan, jika dipilih
-                                       sebagai konvensi
-
-           `500 Internal Server Error` Kesalahan internal server
-
-Status aktual harus konsisten dengan implementasi backend. Untuk menjaga
-kompatibilitas, perubahan status atau struktur respons perlu
-dikomunikasikan kepada frontend.
+Kode status aktual wajib diselaraskan dengan implementasi dan diuji melalui Postman.
 
 ## 9. Keamanan
 
-Gunakan prepared statements untuk query database.
+- Gunakan prepared statements untuk query database.
+- Gunakan `password_hash()` dan `password_verify()` untuk password.
+- Jangan mengembalikan password atau hash password.
+- Regenerasi session ID setelah login berhasil.
+- Semua endpoint privat harus memeriksa session di backend.
+- Periksa kepemilikan resource sebelum mengubah atau menghapusnya.
+- Validasi semua input di backend, meskipun frontend juga melakukan validasi.
+- Validasi tipe dan ukuran file unggahan; jangan mempercayai nama file dari client.
+- Gunakan HTTPS saat deployment.
+- Jangan commit `.env` atau kredensial ke Git.
 
-Simpan password menggunakan password_hash() dan verifikasi dengan
-password_verify().
+## 10. Checklist status implementasi
 
-Jangan mengembalikan password atau hash password dalam response.
+| Fitur | Status berdasarkan struktur proyek yang diaudit | Catatan |
+|---|---|---|
+| Registrasi | Tersedia | Perlu pengujian regresi setelah revisi |
+| Login | Tersedia | Perlu pengujian cookie/session |
+| Logout | Tersedia | Uji session benar-benar berakhir di server |
+| Dashboard | Tersedia | Dokumentasikan response aktual dan integrasikan ke frontend |
+| CRUD pengaduan | Direncanakan | Endpoint belum ditemukan |
+| Vote | Direncanakan | Endpoint belum ditemukan |
+| Komentar | Direncanakan | Endpoint belum ditemukan |
+| Riwayat pengaduan | Direncanakan | Endpoint belum ditemukan |
+| Profil | Direncanakan | Endpoint belum ditemukan |
 
-Gunakan session untuk autentikasi dan regenerasi session ID setelah
-login.
-
-Endpoint privat wajib memeriksa session.
-
-Periksa kepemilikan pengaduan sebelum mengubah atau menghapus data.
-
-Validasi input di backend meskipun frontend sudah melakukan
-validasi.
-
-Untuk deployment, gunakan HTTPS.
-
-Jangan commit kredensial database atau rahasia lain ke Git.
-
-## 10. Status Implementasi dan Integrasi
-
-Dokumen ini adalah kontrak untuk menyelaraskan frontend dan backend,
-bukan bukti bahwa semua endpoint sudah selesai dibuat.
-
-Pada saat dokumen disusun, registrasi telah direfaktor dan fungsi login
-sedang disiapkan untuk pengujian. Endpoint lain harus ditandai selesai
-setelah benar-benar diimplementasikan dan diuji.
-
-Sebelum integrasi frontend: 1. Sepakati path final endpoint, termasuk
-penggunaan atau penghilangan ekstensi .php. 2. Sepakati nama field
-request dan response. 3. Uji autentikasi session dan cookie. 4. Uji kode
-status dan format error. 5. Catat hasil uji Postman pada dokumentasi
-pengujian terpisah.
+Perbarui status menjadi selesai hanya setelah endpoint tersedia dan pengujian request/response berhasil. Simpan bukti uji Postman di dokumentasi pengujian terpisah.

@@ -1,12 +1,14 @@
 <?php
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
-require_once '../config/database.php';
-require_once '../app/Controllers/AuthController.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../app/Controllers/AuthController.php';
 
 // Login hanya menerima request POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Allow: POST');
+
     http_response_code(405);
 
     echo json_encode([
