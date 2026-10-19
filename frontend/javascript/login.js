@@ -34,8 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
-
-
+    
     /* ============================================================
        TOGGLE PASSWORD (Icon mata)
        ============================================================ */
@@ -44,13 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const isPassword = passwordInput.type === 'password';
             passwordInput.type = isPassword ? 'text' : 'password';
 
-            const icon = togglePassword.querySelector('i');
+            // Ganti ikon menggunakan Iconify
+            const icon = togglePassword.querySelector('iconify-icon');
             if (isPassword) {
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+                icon.setAttribute('icon', 'akar-icons:eye-closed');
             } else {
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                icon.setAttribute('icon', 'akar-icons:eye');
             }
         });
     }

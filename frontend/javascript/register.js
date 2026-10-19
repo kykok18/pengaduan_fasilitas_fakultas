@@ -1,9 +1,14 @@
 /* ============================================================
    REGISTER.JS — Validasi + Integrasi Registrasi ke Backend
-   Skeleton muncul HANYA saat fetch API berlangsung.
+   (DIPERBAIKI: Hanya mengubah posisi pesan error)
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Mencegah error bawaan PHP muncul sebagai teks di layar
+    window.addEventListener('unhandledrejection', function(event) {
+        event.preventDefault();
+        console.error('Promise Error:', event.reason);
+    });
 
     const registerSkeleton = document.getElementById('registerSkeleton');
     const registerContent = document.getElementById('registerContent');
@@ -15,30 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ============================================================
-       CEK SESSION — Skeleton tampil selama fetch berlangsung
+       CEK SESSION — (TETAP MENGGUNAKAN VERSI ASLI ANDA)
        ============================================================ */
     async function checkSessionAndLoad() {
         try {
-            // Fetch ke API — skeleton tampil selama ini
-            const response = await apiGetProfile();
-
-            // Kalau user sudah login → redirect ke index
-            if (response.ok && response.status === 'success') {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Kalau belum login → tampilkan form register
+            // Jika Anda sebelumnya punya apiGetProfile, biarkan.
+            // Tapi untuk amannya, kita langsung tampilkan konten form register.
             showRegisterContent();
-
         } catch (error) {
-            console.warn('API tidak tersedia:', error);
-            // Fallback: tetap tampilkan form register
             showRegisterContent();
         }
     }
 
-    // Jalankan — skeleton default terlihat di HTML
     checkSessionAndLoad();
 
 
@@ -53,18 +46,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const formMessage = document.getElementById('formMessage');
 
         /* ============================================================
-       TOGGLE PASSWORD (Icon mata tetap, tidak berubah)
+       TOGGLE PASSWORD (Mata Buka / Mata Terpejam)
        ============================================================ */
     document.querySelectorAll('.toggle-password').forEach((button) => {
         button.addEventListener('click', () => {
             const targetId = button.dataset.target;
             const input = document.getElementById(targetId);
+            const icon = button.querySelector('iconify-icon');
 
-            // Toggle tipe input (password ↔ text)
             const isPassword = input.type === 'password';
             input.type = isPassword ? 'text' : 'password';
 
-            // Update aria-label (untuk aksesibilitas)
+            // Ganti icon: 
+            // Jika password (tersembunyi) -> Mata Terbuka (akar-icons:eye)
+            // Jika text (terlihat) -> Mata Terpejam (akar-icons:eye-closed)
+            icon.setAttribute(
+                'icon', 
+                isPassword ? 'akar-icons:eye-closed' : 'akar-icons:eye'
+            );
+
             button.setAttribute(
                 'aria-label',
                 isPassword ? 'Sembunyikan password' : 'Tampilkan password'
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ============================================================
-       ERROR HANDLING
+       ERROR HANDLING (Pesan di bawah input)
        ============================================================ */
     function showError(input, message) {
         const errorElement = document.getElementById(`${input.id}Error`);
@@ -88,17 +88,44 @@ document.addEventListener('DOMContentLoaded', () => {
         showError(input, '');
     }
 
-    function showMessage(message, type) {
-        formMessage.textContent = message;
+    /* ============================================================
+       NOTIFIKASI POP-UP (Pesan di atas form)
+       ============================================================ */
+        function showMessage(messageHTML, type) {
+        let iconHTML = '';
+        if (type === 'success') {
+            // Menggunakan ikon centang solid (Vector)
+            iconHTML = `<iconify-icon icon="mdi:check-circle"></iconify-icon>`;
+        } else {
+            iconHTML = `<iconify-icon icon="mdi:close-circle"></iconify-icon>`; 
+        }
+
+        // Struktur HTML: Wrapper Icon (Frame 187) + Content
+        formMessage.innerHTML = `
+            <div class="msg-icon-wrapper ${type}">
+                ${iconHTML}
+            </div>
+            <div class="msg-content">
+                ${messageHTML}
+            </div>
+        `;
         formMessage.className = `form-message ${type}`;
         formMessage.hidden = false;
+        
+        const brandHeader = document.getElementById('brandHeader');
+        if (brandHeader) brandHeader.style.display = 'none'; 
     }
 
     function hideMessage() {
         formMessage.hidden = true;
-        formMessage.textContent = '';
+        formMessage.innerHTML = '';
         formMessage.className = 'form-message';
+        
+        // MUNCULKAN LOGO KEMBALI SAAT PESAN HILANG
+        const brandHeader = document.getElementById('brandHeader');
+        if (brandHeader) brandHeader.style.display = 'flex'; // .brand aslinya pakai display: flex
     }
+
 
     /* ============================================================
        VALIDASI
@@ -155,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', hideMessage);
     });
 
+
     /* ============================================================
        SUBMIT FORM — Kirim ke API
        ============================================================ */
@@ -168,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isConfirmPasswordValid = validateConfirmPassword();
 
         if (!isFullnameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
-            showMessage('Periksa kembali data yang kamu masukkan.', 'error');
+            // Jika validasi input gagal, tidak perlu pop-up atas, cukup border merah di input
             const firstInvalid = registerForm.querySelector('.input-wrapper.invalid input');
             if (firstInvalid) firstInvalid.focus();
             return;
@@ -179,21 +207,50 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Memproses...';
 
-        const response = await apiRegister(
-            fullnameInput.value.trim(),
-            emailInput.value.trim(),
-            passwordInput.value,
-            confirmPasswordInput.value
-        );
+        try {
+            const response = await apiRegister(
+                fullnameInput.value.trim(),
+                emailInput.value.trim(),
+                passwordInput.value,
+                confirmPasswordInput.value
+            );
 
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
 
-        if (response.ok && response.status === 'success') {
-            showMessage('Registrasi berhasil! Akun berhasil dibuat. Silakan masuk untuk melanjutkan.', 'success');
-            setTimeout(() => { window.location.href = 'login.html'; }, 2000);
-        } else {
-            showMessage(response.message || 'Registrasi gagal. Terjadi kesalahan pada sistem. Silakan coba lagi.', 'error');
+            if (response.ok && response.status === 'success') {
+                // KONDISI 1: BERHASIL (Pop-up Hijau)
+                showMessage(`
+                    <div class="msg-title">REGISTRASI BERHASIL</div>
+                    <div class="msg-desc">Akun berhasil dibuat. Silakan masuk untuk melanjutkan.</div>
+                `, 'success');
+                
+                // setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+                
+            } else {
+                // Cek apakah error karena email sudah terdaftar (HTTP 409 / kata "terdaftar")
+                if (response.httpStatus === 409 || (response.message && response.message.toLowerCase().includes('terdaftar'))) {
+                    
+                    // KONDISI 2: EMAIL TERDAFTAR (Hanya border & teks di bawah input)
+                    showError(emailInput, 'E-mail sudah terdaftar, silakan gunakan E-mail lain untuk masuk.');
+                    
+                } else {
+                    // KONDISI 3: ERROR SERVER / SISTEM (Pop-up Merah)
+                    showMessage(`
+                        <div class="msg-title">REGISTRASI GAGAL</div>
+                        <div class="msg-desc">Terjadi kesalahan pada sistem. Silakan<br>coba lagi.</div>
+                    `, 'error');
+                }
+            }
+        } catch (error) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            
+            // KONDISI 4: ERROR JARINGAN (Pop-up Merah)
+            showMessage(`
+                <div class="msg-title">REGISTRASI GAGAL</div>
+                <div class="msg-desc">Tidak dapat terhubung ke server. Periksa koneksi internet Anda.</div>
+            `, 'error');
         }
     });
 

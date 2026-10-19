@@ -1,21 +1,15 @@
 /* ============================================================
-   LOGIN.CSS — Halaman Login FITK (Split Screen)
-   Sesuai Figma:
-   - Form: 586px × 548px
-   - Gap antar elemen: 36px
+   LOGIN.CSS — Halaman Login FITK (Center Layout Sesuai Figma)
    ============================================================ */
 
 :root {
     --primary-green: #0f6b3b;
     --dark-green-bg: #0a4f2a;
-    --mint-green: #5CE0A8;
-    --light-green-bg: #DEF8E6;
-    --text-dark: #1a1a1a;
-    --text-muted: #888888;
+    --text-dark: #0B5E3B;
+    --text-muted: #666666;
     --white: #ffffff;
+    --bg-page: #E6F4EA; /* Hijau pucat sesuai Figma */
     --border-color: #D9D9D9;
-    --border-error: #E53935;
-    --bg-left: #DEF8E6;
 }
 
 * {
@@ -26,107 +20,83 @@
 }
 
 body {
-    background-color: var(--white);
+    background-color: var(--bg-page);
     color: var(--text-dark);
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Memastikan konten di tengah layar */
+    padding: 20px;
     -webkit-font-smoothing: antialiased;
 }
 
-
 /* ============================================================
-   LOGIN PAGE — Split Screen Layout
+   CONTAINER UTAMA (Menggantikan Split Screen)
    ============================================================ */
-.login-page {
-    display: grid;
-    grid-template-columns: 1fr;
-    min-height: 100vh;
+.login-container {
     width: 100%;
-}
-
-
-/* ============================================================
-   KIRI: BRANDING (Hijau Pucat)
-   ============================================================ */
-.login-branding {
-    background-color: var(--bg-left);
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 40px;
-    text-align: center;
-    min-height: 100vh;
-}
-
-.branding-logo {
-    width: 220px;
-    height: 220px;
-    object-fit: contain;
-    margin-bottom: 32px;
-}
-
-.branding-fakultas {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--primary-green);
-    letter-spacing: 0.5px;
-    line-height: 1.3;
-    margin-bottom: 12px;
-    max-width: 500px;
-}
-
-.branding-universitas {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #C89B3C;
-    letter-spacing: 0.5px;
-}
-
-
-/* ============================================================
-   KANAN: FORM LOGIN (Putih)
-   Sesuai Figma: 586px width
-   ============================================================ */
-.login-form-section {
+    max-width: 400px; /* Lebar maksimal form agar tidak terlalu lebar di desktop */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 60px 88px;                  /* Kiri-kanan 88px (sesuai Figma) */
-    min-height: 100vh;
-    width: 100%;
-    max-width: 586px;                    /* Sesuai Figma: 586px */
-    margin: 0 auto;
-    box-sizing: border-box;
 }
 
+/* ============================================================
+   HEADER: LOGO & TEKS FAKULTAS
+   ============================================================ */
+.brand-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.brand-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 16px;
+}
+
+.brand-fakultas {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+.brand-universitas {
+    font-size: 13px;
+    font-weight: 700;
+    color: #D59A29; /* Warna emas */
+    letter-spacing: 0.5px;
+}
 
 /* ============================================================
    JUDUL FORM
    ============================================================ */
 .login-judul {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--primary-green);
+    color: var(--text-dark);
     margin-bottom: 8px;
-    line-height: 1.2;
 }
 
 .login-deskripsi {
-    font-size: 12px;
-    color: var(--text-dark);
+    font-size: 14px;
+    color: var(--text-muted);
     line-height: 1.5;
-    margin-bottom: 36px;                  /* Sesuai Figma: Gap 36px */
+    margin-bottom: 32px;
 }
-
 
 /* ============================================================
    FORM
-   Sesuai Figma: Gap 36px antar elemen
    ============================================================ */
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 36px;                             /* Sesuai Figma: Gap 36px */
+    gap: 20px;
     width: 100%;
 }
 
@@ -138,9 +108,9 @@ body {
 }
 
 .form-group label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-dark);
+    font-size: 13px;
+    font-weight: 700;
+    color: #000000;
 }
 
 /* Input Wrapper */
@@ -150,17 +120,16 @@ body {
     align-items: center;
     background: #FFFFFF;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 0 16px;
-    height: 48px;
+    height: 56px; /* Lebih tinggi agar proporsional di mobile */
     box-sizing: border-box;
     width: 100%;
     transition: border-color 0.2s ease;
 }
 
 .input-wrapper:focus-within {
-    border-color: var(--border-color);
-
+    border-color: var(--primary-green);
 }
 
 /* Input Field */
@@ -170,7 +139,7 @@ body {
     outline: none;
     background: transparent;
     padding: 0;
-    font-size: 10px;
+    font-size: 14px;
     color: #1a1a1a;
     caret-color: #1a1a1a;
     font-family: 'Poppins', sans-serif;
@@ -179,8 +148,8 @@ body {
 }
 
 .input-wrapper input::placeholder {
-    color: #B0B0B0;
-    font-size: 10px;
+    color: #A2A2A2;
+    font-size: 14px;
 }
 
 /* Toggle Password */
@@ -188,42 +157,55 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: #666;
-    font-size: 1rem;
-    padding: 4px;
+    color: #000000;
+    font-size: 24px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
-.toggle-password:hover {
-    color: var(--primary-green);
-}
-
-
 /* ============================================================
-   TOMBOL LOGIN
+   TOMBOL LOGIN & REGISTRASI
    ============================================================ */
-.btn-login {
+.btn-login, .btn-registrasi {
     width: 100%;
-    background-color: var(--primary-green);
-    color: var(--white);
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 1rem;
+    border-radius: 12px;
+    padding: 0 20px;
+    font-size: 16px;
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
-    margin-top: 8px;
-    transition: background-color 0.2s ease;
+    text-align: center;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-login {
+    background-color: var(--text-dark);
+    color: var(--white);
+    border: none;
+    margin-top: 10px;
 }
 
 .btn-login:hover {
-    background-color: var(--dark-green-bg);
+    background-color: #08462c;
 }
 
+.btn-registrasi {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 1px solid var(--border-color);
+}
+
+.btn-registrasi:hover {
+    background-color: #F9FDFB;
+}
 
 /* ============================================================
    PEMBATAS "atau"
@@ -232,8 +214,8 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
-    margin: 24px 0;
-    gap: 12px;
+    margin: 16px 0;
+    gap: 16px;
 }
 
 .pembatas::before,
@@ -245,76 +227,22 @@ body {
 }
 
 .pembatas span {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-}
-
-
-/* ============================================================
-   TOMBOL REGISTRASI
-   ============================================================ */
-.btn-registrasi {
-    display: block;
-    width: 100%;
-    background-color: var(--white);
-    color: var(--primary-green);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    text-decoration: none;
-    text-align: center;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.btn-registrasi:hover {
-    border-color: var(--primary-green);
-    background-color: #F9FDFB;
-}
-
-
-/* ============================================================
-   DESKTOP — Split Screen
-   ============================================================ */
-@media (min-width: 992px) {
-    .login-page {
-        grid-template-columns: 1fr 1fr;    /* 50% : 50% */
-    }
-
-    .login-branding {
-        display: flex;
-    }
-
-    .login-form-section {
-        max-width: 586px;                  /* Sesuai Figma: 586px */
-        padding: 60px;
-    }
+    color: #A2A2A2;
+    font-size: 13px;
 }
 
 /* ============================================================
-   TABLET — Split Screen (Lebih kecil)
+   RESPONSIVE (Agar di Desktop terlihat proporsional)
    ============================================================ */
-@media (min-width: 768px) and (max-width: 991px) {
-    .login-page {
-        grid-template-columns: 40% 60%;
+@media (min-width: 768px) {
+    .login-container {
+        background-color: var(--white);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Efek kartu di desktop */
     }
-
-    .login-branding {
-        display: flex;
-        padding: 40px 24px;
-    }
-
-    .branding-logo {
-        width: 150px;
-        height: 150px;
-    }
-
-    .branding-fakultas {
-        font-size: 0.95rem;
-    }
-
-    .branding-universitas {
-        font-size: 0.8rem;
+    
+    body {
+        background-color: #F4F6F5; /* Background luar abu-abu di desktop */
     }
 }

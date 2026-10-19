@@ -86,20 +86,27 @@
         <!-- ============================================ -->
         <div id="registerContent" class="skeleton-hidden">
 
-            <!-- Header Brand -->
-            <header class="brand">
-                <img src="img/logo-fitk.png" alt="Logo UIN Siber Syekh Nurjati Cirebon" class="brand-logo">
-                <div class="brand-info">
-                    <h1>FITK SIBER AHSAN</h1>
-                    <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
-                    <p class="brand-university">UIN Siber Syekh Nurjati Cirebon</p>
-                </div>
-            </header>
+            <!-- WADAH HEADER & NOTIFIKASI (Menggantikan posisi satu sama lain) -->
+            <div class="header-section">
+                
+                <!-- 1. Header Brand (Tampil default) -->
+                <header class="brand" id="brandHeader">
+                    <img src="img/logo-fitk.png" alt="Logo UIN Siber Syekh Nurjati Cirebon" class="brand-logo">
+                    <div class="brand-info">
+                        <h1>FITK SIBER AHSAN</h1>
+                        <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                        <p class="brand-university">UIN Siber Syekh Nurjati Cirebon</p>
+                    </div>
+                </header>
+
+                <!-- 2. Notifikasi (Tersembunyi default, akan menggantikan Brand) -->
+                <div id="formMessage" class="form-message" role="status" aria-live="polite" hidden></div>
+
+            </div>
 
             <!-- Form Registrasi -->
             <section class="register-card">
                 <h2 class="register-title">Registrasi Akun</h2>
-
                 <form id="registerForm" novalidate>
 
                     <!-- Nama Lengkap -->
@@ -126,7 +133,7 @@
                         <div class="input-wrapper" id="passwordWrapper">
                             <input type="password" id="password" name="password" placeholder="Buat Password (Minimal 8 Karakter)" autocomplete="new-password" minlength="8" required>
                             <button type="button" class="toggle-password" data-target="password" aria-label="Tampilkan password">
-                                <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+                                <iconify-icon icon="akar-icons:eye"></iconify-icon>
                             </button>
                         </div>
                         <small class="error-message" id="passwordError"></small>
@@ -143,9 +150,6 @@
                         </div>
                         <small class="error-message" id="confirmPasswordError"></small>
                     </div>
-
-                    <!-- Notifikasi -->
-                    <div id="formMessage" class="form-message" role="status" aria-live="polite" hidden></div>
 
                     <!-- Tombol Registrasi -->
                     <button type="submit" class="btn-register">Registrasi</button>

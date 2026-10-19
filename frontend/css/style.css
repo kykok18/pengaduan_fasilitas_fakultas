@@ -27,7 +27,7 @@
     --primary-green: #0f6b3b;
     --dark-green-bg: #0a4f2a;
     --mint-green: #5CE0A8;
-    --light-green-bg: #DEF8E6;
+    --light-green-bg: #E6F4EA;
     --text-dark: #1a1a1a;
     --text-muted: #B0B0B0;
     --white: #ffffff;
@@ -68,7 +68,7 @@ ul {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 18px;
 }
 
 .section {
@@ -90,7 +90,7 @@ ul {
 .section-header h2 {
     font-size: 1.4rem;
     color: var(--dark-green-bg);
-    margin-bottom: 8px;
+    margin-bottom: 1px;
     line-height: 1.3;
 }
 
@@ -98,8 +98,8 @@ ul {
     color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.4;
+    margin-top: -4px; /* Menarik teks ke atas */
 }
-
 
 /* ============================================================
    3. BUTTONS
@@ -113,6 +113,10 @@ ul {
     display: inline-block;
     text-align: center;
     white-space: nowrap;
+    
+    /* TAMBAHKAN 2 BARIS INI */
+    box-sizing: border-box;
+    border: 1px solid transparent; /* Biar tinggi tombol solid sama */
 }
 
 .btn-primary {
@@ -232,7 +236,7 @@ ul {
     background: 
         linear-gradient(
             to right,
-            rgba(11, 94, 59, 0.7) 100%       /* #0B5E3B dengan opacity 70% */
+            rgba(11, 94, 59, 0.5) 100%       /* #0B5E3B dengan opacity 70% */
         ),
         url('../img/hero-kampus.jpeg') center/cover;
     padding: 40px 0;
@@ -384,7 +388,6 @@ ul {
     display: flex;
     align-items: center;
     gap: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     border: 1px solid #f0f0f0;
 }
 
@@ -397,19 +400,20 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    border-radius: 7px;
     flex-shrink: 0;
 }
 
 .service-icon iconify-icon {
-    font-size: 1.3rem;
+    font-size: 2rem;
     color: var(--primary-green);
 }
 
 .service-text h4 {
     color: var(--dark-green-bg);
-    font-size: 0.95rem;
-    margin-bottom: 3px;
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 0px;
     font-weight: 600;
 }
 
@@ -418,54 +422,86 @@ ul {
     color: var(--text-muted);
 }
 
+/* Merapatkan jarak dari Layanan ke Kategori */
+.services-section {
+    padding-bottom: 10px !important; /* Mengurangi jarak bawah Layanan */
+}
+
 
 /* ============================================================
    8. CATEGORY SECTION
    ============================================================ */
+/* ============================================================
+   8. CATEGORY SECTION (Sesuai Figma)
+   ============================================================ */
+
+/* Menengahkan judul Kategori */
+#kategori .section-header {
+    text-align: center;
+}
+
 .category-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 18px; /* Sesuai Figma: Gap 9px */
 }
 
 .category-card {
     background: var(--white);
     border: 1px solid #e0e0e0;
-    padding: 20px 10px;
-    border-radius: var(--border-radius);
+    border-radius: 10px; /* Sesuai Figma: Radius 10px */
+    padding: 12px 10px;  /* Padding dalam disesuaikan agar muat */
+    
     text-align: center;
     cursor: pointer;
+    
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 130px;
+    justify-content: center; /* Konten rata tengah secara vertikal */
+    
+    /* Kunci tinggi card sesuai Figma */
+    min-height: 130px; 
+    
+    box-sizing: border-box;
 }
 
+/* Icon */
 .cat-icon {
-    font-size: 1.4rem;
-    color: var(--primary-green);
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
 }
 
 .cat-icon iconify-icon {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: var(--primary-green);
 }
 
+/* Judul */
 .category-card h4 {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--dark-green-bg);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     font-weight: 600;
+    line-height: 1.2;
 }
 
+/* Deskripsi */
 .category-card p {
     font-size: 0.65rem;
     color: var(--text-muted);
     line-height: 1.3;
+    margin: 0;
 }
 
+/* Merapatkan jarak dari Kategori ke Timeline (Alur) */
+.kategori-section {
+    padding-bottom: 15px !important; /* Mengurangi jarak bawah Kategori */
+}
 
 /* ============================================================
    9. TIMELINE SECTION
@@ -473,7 +509,8 @@ ul {
 .timeline {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 18px;
+    min-height: 70px;
 }
 
 .timeline-item {
@@ -482,8 +519,8 @@ ul {
     gap: 15px;
     background: var(--white);
     padding: 15px;
+    border: 1px solid #e0e0e0;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
 }
 
 .timeline-number {
@@ -502,43 +539,79 @@ ul {
 
 .timeline-content h4 {
     color: var(--dark-green-bg);
-    font-size: 0.95rem;
+    font-size: 16px;
     margin-bottom: 3px;
     font-weight: 600;
 }
 
 .timeline-content p {
-    font-size: 0.7rem;
+    font-size: 9px;
     color: var(--text-muted);
     line-height: 1.4;
 }
 
+/* Merapatkan jarak dari Timeline ke CTA */
+.timeline-section {
+    padding-bottom: 20px !important; /* Mengurangi jarak bawah */
+}
+
+.timeline-header {
+    padding-left: 10px; /* Sesuaikan angkanya agar sejajar dengan card */
+}
 
 /* ============================================================
-   10. CTA SECTION
+   10. CTA SECTION (Sesuai Figma)
    ============================================================ */
 .cta-box {
     background: var(--white);
-    padding: 25px 20px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
+    /* Padding: Atas-Bawah 24px, Kiri-Kanan 20px */
+    padding: 24px 20px; 
+    border-radius: 10px; /* Sesuai Figma: Radius 10px */
     text-align: left;
-    max-width: 100%;
+    
+    /* Lebar proporsional, max 372px (sesuai Figma) */
+    width: 100%;
+    max-width: 390px; 
     margin: 0 auto;
+    
+    /* Tinggi minimal 192px (sesuai Figma) */
+    min-height: 192px; 
+    
+    /* Agar padding tidak menambah lebar total */
+    box-sizing: border-box; 
+    
+    /* Agar teks di tengah secara vertikal */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
 }
 
 .cta-box h2 {
     color: var(--dark-green-bg);
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.3;
 }
 
 .cta-box p {
     color: var(--text-muted);
-    margin-bottom: 15px;
-    font-size: 0.8rem;
+    margin-bottom: 20px;
+    font-size: 12px; /* Disesuaikan sedikit lebih besar agar terbaca */
+    font-weight: 400;
     line-height: 1.5;
 }
+
+/* Pastikan tombol di dalamnya rata kiri */
+.cta-box .btn-primary {
+    align-self: flex-start;
+}
+
+/* Mengurangi padding khusus untuk section CTA */
+.cta-section {
+    padding-bottom: 10px !important; /* Mengurangi jarak ke bawah */
+}
+
 
 
 /* ============================================================
@@ -552,15 +625,17 @@ ul {
 }
 
 .section-header-flex h2 {
-    font-size: 1.3rem;
+    font-size: 14px;
+    font-weight: 700;
     color: var(--dark-green-bg);
     line-height: 1.2;
+    padding-bottom: 30px;
 }
 
 .link-see-all {
     color: var(--primary-green);
-    font-weight: 600;
-    font-size: 0.8rem;
+    font-weight: 500;
+    font-size: 15px;
     display: flex;
     align-items: center;
     gap: 5px;
@@ -576,7 +651,10 @@ ul {
     background: var(--white);
     border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: var(--shadow);
+    
+    /* Shadow lebih tebal dan gelap */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); 
+    
     display: flex;
     flex-direction: column;
 }
@@ -683,6 +761,10 @@ ul {
     gap: 3px;
 }
 
+/* Merapatkan jarak dari Pengaduan Terkini ke FAQ */
+.report-section {
+    padding-bottom: 5px !important; /* Mengurangi jarak bawah */
+}
 
 /* ============================================================
    12. FAQ SECTION
@@ -710,7 +792,8 @@ ul {
     cursor: pointer;
     font-weight: 500;
     color: var(--dark-green-bg);
-    font-size: 0.85rem;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .faq-answer {
@@ -718,7 +801,9 @@ ul {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
-    background: var(--light-green-bg);
+    background: var(--white);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
 }
 
 .faq-answer p {
@@ -750,7 +835,7 @@ ul {
 footer {
     background-color: var(--dark-green-bg);
     color: var(--white);
-    padding-top: 30px;
+    padding-top: 20px;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -772,15 +857,13 @@ footer {
     height: 57.44px;
     border-radius: 50%;
     object-fit: contain;
-    background: var(--white);
-    padding: 3px;
 }
 
 .footer-header-text h3 {
     font-size: 1rem;
     font-weight: 700;
     color: var(--white);
-    margin-bottom: 2px;
+    margin-bottom: 0px;
     line-height: 1.2;
 }
 
@@ -805,14 +888,14 @@ footer {
 .footer-links-wrapper {
     display: flex;
     gap: 80px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .footer-links h4 {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--white);
-    margin-bottom: 15px;
+    margin-bottom: 4px;
 }
 
 .footer-links ul {
@@ -821,7 +904,7 @@ footer {
 }
 
 .footer-links ul li {
-    margin-bottom: 8px;
+    margin-bottom: 6pxpx;
 }
 
 .footer-links ul li a {
@@ -838,11 +921,15 @@ footer {
 }
 
 .footer-copyright p {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #aaa;
     margin: 0;
 }
 
+/* Merapatkan jarak dari FAQ ke Footer */
+#faq {
+    padding-bottom: 92px !important; /* Mengurangi jarak bawah FAQ */
+}
 
 /* ============================================================
    14. SIDEBAR
