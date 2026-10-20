@@ -260,8 +260,6 @@ body {
     box-sizing: border-box !important;
     padding: 0 !important;
 
-    /* Animasi */
-    animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {

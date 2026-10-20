@@ -968,13 +968,13 @@ footer {
 
 .footer-logo {
     width: 58.57px;
-    height: 57.44px;
+    height: 57.45px;
     border-radius: 50%;
     object-fit: contain;
 }
 
 .footer-header-text h3 {
-    font-size: 1rem;
+    font-size: 13px;
     font-weight: 700;
     color: var(--white);
     margin-bottom: 0px;
@@ -982,7 +982,7 @@ footer {
 }
 
 .footer-header-text p {
-    font-size: 0.75rem;
+    font-size: 10px;
     color: #ffffff;
     line-height: 1.3;
 }
