@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Pengaduan Fasilitas Kampus FITK</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="img/logo-fitk.png" alt="Logo FITK" class="sidebar-logo">
+            <div class="sidebar-header-text">
+                <h3>FITK SIBER AHSAN</h3>
+                <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
+            </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active">
+                    <a href="dashboard.html">
+                        <iconify-icon icon="solar:home-smile-linear"></iconify-icon>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="buat-pengaduan.html">
+                        <iconify-icon icon="solar:document-add-linear"></iconify-icon>
+                        <span>Buat Pengaduan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="riwayat-pengaduan.html">
+                        <iconify-icon icon="solar:history-linear"></iconify-icon>
+                        <span>Riwayat Pengaduan</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="nav-left">
+                <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
+                <div class="logo">
+                    <img src="img/logo-fitk.png" alt="Logo FITK" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-title">FITK SIBER AHSAN</span>
+                        <span class="logo-sub">Fakultas Ilmu Tarbiyah dan Keguruan</span>
+                        <span class="logo-sub highlight">UIN Siber Syekh Nurjati Cirebon</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="profile-btn" id="profileBtn"><span>R</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- DROPDOWN PROFIL -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <a href="#"><i class="fas fa-user-edit"></i> Edit Profil</a>
+        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container dashboard-main">
+        <div class="welcome-section">
+            <h1>Halo, Raina!</h1>
+            <p>Selamat datang di dashboard.</p>
+        </div>
+
+        <!-- CTA Card -->
+        <div class="cta-card">
+            <div class="cta-icon"><iconify-icon icon="solar:document-add-linear"></iconify-icon></div>
+            <div class="cta-text">
+                <h3>Ada Fasilitas yang Bermasalah?</h3>
+                <p>Sampaikan pengaduan untuk membantu meningkatkan kenyamanan kampus.</p>
+            </div>
+            <a href="buat-pengaduan.html" class="btn btn-primary">Buat Pengaduan</a>
+        </div>
+
+        <!-- Pengaduan Terkini -->
+        <div class="section-header-flex">
+            <h2>Pengaduan Terkini</h2>
+            <a href="semua-pengaduan.html" class="link-see-all">Lihat semua <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="reports-scroll">
+            <div class="report-card-dash">
+                <div class="report-image">
+                    <img src="https://images.unsplash.com/photo-1595113316349-9fa4eb24f884?auto=format&fit=crop&w=400&q=80" alt="AC Rusak">
+                    <span class="badge badge-category">AC</span>
+                    <span class="badge badge-status status-proses">Diproses</span>
+                </div>
+                <div class="report-content">
+                    <h4>AC Tidak Panas</h4>
+                    <div class="report-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Ruang 202, Lantai 2</span>
+                        <span><i class="fas fa-calendar-alt"></i> 5 September 2026</span>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-actions">
+                            <span><i class="fas fa-thumbs-up"></i> 20</span>
+                            <span><i class="fas fa-thumbs-down"></i> 1</span>
+                            <span><i class="fas fa-comment"></i> 5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-card-dash">
+                <div class="report-image">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80" alt="Toilet Rusak">
+                    <span class="badge badge-category">Toilet</span>
+                    <span class="badge badge-status status-perbaikan">Dalam Perbaikan</span>
+                </div>
+                <div class="report-content">
+                    <h4>Pintu Toilet Rusak</h4>
+                    <div class="report-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Gedung FITK, Lantai 1</span>
+                        <span><i class="fas fa-calendar-alt"></i> 20 September 2026</span>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-actions">
+                            <span><i class="fas fa-thumbs-up"></i> 10</span>
+                            <span><i class="fas fa-thumbs-down"></i> 2</span>
+                            <span><i class="fas fa-comment"></i> 15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-card-dash">
+                <div class="report-image">
+                    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" alt="Kursi Rusak">
+                    <span class="badge badge-category">Ruang Kelas</span>
+                    <span class="badge badge-status status-selesai">Selesai</span>
+                </div>
+                <div class="report-content">
+                    <h4>Kursi Rusak</h4>
+                    <div class="report-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Ruang 302, Lantai 3</span>
+                        <span><i class="fas fa-calendar-alt"></i> 15 September 2026</span>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-actions">
+                            <span><i class="fas fa-thumbs-up"></i> 8</span>
+                            <span><i class="fas fa-thumbs-down"></i> 1</span>
+                            <span><i class="fas fa-comment"></i> 6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="javascript/api.js"></script>
+    <script src="javascript/dashboard.js"></script>
+</body>
+</html>
