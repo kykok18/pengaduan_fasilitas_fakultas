@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitBtn = registerForm.querySelector('.btn-register');
         const originalText = submitBtn.textContent;
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Memproses...';
+        submitBtn.textContent = 'Registrasi';
 
         try {
             const response = await apiRegister(

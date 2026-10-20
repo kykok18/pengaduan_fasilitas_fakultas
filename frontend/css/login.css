@@ -8,7 +8,7 @@
     --text-dark: #0B5E3B;
     --text-muted: #666666;
     --white: #ffffff;
-    --bg-page: #E6F4EA; /* Hijau pucat sesuai Figma */
+    --bg-page: #E6F4EA;
     --border-color: #D9D9D9;
 }
 
@@ -25,19 +25,22 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center; /* Memastikan konten di tengah layar */
+    align-items: center;
     padding: 20px;
     -webkit-font-smoothing: antialiased;
 }
 
 /* ============================================================
-   CONTAINER UTAMA (Menggantikan Split Screen)
+   CONTAINER UTAMA
    ============================================================ */
 .login-container {
     width: 100%;
-    max-width: 400px; /* Lebar maksimal form agar tidak terlalu lebar di desktop */
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 32px;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
 }
 
 /* ============================================================
@@ -48,7 +51,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px; /* Jarak ke notifikasi/judul */
 }
 
 .brand-logo {
@@ -59,17 +62,19 @@ body {
 }
 
 .brand-fakultas {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--text-dark);
     margin-bottom: 4px;
     letter-spacing: 0.5px;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .brand-universitas {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    color: #D59A29; /* Warna emas */
+    color: #D59A29;
     letter-spacing: 0.5px;
 }
 
@@ -77,17 +82,18 @@ body {
    JUDUL FORM
    ============================================================ */
 .login-judul {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 8px;
+    margin-bottom: 0px;
 }
 
 .login-deskripsi {
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: 400;
     color: var(--text-muted);
     line-height: 1.5;
-    margin-bottom: 32px;
+    margin-bottom: 36px;
 }
 
 /* ============================================================
@@ -96,7 +102,7 @@ body {
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     width: 100%;
 }
 
@@ -108,38 +114,33 @@ body {
 }
 
 .form-group label {
-    font-size: 13px;
+    font-size: 10px;
     font-weight: 700;
     color: #000000;
 }
 
-/* Input Wrapper */
 .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     background: #FFFFFF;
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 0 16px;
-    height: 56px; /* Lebih tinggi agar proporsional di mobile */
+    border-radius: 10px;
+    padding: 0 15px;
+    height: 55px;
     box-sizing: border-box;
     width: 100%;
     transition: border-color 0.2s ease;
 }
 
-.input-wrapper:focus-within {
-    border-color: var(--primary-green);
-}
-
-/* Input Field */
 .input-wrapper input {
     flex: 1;
     border: none;
     outline: none;
     background: transparent;
     padding: 0;
-    font-size: 14px;
+    font-size: 10px;
+    font-weight: 400;
     color: #1a1a1a;
     caret-color: #1a1a1a;
     font-family: 'Poppins', sans-serif;
@@ -149,10 +150,9 @@ body {
 
 .input-wrapper input::placeholder {
     color: #A2A2A2;
-    font-size: 14px;
+    font-size: 10px;
 }
 
-/* Toggle Password */
 .toggle-password {
     background: none;
     border: none;
@@ -171,14 +171,14 @@ body {
    ============================================================ */
 .btn-login, .btn-registrasi {
     width: 100%;
-    border-radius: 12px;
-    padding: 0 20px;
-    font-size: 16px;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 14px;
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
     text-align: center;
-    height: 56px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -190,17 +190,15 @@ body {
     background-color: var(--text-dark);
     color: var(--white);
     border: none;
-    margin-top: 10px;
-}
-
-.btn-login:hover {
-    background-color: #08462c;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .btn-registrasi {
     background-color: var(--white);
     color: var(--text-dark);
     border: 1px solid var(--border-color);
+    margin-top: 25px;
 }
 
 .btn-registrasi:hover {
@@ -215,7 +213,8 @@ body {
     align-items: center;
     width: 100%;
     margin: 16px 0;
-    gap: 16px;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .pembatas::before,
@@ -228,21 +227,134 @@ body {
 
 .pembatas span {
     color: #A2A2A2;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 400;
 }
 
 /* ============================================================
-   RESPONSIVE (Agar di Desktop terlihat proporsional)
+   NOTIFIKASI MENGAMBANG (FLOATING NOTIFICATION) - FINAL
+   ============================================================ */
+
+/* --- Container Utama --- */
+.form-message:not([hidden]) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    
+    /* Posisi melayang di atas */
+    position: fixed !important;
+    top: 70px; /* Sesuai Figma: Top 70px */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+
+    /* Ukuran presisi Figma */
+    width: 352px !important;
+    max-width: 90%;
+    height: 71px !important;
+    
+    /* Styling Kotak */
+    background: #FFFFFF !important;
+    border: 1px solid #D9D9D9 !important;
+    border-radius: 10px !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+
+    /* Animasi */
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* --- Wrapper Icon (Kiri) --- */
+.form-message .msg-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px !important;  /* Sesuai Figma */
+    height: 71px !important; /* Sesuai Figma */
+    flex-shrink: 0;
+    padding: 5px !important;
+    box-sizing: border-box;
+}
+
+/* Ukuran Icon */
+.form-message .msg-icon-wrapper iconify-icon {
+    font-size: 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
+/* --- Wrapper Teks (Kanan) --- */
+.form-message .msg-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    padding: 0 10px 0 0 !important; /* Padding kanan */
+    box-sizing: border-box;
+}
+
+/* --- Teks Judul --- */
+.form-message .msg-title {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 22px !important;
+    text-transform: uppercase;
+    margin: 0 0 2px 0 !important;
+}
+
+/* --- Teks Deskripsi --- */
+.form-message .msg-desc {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 18px !important;
+    margin: 0 !important;
+}
+
+/* === WARNA ERROR (Merah) === */
+.form-message.error {
+    color: #C41B1B !important;
+}
+.form-message.error .msg-icon-wrapper iconify-icon {
+    color: #C41B1B !important;
+}
+
+/* === WARNA SUCCESS (Hijau) === */
+.form-message.success {
+    color: #15A367 !important;
+}
+.form-message.success .msg-icon-wrapper iconify-icon {
+    color: #15A367 !important;
+}
+
+/* --- Responsif HP Kecil --- */
+@media (max-width: 400px) {
+    .form-message:not([hidden]) {
+        top: 20px;
+        width: calc(100% - 32px) !important;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE
    ============================================================ */
 @media (min-width: 768px) {
     .login-container {
         background-color: var(--white);
         padding: 40px;
         border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Efek kartu di desktop */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
     
     body {
-        background-color: #F4F6F5; /* Background luar abu-abu di desktop */
+        background-color: #F4F6F5;
     }
 }
