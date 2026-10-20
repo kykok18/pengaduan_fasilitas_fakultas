@@ -4,6 +4,7 @@ require_once __DIR__ . '/../Validators/AuthValidator.php';
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Helpers/response.php';
 require_once __DIR__ . '/../Helpers/password.php';
+require_once __DIR__ . '/../Helpers/session.php';
 
 class AuthController
 {
@@ -140,13 +141,15 @@ class AuthController
             errorResponse("Email atau password salah", 401);
         }
 
-        // Mulai session
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        // Mulai session dengan konfigurasi keamanan.
+        if (!startSecureSession()) {
+            errorResponse("Gagal memulai session", 500);
         }
 
-        // Perbarui ID session setelah login
-        session_regenerate_id(true);
+        // Perbarui ID session setelah login berhasil.
+        if (!session_regenerate_id(true)) {
+            errorResponse("Gagal memperbarui session", 500);
+        }
 
         // Simpan data user ke session
         $_SESSION['id_user'] = $user['id_user'];
