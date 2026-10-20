@@ -993,7 +993,7 @@ footer {
 }
 
 .footer-desc {
-    font-size: 0.85rem;
+    font-size: 11px;
     color: #ffffff;
     line-height: 1.6;
     margin-bottom: 30px;
@@ -1176,6 +1176,7 @@ iconify-icon {
     font-size: 1.8rem;
     color: var(--primary-green);
 }
+
 
 
 /* ============================================================

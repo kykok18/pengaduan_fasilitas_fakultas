@@ -1,6 +1,6 @@
 /* ============================================================
    REGISTER.JS — Validasi + Integrasi Registrasi ke Backend
-   (DIPERBAIKI: Hanya mengubah posisi pesan error)
+   (FINAL: Dengan logika tombol abu-abu/disabled)
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,18 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ============================================================
-       CEK SESSION — (TETAP MENGGUNAKAN VERSI ASLI ANDA)
+       CEK SESSION
        ============================================================ */
     async function checkSessionAndLoad() {
         try {
-            // Jika Anda sebelumnya punya apiGetProfile, biarkan.
-            // Tapi untuk amannya, kita langsung tampilkan konten form register.
             showRegisterContent();
         } catch (error) {
             showRegisterContent();
         }
     }
-
     checkSessionAndLoad();
 
 
@@ -44,9 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const formMessage = document.getElementById('formMessage');
+    const submitBtn = registerForm.querySelector('.btn-register'); // Ambil tombolnya
 
-        /* ============================================================
-       TOGGLE PASSWORD (Mata Buka / Mata Terpejam)
+
+    /* ============================================================
+       TOGGLE PASSWORD
        ============================================================ */
     document.querySelectorAll('.toggle-password').forEach((button) => {
         button.addEventListener('click', () => {
@@ -57,9 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const isPassword = input.type === 'password';
             input.type = isPassword ? 'text' : 'password';
 
-            // Ganti icon: 
-            // Jika password (tersembunyi) -> Mata Terbuka (akar-icons:eye)
-            // Jika text (terlihat) -> Mata Terpejam (akar-icons:eye-closed)
             icon.setAttribute(
                 'icon', 
                 isPassword ? 'akar-icons:eye-closed' : 'akar-icons:eye'
@@ -72,8 +68,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
     /* ============================================================
-       ERROR HANDLING (Pesan di bawah input)
+       FUNGSI CEK STATUS TOMBOL (ABU-ABU / HIJAU)
+       ============================================================ */
+    function updateButtonState() {
+        // Cek apakah ada input yang berstatus invalid (merah)
+        const hasInvalidInput = document.querySelector('.input-wrapper.invalid');
+        
+        // Cek apakah ada pesan error dari server yang muncul
+        const hasFormError = !formMessage.hidden && formMessage.classList.contains('error');
+
+        if (hasInvalidInput || hasFormError) {
+            // Jika ada error, tombol jadi abu-abu (disabled)
+            submitBtn.disabled = true;
+        } else {
+            // Jika aman, tombol jadi hijau (enabled)
+            submitBtn.disabled = false;
+        }
+    }
+
+
+    /* ============================================================
+       ERROR HANDLING
        ============================================================ */
     function showError(input, message) {
         const errorElement = document.getElementById(`${input.id}Error`);
@@ -88,19 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
         showError(input, '');
     }
 
+
     /* ============================================================
-       NOTIFIKASI POP-UP (Pesan di atas form)
+       NOTIFIKASI POP-UP
        ============================================================ */
-        function showMessage(messageHTML, type) {
+    function showMessage(messageHTML, type) {
         let iconHTML = '';
         if (type === 'success') {
-            // Menggunakan ikon centang solid (Vector)
             iconHTML = `<iconify-icon icon="mdi:check-circle"></iconify-icon>`;
         } else {
             iconHTML = `<iconify-icon icon="mdi:close-circle"></iconify-icon>`; 
         }
 
-        // Struktur HTML: Wrapper Icon (Frame 187) + Content
         formMessage.innerHTML = `
             <div class="msg-icon-wrapper ${type}">
                 ${iconHTML}
@@ -121,9 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
         formMessage.innerHTML = '';
         formMessage.className = 'form-message';
         
-        // MUNCULKAN LOGO KEMBALI SAAT PESAN HILANG
         const brandHeader = document.getElementById('brandHeader');
-        if (brandHeader) brandHeader.style.display = 'flex'; // .brand aslinya pakai display: flex
+        if (brandHeader) brandHeader.style.display = 'flex'; 
     }
 
 
@@ -167,45 +182,55 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     }
 
-    /* Event listener validasi */
-    fullnameInput.addEventListener('blur', validateFullname);
-    emailInput.addEventListener('blur', validateEmail);
-    passwordInput.addEventListener('blur', validatePassword);
-    confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+
+    /* ============================================================
+       EVENT LISTENER VALIDASI (DENGAN UPDATE TOMBOL)
+       ============================================================ */
+    fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonState(); });
+    emailInput.addEventListener('blur', () => { validateEmail(); updateButtonState(); });
+    passwordInput.addEventListener('blur', () => { validatePassword(); updateButtonState(); });
+    confirmPasswordInput.addEventListener('blur', () => { validateConfirmPassword(); updateButtonState(); });
 
     passwordInput.addEventListener('input', () => {
         hideMessage();
         if (confirmPasswordInput.value) validateConfirmPassword();
+        updateButtonState(); // Cek tombol saat mengetik
     });
 
     [fullnameInput, emailInput, confirmPasswordInput].forEach((input) => {
-        input.addEventListener('input', hideMessage);
+        input.addEventListener('input', () => {
+            hideMessage();
+            updateButtonState(); // Cek tombol saat mengetik
+        });
     });
 
 
     /* ============================================================
-       SUBMIT FORM — Kirim ke API
+       SUBMIT FORM
        ============================================================ */
     registerForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         hideMessage();
 
+        // Jalankan semua validasi
         const isFullnameValid = validateFullname();
         const isEmailValid = validateEmail();
         const isPasswordValid = validatePassword();
         const isConfirmPasswordValid = validateConfirmPassword();
 
+        // Paksa update state tombol setelah validasi
+        updateButtonState();
+
+        // Jika ada yang tidak valid, stop proses submit
         if (!isFullnameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
-            // Jika validasi input gagal, tidak perlu pop-up atas, cukup border merah di input
             const firstInvalid = registerForm.querySelector('.input-wrapper.invalid input');
             if (firstInvalid) firstInvalid.focus();
             return;
         }
 
-        const submitBtn = registerForm.querySelector('.btn-register');
         const originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Registrasi';
+        submitBtn.disabled = true; // Tetap disable saat loading
+        submitBtn.textContent = 'Memproses...';
 
         try {
             const response = await apiRegister(
@@ -215,27 +240,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmPasswordInput.value
             );
 
-            submitBtn.disabled = false;
             submitBtn.textContent = originalText;
 
             if (response.ok && response.status === 'success') {
-                // KONDISI 1: BERHASIL (Pop-up Hijau)
+                // KONDISI 1: BERHASIL
                 showMessage(`
                     <div class="msg-title">REGISTRASI BERHASIL</div>
                     <div class="msg-desc">Akun berhasil dibuat. Silakan masuk untuk melanjutkan.</div>
                 `, 'success');
                 
-                // setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+                // Tombol dibiarkan disabled (abu-abu) karena form sudah sukses
                 
             } else {
-                // Cek apakah error karena email sudah terdaftar (HTTP 409 / kata "terdaftar")
+                // KONDISI 2: EMAIL TERDAFTAR
                 if (response.httpStatus === 409 || (response.message && response.message.toLowerCase().includes('terdaftar'))) {
-                    
-                    // KONDISI 2: EMAIL TERDAFTAR (Hanya border & teks di bawah input)
                     showError(emailInput, 'E-mail sudah terdaftar, silakan gunakan E-mail lain untuk masuk.');
-                    
                 } else {
-                    // KONDISI 3: ERROR SERVER / SISTEM (Pop-up Merah)
+                    // KONDISI 3: ERROR SERVER
                     showMessage(`
                         <div class="msg-title">REGISTRASI GAGAL</div>
                         <div class="msg-desc">Terjadi kesalahan pada sistem. Silakan<br>coba lagi.</div>
@@ -243,15 +264,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (error) {
-            submitBtn.disabled = false;
             submitBtn.textContent = originalText;
             
-            // KONDISI 4: ERROR JARINGAN (Pop-up Merah)
+            // KONDISI 4: ERROR JARINGAN
             showMessage(`
                 <div class="msg-title">REGISTRASI GAGAL</div>
                 <div class="msg-desc">Tidak dapat terhubung ke server. Periksa koneksi internet Anda.</div>
             `, 'error');
         }
+        
+        // Update state tombol terakhir kali setelah semua proses selesai
+        updateButtonState(); 
     });
 
 });
