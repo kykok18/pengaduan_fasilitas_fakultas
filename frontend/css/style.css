@@ -277,68 +277,141 @@ ul {
    ============================================================ */
 .stats-section {
     background-color: var(--dark-green-bg);
-    padding: 30px 0;
-    overflow: hidden;
+    width: 100%;
+    padding: 20px 0;
+    box-sizing: border-box;
 }
 
-/* Grid 4 kolom sejajar — anti overflow */
+/* =========================================
+   STATS GRID
+========================================= */
+
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;                         /* Lebih rapat, biar 4 card muat */
-    padding: 10px 0px;
+
+    /* Empat card dengan ukuran yang konsisten */
+    grid-template-columns: repeat(4, minmax(0, 87.41px));
+
+    /* Jarak antarkartu */
+    gap: 10px;
+
+    /* Posisikan seluruh grid di tengah */
+    justify-content: center;
+    align-items: stretch;
+
+    /* Ukuran grid mengikuti jumlah card */
     width: 100%;
+    max-width: 100%;
+
+    /* Jangan menambahkan padding horizontal */
+    padding: 10px 0;
+
     margin: 0 auto;
     box-sizing: border-box;
 }
 
-/* Card putih */
+/* =========================================
+   STATS CARD
+========================================= */
+
 .stat-card {
-    background: #FFFFFF;
-    width: 100%;
-    min-width: 87px;
-    min-height: 141px;
-    border-radius: 10px;
-    padding: 10px 8px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 10px;
+
+    width: 100%;
+    min-width: 0;
+    height: 124px;
+    min-height: 124px;
+
+    padding: 0;
+
+    background-color: #FFFFFF;
+    border-radius: 10px;
+
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+
     box-sizing: border-box;
     text-align: left;
-    overflow: hidden;
+
+    /* Hindari memotong isi card */
+    overflow: visible;
 }
 
-/* Icon */
+/* =========================================
+   STATS CARD
+========================================= */
+
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-width: 0;
+    height: 124px;
+    min-height: 124px;
+
+    padding: 0;
+    gap: 0;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+
+    box-sizing: border-box;
+    text-align: left;
+    overflow: visible;
+}
+
+/* =========================================
+   ICON
+========================================= */
+
 .stat-icon {
-    font-size: 0.9rem;
-    color: var(--primary-green);
-    background: #e6f4ea;
-    width: 35px;
-    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+
+    /* Turunkan ikon 10px */
+    margin-top: 10px;
+    margin-bottom: 0;
+    margin-left: 5px;
+
+    background: #DEF8E6;
     border-radius: 7px;
+
+    color: #0B5E3B;
     flex-shrink: 0;
 }
 
 .stat-icon iconify-icon {
-    font-size: 0.9rem;
-    color: var(--primary-green);
+    font-size: 24px;
+    color: #0B5E3B;
 }
 
-/* Wadah teks */
+/* =========================================
+   STAT INFO
+========================================= */
+
 .stat-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
-    text-align: left;
+
     width: 100%;
     min-width: 0;
+
+    gap: 0;
+    margin-top: 0;
+
+    text-align: left;
 }
 
 /* Angka */
@@ -346,31 +419,63 @@ ul {
     font-family: 'Poppins', sans-serif;
     font-size: 24px;
     font-weight: 700;
-    font-style: normal;
-    line-height: 100%;
-    letter-spacing: 0%;
+    line-height: 30px;
+    margin-left: 5px;
+
     color: #000000;
+
     margin: 0;
+    padding: 0 5px;
+
     width: 100%;
+    box-sizing: border-box;
 }
 
-/* Teks label */
+/* Label */
 .stat-info p {
     font-family: 'Poppins', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    font-style: normal;
     line-height: 16px;
-    letter-spacing: 0%;
+
     color: #000000;
+
     margin: 0;
+    padding: 0 5px;
+
     width: 100%;
+    box-sizing: border-box;
+
     white-space: normal;
-    word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: none;
+    word-break: normal;
 }
 
+/* =========================================
+   RESPONSIVE STATS
+========================================= */
+
+@media (max-width: 390px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .stat-card {
+        min-width: 0;
+    }
+
+    .stat-info h3 {
+        font-size: 22px;
+    }
+
+    .stat-info p {
+        font-size: 10px;
+        line-height: 14px;
+    }
+}
 
 /* ============================================================
    7. SERVICES SECTION
@@ -789,11 +894,11 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     cursor: pointer;
-    font-weight: 500;
-    color: var(--dark-green-bg);
     font-size: 14px;
     font-weight: 500;
+    color: var(--dark-green-bg);
 }
 
 .faq-answer {
@@ -821,11 +926,20 @@ ul {
     transform: rotate(180deg);
 }
 
+/* Ikon dropdown FAQ */
 .faq-question i {
-    font-size: 16px;
+    font-size: 20px;
     color: #0B5E3B;
-    transition: transform 0.3s ease;
+
     flex-shrink: 0;
+    margin-left: 12px;
+
+    transition: transform 0.3s ease;
+}
+
+/* Ikon berputar ketika FAQ dibuka */
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
 }
 
 
