@@ -8,15 +8,6 @@ class User
     {
         $this->conn = $conn;
     }
-
-    /**
-     * Memeriksa apakah email sudah terdaftar.
-     *
-     * Return:
-     * true  = email ditemukan
-     * false = email tidak ditemukan
-     * null  = terjadi kegagalan query
-     */
     public function emailExists($email)
     {
         $query = "SELECT id_user FROM users WHERE email = ?";

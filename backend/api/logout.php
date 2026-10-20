@@ -3,28 +3,28 @@
 header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/../app/Helpers/response.php';
+require_once __DIR__ . '/../app/Helpers/session.php';
 
-// Logout hanya menerima request POST
+// Logout hanya menerima request POST.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Allow: POST');
-
     errorResponse('Method not allowed', 405);
 }
 
-// Mulai session jika belum aktif
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+// Mulai session menggunakan konfigurasi keamanan.
+if (!startSecureSession()) {
+    errorResponse('Gagal memulai session', 500);
 }
 
-// Pastikan pengguna sudah login
+// Pastikan pengguna sudah login.
 if (!isset($_SESSION['id_user'])) {
     errorResponse('Pengguna belum login', 401);
 }
 
-// Hapus seluruh data session
+// Hapus seluruh data session.
 $_SESSION = [];
 
-// Hapus cookie session jika menggunakan cookie
+// Hapus cookie session dari client.
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();
 
@@ -42,8 +42,9 @@ if (ini_get('session.use_cookies')) {
     );
 }
 
-// Hancurkan session
-session_destroy();
+// Hancurkan session di server.
+if (!session_destroy()) {
+    errorResponse('Gagal mengakhiri session', 500);
+}
 
-// Kirim respons berhasil
 successResponse('Logout berhasil');
