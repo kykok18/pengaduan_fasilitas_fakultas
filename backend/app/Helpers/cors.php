@@ -5,7 +5,7 @@ $allowedOrigins = [
     'http://127.0.0.1:5500',
 
     // Ganti dengan domain Vercel kamu yang sebenarnya.
-    'https://pengaduanfasilitasfakultas-frontend.vercel.app/',
+    'https://pengaduanfasilitasfakultas-frontend.vercel.app',
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
