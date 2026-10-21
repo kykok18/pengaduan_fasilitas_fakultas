@@ -1,4 +1,3 @@
-cat > app/Models/Dashboard.php <<'PHP'
 <?php
 
 class Dashboard

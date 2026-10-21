@@ -1,4 +1,3 @@
-cat > app/Controllers/DashboardController.php <<'PHP'
 <?php
 
 require_once __DIR__ . '/../Models/User.php';
