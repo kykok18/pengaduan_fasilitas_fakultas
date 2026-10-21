@@ -18,13 +18,36 @@ class Dashboard
     {
         $query = "
             SELECT
-                id_pengaduan,
-                judul,
-                status,
-                created_at
-            FROM pengaduan
-            WHERE id_user = ?
-            ORDER BY created_at DESC, id_pengaduan DESC
+                p.id_pengaduan,
+                p.id_user,
+                p.judul,
+                p.lokasi,
+                p.status,
+                p.foto,
+                p.created_at,
+                f.nama_fasilitas,
+                COALESCE(vc.upvote_count, 0) AS upvote_count,
+                COALESCE(vc.downvote_count, 0) AS downvote_count,
+                COALESCE(kc.comment_count, 0) AS comment_count
+            FROM pengaduan p
+            LEFT JOIN fasilitas f ON f.id_fasilitas = p.id_fasilitas
+            LEFT JOIN (
+                SELECT
+                    id_pengaduan,
+                    SUM(CASE WHEN tipe_vote = 'upvote' THEN 1 ELSE 0 END) AS upvote_count,
+                    SUM(CASE WHEN tipe_vote = 'downvote' THEN 1 ELSE 0 END) AS downvote_count
+                FROM vote
+                GROUP BY id_pengaduan
+            ) vc ON vc.id_pengaduan = p.id_pengaduan
+            LEFT JOIN (
+                SELECT
+                    id_pengaduan,
+                    COUNT(*) AS comment_count
+                FROM komentar
+                GROUP BY id_pengaduan
+            ) kc ON kc.id_pengaduan = p.id_pengaduan
+            WHERE p.id_user = ?
+            ORDER BY p.created_at DESC, p.id_pengaduan DESC
         ";
 
         $stmt = mysqli_prepare($this->conn, $query);
@@ -72,13 +95,35 @@ class Dashboard
 
         $query = "
             SELECT
-                id_pengaduan,
-                id_user,
-                judul,
-                status,
-                created_at
-            FROM pengaduan
-            ORDER BY created_at DESC, id_pengaduan DESC
+                p.id_pengaduan,
+                p.id_user,
+                p.judul,
+                p.lokasi,
+                p.status,
+                p.foto,
+                p.created_at,
+                f.nama_fasilitas,
+                COALESCE(vc.upvote_count, 0) AS upvote_count,
+                COALESCE(vc.downvote_count, 0) AS downvote_count,
+                COALESCE(kc.comment_count, 0) AS comment_count
+            FROM pengaduan p
+            LEFT JOIN fasilitas f ON f.id_fasilitas = p.id_fasilitas
+            LEFT JOIN (
+                SELECT
+                    id_pengaduan,
+                    SUM(CASE WHEN tipe_vote = 'upvote' THEN 1 ELSE 0 END) AS upvote_count,
+                    SUM(CASE WHEN tipe_vote = 'downvote' THEN 1 ELSE 0 END) AS downvote_count
+                FROM vote
+                GROUP BY id_pengaduan
+            ) vc ON vc.id_pengaduan = p.id_pengaduan
+            LEFT JOIN (
+                SELECT
+                    id_pengaduan,
+                    COUNT(*) AS comment_count
+                FROM komentar
+                GROUP BY id_pengaduan
+            ) kc ON kc.id_pengaduan = p.id_pengaduan
+            ORDER BY p.created_at DESC, p.id_pengaduan DESC
             LIMIT ?
         ";
 

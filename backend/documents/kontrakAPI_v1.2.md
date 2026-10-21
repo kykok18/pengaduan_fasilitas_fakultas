@@ -381,7 +381,12 @@ Method `POST`
 Path `/backend/api/pengaduan.php`
 Content-Type `application/json`
 Autentikasi Session aktif
-Status saat ini Kontrak final, implementasi pending
+Status saat ini Implementasi tersedia
+
+Catatan implementasi:
+
+- Upload foto bukti tidak termasuk dalam endpoint ini dan dialihkan ke card Trello terpisah.
+- Endpoint ini hanya menangani penyimpanan pengaduan dasar dengan data `id_fasilitas`, `judul`, `lokasi`, dan `deskripsi`.
 
 Request JSON:
 
@@ -389,6 +394,7 @@ Request JSON:
 {
   "id_fasilitas": 1,
   "judul": "Proyektor ruang kelas rusak",
+  "lokasi": "Gedung FITK, Lantai 2",
   "deskripsi": "Proyektor tidak menyala saat digunakan."
 }
 ```
@@ -396,9 +402,10 @@ Request JSON:
 Aturan: - Session harus valid. - `id_user` diambil dari session;
 frontend tidak mengirim `id_user`. - `id_fasilitas` wajib berupa ID
 fasilitas yang ada. - `judul` wajib diisi, maksimum 150 karakter. -
-`deskripsi` wajib diisi. - Data disimpan ke tabel `pengaduan`
-menggunakan prepared statement. - Status awal harus `diajukan`;
-server/database yang menetapkannya.
+`lokasi` wajib diisi. - `deskripsi` wajib diisi. - Data disimpan ke
+tabel `pengaduan` menggunakan prepared statement. - Status awal harus
+`diajukan`; server/database yang menetapkannya. - Foto bukti belum
+dibahas pada endpoint ini dan tidak dikirim pada request.
 
 Response `201 Created`:
 
@@ -408,8 +415,10 @@ Response `201 Created`:
   "message": "Pengaduan berhasil dibuat",
   "data": {
     "id_pengaduan": 12,
+    "id_user": 8,
     "id_fasilitas": 1,
     "judul": "Proyektor ruang kelas rusak",
+    "lokasi": "Gedung FITK, Lantai 2",
     "deskripsi": "Proyektor tidak menyala saat digunakan.",
     "foto": null,
     "status": "diajukan",
@@ -421,8 +430,14 @@ Response `201 Created`:
 `id_user` tidak perlu dikirim oleh client. Response boleh menyertakan
 `id_user` bila diperlukan, tetapi nilainya harus berasal dari session.
 
-Status: `201`, `400`, `401`, `404` jika fasilitas tidak ditemukan,
-`405`, atau `500`.
+Status: `201`, `400` untuk input tidak valid, `401` untuk session
+invalid, `404` jika fasilitas tidak ditemukan, `405`, atau `500`.
+
+Catatan tambahan:
+
+- Frontend wajib mengirim `id_fasilitas` sebagai angka integer, bukan nama kategori.
+- Endpoint ini tidak menerima upload file.
+- Foto bukti akan dibuat pada endpoint terpisah di card Trello berikutnya.
 
 ### 5.2 US-07 --- Mengunggah bukti pengaduan
 
@@ -539,6 +554,9 @@ Method Path rencana Fungsi
 
 ---
 
+`GET` `/backend/api/pengaduan.php` Daftar fasilitas yang tersedia
+untuk form pengaduan
+
 `GET` `/backend/api/pengaduan_detail.php?id={id}` Detail pengaduan
 
 `PUT` `/backend/api/pengaduan_update.php?id={id}` Mengubah pengaduan
@@ -611,7 +629,7 @@ Dashboard Tersedia Uji session dan
 dokumentasikan response
 aktual
 
-US-06 membuat pengaduan Implementasi pending Uji sukses, validasi,
+US-06 membuat pengaduan Tersedia Uji sukses, validasi,
 fasilitas tidak ada,
 tanpa session
 
