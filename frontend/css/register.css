@@ -129,6 +129,9 @@ body {
     font-size: 10px;
     font-weight: 600;
     color: var(--text-dark);
+    margin-top: 15px;
+    padding-left: 10px; /* Silakan ganti angkanya (misal 10px, 12px, dll) */
+
 }
 
 .form-group label span {
@@ -146,7 +149,7 @@ body {
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 10px;
-    padding-left: 16px;                    /* Sesuai Figma: Padding Left 5px */
+    padding-left: 14px;                    /* Sesuai Figma: Padding Left 5px */
     padding-right: 20px;                  /* Sesuai Figma: Padding Right 20px */
     height: 57px;                         /* Sesuai Figma: Fixed 57px */
     box-sizing: border-box;
@@ -395,7 +398,7 @@ body {
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
-    margin-top: 6px;
+    margin-top: 25px;
     transition: background-color 0.2s ease;
 }
 
