@@ -56,42 +56,55 @@ if (
     die('Konfigurasi database belum lengkap atau tidak valid.');
 }
 
-// Membuat koneksi MySQL dengan TLS untuk TiDB Cloud.
+
+// Membaca environment aplikasi.
+$appEnv = strtolower($getConfig('APP_ENV', 'production'));
+
+// Menyiapkan koneksi MySQL.
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
     $conn = mysqli_init();
 
-    // Mengaktifkan verifikasi sertifikat server.
-    mysqli_options(
-        $conn,
-        MYSQLI_OPT_SSL_VERIFY_SERVER_CERT,
-        true
-    );
+    if ($appEnv === 'local') {
+        // Development lokal: MySQL di komputer sendiri tanpa TLS.
+        mysqli_real_connect(
+            $conn,
+            $host,
+            $user,
+            $pw,
+            $db,
+            $port
+        );
+    } else {
+        // Production: koneksi TLS dengan verifikasi sertifikat.
+        mysqli_options(
+            $conn,
+            MYSQLI_OPT_SSL_VERIFY_SERVER_CERT,
+            true
+        );
 
-    // Mengatur sertifikat CA.
-    mysqli_ssl_set(
-        $conn,
-        null,
-        null,
-        '/etc/ssl/certs/ca-certificates.crt',
-        null,
-        null
-    );
+        mysqli_ssl_set(
+            $conn,
+            null,
+            null,
+            '/etc/ssl/certs/ca-certificates.crt',
+            null,
+            null
+        );
 
-    // Menghubungkan ke database menggunakan TLS.
-    mysqli_real_connect(
-        $conn,
-        $host,
-        $user,
-        $pw,
-        $db,
-        $port,
-        null,
-        MYSQLI_CLIENT_SSL
-    );
+        mysqli_real_connect(
+            $conn,
+            $host,
+            $user,
+            $pw,
+            $db,
+            $port,
+            null,
+            MYSQLI_CLIENT_SSL
+        );
+    }
 
-    // Mengatur charset.
     mysqli_set_charset($conn, 'utf8mb4');
 
 } catch (mysqli_sql_exception $e) {
