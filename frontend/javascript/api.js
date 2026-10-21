@@ -1,12 +1,18 @@
 /* ============================================================
    API.JS — Integrasi Frontend dengan Backend PHP
    ============================================================ */
-const API_BASE_URL = `${window.location.origin}${
-  window.location.pathname.startsWith("/pengaduan_fasilitas_fakultas/")
-    ? "/pengaduan_fasilitas_fakultas/backend/api"
-    : "/backend/api"
-}`;
 
+// Deteksi lingkungan frontend.
+const IS_LOCAL = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
+// Pilih backend berdasarkan lingkungan.
+const API_BASE_URL = IS_LOCAL
+  ? "http://localhost:8000/backend/api"
+  : "https://pengaduan-fasilitas-backend.onrender.com/api";
+
+/**
+ * Fungsi utama untuk mengirim request ke API.
+ */
 async function apiRequest(endpoint, body = null, method = "POST") {
   try {
     const options = {
@@ -14,7 +20,7 @@ async function apiRequest(endpoint, body = null, method = "POST") {
       headers: {
         Accept: "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     if (body !== null && method !== "GET") {
@@ -24,8 +30,6 @@ async function apiRequest(endpoint, body = null, method = "POST") {
 
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
 
-    // Baca respons sebagai teks terlebih dahulu agar error HTML
-    // tidak langsung menimbulkan SyntaxError yang membingungkan.
     const responseText = await response.text();
 
     let result;
@@ -103,9 +107,6 @@ async function apiLogout() {
 
 /**
  * Mengambil data dashboard.
- *
- * Catatan: gunakan fungsi ini hanya jika dashboard.php memang
- * mengizinkan request GET.
  */
 async function apiGetDashboard() {
   return apiRequest("dashboard.php", null, "GET");

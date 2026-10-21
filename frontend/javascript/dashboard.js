@@ -2,7 +2,37 @@
    DASHBOARD.JS — Interaksi Halaman Dashboard & Semua Pengaduan
    ============================================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+    // =========================================================
+    // 0. AUTH GUARD (Cek Login)
+    // =========================================================
+    const userSession = localStorage.getItem('user');
+    
+    // Jika tidak ada session user, tendang ke halaman login
+    if (!userSession) {
+        window.location.replace('login.html');
+        return; // Hentikan eksekusi kode di bawahnya
+    }
+
+    // Parse data user
+    let currentUser = null;
+    try {
+        currentUser = JSON.parse(userSession);
+    } catch (e) {
+        console.error("Format session tidak valid", e);
+        localStorage.removeItem('user');
+        window.location.replace('login.html');
+        return;
+    }
+
+    // (Opsional) Jika data user ada tapi tidak punya nama, anggap tidak valid
+    if (!currentUser || !currentUser.nama) {
+         window.location.replace('login.html');
+         return;
+    }
 
     // --- 1. Sidebar Toggle ---
     const menuToggle = document.getElementById('menuToggle');
@@ -52,12 +82,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. Set Nama User ---
+    // --- 4. Set Nama User Dinamis ---
     const welcomeTitle = document.querySelector('.welcome-section h1');
-    if (welcomeTitle && typeof getUserSession === 'function') {
-        const user = getUserSession();
-        if (user && user.nama) {
-            welcomeTitle.textContent = `Halo, ${user.nama}!`;
+    if (welcomeTitle) {
+        // Ambil data user dari localStorage
+        const userString = localStorage.getItem('user');
+        
+        if (userString) {
+            try {
+                const user = JSON.parse(userString);
+                // Jika user punya nama, ganti teksnya
+                if (user && user.nama) {
+                    welcomeTitle.textContent = `Halo, ${user.nama}!`;
+                }
+            } catch (e) {
+                console.error("Gagal membaca session user", e);
+            }
+        } else {
+            // (Opsional) Jika tidak ada session, tendang kembali ke login
+            // window.location.href = 'login.html';
+            welcomeTitle.textContent = "Halo, Pengguna!";
         }
     }
 
@@ -68,6 +112,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyState = document.getElementById('emptyState');
     const loadingState = document.getElementById('loadingState'); // Tambahan baru
     const btnRetry = document.getElementById('btnRetry');
+
+        // --- 6. Fetch Data Dashboard ---
+    const fetchDashboardData = async () => {
+        if (typeof apiGetDashboard === 'function') {
+            try {
+                const response = await apiGetDashboard();
+                
+                if (response.ok && response.data) {
+                    // Jika backend mengirim data statistik, tampilkan di sini
+                    // Contoh: document.getElementById('stat-total').textContent = response.data.total_pengaduan;
+                    console.log("Data Dashboard berhasil dimuat:", response.data);
+                    
+                    // (Di sini kamu bisa me-render list pengaduan asli dari backend)
+                }
+            } catch (error) {
+                console.error("Gagal mengambil data dashboard", error);
+            }
+        }
+    };
+
+    // Panggil fungsi jika kita sedang di halaman dashboard
+    if (document.querySelector('.dashboard-main')) {
+        fetchDashboardData();
+    }
 
     const fetchPengaduanData = async () => {
         // 1. Tampilkan Loading, Sembunyikan yang lain
@@ -140,5 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    
 
 });

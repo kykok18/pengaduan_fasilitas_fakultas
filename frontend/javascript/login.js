@@ -157,15 +157,18 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await apiLogin(emailValue, passwordValue);
 
-                if (response.ok && response.status === 'success') {
-                    saveUserSession(response.data);
-                    showMessage('LOGIN BERHASIL', 'Login berhasil! Anda akan dialihkan ke halaman utama.', 'success');
-                    
-                    setTimeout(() => { 
-                        window.location.href = 'dashboard.html'; 
-                    }, 2000);
+        if (response.ok && response.status === 'success') {
+            // Simpan data user yang didapat dari backend
+            // Asumsi: backend mengirim { data: { nama: "...", email: "..." } }
+            if (response.data) {
+                saveUserSession(response.data); 
+            }
 
-                } else {
+            // Redirect ke dashboard
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }else {
                     showMessage('LOGIN GAGAL', 'E-mail atau password yang Anda masukkan<br>salah. Silakan periksa kembali.', 'error');
                     
                     // Kembalikan tombol ke semula
