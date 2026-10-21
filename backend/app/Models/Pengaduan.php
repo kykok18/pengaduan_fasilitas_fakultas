@@ -83,6 +83,41 @@ class Pengaduan
         return $exists;
     }
 
+    public function findByNamaFasilitas($namaFasilitas)
+    {
+        $query = "SELECT id_fasilitas, nama_fasilitas FROM fasilitas WHERE nama_fasilitas = ? LIMIT 1";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log('Gagal menyiapkan query findByNamaFasilitas: ' . mysqli_error($this->conn));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 's', $namaFasilitas);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log('Gagal menjalankan query findByNamaFasilitas: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if ($result === false) {
+            error_log('Gagal mengambil hasil findByNamaFasilitas: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $fasilitas = mysqli_fetch_assoc($result);
+
+        mysqli_free_result($result);
+        mysqli_stmt_close($stmt);
+
+        return $fasilitas ?: null;
+    }
+
     public function create($id_user, $id_fasilitas, $judul, $lokasi, $deskripsi)
     {
         $query = "

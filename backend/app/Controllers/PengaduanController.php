@@ -123,7 +123,7 @@ class PengaduanController
 
         $isMultipart = (
             isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== false
-        ) || isset($_FILES['foto']);
+        ) || isset($_FILES['foto']) || isset($_FILES['bukti_foto']);
 
         if ($isMultipart) {
             $input = $_POST;
@@ -131,6 +131,12 @@ class PengaduanController
 
             if (isset($_FILES['foto']) && is_array($_FILES['foto'])) {
                 $photoFile = $_FILES['foto'];
+
+                if (($photoFile['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+                    $photoFile = null;
+                }
+            } elseif (isset($_FILES['bukti_foto']) && is_array($_FILES['bukti_foto'])) {
+                $photoFile = $_FILES['bukti_foto'];
 
                 if (($photoFile['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
                     $photoFile = null;
@@ -145,6 +151,27 @@ class PengaduanController
         }
 
         $id_fasilitas = filter_var($input['id_fasilitas'] ?? null, FILTER_VALIDATE_INT);
+
+        if (($id_fasilitas === false || (int) $id_fasilitas <= 0) && isset($input['kategori'])) {
+            $kategori = trim((string) $input['kategori']);
+
+            if ($kategori !== '') {
+                $id_fasilitas = filter_var($kategori, FILTER_VALIDATE_INT);
+
+                if ($id_fasilitas === false || (int) $id_fasilitas <= 0) {
+                    $fasilitasByNama = $this->pengaduanModel->findByNamaFasilitas($kategori);
+
+                    if ($fasilitasByNama !== false && $fasilitasByNama !== null) {
+                        $id_fasilitas = (int) $fasilitasByNama['id_fasilitas'];
+                    }
+                }
+            }
+        }
+
+        if (($id_fasilitas === false || (int) $id_fasilitas <= 0) && isset($input['id_fasilitas_legacy'])) {
+            $id_fasilitas = filter_var($input['id_fasilitas_legacy'], FILTER_VALIDATE_INT);
+        }
+
         $judul = trim((string) ($input['judul'] ?? ''));
         $lokasi = trim((string) ($input['lokasi'] ?? ''));
         $deskripsi = trim((string) ($input['deskripsi'] ?? ''));
