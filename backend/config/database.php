@@ -56,29 +56,47 @@ if (
     die('Konfigurasi database belum lengkap atau tidak valid.');
 }
 
-// Membuat koneksi MySQL.
-$conn = mysqli_connect(
-    $host,
-    $user,
-    $pw,
-    $db,
-    $port
-);
+// Membuat koneksi MySQL dengan TLS untuk TiDB Cloud.
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// Memeriksa koneksi.
-if (!$conn) {
-    error_log('Koneksi database gagal: ' . mysqli_connect_error());
+try {
+    $conn = mysqli_init();
+
+    // Mengaktifkan verifikasi sertifikat server.
+    mysqli_options(
+        $conn,
+        MYSQLI_OPT_SSL_VERIFY_SERVER_CERT,
+        true
+    );
+
+    // Mengatur sertifikat CA.
+    mysqli_ssl_set(
+        $conn,
+        null,
+        null,
+        '/etc/ssl/certs/ca-certificates.crt',
+        null,
+        null
+    );
+
+    // Menghubungkan ke database menggunakan TLS.
+    mysqli_real_connect(
+        $conn,
+        $host,
+        $user,
+        $pw,
+        $db,
+        $port,
+        null,
+        MYSQLI_CLIENT_SSL
+    );
+
+    // Mengatur charset.
+    mysqli_set_charset($conn, 'utf8mb4');
+
+} catch (mysqli_sql_exception $e) {
+    error_log('Koneksi atau persiapan database gagal: ' . $e->getMessage());
 
     http_response_code(500);
     die('Koneksi database gagal.');
-}
-
-// Mengatur charset.
-if (!mysqli_set_charset($conn, 'utf8mb4')) {
-    error_log('Gagal mengatur charset database: ' . mysqli_error($conn));
-
-    mysqli_close($conn);
-
-    http_response_code(500);
-    die('Gagal menyiapkan koneksi database.');
 }
