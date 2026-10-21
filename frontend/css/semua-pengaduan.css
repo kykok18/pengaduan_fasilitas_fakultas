@@ -1,0 +1,75 @@
+/* ============================================================
+   SEMUA-PENGADUAN.CSS
+   ============================================================ */
+
+/* 1. Page Header (Tombol Back & Judul) */
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 27px;
+    margin-bottom: 26px;
+}
+
+.page-header .btn-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--logo-green);
+    font-size: 18px;
+    text-decoration: none;
+    transition: transform var(--transition-fast);
+}
+
+.page-header .btn-back:hover {
+    transform: translateX(-3px);
+}
+
+.page-header h1 {
+    color: var(--logo-green);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* 2. Search Bar */
+.search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: var(--white);
+    font-family: var(--font-primary);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-dark);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    outline: none;
+}
+
+.search-container input::placeholder {
+    color: #757575;
+}
+
+.search-container .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dark);
+    font-size: 15px;
+}
+
+/* 3. Container List Pengaduan */
+.pengaduan-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+}

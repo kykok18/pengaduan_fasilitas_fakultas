@@ -31,17 +31,20 @@ body {
 }
 
 /* ============================================================
-   CONTAINER UTAMA
+   CONTAINER UTAMA (Sesuai Figma: Gap 64px)
    ============================================================ */
 .login-container {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-    padding: 40px 32px;
+    
+    /* KUNCI UTAMA: Atas-Bawah 40px, Kiri-Kanan 64px */
+    padding: 40px 53px; 
+    
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-}
+}   
 
 /* ============================================================
    HEADER: LOGO & TEKS FAKULTAS
@@ -51,21 +54,22 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 20px; /* Jarak ke notifikasi/judul */
+    margin-bottom: 15px; /* Jarak ke notifikasi/judul */
 }
 
 .brand-logo {
     width: 120px;
     height: 120px;
     object-fit: contain;
-    margin-bottom: 16px;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 .brand-fakultas {
     font-size: 13px;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     letter-spacing: 0.5px;
     white-space: nowrap;
     text-align: center;
@@ -76,6 +80,7 @@ body {
     font-weight: 700;
     color: #D59A29;
     letter-spacing: 0.5px;
+    margin-bottom: 15px;
 }
 
 /* ============================================================
@@ -91,9 +96,9 @@ body {
 .login-deskripsi {
     font-size: 12px;
     font-weight: 400;
-    color: var(--text-muted);
+    color: #374151;
     line-height: 1.5;
-    margin-bottom: 36px;
+    margin-bottom: 40px;
 }
 
 /* ============================================================
@@ -111,6 +116,7 @@ body {
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    min-height: 36px;
 }
 
 .form-group label {
@@ -126,8 +132,8 @@ body {
     background: #FFFFFF;
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    padding: 0 15px;
-    height: 55px;
+    padding: 0 8px;
+    height: 48px;
     box-sizing: border-box;
     width: 100%;
     transition: border-color 0.2s ease;
@@ -151,6 +157,7 @@ body {
 .input-wrapper input::placeholder {
     color: #A2A2A2;
     font-size: 10px;
+    padding: -5px;
 }
 
 .toggle-password {
@@ -174,7 +181,7 @@ body {
     border-radius: 10px;
     padding: 0 16px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
     text-align: center;
@@ -190,7 +197,7 @@ body {
     background-color: var(--text-dark);
     color: var(--white);
     border: none;
-    margin-top: 20px;
+    margin-top: 15px;
     margin-bottom: 10px;
 }
 
@@ -243,7 +250,7 @@ body {
     
     /* Posisi melayang di atas */
     position: fixed !important;
-    top: 70px; /* Sesuai Figma: Top 70px */
+    top: 21px; 
     left: 50%;
     transform: translateX(-50%);
     z-index: 99999;
@@ -342,6 +349,15 @@ body {
 }
 
 /* ============================================================
+   TOMBOL LOGIN (State: Loading / Disabled)
+   ============================================================ */
+.btn-login:disabled {
+    background-color: #A0B0A8 !important; /* Warna abu-abu kehijauan transparan */
+    cursor: not-allowed;
+    border-color: #A0B0A8;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (min-width: 768px) {
@@ -355,4 +371,65 @@ body {
     body {
         background-color: #F4F6F5;
     }
+}
+
+
+/* ============================================================
+   ERROR MESSAGE (Warna Merah Paksa)
+   ============================================================ */
+
+.error-message {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; /* Sedikit diperbesar agar terbaca */
+    font-weight: 600;
+    
+    /* PAKSA WARNA MERAH DISINI */
+    color: #D02316 !important; 
+    
+    min-height: 0;
+    line-height: 1.4;
+    display: none;
+    align-items: center;
+    gap: 10px; /* Jarak antara ikon dan teks */
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 7px;
+}
+
+/* Tampilkan saat ada isi */
+.error-message:not(:empty) {
+    display: flex;
+}
+
+/* Ikon Lingkaran Tanda Seru */
+.error-message:not(:empty)::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    
+    /* Warna SVG di dalamnya juga di-set merah #D02316 */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23D02316" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    flex-shrink: 0;
+}
+
+.input-wrapper.invalid {
+    border: 1px solid #D02316 !important; /* Warna merah sesuai Figma */
+}
+
+
+/* ============================================================
+   TOMBOL LOGIN: ABU-ABU (DISABLED) & LOADING
+   ============================================================ */
+.btn-login:disabled {
+    background-color: #D9D9D9 !important; 
+    color: #FFFFFF !important;
+    cursor: not-allowed;
+    border: 1px solid #D9D9D9;
+    margin-top: 15px;
 }

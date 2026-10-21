@@ -51,31 +51,34 @@
 
             <!-- JUDUL -->
             <h2 class="login-judul">Selamat Datang!</h2>
-            <p class="login-deskripsi">Masuk ke akun Anda untuk melaporkan pengaduan fasilitas kampus FITK</p>
+            <p class="login-deskripsi">Masuk ke akun Anda untuk melaporkan<br>pengaduan fasilitas kampus FITK</p>
 
-            <!-- FORM LOGIN -->
-            <form class="login-form" id="loginForm">
+            <!-- Form Login -->
+            <form class="login-form" id="loginForm" novalidate>
+
                 <!-- Input E-mail -->
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <div class="input-wrapper">
+                    <div class="input-wrapper" id="emailWrapper">
                         <input type="email" id="email" name="email" placeholder="Masukkan E-mail" required>
                     </div>
+                    <small class="error-message" id="emailError"></small>
                 </div>
 
                 <!-- Input Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-wrapper">
+                    <div class="input-wrapper" id="passwordWrapper">
                         <input type="password" id="password" name="password" placeholder="Masukkan Password" required>
                         <button type="button" class="toggle-password" id="togglePassword" aria-label="Lihat password">
                             <iconify-icon icon="akar-icons:eye"></iconify-icon>
                         </button>
                     </div>
+                    <small class="error-message" id="passwordError"></small>
                 </div>
 
                 <!-- Tombol Login -->
-                <button type="submit" class="btn-login">Login</button>
+                <button type="submit" class="btn-login" id="submitBtn">Login</button>   
             </form>
 
             <!-- Pembatas -->

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Pengaduan — FITK</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/buat-pengaduan.css">
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- TAMBAHAN: SIDEBAR & OVERLAY AGAR BISA AKTIF -->
+    <!-- ========================================== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="img/logo-fitk.png" alt="Logo FITK" class="sidebar-logo">
+            <div class="sidebar-header-text">
+                <h3>FITK SIBER AHSAN</h3>
+                <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
+            </div>
+        </div>
+        <div class="sidebar-divider"></div>
+                <nav class="sidebar-nav">
+    <ul>
+        <li class="active">
+            <a href="dashboard.html">
+                <!-- Ikon Home (Rumah) -->
+                <i class="fas fa-home"></i> 
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="buat-pengaduan.html">
+                <!-- Ikon Dokumen dengan Pensil -->
+                <i class="fas fa-file-signature"></i> 
+                <span>Buat Pengaduan</span>
+            </a>
+        </li>
+        <li>
+            <a href="riwayat-pengaduan.html">
+                <i class="fas fa-history"></i>
+                <span>Riwayat Pengaduan</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+    </aside>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="nav-left">
+                <!-- Tombol ini sekarang punya pasangan id="sidebar" di atas -->
+                <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
+                <div class="logo">
+                    <img src="img/logo-fitk.png" alt="Logo FITK" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-title">FITK SIBER AHSAN</span>
+                        <span class="logo-sub">Fakultas Ilmu Tarbiyah dan Keguruan</span>
+                        <span class="logo-sub highlight">UIN Siber Syekh Nurjati Cirebon</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="profile-btn" id="profileBtn"><span>R</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- DROPDOWN PROFIL -->
+    <div class="profile-dropdown" id="profileDropdown">
+        <a href="#"><i class="fas fa-user-edit"></i> Edit Profil</a>
+        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        
+        <div class="form-pengaduan-container">
+            <h1 class="form-title">Buat Pengaduan</h1>
+
+            <form action="#" method="POST" enctype="multipart/form-data">
+                
+                <!-- Judul Pengaduan -->
+                <div class="form-group">
+                    <label for="judul">Judul Pengaduan*</label>
+                    <input type="text" id="judul" name="judul" class="form-control" placeholder="cth. Lampu Mati" required>
+                </div>
+
+                <!-- Kategori -->
+                <div class="form-group">
+                    <label for="kategori">Kategori*</label>
+                    <select id="kategori" name="kategori" class="form-control" required>
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="Fasilitas Kelas">Fasilitas Kelas</option>
+                        <option value="Toilet">Toilet</option>
+                        <option value="Listrik">Listrik</option>
+                        <option value="AC">AC</option>
+                        <option value="Internet/WiFi">Internet/WiFi</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <!-- Lokasi -->
+                <div class="form-group">
+                    <label for="lokasi">Lokasi*</label>
+                    <input type="text" id="lokasi" name="lokasi" class="form-control" placeholder="cth. Gedung FITK, Lantai 1" required>
+                </div>
+
+                <!-- Deskripsi Pengaduan -->
+                <div class="form-group">
+                    <label for="deskripsi">Deskripsi Pengaduan*</label>
+                    <textarea id="deskripsi" name="deskripsi" class="form-control" placeholder="Jelaskan detail kerusakan atau masalah yang terjadi..." required></textarea>
+                </div>
+
+                <!-- Bukti Foto -->
+                <div class="form-group">
+                    <label>Bukti Foto*</label>
+                    <div class="upload-group">
+                        <input type="file" id="file-upload" name="bukti_foto" accept="image/jpeg, image/png, image/jpg" required>
+                        <label for="file-upload" class="btn-choose-file">Choose File</label>
+                        <span class="upload-text">Upload Foto, JPG, PNG.</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Kirim Pengaduan</button>
+
+            </form>
+        </div>
+
+    </main>
+
+    <script src="javascript/api.js"></script>
+    <script src="javascript/dashboard.js"></script>
+</body>
+</html>

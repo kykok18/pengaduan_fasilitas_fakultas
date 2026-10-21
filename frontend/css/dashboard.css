@@ -1,50 +1,86 @@
 /* ============================================================
-   DASHBOARD.CSS — Halaman Dashboard FITK
+   DASHBOARD.CSS
+   Halaman Dashboard FITK
+   ============================================================ */
+
+
+/* ============================================================
+   1. ROOT VARIABLES
    ============================================================ */
 
 :root {
     --primary-green: #0f6b3b;
     --dark-green-bg: #0a4f2a;
+    --logo-green: #0b5e3b;
+    --gold: #d59a29;
+
     --text-dark: #1a1a1a;
     --text-muted: #666666;
+
     --white: #ffffff;
-    --bg-page: #E6F4EA;
-    --border-color: #E0E0E0;
+    --bg-page: #e6f4ea;
+    --border-color: #e0e0e0;
+
+    --font-primary: 'Poppins', sans-serif;
+
+    --radius-small: 8px;
+    --radius-medium: 10px;
+    --radius-large: 12px;
+
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
 }
+
+
+/* ============================================================
+   2. GLOBAL STYLES
+   ============================================================ */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font-primary);
 }
 
 body {
-    background-color: var(--bg-page);
-    color: var(--text-dark);
     min-height: 100vh;
     padding-bottom: 40px;
+    background-color: var(--bg-page);
+    color: var(--text-dark);
 }
 
 .container {
+    width: 100%;
     max-width: 600px;
     margin: 0 auto;
     padding: 0 16px;
 }
 
-/* --- Navbar --- */
+
+/* ============================================================
+   3. NAVBAR
+   ============================================================ */
+
 .navbar {
-    background-color: var(--white);
-    padding: 12px 0;
     position: sticky;
     top: 0;
     z-index: 100;
+
+    display: flex;
+    align-items: center;
+
+    height: 42px;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--white);
+    margin-bottom: 16px;
 }
 
 .nav-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .nav-left {
@@ -53,289 +89,519 @@ body {
     gap: 12px;
 }
 
+/* Tombol Menu */
+
 .menu-toggle {
-    font-size: 1.5rem;
-    color: var(--text-dark);
+    font-size: 1.1rem;
+    color: var(--dark-green-bg);
     cursor: pointer;
 }
+
+/* Logo Navbar */
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .logo-img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    object-fit: contain;
 }
 
 .logo-text {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .logo-title {
-    font-size: 0.75rem;
+    font-size: 10px;
     font-weight: 700;
-    color: var(--dark-green-bg);
+    line-height: 1.2;
+    color: var(--logo-green);
 }
 
 .logo-sub {
-    font-size: 0.55rem;
-    color: var(--text-muted);
+    font-size: 7px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--logo-green);
 }
 
 .logo-sub.highlight {
-    color: #D59A29;
+    color: var(--gold);
 }
 
+/* Tombol Profil */
+
 .profile-btn {
-    width: 35px;
-    height: 35px;
-    background-color: var(--primary-green);
-    color: var(--white);
-    border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 27px;
+
+    border-radius: 50%;
+    background-color: var(--bg-page);
+    color: var(--logo-green);
+
+    font-size: 10px;
     font-weight: 700;
-    font-size: 1rem;
     cursor: pointer;
 }
 
-/* --- Dropdown Profil --- */
+
+/* ============================================================
+   4. PROFILE DROPDOWN — SESUAI FIGMA
+============================================================ */
+
 .profile-dropdown {
     position: absolute;
-    top: 60px;
-    right: 16px;
-    background: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    top: 42px;
+    right: 0;
+    z-index: 200;
+
     display: none;
     flex-direction: column;
-    width: 150px;
-    z-index: 200;
-    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+
+    /* Ukuran sesuai Figma */
+    width: 90px;
+    height: 60px;
+    padding: 0 5px;
+    gap: 3px;
+
+    background-color: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 5px;
+
+    box-sizing: border-box;
 }
 
 .profile-dropdown.active {
     display: flex;
 }
 
+/* Item Edit Profil dan Logout */
 .profile-dropdown a {
-    padding: 12px 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 78px;
+    height: 24px;
+    min-height: 24px;
+
+    padding: 0;
+    gap: 0;
+
+    color: #0B5E3B;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+
     text-decoration: none;
-    color: var(--text-dark);
-    font-size: 0.85rem;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+    border: none;
+    border-radius: 0;
+}
+
+/* Ikon pada dropdown */
+.profile-dropdown a i {
     display: flex;
     align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid #eee;
+    justify-content: center;
+
+    width: 20px;
+    min-width: 20px;
+    height: 20px;
+
+    margin: 0;
+    padding: 0;
+
+    color: #0B5E3B;
+    font-size: 10px;
+    line-height: 1;
+
+    flex-shrink: 0;
 }
 
+/* Jarak teks dari ikon */
+.profile-dropdown a span {
+    display: flex;
+    align-items: center;
+
+    height: 24px;
+    padding: 0 6px;
+
+    color: #0B5E3B;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+
+    box-sizing: border-box;
+}
+
+/* Efek hover */
 .profile-dropdown a:hover {
-    background-color: #f9f9f9;
+    background-color: #F4F9F6;
+    border-radius: 3px;
 }
 
-/* --- Main Content --- */
+/* ============================================================
+   5. MAIN CONTENT & WELCOME SECTION
+   ============================================================ */
+
 .dashboard-main {
     margin-top: 24px;
 }
 
 .welcome-section h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--dark-green-bg);
     margin-bottom: 4px;
+    margin-top: 26.34px;
+    color: var(--dark-green-bg);
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .welcome-section p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 24px;
+    margin-bottom: 39.5px;
+
+    color: var(--dark-green-bg);
+    font-size: 12px;
+    font-weight: 400;
 }
 
-/* --- CTA Card --- */
+
+/* ============================================================
+   6. CTA CARD
+   Call-to-Action Card
+   ============================================================ */
+
 .cta-card {
-    background: var(--white);
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;          /* Memaksa selebar container */
+    /* max-width: 367px; <- HAPUS BARIS INI */
+    min-height: 150px;
+
+    margin: 0 auto 30px;
+    padding: 16px;        /* Padding standar */
+
+    background-color: var(--white);
+    border-radius: var(--radius-medium);
 }
 
+/* Wrapper Ikon dan Teks */
+
+.cta-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    width: 100%;
+    margin-bottom: 20px; /* Jarak antara teks dan tombol */
+}
+
+/* Ikon CTA */
+
 .cta-icon {
-    font-size: 2rem;
-    color: var(--primary-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    width: 50px;
+    height: 50px;
+
+    background-color: var(--bg-page);
+    border-radius: var(--radius-medium);
+}
+
+.cta-icon iconify-icon {
+    color: var(--logo-green);
+    font-size: 1.8rem;
+}
+
+/* Judul dan Deskripsi CTA */
+
+.cta-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
 }
 
 .cta-text h3 {
-    font-size: 1rem;
+    margin: 0;
+
+    color: var(--logo-green);
+    font-size: 14px;
     font-weight: 700;
-    color: var(--dark-green-bg);
-    margin-bottom: 6px;
+    line-height: 21px;
+    text-align: left;
 }
 
 .cta-text p {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.4;
+    margin: 0;
+
+    color: var(--logo-green);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    text-align: left;
 }
 
-.btn-primary {
-    background-color: var(--primary-green);
+/* Tombol CTA */
+.cta-card .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;          /* Memaksa tombol selebar kartu */
+    height: 35px;
+
+    background-color: var(--logo-green);
+    border-radius: var(--radius-medium);
+
     color: var(--white);
-    text-align: center;
-    padding: 12px;
-    border-radius: 8px;
-    text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
-    font-size: 0.9rem;
+    text-decoration: none;
+
+    transition: background-color var(--transition-fast);
 }
 
-/* --- Section Header Flex --- */
+
+/* ============================================================
+   7. SECTION HEADER
+   ============================================================ */
+
 .section-header-flex {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
     margin-bottom: 16px;
 }
 
 .section-header-flex h2 {
-    font-size: 1.1rem;
     color: var(--dark-green-bg);
+    font-size: 14px;
     font-weight: 700;
 }
 
+/* Link Lihat Semua */
+
 .link-see-all {
-    font-size: 0.8rem;
-    color: var(--primary-green);
-    text-decoration: none;
-    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 5px;
+
+    color: var(--primary-green);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
 }
 
-/* --- Horizontal Scroll Reports --- */
-.reports-scroll {
+
+/* ============================================================
+   8. REPORTS LIST (VERTIKAL — TANPA SCROLL HORIZONTAL)
+   ============================================================ */
+
+.reports-list {
     display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    scrollbar-width: none;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
 }
 
-.reports-scroll::-webkit-scrollbar {
-    display: none;
-}
-
+/* Kartu pengaduan */
 .report-card-dash {
-    min-width: 280px;
-    background: var(--white);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: stretch; /* Membuat gambar & teks sama-sama memenuhi tinggi kartu */
+    gap: 12px;
+    width: 100%;
+    padding: 0; /* Penting: 0 agar gambar nempel ke ujung */
+    overflow: hidden; /* Agar sudut gambar melengkung rapi */
+    
+    background-color: var(--white);
+    border-radius: var(--radius-large);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    
+    
+    /* PASTIKAN TIDAK ADA height / min-height DI SINI */
 }
 
+/* Gambar kiri */
 .report-image {
     position: relative;
-    height: 150px;
+    flex: 0 0 120px; /* Lebar gambar */
+    height: 100px;   /* Tinggi gambar sebagai patokan */
+    overflow: hidden;
 }
 
 .report-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; 
+    border-radius: 10px;
 }
 
-.badge {
+/* Badge kategori di atas gambar */
+.badge-category {
     position: absolute;
-    padding: 4px 10px;
+    top: 6px;
+    left: 6px;
+
+    padding: 2px 8px;
+
+    background-color: var(--white);
+    border: 1px solid #d9d9d9;
     border-radius: 20px;
-    font-size: 0.65rem;
+
+    color: var(--logo-green);
+    font-size: 6px;
+    font-weight: 600;
+    line-height: 9px;
+}
+
+/* Konten kanan */
+.report-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Menyebar teks dari atas ke bawah */
+    padding: 8px 12px 8px 0; /* Padding atas-bawah 8px agar seimbang */
+}
+
+/* Header: judul + badge status */
+.report-content-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.report-content-header h4 {
+    margin: 0 0 2px 0;
+    font-size: 10px;
     font-weight: 600;
 }
 
-.badge-category {
-    top: 10px;
-    left: 10px;
-    background: var(--white);
-    color: var(--dark-green-bg);
-    border: 1px solid #eee;
-}
-
+/* Badge status */
 .badge-status {
-    top: 10px;
-    right: 10px;
-    color: var(--white);
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 10px;
+
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 12px;
+    text-align: center;
+    white-space: nowrap;
 }
 
-.status-proses { background: #F5A623; }
-.status-perbaikan { background: #17A2B8; }
-.status-selesai { background: #2E9368; }
+.status-proses    { background-color: #ffc107; color: #000; }
+.status-perbaikan { background-color: #17a2b8; color: #fff; }
+.status-selesai   { background-color: #2e9368; color: #fff; }
 
-.report-content {
-    padding: 16px;
-}
-
-.report-content h4 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--dark-green-bg);
-    margin-bottom: 8px;
-}
-
+/* Metadata lokasi & tanggal */
 .report-meta {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 12px;
+    gap: 4px; /* Jarak vertikal antara baris lokasi dan tanggal */
+
+    margin-top: 6px; /* Jarak dari judul ke lokasi */
+
+    color: var(--logo-green); /* Warna teks (hijau) */
+    
+    /* UBAH UKURAN TEKS DI SINI */
+    font-size: 11px; /* Silakan ganti angkanya (misal: 10px, 12px, 13px) */
+    font-weight: 500;
+    line-height: 16px;
 }
 
+.report-meta span {
+    display: flex;
+    align-items: center;
+    gap: 13.04px; /* Jarak antara ikon pin/kalender dengan teks */
+}
+
+/* Ukuran Ikon */
 .report-meta i {
-    color: var(--primary-green);
-    margin-right: 4px;
+    font-size: 14px; /* Sesuaikan ukuran ikon pin dan kalender di sini */
+    color: var(--logo-green);
 }
 
+/* Footer aksi */
 .report-footer {
-    border-top: 1px solid #eee;
-    padding-top: 12px;
+    margin-top: 4px; /* Jarak tombol like ke tanggal */
+    padding-top: 0;
+    border-top: none;
 }
 
+/* Footer aksi (like, dislike, komentar) */
 .report-actions {
     display: flex;
-    gap: 16px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
+    align-items: center;
+    gap: 24px; /* Jarak antar grup ikon (Jempol - Jempol - Komentar) */
+
+    color: rgba(0, 0, 0, 0.31);
+    
+    /* 1. UBAH UKURAN ANGKA DI SINI */
+    font-size: 10px; /* Sebelumnya mungkin 10px, ganti jadi 12px atau 13px */
+    font-weight: 700;
+    line-height: 16px;
 }
 
-.report-actions i {
-    margin-right: 4px;
+.report-actions span {
+    display: flex;
+    align-items: center;
+    gap: 6.96px; /* Jarak antara ikon dengan angkanya */
 }
+
+/* 2. UBAH UKURAN IKON (JEMPOL & KOMENTAR) DI SINI */
+.report-actions i {
+    margin-right: 0;
+    font-size: 14px; /* Sebelumnya mungkin 11px, ganti jadi 14px atau 15px */
+}
+
+
 
 /* ============================================================
-   SIDEBAR MENU
+   12. SIDEBAR OVERLAY
    ============================================================ */
 
 .sidebar-overlay {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 9998;
+
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+
+    transition: all var(--transition-normal);
 }
 
 .sidebar-overlay.active {
@@ -343,37 +609,52 @@ body {
     visibility: visible;
 }
 
+
+/* ============================================================
+   13. SIDEBAR CONTAINER
+   ============================================================ */
+
 .sidebar {
     position: fixed;
     top: 0;
     left: -300px;
-    width: 280px;
-    height: 100vh;
-    background-color: var(--white);
     z-index: 9999;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    transition: left 0.3s ease;
-    overflow-y: auto;
-    padding: 24px 20px;
+
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    overflow-y: auto;
+
+    width: 222px;
+    height: 100vh;
+    padding: 12px 13px;
+
+    background-color: var(--white);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+
+    transition: left var(--transition-normal);
 }
 
 .sidebar.active {
     left: 0;
 }
 
+
+/* ============================================================
+   14. SIDEBAR HEADER
+   ============================================================ */
+
 .sidebar-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 8px;
+
+    margin-bottom: 10px;
 }
 
 .sidebar-logo {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
+
     border-radius: 50%;
     object-fit: contain;
 }
@@ -381,69 +662,375 @@ body {
 .sidebar-header-text {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+
+    line-height: 1.1;
 }
 
 .sidebar-header-text h3 {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--dark-green-bg);
     margin-bottom: 2px;
+
+    color: var(--logo-green);
+    font-size: 9px;
+    font-weight: 700;
 }
 
 .sidebar-header-text p {
-    font-size: 0.6rem;
-    color: var(--text-dark);
     margin-bottom: 1px;
-}
 
-.sidebar-header-text p.highlight {
-    color: #D59A29;
+    color: var(--logo-green);
+    font-size: 6px;
     font-weight: 500;
 }
 
-.sidebar-divider {
-    height: 1px;
-    background-color: #E0E0E0;
-    margin-bottom: 20px;
-    width: 100%;
+.sidebar-header-text p.highlight {
+    color: var(--gold);
+    font-weight: 500;
 }
 
-/* Menu Navigasi */
+
+/* ============================================================
+   15. SIDEBAR DIVIDER
+   ============================================================ */
+
+.sidebar-divider {
+    width: 100%;
+    height: 1px;
+
+    margin-bottom: 16px;
+
+    background-color: rgba(217, 217, 217, 0.56);
+}
+
+
+/* ============================================================
+   16. SIDEBAR NAVIGATION
+   ============================================================ */
+
 .sidebar-nav ul {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    list-style: none; /* <-- TAMBAHKAN INI UNTUK MENGHILANGKAN TITIK */
-    padding: 0;       /* <-- TAMBAHKAN INI UNTUK MENGHILANGKAN INDENTASI */
+
     margin: 0;
+    padding: 0;
+
+    list-style: none;
 }
 
 .sidebar-nav ul li a {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    color: var(--dark-green-bg);
-    font-size: 0.95rem;
-    font-weight: 500;
+    gap: 12px;
+
+    padding: 8px 10px;
+
+    border-radius: var(--radius-small);
+
+    color: var(--logo-green);
+    font-size: 13px;
+    font-weight: 400;
     text-decoration: none;
-    transition: background 0.2s ease;
+
+    transition: background-color var(--transition-fast);
 }
 
+/* Ikon Navigasi Sidebar */
+.sidebar-nav ul li a i,
 .sidebar-nav ul li a iconify-icon {
-    font-size: 1.4rem;
-    color: var(--dark-green-bg);
-    width: 24px;
+    width: 20px;
+    color: var(--logo-green);
+    font-size: 1rem; /* Ukuran ikon */
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.sidebar-nav ul li a:hover {
-    background-color: #F5F5F5;
-}
+/* Menu Aktif */
 
 .sidebar-nav ul li.active a {
-    background-color: var(--bg-page);
+    background-color: var(--white);
+    font-weight: 400;
+}
+
+/* ============================================================
+   FILTER CHIPS (Fixed Size Sesuai Figma)
+   ============================================================ */
+
+.filter-chips {
+    display: grid;
+    /* Membagi 4 kolom dengan lebar yang sama rata */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px; /* Jarak antar tombol */
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+
+.chip {
+    /* Mengikuti ukuran Figma */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0px; /* Padding disesuaikan agar teks di tengah */
+    
+    /* Ukuran Fixed */
+    width: 71.36px; 
+    height: 25px;
+    
+    /* Styling */
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9; /* Default abu-abu */
+    border-radius: 10px;
+    
+    /* Teks */
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #0B5E3B;
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Mencegah teks turun ke bawah */
+}
+
+/* Khusus untuk chip "Dalam Perbaikan" yang teksnya panjang */
+/* Kita buat otomatis menyesuaikan teksnya agar tidak terpotong */
+.chip:nth-child(3) {
+    width: auto;
+    padding: 0 10px;
+}
+
+/* Styling untuk Chip yang sedang aktif (Semua) */
+.chip.active {
+    border: 1px solid #0B5E3B; /* Border hijau tebal */
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* ============================================================
+   ERROR STATE (Gagal Memuat Pengaduan)
+   ============================================================ */
+
+.error-state {
+    display: none; /* Sembunyikan secara default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.error-state.active {
+    display: flex; /* Tampilkan jika class active ditambahkan via JS */
+}
+
+/* Ikon Lingkaran Gagal */
+.error-icon-wrapper {
+    position: relative;
+    width: 91px;
+    height: 94px;
+    border: 1px solid #D02316;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.error-icon-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border: 2px solid #D02316;
+    border-radius: 50%;
+}
+
+.error-icon-wrapper i {
+    color: #D02316;
+    font-size: 32px;
+    z-index: 2;
+}
+
+/* Teks Error */
+.error-state h3 {
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+.error-state p {
+    font-family: var(--font-primary);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #000000;
+    max-width: 222px;
+    margin-bottom: 24px;
+}
+
+/* Tombol Coba Lagi */
+.btn-retry {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 24px;
+    background-color: var(--logo-green);
+    color: var(--white);
+    font-size: 10px;
     font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.btn-retry:hover {
+    background-color: var(--dark-green-bg);
+}
+
+/* ============================================================
+   EMPTY STATE (Data Pengaduan Kosong)
+   ============================================================ */
+
+.empty-state {
+    display: none; /* Sembunyikan default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.empty-state.active {
+    display: flex;
+}
+
+/* Ikon Lingkaran Hijau */
+.empty-state .empty-icon-wrapper {
+    position: relative;
+    width: 91px;
+    height: 94px;
+    border: 1px solid #0B5E3B;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Ikon di dalam lingkaran */
+.empty-state .empty-icon-wrapper iconify-icon {
+    color: #0B5E3B;
+    font-size: 40px; /* Ukuran ikon diperbesar agar seimbang */
+}
+
+/* Teks Judul */
+.empty-state h3 {
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 0px;
+}
+
+/* Teks Deskripsi */
+.empty-state p {
+    font-family: var(--font-primary);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #000000;
+    max-width: 242px; /* Lebar disesuaikan dengan Figma */
+    margin-bottom: 28px;
+}
+
+/* Tombol Buat Pengaduan */
+.btn-empty-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 7px;
+    background-color: var(--logo-green);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+}
+
+.btn-empty-action:hover {
+    background-color: var(--dark-green-bg);
+}
+
+/* ============================================================
+   LOADING STATE (Sedang Memuat Data)
+   ============================================================ */
+
+.loading-state {
+    display: none; /* Sembunyikan default */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    width: 100%;
+}
+
+.loading-state.active {
+    display: flex;
+}
+
+/* Ikon Lingkaran Loading */
+.loading-icon-wrapper {
+    position: relative;
+    width: 91px;
+    height: 94px;
+    border: 1px solid #0B5E3B;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Animasi Ikon Spinner */
+.loading-icon-wrapper i {
+    color: #0B5E3B;
+    font-size: 32px;
+    /* Animasi berputar dari FontAwesome */
+    animation: spin 1s linear infinite; 
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Teks Loading */
+.loading-state h3 {
+    font-family: var(--font-primary);
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+.loading-state p {
+    font-family: var(--font-primary);
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #000000;
+    max-width: 242px;
 }

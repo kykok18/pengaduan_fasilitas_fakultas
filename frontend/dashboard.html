@@ -26,28 +26,30 @@
             </div>
         </div>
         <div class="sidebar-divider"></div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li class="active">
-                    <a href="dashboard.html">
-                        <iconify-icon icon="solar:home-smile-linear"></iconify-icon>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="buat-pengaduan.html">
-                        <iconify-icon icon="solar:document-add-linear"></iconify-icon>
-                        <span>Buat Pengaduan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="riwayat-pengaduan.html">
-                        <iconify-icon icon="solar:history-linear"></iconify-icon>
-                        <span>Riwayat Pengaduan</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+                <nav class="sidebar-nav">
+    <ul>
+        <li class="active">
+            <a href="dashboard.html">
+                <!-- Ikon Home (Rumah) -->
+                <i class="fas fa-home"></i> 
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="buat-pengaduan.html">
+                <!-- Ikon Dokumen dengan Pensil -->
+                <i class="fas fa-file-signature"></i> 
+                <span>Buat Pengaduan</span>
+            </a>
+        </li>
+        <li>
+            <a href="riwayat-pengaduan.html">
+                <i class="fas fa-history"></i>
+                <span>Riwayat Pengaduan</span>
+            </a>
+        </li>
+    </ul>
+</nav>
     </aside>
 
     <!-- NAVBAR -->
@@ -85,12 +87,16 @@
 
         <!-- CTA Card -->
         <div class="cta-card">
-            <div class="cta-icon"><iconify-icon icon="solar:document-add-linear"></iconify-icon></div>
-            <div class="cta-text">
-                <h3>Ada Fasilitas yang Bermasalah?</h3>
-                <p>Sampaikan pengaduan untuk membantu meningkatkan kenyamanan kampus.</p>
+            <div class="cta-card-top">
+                <div class="cta-icon">
+                    <iconify-icon icon="ph:megaphone"></iconify-icon>
+                </div>
+                <div class="cta-text">
+                    <h3>Ada Fasilitas yang Bermasalah?</h3>
+                    <p>Sampaikan pengaduan untuk membantu<br>meningkatkan kenyamanan kampus.</p>
+                </div>
             </div>
-            <a href="buat-pengaduan.html" class="btn btn-primary">Buat Pengaduan</a>
+            <a href="buat-pengaduan.html" class="btn-primary">Buat Pengaduan</a>
         </div>
 
         <!-- Pengaduan Terkini -->
@@ -99,73 +105,47 @@
             <a href="semua-pengaduan.html" class="link-see-all">Lihat semua <i class="fas fa-arrow-right"></i></a>
         </div>
 
-        <div class="reports-scroll">
-            <div class="report-card-dash">
-                <div class="report-image">
-                    <img src="https://images.unsplash.com/photo-1595113316349-9fa4eb24f884?auto=format&fit=crop&w=400&q=80" alt="AC Rusak">
-                    <span class="badge badge-category">AC</span>
-                    <span class="badge badge-status status-proses">Diproses</span>
-                </div>
-                <div class="report-content">
-                    <h4>AC Tidak Panas</h4>
-                    <div class="report-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> Ruang 202, Lantai 2</span>
-                        <span><i class="fas fa-calendar-alt"></i> 5 September 2026</span>
-                    </div>
-                    <div class="report-footer">
-                        <div class="report-actions">
-                            <span><i class="fas fa-thumbs-up"></i> 20</span>
-                            <span><i class="fas fa-thumbs-down"></i> 1</span>
-                            <span><i class="fas fa-comment"></i> 5</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- 0. STATE LOADING (Tampil saat mengambil data) -->
+        <div class="loading-state" id="loadingState">
+            <div class="loading-icon-wrapper">
+                <!-- Ikon spinner FontAwesome yang berputar -->
+                <i class="fas fa-spinner"></i> 
             </div>
-
-            <div class="report-card-dash">
-                <div class="report-image">
-                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80" alt="Toilet Rusak">
-                    <span class="badge badge-category">Toilet</span>
-                    <span class="badge badge-status status-perbaikan">Dalam Perbaikan</span>
-                </div>
-                <div class="report-content">
-                    <h4>Pintu Toilet Rusak</h4>
-                    <div class="report-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> Gedung FITK, Lantai 1</span>
-                        <span><i class="fas fa-calendar-alt"></i> 20 September 2026</span>
-                    </div>
-                    <div class="report-footer">
-                        <div class="report-actions">
-                            <span><i class="fas fa-thumbs-up"></i> 10</span>
-                            <span><i class="fas fa-thumbs-down"></i> 2</span>
-                            <span><i class="fas fa-comment"></i> 15</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="report-card-dash">
-                <div class="report-image">
-                    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80" alt="Kursi Rusak">
-                    <span class="badge badge-category">Ruang Kelas</span>
-                    <span class="badge badge-status status-selesai">Selesai</span>
-                </div>
-                <div class="report-content">
-                    <h4>Kursi Rusak</h4>
-                    <div class="report-meta">
-                        <span><i class="fas fa-map-marker-alt"></i> Ruang 302, Lantai 3</span>
-                        <span><i class="fas fa-calendar-alt"></i> 15 September 2026</span>
-                    </div>
-                    <div class="report-footer">
-                        <div class="report-actions">
-                            <span><i class="fas fa-thumbs-up"></i> 8</span>
-                            <span><i class="fas fa-thumbs-down"></i> 1</span>
-                            <span><i class="fas fa-comment"></i> 6</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h3>Loading...</h3>
+            <p>Mohon tunggu sebentar, data pengaduan<br>sedang dimuat.</p>
         </div>
+
+        <!-- 1. STATE ERROR (Gagal Koneksi) -->
+        <div class="error-state" id="errorState">
+            <!-- ... isi error state ... -->
+        </div>
+
+        <!-- 1. STATE ERROR (Gagal Koneksi) -->
+        <div class="error-state" id="errorState">
+            <div class="error-icon-wrapper">
+                <i class="fas fa-exclamation"></i>
+            </div>
+            <h3>Gagal Memuat Pengaduan</h3>
+            <p>Terjadi kesalahan saat memuat data pengaduan. Periksa koneksi internet Anda dan coba lagi.</p>
+            <button class="btn-retry" id="btnRetry">Coba Lagi</button>
+        </div>
+
+        <!-- 2. STATE DATA (Wadah untuk List Kartu) - DIBIARKAN KOSONG -->
+        <div class="reports-list" id="reportsContainer">
+            <!-- Data dari database akan dimasukkan ke sini lewat JS nanti -->
+        </div>
+
+        <!-- 3. STATE KOSONG (Jika belum ada data) -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon-wrapper">
+                <!-- Ganti ikon FontAwesome dengan Iconify Solar -->
+                <iconify-icon icon="solar:document-add-linear"></iconify-icon>
+            </div>
+            <h3>Belum Ada Pengaduan</h3>
+            <p>Saat ini belum ada pengaduan fasilitas<br>kampus dari seluruh pengguna. Jadilah<br>yang pertama untuk menyampaikan<br>pengaduan.</p>
+            <a href="buat-pengaduan.html" class="btn-empty-action">Buat Pengaduan</a>
+        </div>
+
     </main>
 
     <script src="javascript/api.js"></script>

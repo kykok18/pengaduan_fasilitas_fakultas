@@ -907,7 +907,6 @@ ul {
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
     background: var(--white);
-    border: 1px solid #e0e0e0;
     border-radius: 8px;
 }
 

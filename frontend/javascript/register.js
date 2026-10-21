@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const originalText = submitBtn.textContent;
         submitBtn.disabled = true; // Tetap disable saat loading
-        submitBtn.textContent = 'Memproses...';
+        submitBtn.textContent = 'Loading...';
 
         try {
             const response = await apiRegister(
