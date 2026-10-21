@@ -25,19 +25,153 @@ class PengaduanController
         ]);
     }
 
+    private function saveBuktiPengaduan($id_pengaduan, $file)
+    {
+        if (!isset($file) || !is_array($file)) {
+            return null;
+        }
+
+        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            errorResponse('Upload file gagal', 400);
+        }
+
+        $tmpName = $file['tmp_name'] ?? null;
+
+        if (!$tmpName || !is_uploaded_file($tmpName)) {
+            errorResponse('File bukti tidak valid', 400);
+        }
+
+        $size = filesize($tmpName);
+
+        if ($size === false || $size <= 0) {
+            errorResponse('File bukti tidak valid', 400);
+        }
+
+        if ($size > 5 * 1024 * 1024) {
+            errorResponse('Ukuran file terlalu besar, maksimal 5 MB', 413);
+        }
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $tmpName);
+        finfo_close($finfo);
+
+        $allowedMime = ['image/jpeg', 'image/png', 'image/webp'];
+
+        if (!in_array($mimeType, $allowedMime, true)) {
+            errorResponse('Tipe file tidak didukung', 415);
+        }
+
+        $pengaduan = $this->pengaduanModel->findById((int) $id_pengaduan);
+
+        if ($pengaduan === false) {
+            errorResponse('Gagal mengambil data pengaduan', 500);
+        }
+
+        if ($pengaduan === null) {
+            errorResponse('Pengaduan tidak ditemukan', 404);
+        }
+
+        if ((int) $pengaduan['id_user'] !== (int) $_SESSION['id_user']) {
+            errorResponse('Anda tidak memiliki akses ke pengaduan ini', 403);
+        }
+
+        $extensionMap = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp'
+        ];
+
+        $extension = $extensionMap[$mimeType] ?? 'jpg';
+        $projectRoot = dirname(__DIR__, 3);
+        $targetDir = $projectRoot . '/uploads/pengaduan';
+
+        if (!is_dir($targetDir) && !mkdir($targetDir, 0775, true) && !is_dir($targetDir)) {
+            errorResponse('Gagal menyiapkan folder upload', 500);
+        }
+
+        $fileName = 'pengaduan_' . (int) $id_pengaduan . '_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $extension;
+        $targetPath = $targetDir . '/' . $fileName;
+        $relativePath = 'uploads/pengaduan/' . $fileName;
+
+        if (isset($pengaduan['foto']) && $pengaduan['foto'] && $pengaduan['foto'] !== $relativePath) {
+            $oldFile = $projectRoot . '/' . $pengaduan['foto'];
+
+            if (file_exists($oldFile)) {
+                @unlink($oldFile);
+            }
+        }
+
+        if (!move_uploaded_file($tmpName, $targetPath)) {
+            errorResponse('Gagal menyimpan file bukti', 500);
+        }
+
+        $updated = $this->pengaduanModel->updateFoto((int) $id_pengaduan, $relativePath);
+
+        if ($updated !== true) {
+            @unlink($targetPath);
+            errorResponse('Gagal memperbarui data pengaduan', 500);
+        }
+
+        return $relativePath;
+    }
+
     public function store()
     {
         if (!isset($_SESSION['id_user']) || !is_numeric($_SESSION['id_user'])) {
             errorResponse('Silakan login terlebih dahulu', 401);
         }
 
-        $input = json_decode(file_get_contents('php://input'), true);
+        $isMultipart = (
+            isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== false
+        ) || isset($_FILES['foto']) || isset($_FILES['bukti_foto']);
 
-        if (json_last_error() !== JSON_ERROR_NONE || !is_array($input)) {
-            errorResponse('Format JSON tidak valid', 400);
+        if ($isMultipart) {
+            $input = $_POST;
+            $photoFile = null;
+
+            if (isset($_FILES['foto']) && is_array($_FILES['foto'])) {
+                $photoFile = $_FILES['foto'];
+
+                if (($photoFile['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+                    $photoFile = null;
+                }
+            } elseif (isset($_FILES['bukti_foto']) && is_array($_FILES['bukti_foto'])) {
+                $photoFile = $_FILES['bukti_foto'];
+
+                if (($photoFile['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+                    $photoFile = null;
+                }
+            }
+        } else {
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($input)) {
+                errorResponse('Format JSON tidak valid', 400);
+            }
         }
 
         $id_fasilitas = filter_var($input['id_fasilitas'] ?? null, FILTER_VALIDATE_INT);
+
+        if (($id_fasilitas === false || (int) $id_fasilitas <= 0) && isset($input['kategori'])) {
+            $kategori = trim((string) $input['kategori']);
+
+            if ($kategori !== '') {
+                $id_fasilitas = filter_var($kategori, FILTER_VALIDATE_INT);
+
+                if ($id_fasilitas === false || (int) $id_fasilitas <= 0) {
+                    $fasilitasByNama = $this->pengaduanModel->findByNamaFasilitas($kategori);
+
+                    if ($fasilitasByNama !== false && $fasilitasByNama !== null) {
+                        $id_fasilitas = (int) $fasilitasByNama['id_fasilitas'];
+                    }
+                }
+            }
+        }
+
+        if (($id_fasilitas === false || (int) $id_fasilitas <= 0) && isset($input['id_fasilitas_legacy'])) {
+            $id_fasilitas = filter_var($input['id_fasilitas_legacy'], FILTER_VALIDATE_INT);
+        }
+
         $judul = trim((string) ($input['judul'] ?? ''));
         $lokasi = trim((string) ($input['lokasi'] ?? ''));
         $deskripsi = trim((string) ($input['deskripsi'] ?? ''));
@@ -88,6 +222,10 @@ class PengaduanController
             errorResponse('Gagal membuat pengaduan', 500);
         }
 
+        if ($photoFile !== null && !empty($photoFile['name'])) {
+            $this->saveBuktiPengaduan((int) $id_pengaduan, $photoFile);
+        }
+
         $pengaduan = $this->pengaduanModel->findById((int) $id_pengaduan);
 
         if ($pengaduan === false) {
@@ -109,5 +247,43 @@ class PengaduanController
             'status' => $pengaduan['status'],
             'created_at' => $pengaduan['created_at']
         ], 201);
+    }
+
+    public function uploadFoto()
+    {
+        if (!isset($_SESSION['id_user']) || !is_numeric($_SESSION['id_user'])) {
+            errorResponse('Silakan login terlebih dahulu', 401);
+        }
+
+        if (!isset($_POST['id_pengaduan'])) {
+            errorResponse('ID pengaduan wajib diisi', 400);
+        }
+
+        $id_pengaduan = filter_var($_POST['id_pengaduan'], FILTER_VALIDATE_INT);
+
+        if ($id_pengaduan === false || (int) $id_pengaduan <= 0) {
+            errorResponse('ID pengaduan tidak valid', 400);
+        }
+
+        if (!isset($_FILES['foto']) || !is_array($_FILES['foto'])) {
+            errorResponse('File bukti wajib diunggah', 400);
+        }
+
+        $file = $_FILES['foto'];
+
+        if (($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+            errorResponse('File bukti wajib diunggah', 400);
+        }
+
+        if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+            errorResponse('Upload file gagal', 400);
+        }
+
+        $foto = $this->saveBuktiPengaduan((int) $id_pengaduan, $file);
+
+        successResponse('Bukti pengaduan berhasil diunggah', [
+            'id_pengaduan' => (int) $id_pengaduan,
+            'foto' => $foto
+        ]);
     }
 }
