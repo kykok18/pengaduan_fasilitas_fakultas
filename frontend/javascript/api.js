@@ -11,7 +11,7 @@ const API_BASE_URL = (() => {
   }
 
   // Jika sedang diakses secara online (misalnya Vercel) -> arahkan ke InfinityFree
-  return "http://pengaduan-fasilitas-fitk.infy.click/backend/api";
+  return "/api";
 })();
 
 async function apiRequest(endpoint, body = null, method = "POST") {
