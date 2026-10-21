@@ -120,15 +120,15 @@ ul {
 }
 
 .btn-primary {
-    background-color: var(--primary-green);
+    background-color: var(--dark-green-bg);
     color: var(--white);
-    border: 1px solid var(--primary-green);
+    border: 1px solid var(--dark-green-bg);
 }
 
 .btn-outline {
     background-color: var(--white);
-    color: var(--text-dark);
-    border: 1px solid var(--primary-green);
+    color: var(--dark-green-bg);
+    border: 1px solid var(--dark-green-bg);
 }
 
 
@@ -211,7 +211,7 @@ ul {
 }
 
 .logo-sub.highlight {
-    color: #f5a623;
+    color: #D59A29;
     font-weight: 500;
 }
 
