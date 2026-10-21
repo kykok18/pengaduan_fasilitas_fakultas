@@ -1,11 +1,14 @@
 /* ============================================================
    API.JS — Integrasi Frontend dengan Backend PHP
    ============================================================ */
-const API_BASE_URL = `${window.location.origin}${
-    window.location.pathname.startsWith("/pengaduan_fasilitas_fakultas/")
-        ? "/pengaduan_fasilitas_fakultas/backend/api"
-        : "/backend/api"
-}`;
+const IS_LOCAL = ["localhost", "127.0.0.1"].includes(
+    window.location.hostname
+);
+
+const API_BASE_URL = IS_LOCAL
+    ? "http://localhost:8000/backend/api"
+    : "https://pengaduan-fasilitas-backend.onrender.com/api";
+
 
 
 async function apiRequest(endpoint, body = null, method = "POST") {
@@ -15,7 +18,7 @@ async function apiRequest(endpoint, body = null, method = "POST") {
             headers: {
                 Accept: "application/json"
             },
-            credentials: "same-origin"
+            credentials: "include"
         };  
 
         if (body !== null && method !== "GET") {
