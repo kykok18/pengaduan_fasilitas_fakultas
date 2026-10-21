@@ -15,9 +15,7 @@
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- TAMBAHAN: SIDEBAR & OVERLAY AGAR BISA AKTIF -->
-    <!-- ========================================== -->
+    <!-- SIDEBAR -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -29,37 +27,34 @@
             </div>
         </div>
         <div class="sidebar-divider"></div>
-                <nav class="sidebar-nav">
-    <ul>
-        <li class="active">
-            <a href="dashboard.html">
-                <!-- Ikon Home (Rumah) -->
-                <i class="fas fa-home"></i> 
-                <span>Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="buat-pengaduan.html">
-                <!-- Ikon Dokumen dengan Pensil -->
-                <i class="fas fa-file-signature"></i> 
-                <span>Buat Pengaduan</span>
-            </a>
-        </li>
-        <li>
-            <a href="riwayat-pengaduan.html">
-                <i class="fas fa-history"></i>
-                <span>Riwayat Pengaduan</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i> 
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="buat-pengaduan.html">
+                        <i class="fas fa-file-signature"></i> 
+                        <span>Buat Pengaduan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="riwayat-pengaduan.html">
+                        <i class="fas fa-history"></i>
+                        <span>Riwayat Pengaduan</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </aside>
 
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="container nav-container">
             <div class="nav-left">
-                <!-- Tombol ini sekarang punya pasangan id="sidebar" di atas -->
                 <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
                 <div class="logo">
                     <img src="img/logo-fitk.png" alt="Logo FITK" class="logo-img">
@@ -88,51 +83,69 @@
         <div class="form-pengaduan-container">
             <h1 class="form-title">Buat Pengaduan</h1>
 
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form id="formPengaduan" novalidate>
                 
                 <!-- Judul Pengaduan -->
                 <div class="form-group">
                     <label for="judul">Judul Pengaduan*</label>
-                    <input type="text" id="judul" name="judul" class="form-control" placeholder="cth. Lampu Mati" required>
+                    <input type="text" id="judul" name="judul" class="form-control" placeholder="cth. Lampu Mati">
+                    <div class="error-message" id="errorJudul">
+                        <i class="fas fa-exclamation-circle"></i> Judul pengaduan wajib diisi.
+                    </div>
                 </div>
 
                 <!-- Kategori -->
                 <div class="form-group">
                     <label for="kategori">Kategori*</label>
-                    <select id="kategori" name="kategori" class="form-control" required>
+                    <select id="kategori" name="kategori" class="form-control">
                         <option value="" disabled selected>Pilih Kategori</option>
-                        <option value="Fasilitas Kelas">Fasilitas Kelas</option>
-                        <option value="Toilet">Toilet</option>
-                        <option value="Listrik">Listrik</option>
                         <option value="AC">AC</option>
-                        <option value="Internet/WiFi">Internet/WiFi</option>
-                        <option value="Lainnya">Lainnya</option>
+                        <option value="Keamanan">Keamanan</option>
+                        <option value="Lift">Lift</option>
+                        <option value="Listrik">Listrik</option>
+                        <option value="Mushola">Mushola</option>
+                        <option value="Ruang Kelas">Ruang Kelas</option>
+                        <option value="Toilet & Kebersihan">Toilet & Kebersihan</option>
+                        <option value="Wi-Fi">Wi-Fi</option>
                     </select>
+                    <div class="error-message" id="errorKategori">
+                        <i class="fas fa-exclamation-circle"></i> Kategori wajib diisi.
+                    </div>
                 </div>
 
                 <!-- Lokasi -->
                 <div class="form-group">
                     <label for="lokasi">Lokasi*</label>
-                    <input type="text" id="lokasi" name="lokasi" class="form-control" placeholder="cth. Gedung FITK, Lantai 1" required>
+                    <input type="text" id="lokasi" name="lokasi" class="form-control" placeholder="cth. Gedung FITK, Lantai 1">
+                    <div class="error-message" id="errorLokasi">
+                        <i class="fas fa-exclamation-circle"></i> Lokasi wajib diisi.
+                    </div>
                 </div>
 
                 <!-- Deskripsi Pengaduan -->
                 <div class="form-group">
                     <label for="deskripsi">Deskripsi Pengaduan*</label>
-                    <textarea id="deskripsi" name="deskripsi" class="form-control" placeholder="Jelaskan detail kerusakan atau masalah yang terjadi..." required></textarea>
+                    <textarea id="deskripsi" name="deskripsi" class="form-control" placeholder="Jelaskan Masalah yang Ditemukan Secara Detail"></textarea>
+                    <div class="error-message" id="errorDeskripsi">
+                        <i class="fas fa-exclamation-circle"></i> Deskripsi Pengaduan wajib diisi.
+                    </div>
                 </div>
 
                 <!-- Bukti Foto -->
                 <div class="form-group">
                     <label>Bukti Foto*</label>
-                    <div class="upload-group">
-                        <input type="file" id="file-upload" name="bukti_foto" accept="image/jpeg, image/png, image/jpg" required>
+                    <div class="upload-group" id="uploadWrapper">
+                        <input type="file" id="file-upload" name="bukti_foto" accept="image/jpeg, image/png, image/jpg">
                         <label for="file-upload" class="btn-choose-file">Choose File</label>
-                        <span class="upload-text">Upload Foto, JPG, PNG.</span>
+                        <span class="upload-text" id="fileName">Upload Foto, JPG, PNG.</span>
+                    </div>
+                    <div class="error-message" id="errorFoto">
+                        <i class="fas fa-exclamation-circle"></i> Bukti Foto wajib diisi.
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">Kirim Pengaduan</button>
+                <!-- Tombol Submit -->
+                <button type="submit" class="btn-submit" id="btnSubmit" disabled>Kirim Pengaduan</button>
 
             </form>
         </div>
@@ -141,5 +154,6 @@
 
     <script src="javascript/api.js"></script>
     <script src="javascript/dashboard.js"></script>
+    <script src="javascript/buat-pengaduan.js"></script>
 </body>
 </html>
