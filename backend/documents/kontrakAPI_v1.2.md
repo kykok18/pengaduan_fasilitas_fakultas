@@ -368,10 +368,10 @@ dari query berhasil yang menghasilkan array kosong.
 
 ## 5. Kontrak final fitur pengaduan
 
-Dua User Story dipisahkan agar pembuatan data pengaduan dan unggah bukti
-dapat dikembangkan serta diuji secara terpisah.
+Fitur pembuatan pengaduan dan unggah bukti foto disatukan dalam satu
+endpoint agar alur pembuatan laporan lebih sederhana.
 
-### 5.1 US-06 --- Membuat pengaduan
+### 5.1 Membuat pengaduan dengan atau tanpa foto
 
 Properti Ketentuan
 
@@ -379,16 +379,11 @@ Properti Ketentuan
 
 Method `POST`
 Path `/backend/api/pengaduan.php`
-Content-Type `application/json`
+Content-Type `application/json` atau `multipart/form-data`
 Autentikasi Session aktif
 Status saat ini Implementasi tersedia
 
-Catatan implementasi:
-
-- Upload foto bukti tidak termasuk dalam endpoint ini dan dialihkan ke card Trello terpisah.
-- Endpoint ini hanya menangani penyimpanan pengaduan dasar dengan data `id_fasilitas`, `judul`, `lokasi`, dan `deskripsi`.
-
-Request JSON:
+Request JSON (tanpa foto):
 
 ```json
 {
@@ -399,13 +394,25 @@ Request JSON:
 }
 ```
 
+Request `multipart/form-data` (opsional foto bukti):
+
+```text
+id_fasilitas=1
+judul=Proyektor ruang kelas rusak
+lokasi=Gedung FITK, Lantai 2
+deskripsi=Proyektor tidak menyala saat digunakan.
+foto=@gambar.jpg
+```
+
 Aturan: - Session harus valid. - `id_user` diambil dari session;
 frontend tidak mengirim `id_user`. - `id_fasilitas` wajib berupa ID
 fasilitas yang ada. - `judul` wajib diisi, maksimum 150 karakter. -
-`lokasi` wajib diisi. - `deskripsi` wajib diisi. - Data disimpan ke
-tabel `pengaduan` menggunakan prepared statement. - Status awal harus
-`diajukan`; server/database yang menetapkannya. - Foto bukti belum
-dibahas pada endpoint ini dan tidak dikirim pada request.
+`lokasi` wajib diisi. - `deskripsi` wajib diisi. - Foto bukti bersifat
+opsional pada endpoint ini. - Jika `foto` dikirim, server memeriksa
+ukuran dan tipe file dari isi file, bukan hanya ekstensi. - Valid tipe:
+JPEG, PNG, atau WebP. - Maksimum ukuran 5 MB. - Server membuat nama file
+sendiri; tidak menggunakan nama client. - Path relatif file disimpan
+pada kolom `pengaduan.foto`.
 
 Response `201 Created`:
 
@@ -420,96 +427,36 @@ Response `201 Created`:
     "judul": "Proyektor ruang kelas rusak",
     "lokasi": "Gedung FITK, Lantai 2",
     "deskripsi": "Proyektor tidak menyala saat digunakan.",
-    "foto": null,
+    "foto": "uploads/pengaduan/pengaduan_12_1697812345_abcd1234.png",
     "status": "diajukan",
     "created_at": "2026-10-19 12:00:00"
   }
 }
 ```
 
-`id_user` tidak perlu dikirim oleh client. Response boleh menyertakan
-`id_user` bila diperlukan, tetapi nilainya harus berasal dari session.
+`foto` boleh bernilai `null` bila tidak ada file bukti yang dikirim.
 
 Status: `201`, `400` untuk input tidak valid, `401` untuk session
-invalid, `404` jika fasilitas tidak ditemukan, `405`, atau `500`.
+invalid, `404` jika fasilitas tidak ditemukan, `405`, `413` untuk file
+terlalu besar, `415` untuk tipe tidak didukung, atau `500`.
 
 Catatan tambahan:
 
 - Frontend wajib mengirim `id_fasilitas` sebagai angka integer, bukan nama kategori.
-- Endpoint ini tidak menerima upload file.
-- Foto bukti akan dibuat pada endpoint terpisah di card Trello berikutnya.
+- Endpoint ini menerima JSON untuk pengaduan biasa dan `FormData` saat foto disertakan.
+- Tidak ada endpoint terpisah untuk upload foto; foto diproses di endpoint pengaduan yang sama.
 
-### 5.2 US-07 --- Mengunggah bukti pengaduan
-
-Properti Ketentuan
-
----
-
-Method `POST`
-Path `/backend/api/pengaduan_foto.php`
-Content-Type `multipart/form-data`
-Autentikasi Session aktif
-Status saat ini Kontrak final, implementasi pending
-
-Field multipart:
-
----
-
-Field Tipe Wajib Ketentuan
-
----
-
-`id_pengaduan` teks angka Ya ID pengaduan yang
-akan diberi bukti
-
-`foto` file Ya Satu gambar JPEG,
-PNG, atau WebP,
-maksimum 5 MB
-
----
-
-Aturan: - Session harus valid. - Pengaduan harus ada dan dimiliki
-pengguna yang sedang login. - Pengguna hanya boleh mengunggah bukti
-untuk pengaduannya sendiri. - Server harus memeriksa ukuran dan tipe
-file dari isi file, bukan hanya ekstensi atau nama yang dikirim
-client. - Maksimum ukuran file adalah 5 MB. - Format yang diterima:
-JPEG, PNG, WebP. - Server membuat nama file sendiri; jangan menggunakan
-nama file client sebagai nama penyimpanan. - File disimpan di folder
-unggahan khusus yang tidak dapat mengeksekusi file sebagai kode. - Path
-relatif file disimpan pada kolom `pengaduan.foto`. - Jika pengaduan
-sudah memiliki foto, unggahan baru menggantikan foto sebelumnya. File
-lama dihapus setelah file baru berhasil disimpan dan database berhasil
-diperbarui. - Jangan mengubah status pengaduan saat mengunggah foto. -
-Jika penyimpanan file atau pembaruan database gagal, kembalikan error
-JSON dan bersihkan file sementara/file baru yang tidak lagi digunakan.
-
-Response `200 OK`:
-
-```json
-{
-  "status": "success",
-  "message": "Bukti pengaduan berhasil diunggah",
-  "data": {
-    "id_pengaduan": 12,
-    "foto": "uploads/pengaduan/8f3a2c_example.webp"
-  }
-}
-```
-
-Status: `200`, `400` untuk field/file tidak valid, `401`, `403` jika
-bukan pemilik pengaduan, `404` jika pengaduan tidak ditemukan, `405`,
-`413` untuk file terlalu besar, `415` untuk tipe tidak didukung, atau
-`500`.
-
-Frontend wajib menggunakan `FormData` dan tidak menetapkan header
-`Content-Type` secara manual:
+### 5.2 Contoh frontend pengajuan dengan foto
 
 ```javascript
 const formData = new FormData();
-formData.append("id_pengaduan", idPengaduan);
+formData.append("id_fasilitas", 1);
+formData.append("judul", "Proyektor rusak");
+formData.append("lokasi", "Gedung FITK");
+formData.append("deskripsi", "Proyektor tidak menyala saat kelas.");
 formData.append("foto", fileFoto);
 
-const response = await fetch(`${API_BASE_URL}/pengaduan_foto.php`, {
+const response = await fetch(`${API_BASE_URL}/pengaduan.php`, {
   method: "POST",
   credentials: "same-origin",
   headers: {
@@ -518,6 +465,9 @@ const response = await fetch(`${API_BASE_URL}/pengaduan_foto.php`, {
   body: formData,
 });
 ```
+
+Untuk request tanpa foto, cukup gunakan JSON seperti contoh di atas dan
+jangan kirim field `foto`.
 
 ---
 

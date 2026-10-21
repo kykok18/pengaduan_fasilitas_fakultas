@@ -112,6 +112,34 @@ class Pengaduan
         return $id_pengaduan ?: false;
     }
 
+    public function updateFoto($id_pengaduan, $fotoPath)
+    {
+        $query = "
+            UPDATE pengaduan
+            SET foto = ?
+            WHERE id_pengaduan = ?
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log('Gagal menyiapkan query updateFoto pengaduan: ' . mysqli_error($this->conn));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 'si', $fotoPath, $id_pengaduan);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log('Gagal mengupdate foto pengaduan: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        mysqli_stmt_close($stmt);
+
+        return true;
+    }
+
     public function findById($id_pengaduan)
     {
         $query = "
