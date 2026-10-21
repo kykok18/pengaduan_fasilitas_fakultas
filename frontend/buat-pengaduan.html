@@ -139,22 +139,42 @@
                 <!-- Kategori -->
                 <div class="form-group">
                     <label for="kategori">Kategori*</label>
-                    <select id="kategori" name="kategori" class="form-control">
-                        <option value="" disabled selected>Pilih Kategori</option>
-                        <option value="AC">AC</option>
-                        <option value="Keamanan">Keamanan</option>
-                        <option value="Lift">Lift</option>
-                        <option value="Listrik">Listrik</option>
-                        <option value="Mushola">Mushola</option>
-                        <option value="Ruang Kelas">Ruang Kelas</option>
-                        <option value="Toilet & Kebersihan">Toilet & Kebersihan</option>
-                        <option value="Wi-Fi">Wi-Fi</option>
-                    </select>
+                    
+                    <!-- Custom Dropdown Wrapper -->
+                    <div class="custom-select-wrapper" id="customSelectWrapper">
+                        
+                        <!-- Tampilan Kotak (yang terlihat sebelum diklik) -->
+                        <div class="form-control custom-select-trigger" id="selectTrigger">
+                            <span id="selectLabel">Pilih Kategori</span>
+                            <!-- Panah Bawah -->
+                            <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6 6L11 1" stroke="#0B5E3B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <!-- List Pilihan (Tersembunyi default) -->
+                        <div class="custom-options" id="customOptions">
+                            <div class="custom-option" data-value="AC">AC</div>
+                            <div class="custom-option" data-value="Keamanan">Keamanan</div>
+                            <div class="custom-option" data-value="Lift">Lift</div>
+                            <div class="custom-option" data-value="Listrik">Listrik</div>
+                            <div class="custom-option" data-value="Mushola">Mushola</div>
+                            <div class="custom-option" data-value="Ruang Kelas">Ruang Kelas</div>
+                            <div class="custom-option" data-value="Toilet & Kebersihan">Toilet & Kebersihan</div>
+                            <div class="custom-option" data-value="Wi-Fi">Wi-Fi</div>
+                        </div>
+                        
+                        <!-- Input Hidden untuk menampung value (agar bisa dibaca JavaScript) -->
+                        <input type="hidden" id="kategori" name="kategori" value="">
+                        
+                    </div>
+                    
                     <div class="error-message" id="errorKategori">
                         <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13 6.5C13 9.53757 10.3137 12 7 12C3.68629 12 1 9.53757 1 6.5C1 3.46243 3.68629 1 7 1C10.3137 1 13 3.46243 13 6.5Z" stroke-width="2" stroke="#D02316"/>
-        <path d="M7 3.75V7.05M7 8.975V9.25" stroke-width="2" stroke-linecap="round" stroke="#D02316"/>
-    </svg> Kategori wajib diisi.
+                            <path d="M13 6.5C13 9.53757 10.3137 12 7 12C3.68629 12 1 9.53757 1 6.5C1 3.46243 3.68629 1 7 1C10.3137 1 13 3.46243 13 6.5Z" stroke-width="2" stroke="#D02316"/>
+                            <path d="M7 3.75V7.05M7 8.975V9.25" stroke-width="2" stroke-linecap="round" stroke="#D02316"/>
+                        </svg>
+                        Kategori wajib diisi.
                     </div>
                 </div>
 
