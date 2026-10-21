@@ -1,5 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('formPengaduan');
+
+        // --- LOGIKA CUSTOM DROPDOWN KATEGORI ---
+    const customSelectWrapper = document.getElementById('customSelectWrapper');
+    const selectTrigger = document.getElementById('selectTrigger');
+    const customOptions = document.getElementById('customOptions');
+    const selectLabel = document.getElementById('selectLabel');
+    const inputKategoriHidden = document.getElementById('kategori'); // Input hidden
+
+    // Buka/Tutup Dropdown
+    selectTrigger.addEventListener('click', () => {
+        customSelectWrapper.classList.toggle('open');
+    });
+
+    // Pilih Opsi
+    document.querySelectorAll('.custom-option').forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.getAttribute('data-value');
+            
+            // Set teks di kotak
+            selectLabel.textContent = value;
+            selectLabel.classList.add('has-value');
+            
+            // Set value ke input hidden (agar bisa dibaca oleh fungsi validasi & formData)
+            inputKategoriHidden.value = value;
+            
+            // Tutup dropdown
+            customSelectWrapper.classList.remove('open');
+            
+            // Hilangkan error jika ada
+            const errorKategori = document.getElementById('errorKategori');
+            if (errorKategori) errorKategori.classList.remove('active');
+            selectTrigger.classList.remove('input-error');
+            
+            // Panggil validasi/update tombol
+            if (typeof handleInput === 'function') handleInput();
+        });
+    });
+
+    // Tutup dropdown jika klik di luar area
+    document.addEventListener('click', (e) => {
+        if (!customSelectWrapper.contains(e.target)) {
+            customSelectWrapper.classList.remove('open');
+        }
+    });
+    // ----------------------------------------
     const btnSubmit = document.getElementById('btnSubmit');
     
     // Elemen Input
