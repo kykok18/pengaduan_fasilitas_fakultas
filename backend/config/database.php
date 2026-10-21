@@ -1,102 +1,26 @@
 <?php
 
-// Membaca file .env untuk development lokal.
-// Pada production, konfigurasi dapat diberikan melalui Environment Variables.
 $env = [];
 $envPath = dirname(__DIR__, 2) . '/.env';
 
 if (file_exists($envPath)) {
     $parsedEnv = parse_ini_file($envPath, false, INI_SCANNER_RAW);
-
-    if ($parsedEnv === false) {
-        error_log('Gagal membaca file .env.');
-
-        http_response_code(500);
-        die('Gagal membaca konfigurasi aplikasi.');
+    if ($parsedEnv !== false) {
+        $env = $parsedEnv;
     }
-
-    $env = $parsedEnv;
 }
 
-// Environment Variables memiliki prioritas dibandingkan file .env.
-$getConfig = static function (string $key, string $default = '') use ($env): string {
-    $value = getenv($key);
+$host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? '127.0.0.1');
+$port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '3306');
+$user = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'root');
+$password = getenv('DB_PASSWORD') ?: ($env['DB_PASSWORD'] ?? '');
+$dbName = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'pengaduan_fasilitas_fakultasDB');
 
-    if ($value !== false) {
-        return trim((string) $value);
-    }
+$conn = mysqli_connect($host, $user, $password, $dbName, (int) $port);
 
-    return trim((string) ($env[$key] ?? $default));
-};
-
-// Mengambil konfigurasi database.
-$host = $getConfig('DB_HOST', '127.0.0.1');
-$port = (int) $getConfig('DB_PORT', '3306');
-$user = $getConfig('DB_USER');
-$db   = $getConfig('DB_NAME');
-
-// Password tidak di-trim agar karakter spasi tetap dipertahankan.
-$pw = getenv('DB_PASSWORD');
-
-if ($pw === false) {
-    $pw = (string) ($env['DB_PASSWORD'] ?? '');
-}
-
-// Memastikan konfigurasi wajib tersedia.
-if (
-    $host === '' ||
-    $port < 1 ||
-    $port > 65535 ||
-    $user === '' ||
-    $db === ''
-) {
-    error_log('Konfigurasi database belum lengkap atau tidak valid.');
-
+if (!$conn) {
     http_response_code(500);
-    die('Konfigurasi database belum lengkap atau tidak valid.');
+    die('Koneksi database gagal: ' . mysqli_connect_error());
 }
 
-// Membuat koneksi MySQL dengan TLS untuk TiDB Cloud.
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-try {
-    $conn = mysqli_init();
-
-    // Mengaktifkan verifikasi sertifikat server.
-    mysqli_options(
-        $conn,
-        MYSQLI_OPT_SSL_VERIFY_SERVER_CERT,
-        true
-    );
-
-    // Mengatur sertifikat CA.
-    mysqli_ssl_set(
-        $conn,
-        null,
-        null,
-        '/etc/ssl/certs/ca-certificates.crt',
-        null,
-        null
-    );
-
-    // Menghubungkan ke database menggunakan TLS.
-    mysqli_real_connect(
-        $conn,
-        $host,
-        $user,
-        $pw,
-        $db,
-        $port,
-        null,
-        MYSQLI_CLIENT_SSL
-    );
-
-    // Mengatur charset.
-    mysqli_set_charset($conn, 'utf8mb4');
-
-} catch (mysqli_sql_exception $e) {
-    error_log('Koneksi atau persiapan database gagal: ' . $e->getMessage());
-
-    http_response_code(500);
-    die('Koneksi database gagal.');
-}
+mysqli_set_charset($conn, 'utf8mb4');

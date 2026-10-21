@@ -79,12 +79,10 @@ class User
         }
 
         $id_user = mysqli_insert_id($this->conn);
-
         mysqli_stmt_close($stmt);
 
-        return $id_user;
+        return $id_user ?: false;
     }
-
     /**
      * Mencari pengguna berdasarkan email.
      *
