@@ -303,7 +303,7 @@ input[type="file"] {
     position: absolute;
     display: none;
     flex-direction: column;
-    top: calc(100% + 4px); /* Muncul di bawah kotak */
+    top: calc(100% + 0px); /* Muncul di bawah kotak */
     left: 0;
     right: 0;
     z-index: 100;
@@ -326,7 +326,7 @@ input[type="file"] {
 
 /* Item List */
 .custom-option {
-    padding: 6px 4px;
+    padding: 0px 4px;
     font-family: 'Poppins', sans-serif;
     font-size: 10px;
     font-weight: 400;
