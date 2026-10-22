@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!value) { showError(passwordInput, 'Password wajib diisi.'); return false; }
         if (value.length < 8) { showError(passwordInput, 'Password minimal 8 karakter.'); return false; }
         if (!/[A-Z]/.test(value) || !/[a-z]/.test(value) || !/[0-9]/.test(value)) {
-            showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, dan angka.'); return false;
+            showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.'); return false;
         }
         clearError(passwordInput); return true;
     }
