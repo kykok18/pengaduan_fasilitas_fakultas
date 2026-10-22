@@ -1,18 +1,11 @@
 /* ============================================================
    API.JS — Integrasi Frontend dengan Backend PHP
    ============================================================ */
-const API_BASE_URL = (() => {
-  const hostname = window.location.hostname;
-
-  // Jika sedang dibuka di komputer lokal (localhost / 127.0.0.1)
-  if (hostname === "localhost" || hostname === "127.0.0.1") {
-    // Sesuaikan path folder backend lokal Anda jika berjalan di XAMPP/Laragon
-    return "http://localhost/pengaduan_fasilitas_fakultas/backend/api";
-  }
-
-  // Jika sedang diakses secara online (misalnya Vercel) -> arahkan ke InfinityFree
-  return "/api";
-})();
+const API_BASE_URL = `${window.location.origin}${
+  window.location.pathname.startsWith("/pengaduan_fasilitas_fakultas/")
+    ? "/pengaduan_fasilitas_fakultas/backend/api"
+    : "/backend/api"
+}`;
 
 async function apiRequest(endpoint, body = null, method = "POST") {
   try {

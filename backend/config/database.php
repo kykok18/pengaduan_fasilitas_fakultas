@@ -12,7 +12,7 @@ if (file_exists($envPath)) {
 
 $host = getenv('DB_HOST') ?: ($env['DB_HOST'] ?? '127.0.0.1');
 $port = getenv('DB_PORT') ?: ($env['DB_PORT'] ?? '3306');
-$user = getenv('DB_USER') ?: ($env['DB_USER'] ?? 'root');
+$user = getenv('DB_USERNAME') ?: ($env['DB_USERNAME'] ?? 'root');
 $password = getenv('DB_PASSWORD') ?: ($env['DB_PASSWORD'] ?? '');
 $dbName = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'pengaduan_fasilitas_fakultasDB');
 
