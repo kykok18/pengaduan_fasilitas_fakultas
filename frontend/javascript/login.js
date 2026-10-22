@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = 'dashboard.html';
             }, 1500);
         }else {
-                    showMessage('LOGIN GAGAL', 'E-mail atau password yang Anda masukkan<br>salah. Silakan periksa kembali.', 'error');
+                    showMessage('LOGIN GAGAL', 'E-mail atau password yang Anda masukkan<br>salah. Silakan periksa kembali HUHU.', 'error');
                     
                     // Kembalikan tombol ke semula
                     submitBtn.textContent = originalText;
