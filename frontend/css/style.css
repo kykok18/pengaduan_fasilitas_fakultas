@@ -1076,7 +1076,7 @@ footer {
     position: fixed;
     top: 0;
     left: -300px;
-    width: 280px;
+    width: 263px;
     height: 100vh;
     background-color: var(--white);
     z-index: 9999;
@@ -1127,22 +1127,25 @@ footer {
 }
 
 .sidebar-header-text h3 {
-    font-size: 0.9rem;
+    font-size: 10px;
     font-weight: 700;
     color: var(--dark-green-bg);
-    margin-bottom: 2px;
+    margin-bottom: 1px;
     line-height: 1.2;
 }
 
 .sidebar-header-text p {
-    font-size: 0.65rem;
-    color: var(--text-dark);
+    font-size: 7px;
+    font-weight: 500;
+    padding-top: 0px;
+    color: var(--dark-green-bg);
     line-height: 1.3;
 }
 
 .sidebar-header-text p.highlight {
-    color: #f5a623;
+    color: #D59A29;
     font-weight: 500;
+    font-size: 7px;
 }
 
 .sidebar-divider {
@@ -1161,7 +1164,7 @@ footer {
 .sidebar-nav ul li a {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 26px;
     padding: 12px 15px;
     border-radius: 10px;
     color: var(--primary-green);
