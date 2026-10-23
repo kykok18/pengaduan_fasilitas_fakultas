@@ -1172,10 +1172,17 @@ footer {
     font-weight: 500;
 }
 
-.sidebar-nav ul li a iconify-icon {
-    font-size: 1.3rem;
-    width: 25px;
+/* Ubah bagian ini di style.css */
+.sidebar-nav ul li a iconify-icon,
+.sidebar-nav ul li a svg {
+    font-size: 1.3rem; /* Jika pakai iconify */
+    width: 25px;       /* Mengunci lebar area ikon agar sejajar */
+    height: auto;
     text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
