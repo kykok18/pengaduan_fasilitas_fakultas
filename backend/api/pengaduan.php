@@ -24,4 +24,4 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 AuthMiddleware::handle();
 
 $controller = new PengaduanController($conn);
-$controller->store();
+$controller->BuatPengaduan();

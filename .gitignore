@@ -15,3 +15,8 @@ npm-debug.log*
 *.swp
 .DS_Store
 
+postman/
+
+
+# File upload pengguna
+/uploads/

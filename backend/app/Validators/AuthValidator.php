@@ -19,20 +19,32 @@ class AuthValidator
             return 'Nama, email, password, dan konfirmasi password harus diisi';
         }
 
+        // Validasi panjang email
+        if (strlen($email) > 254) {
+            return 'Email maksimal 254 karakter';
+        }
+
         // Validasi format email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return 'Format email tidak valid';
         }
+        
+        // Validasi panjang password
+        if (strlen($password) < 8) {
+            return 'Password minimal 8 karakter';
+        }
+
+        // Validasi panjang maksimum password
+        if (strlen($password) > 128) {
+            return 'Password maksimal 128 karakter';
+        }
+
 
         // Validasi konfirmasi password
         if ($password !== $confirm_password) {
             return 'Konfirmasi password tidak sesuai';
         }
 
-        // Validasi panjang password
-        if (strlen($password) < 8) {
-            return 'Password minimal 8 karakter';
-        }
 
         // Validasi kekuatan password
         if (

@@ -116,13 +116,22 @@ class Pengaduan
         mysqli_stmt_close($stmt);
 
         return $fasilitas ?: null;
-    }
+    }   
 
-    public function create($id_user, $id_fasilitas, $judul, $lokasi, $deskripsi)
+    public function create($id_user, $id_fasilitas, $judul, $lokasi, $deskripsi, $fotoPath)
     {
         $query = "
-            INSERT INTO pengaduan (id_user, id_fasilitas, judul, lokasi, deskripsi, foto, status, created_at)
-            VALUES (?, ?, ?, ?, ?, NULL, 'diajukan', NOW())
+            INSERT INTO pengaduan (
+                id_user,
+                id_fasilitas,
+                judul,
+                lokasi,
+                deskripsi,
+                foto,
+                status,
+                created_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, 'diajukan', NOW())
         ";
 
         $stmt = mysqli_prepare($this->conn, $query);
@@ -132,7 +141,16 @@ class Pengaduan
             return false;
         }
 
-        mysqli_stmt_bind_param($stmt, 'iisss', $id_user, $id_fasilitas, $judul, $lokasi, $deskripsi);
+        mysqli_stmt_bind_param(
+            $stmt,
+            'iissss',
+            $id_user,
+            $id_fasilitas,
+            $judul,
+            $lokasi,
+            $deskripsi,
+            $fotoPath
+        );
 
         if (!mysqli_stmt_execute($stmt)) {
             error_log('Gagal membuat pengaduan: ' . mysqli_stmt_error($stmt));
