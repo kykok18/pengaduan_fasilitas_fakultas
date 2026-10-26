@@ -774,6 +774,7 @@ ul {
     height: 199px; /* Tinggi gambar diperkecil */
     width: 100%;
     overflow: hidden;
+    border-radius: 10px;
 }
 
 .report-image img {
@@ -850,16 +851,30 @@ ul {
 .report-meta {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 15.18px;
     font-size: 11px;
     font-weight: 500;
     color: #0B5E3B;
-    margin-bottom: 15px;
 }
 
+/* Mengatur jarak antara ikon dan teks */
+.report-meta span {
+    display: flex;
+    align-items: center;
+    gap: 14.6px; /* Jarak antara ikon dan teks (bisa disesuaikan) */
+}
 
+/* Mengatur ukuran SVG agar rapi */
+.report-meta span svg {
+    flex-shrink: 0; /* Mencegah ikon tertekan/mengecil */
+    /* Jika SVG belum punya ukuran bawaan, paksa ukurannya di sini */
+    width: 12px; 
+    height: auto;
+}
+
+/* Biarkan ini jika kamu masih ada icon <i> di tempat lain */
 .report-meta i {
-    color: var(--primary-green);
+    color: var(--dark-green-bg);
     margin-right: 5px;
 }
 
@@ -868,6 +883,7 @@ ul {
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid #eee;
+    margin-top: 21px;
     padding-top: 12px;
 }
 
@@ -1172,10 +1188,17 @@ footer {
     font-weight: 500;
 }
 
-.sidebar-nav ul li a iconify-icon {
-    font-size: 1.3rem;
-    width: 25px;
+/* Ubah bagian ini di style.css */
+.sidebar-nav ul li a iconify-icon,
+.sidebar-nav ul li a svg {
+    font-size: 1.3rem; /* Jika pakai iconify */
+    width: 25px;       /* Mengunci lebar area ikon agar sejajar */
+    height: auto;
     text-align: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 

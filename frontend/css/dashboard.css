@@ -959,7 +959,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 7px;
+    padding: 7.5px 7px;
     background-color: var(--logo-green);
     color: var(--white);
     font-size: 10px;
