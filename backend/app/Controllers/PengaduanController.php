@@ -122,10 +122,10 @@ class PengaduanController
                 );
             }
         }
-
-        $judul = trim($input['judul'] ?? '');
-        $lokasi = trim($input['lokasi'] ?? '');
-        $deskripsi = trim($input['deskripsi'] ?? '');
+        
+        $judul = preg_replace('/^[\s\p{Z}]+|[\s\p{Z}]+$/u', '', $input['judul'] ?? '');
+        $lokasi = preg_replace('/^[\s\p{Z}]+|[\s\p{Z}]+$/u', '', $input['lokasi'] ?? '');
+        $deskripsi = preg_replace('/^[\s\p{Z}]+|[\s\p{Z}]+$/u', '', $input['deskripsi'] ?? '');
 
         if ($judul === '') {
             errorResponse('Judul pengaduan wajib diisi', 400);
