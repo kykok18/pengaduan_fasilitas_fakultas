@@ -18,6 +18,16 @@ class AuthValidator
         ) {
             return 'Nama, email, password, dan konfirmasi password harus diisi';
         }
+        
+        // Validasi karakter nama
+        if (!preg_match("/^[\p{L}\p{M}]+(?:[ '\-.\x{2019}][\p{L}\p{M}]+)*$/u", $nama)) {
+            return 'Nama hanya boleh mengandung huruf, spasi, titik, apostrof, dan tanda hubung';
+        }
+
+        // Validasi panjang nama
+        if (mb_strlen($nama, 'UTF-8') > 100) {
+            return 'Nama maksimal 100 karakter';
+        }
 
         // Validasi panjang email
         if (strlen($email) > 254) {
