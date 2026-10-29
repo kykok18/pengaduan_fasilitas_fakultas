@@ -24,10 +24,6 @@ async function loadLandingData() {
     }
 
     try {
-        // Fetch data dari API — skeleton tampil selama ini
-        // (Ganti endpoint sesuai kebutuhan. Kalau belum ada, bisa pakai /api/profile.php
-        //  untuk memicu loading, atau pakai Promise.all untuk fetch beberapa endpoint)
-        const response = await apiGetProfile();
 
         // Baik sukses maupun gagal — tampilkan konten
         sections.forEach(showContent);
@@ -117,38 +113,6 @@ loadLandingData();
         });
     });
 
-    // ============================================================
-    // 5. CEK STATUS LOGIN → UPDATE NAVBAR
-    // ============================================================
-    const user = getUserSession();
-
-    if (user) {
-        const btnRegistrasi = document.getElementById('btnRegistrasi');
-        const btnLogin = document.getElementById('btnLogin');
-        const userName = document.getElementById('userName');
-        const btnLogout = document.getElementById('btnLogout');
-
-        if (btnRegistrasi) btnRegistrasi.style.display = 'none';
-        if (btnLogin) btnLogin.style.display = 'none';
-
-        if (userName) {
-            userName.textContent = `Halo, ${user.nama || user.name || 'User'}`;
-            userName.style.display = 'inline';
-        }
-
-        if (btnLogout) {
-            btnLogout.style.display = 'inline-block';
-            btnLogout.addEventListener('click', async () => {
-                if (!confirm('Yakin ingin keluar?')) return;
-
-                btnLogout.disabled = true;
-                btnLogout.textContent = 'Loading...';
-
-                await apiLogout();
-                clearUserSession();
-                window.location.href = 'login.html';
-            });
-        }
-    }
+    
 
 });

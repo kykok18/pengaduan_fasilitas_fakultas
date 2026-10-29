@@ -433,3 +433,179 @@ body {
     border: 1px solid #D9D9D9;
     margin-top: 15px;
 }
+
+
+
+/* === OFFLINE (Kuning) === */
+.form-message.offline {
+    background-color: #FFFFFF !important;
+    border: 1px solid #D9D9D9 !important;
+    border-radius: 10px !important;
+}
+
+/* Wrapper ikon Wi-Fi */
+.form-message.offline .msg-icon-wrapper {
+    padding: 5px;
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+}
+
+/* Ukuran ikon Wi-Fi dari Figma */
+.form-message.offline .msg-icon-wrapper svg {
+    display: block;
+    width: 45px !important;
+    height: 35px !important;
+    flex-shrink: 0;
+}
+
+/* Judul notifikasi */
+.form-message.offline .msg-title {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    line-height: 22px !important;
+    color: #FEB807 !important;
+    text-transform: uppercase !important;
+    margin: 0 0 2px 0 !important;
+}
+
+/* Deskripsi notifikasi */
+.form-message.offline .msg-desc {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    color: #FEB807 !important;
+    margin: 0 !important;
+}
+
+
+
+
+/* ================================
+   NOTIFIKASI LOGIN — SESUAI FIGMA
+================================ */
+
+.form-message {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 12px 30px;
+    margin: 0 auto 24px;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 16px;
+    box-shadow: none;
+    text-align: left;
+}
+
+.form-message[hidden] {
+    display: none !important;
+}
+
+/* Wrapper ikon */
+.notification-icon-wrapper {
+    width: 62px;
+    min-width: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* SVG harus tampil utuh, tidak berubah jadi lingkaran saja */
+.notification-icon-wrapper svg {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 45px;
+    max-height: 41px;
+    flex-shrink: 0;
+}
+
+/* Konten teks */
+.notification-content {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    text-align: left;
+}
+
+.notification-title {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.notification-desc {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Login berhasil */
+.form-message.success .notification-title,
+.form-message.success .notification-desc {
+    color: #15A367;
+}
+
+/* Gagal karena server */
+.form-message.server .notification-title,
+.form-message.server .notification-desc {
+    color: #D02316;
+}
+
+/* Email/password salah */
+.form-message.auth .notification-title,
+.form-message.auth .notification-desc {
+    color: #D02316;
+}
+
+/* Koneksi internet terputus */
+.form-message.offline .notification-title,
+.form-message.offline .notification-desc {
+    color: #FEB807;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 480px) {
+    .form-message {
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+
+    .notification-icon-wrapper {
+        width: 42px;
+        min-width: 42px;
+    }
+
+    .notification-icon-wrapper svg {
+        max-width: 40px;
+        max-height: 35px;
+    }
+
+    .notification-title {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .notification-desc {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+}

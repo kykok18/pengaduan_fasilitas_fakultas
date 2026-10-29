@@ -1,43 +1,40 @@
-/* ============================================================
-   DASHBOARD.JS — Interaksi Halaman Dashboard & Semua Pengaduan
-   ============================================================ */
-
-
-
-    document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================
     // 0. AUTH GUARD (Cek Login)
     // =========================================================
     const userSession = localStorage.getItem('user');
-    
-    // Jika tidak ada session user, tendang ke halaman login
     if (!userSession) {
         window.location.replace('login.html');
-        return; // Hentikan eksekusi kode di bawahnya
+        return;
     }
 
-    // Parse data user
     let currentUser = null;
     try {
         currentUser = JSON.parse(userSession);
     } catch (e) {
-        console.error("Format session tidak valid", e);
         localStorage.removeItem('user');
         window.location.replace('login.html');
         return;
     }
 
-    // (Opsional) Jika data user ada tapi tidak punya nama, anggap tidak valid
     if (!currentUser || !currentUser.nama) {
          window.location.replace('login.html');
          return;
     }
 
-    // --- 1. Sidebar Toggle ---
+    // --- 1. Set Nama Dinamis ---
+    const welcomeText = document.getElementById('welcomeText');
+    const userInitial = document.getElementById('userInitial');
+    if (welcomeText) welcomeText.textContent = `Halo, ${currentUser.nama}!`;
+    if (userInitial) userInitial.textContent = currentUser.nama.charAt(0).toUpperCase();
+
+    // --- 2. Sidebar & Dropdown ---
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
     
     if (menuToggle && sidebar && sidebarOverlay) {
         menuToggle.addEventListener('click', () => {
@@ -45,7 +42,6 @@
             sidebarOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
-
         sidebarOverlay.addEventListener('click', () => {
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
@@ -53,16 +49,11 @@
         });
     }
 
-    // --- 2. Dropdown Profil ---
-    const profileBtn = document.getElementById('profileBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
-    
     if (profileBtn && profileDropdown) {
         profileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             profileDropdown.classList.toggle('active');
         });
-
         document.addEventListener('click', (e) => {
             if (!profileDropdown.contains(e.target) && e.target !== profileBtn) {
                 profileDropdown.classList.remove('active');
@@ -82,132 +73,189 @@
         });
     }
 
-    // --- 4. Set Nama User Dinamis ---
-    const welcomeTitle = document.querySelector('.welcome-section h1');
-    if (welcomeTitle) {
-        // Ambil data user dari localStorage
-        const userString = localStorage.getItem('user');
-        
-        if (userString) {
-            try {
-                const user = JSON.parse(userString);
-                // Jika user punya nama, ganti teksnya
-                if (user && user.nama) {
-                    welcomeTitle.textContent = `Halo, ${user.nama}!`;
-                }
-            } catch (e) {
-                console.error("Gagal membaca session user", e);
-            }
-        } else {
-            // (Opsional) Jika tidak ada session, tendang kembali ke login
-            // window.location.href = 'login.html';
-            welcomeTitle.textContent = "Halo, Pengguna!";
-        }
-    }
-
-    // --- 5. LOGIKA AMBIL DATA (SIMULASI KOSONG) ---
-    // --- Ambil Elemen State ---
+    // =========================================================
+    // 4. LOGIKA DATA PENGGUNAAN & RENDER
+    // =========================================================
     const reportsContainer = document.getElementById('reportsContainer');
+    const loadingState = document.getElementById('loadingState');
     const errorState = document.getElementById('errorState');
     const emptyState = document.getElementById('emptyState');
-    const loadingState = document.getElementById('loadingState'); // Tambahan baru
     const btnRetry = document.getElementById('btnRetry');
 
-        // --- 6. Fetch Data Dashboard ---
-    const fetchDashboardData = async () => {
-        if (typeof apiGetDashboard === 'function') {
-            try {
-                const response = await apiGetDashboard();
-                
-                if (response.ok && response.data) {
-                    // Jika backend mengirim data statistik, tampilkan di sini
-                    // Contoh: document.getElementById('stat-total').textContent = response.data.total_pengaduan;
-                    console.log("Data Dashboard berhasil dimuat:", response.data);
-                    
-                    // (Di sini kamu bisa me-render list pengaduan asli dari backend)
-                }
-            } catch (error) {
-                console.error("Gagal mengambil data dashboard", error);
-            }
+    // Simulasi data (Nanti ganti dengan response.data dari API)
+    const dummyData = [
+        {
+            id: 1,
+            judul: "AC Tidak Dingin",
+            kategori: "AC",
+            lokasi: "Ruang 202, Lantai 2",
+            tanggal: "30 September 2026",
+            status: "Diproses",
+            image: "https://images.unsplash.com/photo-1595113316349-9fa4eb24f884?auto=format&fit=crop&w=400&q=80",
+            like: 20, dislike: 1, comment: 5
+        },
+        {
+            id: 2,
+            judul: "Jaringan Lambat",
+            kategori: "Wi-Fi",
+            lokasi: "Ruang 404, Lantai 4",
+            tanggal: "2 September 2026",
+            status: "Diproses",
+            image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=400&q=80",
+            like: 20, dislike: 0, comment: 0
+        },
+        {
+            id: 3,
+            judul: "Karpet Bau",
+            kategori: "Mushola",
+            lokasi: "Lantai 1",
+            tanggal: "14 September 2026",
+            status: "Dalam Perbaikan",
+            image: "https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=400&q=80",
+            like: 15, dislike: 1, comment: 7
+        },
+        {
+            id: 4,
+            judul: "Pintu Toilet Rusak",
+            kategori: "Toilet",
+            lokasi: "Lantai 1",
+            tanggal: "20 September 2026",
+            status: "Dalam Perbaikan",
+            image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80",
+            like: 10, dislike: 2, comment: 15
+        },
+        {
+            id: 5,
+            judul: "Kursi Rusak",
+            kategori: "Ruang Kelas",
+            lokasi: "Ruang 202, Lantai 2",
+            tanggal: "15 September 2026",
+            status: "Selesai",
+            image: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=80",
+            like: 8, dislike: 1, comment: 6
         }
-    };
+    ];
 
-    // Panggil fungsi jika kita sedang di halaman dashboard
-    if (document.querySelector('.dashboard-main')) {
-        fetchDashboardData();
-    }
+    let allReports = []; // Data master
+
+    const renderReports = (data) => {
+        reportsContainer.innerHTML = '';
+        
+        if (data.length === 0) {
+            reportsContainer.style.display = 'none';
+            emptyState.classList.add('active');
+            return;
+        }
+
+        emptyState.classList.remove('active');
+        reportsContainer.style.display = 'flex';
+
+        data.forEach(item => {
+            // Tentukan class status
+            let statusClass = 'status-proses';
+            if (item.status === 'Dalam Perbaikan') statusClass = 'status-perbaikan';
+            if (item.status === 'Selesai') statusClass = 'status-selesai';
+
+            const card = document.createElement('div');
+            card.className = 'report-card-dash';
+            card.innerHTML = `
+                <div class="report-image">
+                    <img src="${item.image}" alt="${item.judul}">
+                    <span class="badge-category">${item.kategori}</span>
+                </div>
+                <div class="report-content">
+                    <div class="report-content-header">
+                        <h4>${item.judul}</h4>
+                        <span class="badge-status ${statusClass}">${item.status}</span>
+                    </div>
+                    <div class="report-meta">
+                        <span><i class="fas fa-map-marker-alt" style="color: #0B5E3B;"></i> ${item.lokasi}</span>
+                        <span><i class="fas fa-calendar-alt" style="color: #0B5E3B;"></i> ${item.tanggal}</span>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-actions">
+                            <span><i class="fas fa-thumbs-up"></i> ${item.like}</span>
+                            <span><i class="fas fa-thumbs-down"></i> ${item.dislike}</span>
+                            <span><i class="fas fa-comment"></i> ${item.comment}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            reportsContainer.appendChild(card);
+        });
+    };
 
     const fetchPengaduanData = async () => {
-        // 1. Tampilkan Loading, Sembunyikan yang lain
-        if (loadingState) loadingState.classList.add('active');
-        if (errorState) errorState.classList.remove('active');
-        if (emptyState) emptyState.classList.remove('active');
-        if (reportsContainer) reportsContainer.style.display = 'none';
+        loadingState.classList.add('active');
+        errorState.classList.remove('active');
+        emptyState.classList.remove('active');
+        reportsContainer.style.display = 'none';
 
         try {
-            // Simulasi delay jaringan (misal 1.5 detik) agar loading terlihat
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // Simulasi API (ganti dengan panggilan API asli jika backend siap)
+            await new Promise(resolve => setTimeout(resolve, 800)); 
+            
+            allReports = dummyData; // Ganti dengan data asli dari API
 
-            // ========================================================
-            // SIMULASI API (Karena data di database masih kosong)
-            // ========================================================
-            const data = []; 
-
-            // 2. Sembunyikan Loading setelah data didapat
-            if (loadingState) loadingState.classList.remove('active');
-
-            // 3. Cek Hasil Data
-            if (data.length === 0) {
-                if (emptyState) emptyState.classList.add('active');
-            } else {
-                if (reportsContainer) reportsContainer.style.display = 'flex';
-                // (Logika render data)
-            }
+            loadingState.classList.remove('active');
+            renderReports(allReports);
 
         } catch (error) {
-            console.error("Error:", error);
-            
-            // Jika gagal, matikan loading, tampilkan error
-            if (loadingState) loadingState.classList.remove('active');
-            if (errorState) errorState.classList.add('active');
+            loadingState.classList.remove('active');
+            errorState.classList.add('active');
         }
     };
 
-    // Jalankan fungsi saat halaman dimuat
     fetchPengaduanData();
 
-    // Tombol Coba Lagi jika terjadi error
     if (btnRetry) {
         btnRetry.addEventListener('click', fetchPengaduanData);
     }
 
-    // --- 6. Filter Chips (Khusus Halaman Semua Pengaduan) ---
+    // =========================================================
+    // 5. FILTER CHIPS & SEARCH
+    // =========================================================
     const chips = document.querySelectorAll('.chip');
-    const cards = document.querySelectorAll('.report-card-dash');
+    const searchInput = document.getElementById('searchInput');
 
-    if (chips.length > 0) {
-        chips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                chips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
+    let currentFilter = 'semua';
+    let currentSearch = '';
 
-                const filterValue = chip.innerText.trim().toLowerCase();
+    const filterAndSearch = () => {
+        let filtered = allReports;
 
-                cards.forEach(card => {
-                    const statusBadge = card.querySelector('.badge-status');
-                    if (!statusBadge) return;
+        // Filter Status
+        if (currentFilter !== 'semua') {
+            filtered = filtered.filter(item => item.status.toLowerCase() === currentFilter);
+        }
 
-                    const statusText = statusBadge.innerText.trim().toLowerCase();
+        // Filter Search
+        if (currentSearch) {
+            filtered = filtered.filter(item => 
+                item.judul.toLowerCase().includes(currentSearch) || 
+                item.lokasi.toLowerCase().includes(currentSearch)
+            );
+        }
 
-                    if (filterValue === 'semua' || statusText === filterValue) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
+        renderReports(filtered);
+    };
+
+    // Event Listener Filter
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            currentFilter = chip.getAttribute('data-filter');
+            filterAndSearch();
+        });
+    });
+
+    // Event Listener Search
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            filterAndSearch();
         });
     }
-    
 
 });
