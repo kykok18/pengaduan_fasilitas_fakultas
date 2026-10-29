@@ -13,6 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Mulai session menggunakan konfigurasi keamanan.
+if (empty($_COOKIE[session_name()])) {
+    errorResponse('Pengguna belum login', 401);
+}
+
 if (!startSecureSession()) {
     errorResponse('Gagal memulai session', 500);
 }
