@@ -1,611 +1,733 @@
-/* ============================================================
-   LOGIN.CSS — Halaman Login FITK (Center Layout Sesuai Figma)
-   ============================================================ */
+    /* ============================================================
+    LOGIN.CSS — Halaman Login FITK (Center Layout Sesuai Figma)
+    ============================================================ */
 
-:root {
-    --primary-green: #0f6b3b;
-    --dark-green-bg: #0a4f2a;
-    --text-dark: #0B5E3B;
-    --text-muted: #666666;
-    --white: #ffffff;
-    --bg-page: #E6F4EA;
-    --border-color: #D9D9D9;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-body {
-    background-color: var(--bg-page);
-    color: var(--text-dark);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* ============================================================
-   CONTAINER UTAMA (Sesuai Figma: Gap 64px)
-   ============================================================ */
-.login-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    
-    /* KUNCI UTAMA: Atas-Bawah 40px, Kiri-Kanan 64px */
-    padding: 40px 53px; 
-    
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}   
-
-/* ============================================================
-   HEADER: LOGO & TEKS FAKULTAS
-   ============================================================ */
-.brand-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 15px; /* Jarak ke notifikasi/judul */
-}
-
-.brand-logo {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    margin-top: 5px;
-    margin-bottom: 10px;
-}
-
-.brand-fakultas {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 10px;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
-    text-align: center;
-}
-
-.brand-universitas {
-    font-size: 12px;
-    font-weight: 700;
-    color: #D59A29;
-    letter-spacing: 0.5px;
-    margin-bottom: 15px;
-}
-
-/* ============================================================
-   JUDUL FORM
-   ============================================================ */
-.login-judul {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 0px;
-}
-
-.login-deskripsi {
-    font-size: 12px;
-    font-weight: 400;
-    color: #374151;
-    line-height: 1.5;
-    margin-bottom: 40px;
-}
-
-/* ============================================================
-   FORM
-   ============================================================ */
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    min-height: 36px;
-}
-
-.form-group label {
-    font-size: 10px;
-    font-weight: 700;
-    color: #000000;
-}
-
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background: #FFFFFF;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 0 8px;
-    height: 48px;
-    box-sizing: border-box;
-    width: 100%;
-    transition: border-color 0.2s ease;
-}
-
-.input-wrapper input {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    padding: 0;
-    font-size: 10px;
-    font-weight: 400;
-    color: #1a1a1a;
-    caret-color: #1a1a1a;
-    font-family: 'Poppins', sans-serif;
-    min-width: 0;
-    height: 100%;
-}
-
-.input-wrapper input::placeholder {
-    color: #A2A2A2;
-    font-size: 10px;
-    padding: -5px;
-}
-
-.toggle-password {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #000000;
-    font-size: 24px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-/* ============================================================
-   TOMBOL LOGIN & REGISTRASI
-   ============================================================ */
-.btn-login, .btn-registrasi {
-    width: 100%;
-    border-radius: 10px;
-    padding: 0 16px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    text-align: center;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.btn-login {
-    background-color: var(--text-dark);
-    color: var(--white);
-    border: none;
-    margin-top: 15px;
-    margin-bottom: 10px;
-}
-
-.btn-registrasi {
-    background-color: var(--white);
-    color: var(--text-dark);
-    border: 1px solid var(--border-color);
-    margin-top: 25px;
-}
-
-.btn-registrasi:hover {
-    background-color: #F9FDFB;
-}
-
-/* ============================================================
-   PEMBATAS "atau"
-   ============================================================ */
-.pembatas {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin: 16px 0;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.pembatas::before,
-.pembatas::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background-color: var(--border-color);
-}
-
-.pembatas span {
-    color: #A2A2A2;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-/* ============================================================
-   NOTIFIKASI MENGAMBANG (FLOATING NOTIFICATION) - FINAL
-   ============================================================ */
-
-/* --- Container Utama --- */
-.form-message:not([hidden]) {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    
-    /* Posisi melayang di atas */
-    position: fixed !important;
-    top: 21px; 
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 99999;
-
-    /* Ukuran presisi Figma */
-    width: 352px !important;
-    max-width: 90%;
-    height: 71px !important;
-    
-    /* Styling Kotak */
-    background: #FFFFFF !important;
-    border: 1px solid #D9D9D9 !important;
-    border-radius: 10px !important;
-    box-sizing: border-box !important;
-    padding: 0 !important;
-
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translate(-50%, -20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-/* --- Wrapper Icon (Kiri) --- */
-.form-message .msg-icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 70px !important;  /* Sesuai Figma */
-    height: 71px !important; /* Sesuai Figma */
-    flex-shrink: 0;
-    padding: 5px !important;
-    box-sizing: border-box;
-}
-
-/* Ukuran Icon */
-.form-message .msg-icon-wrapper iconify-icon {
-    font-size: 40px !important;
-    width: 40px !important;
-    height: 40px !important;
-}
-
-/* --- Wrapper Teks (Kanan) --- */
-.form-message .msg-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    flex: 1;
-    min-width: 0;
-    padding: 0 10px 0 0 !important; /* Padding kanan */
-    box-sizing: border-box;
-}
-
-/* --- Teks Judul --- */
-.form-message .msg-title {
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    line-height: 22px !important;
-    text-transform: uppercase;
-    margin: 0 0 2px 0 !important;
-}
-
-/* --- Teks Deskripsi --- */
-.form-message .msg-desc {
-    font-family: 'Poppins', sans-serif !important;
-    font-size: 10px !important;
-    font-weight: 400 !important;
-    line-height: 18px !important;
-    margin: 0 !important;
-}
-
-/* === WARNA ERROR (Merah) === */
-.form-message.error {
-    color: #C41B1B !important;
-}
-.form-message.error .msg-icon-wrapper iconify-icon {
-    color: #C41B1B !important;
-}
-
-/* === WARNA SUCCESS (Hijau) === */
-.form-message.success {
-    color: #15A367 !important;
-}
-.form-message.success .msg-icon-wrapper iconify-icon {
-    color: #15A367 !important;
-}
-
-/* --- Responsif HP Kecil --- */
-@media (max-width: 400px) {
-    .form-message:not([hidden]) {
-        top: 20px;
-        width: calc(100% - 32px) !important;
+    :root {
+        --primary-green: #0f6b3b;
+        --dark-green-bg: #0a4f2a;
+        --text-dark: #0B5E3B;
+        --text-muted: #666666;
+        --white: #ffffff;
+        --bg-page: #E6F4EA;
+        --border-color: #D9D9D9;
     }
-}
 
-/* ============================================================
-   TOMBOL LOGIN (State: Loading / Disabled)
-   ============================================================ */
-.btn-login:disabled {
-    background-color: #A0B0A8 !important; /* Warna abu-abu kehijauan transparan */
-    cursor: not-allowed;
-    border-color: #A0B0A8;
-}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (min-width: 768px) {
-    .login-container {
-        background-color: var(--white);
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
     }
-    
+
     body {
-        background-color: #F4F6F5;
+        background-color: var(--bg-page);
+        color: var(--text-dark);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        -webkit-font-smoothing: antialiased;
     }
-}
+
+    /* ============================================================
+    CONTAINER UTAMA (Sesuai Figma: Gap 64px)
+    ============================================================ */
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        
+        /* KUNCI UTAMA: Atas-Bawah 40px, Kiri-Kanan 64px */
+        padding: 40px 53px; 
+        
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }   
+
+    /* ============================================================
+    HEADER: LOGO & TEKS FAKULTAS
+    ============================================================ */
+    .brand-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 15px; /* Jarak ke notifikasi/judul */
+    }
+
+    .brand-logo {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .brand-fakultas {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .brand-universitas {
+        font-size: 12px;
+        font-weight: 700;
+        color: #D59A29;
+        letter-spacing: 0.5px;
+        margin-bottom: 15px;
+    }
+
+    /* ============================================================
+    JUDUL FORM
+    ============================================================ */
+    .login-judul {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0px;
+    }
+
+    .login-deskripsi {
+        font-size: 12px;
+        font-weight: 400;
+        color: #374151;
+        line-height: 1.5;
+        margin-bottom: 40px;
+    }
+
+    /* ============================================================
+    FORM
+    ============================================================ */
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        min-height: 36px;
+    }
+
+    .form-group label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #000000;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: #FFFFFF;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0 8px;
+        height: 48px;
+        box-sizing: border-box;
+        width: 100%;
+        transition: border-color 0.2s ease;
+    }
+
+    .input-wrapper input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0;
+        font-size: 10px;
+        font-weight: 400;
+        color: #1a1a1a;
+        caret-color: #1a1a1a;
+        font-family: 'Poppins', sans-serif;
+        min-width: 0;
+        height: 100%;
+    }
+
+    .input-wrapper input::placeholder {
+        color: #A2A2A2;
+        font-size: 10px;
+        padding: -5px;
+    }
+
+    .toggle-password {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #000000;
+        font-size: 24px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    /* ============================================================
+    TOMBOL LOGIN & REGISTRASI
+    ============================================================ */
+    .btn-login, .btn-registrasi {
+        width: 100%;
+        border-radius: 10px;
+        padding: 0 16px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+        cursor: pointer;
+        text-align: center;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-login {
+        background-color: var(--text-dark);
+        color: var(--white);
+        border: none;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    .btn-registrasi {
+        background-color: var(--white);
+        color: var(--text-dark);
+        border: 1px solid var(--border-color);
+        margin-top: 25px;
+    }
+
+    .btn-registrasi:hover {
+        background-color: #F9FDFB;
+    }
+
+    /* ============================================================
+    PEMBATAS "atau"
+    ============================================================ */
+    .pembatas {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin: 16px 0;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .pembatas::before,
+    .pembatas::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background-color: var(--border-color);
+    }
+
+    .pembatas span {
+        color: #A2A2A2;
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    /* ============================================================
+    NOTIFIKASI MENGAMBANG (FLOATING NOTIFICATION) - FINAL
+    ============================================================ */
+
+    /* --- Container Utama --- */
+    .form-message:not([hidden]) {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        
+        /* Posisi melayang di atas */
+        position: fixed !important;
+        top: 21px; 
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 99999;
+
+        /* Ukuran presisi Figma */
+        width: 352px !important;
+        max-width: 90%;
+        height: 71px !important;
+        
+        /* Styling Kotak */
+        background: #FFFFFF !important;
+        border: 1px solid #D9D9D9 !important;
+        border-radius: 10px !important;
+        box-sizing: border-box !important;
+        padding: 0 !important;
+
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translate(-50%, -20px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* --- Wrapper Icon (Kiri) --- */
+    .form-message .msg-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px !important;  /* Sesuai Figma */
+        height: 71px !important; /* Sesuai Figma */
+        flex-shrink: 0;
+        padding: 5px !important;
+        box-sizing: border-box;
+    }
+
+    /* Ukuran Icon */
+    .form-message .msg-icon-wrapper iconify-icon {
+        font-size: 40px !important;
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    /* --- Wrapper Teks (Kanan) --- */
+    .form-message .msg-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        flex: 1;
+        min-width: 0;
+        padding: 0 10px 0 0 !important; /* Padding kanan */
+        box-sizing: border-box;
+    }
+
+    /* --- Teks Judul --- */
+    .form-message .msg-title {
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 22px !important;
+        text-transform: uppercase;
+        margin: 0 0 2px 0 !important;
+    }
+
+    /* --- Teks Deskripsi --- */
+    .form-message .msg-desc {
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 400 !important;
+        line-height: 18px !important;
+        margin: 0 !important;
+    }
+
+    /* === WARNA ERROR (Merah) === */
+    .form-message.error {
+        color: #C41B1B !important;
+    }
+    .form-message.error .msg-icon-wrapper iconify-icon {
+        color: #C41B1B !important;
+    }
+
+    /* === WARNA SUCCESS (Hijau) === */
+    .form-message.success {
+        color: #15A367 !important;
+    }
+    .form-message.success .msg-icon-wrapper iconify-icon {
+        color: #15A367 !important;
+    }
+
+    /* --- Responsif HP Kecil --- */
+    @media (max-width: 400px) {
+        .form-message:not([hidden]) {
+            top: 20px;
+            width: calc(100% - 32px) !important;
+        }
+    }
+
+    /* ============================================================
+    TOMBOL LOGIN (State: Loading / Disabled)
+    ============================================================ */
+    .btn-login:disabled {
+        background-color: #A0B0A8 !important; /* Warna abu-abu kehijauan transparan */
+        cursor: not-allowed;
+        border-color: #A0B0A8;
+    }
+
+    /* ============================================================
+    RESPONSIVE
+    ============================================================ */
+    @media (min-width: 768px) {
+        .login-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        
+        body {
+            background-color: #F4F6F5;
+        }
+    }
+
+
+    /* ============================================================
+    ERROR MESSAGE (Warna Merah Paksa)
+    ============================================================ */
+
+    .error-message {
+        font-family: 'Poppins', sans-serif;
+        font-size: 10px; /* Sedikit diperbesar agar terbaca */
+        font-weight: 600;
+        
+        /* PAKSA WARNA MERAH DISINI */
+        color: #D02316 !important; 
+        
+        min-height: 0;
+        line-height: 1.4;
+        display: none;
+        align-items: center;
+        gap: 10px; /* Jarak antara ikon dan teks */
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: 7px;
+    }
+
+    /* Tampilkan saat ada isi */
+    .error-message:not(:empty) {
+        display: flex;
+    }
+
+    /* Ikon Lingkaran Tanda Seru */
+    .error-message:not(:empty)::before {
+        content: '';
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        min-width: 14px;
+        
+        /* Warna SVG di dalamnya juga di-set merah #D02316 */
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23D02316" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        
+        flex-shrink: 0;
+    }
+
+    .input-wrapper.invalid {
+        border: 1px solid #D02316 !important; /* Warna merah sesuai Figma */
+    }
+
+
+    /* ============================================================
+    TOMBOL LOGIN: ABU-ABU (DISABLED) & LOADING
+    ============================================================ */
+    .btn-login:disabled {
+        background-color: #D9D9D9 !important; 
+        color: #FFFFFF !important;
+        cursor: not-allowed;
+        border: 1px solid #D9D9D9;
+        margin-top: 15px;
+    }
+
+
+
+    /* === OFFLINE (Kuning) === */
+    .form-message.offline {
+        background-color: #FFFFFF !important;
+        border: 1px solid #D9D9D9 !important;
+        border-radius: 10px !important;
+    }
+
+    /* Wrapper ikon Wi-Fi */
+    .form-message.offline .msg-icon-wrapper {
+        padding: 5px;
+        width: 70px;
+        height: 70px;
+        flex-shrink: 0;
+    }
+
+    /* Ukuran ikon Wi-Fi dari Figma */
+    .form-message.offline .msg-icon-wrapper svg {
+        display: block;
+        width: 45px !important;
+        height: 35px !important;
+        flex-shrink: 0;
+    }
+
+    /* Judul notifikasi */
+    .form-message.offline .msg-title {
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 22px !important;
+        color: #FEB807 !important;
+        text-transform: uppercase !important;
+        margin: 0 0 2px 0 !important;
+    }
+
+    /* Deskripsi notifikasi */
+    .form-message.offline .msg-desc {
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 400 !important;
+        font-size: 12px !important;
+        line-height: 18px !important;
+        color: #FEB807 !important;
+        margin: 0 !important;
+    }
+
 
 
 /* ============================================================
-   ERROR MESSAGE (Warna Merah Paksa)
+   NOTIFIKASI LOGIN — FINAL SESUAI FIGMA
    ============================================================ */
-
-.error-message {
-    font-family: 'Poppins', sans-serif;
-    font-size: 10px; /* Sedikit diperbesar agar terbaca */
-    font-weight: 600;
-    
-    /* PAKSA WARNA MERAH DISINI */
-    color: #D02316 !important; 
-    
-    min-height: 0;
-    line-height: 1.4;
-    display: none;
-    align-items: center;
-    gap: 10px; /* Jarak antara ikon dan teks */
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-left: 7px;
-}
-
-/* Tampilkan saat ada isi */
-.error-message:not(:empty) {
-    display: flex;
-}
-
-/* Ikon Lingkaran Tanda Seru */
-.error-message:not(:empty)::before {
-    content: '';
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-    
-    /* Warna SVG di dalamnya juga di-set merah #D02316 */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23D02316" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    
-    flex-shrink: 0;
-}
-
-.input-wrapper.invalid {
-    border: 1px solid #D02316 !important; /* Warna merah sesuai Figma */
-}
-
-
-/* ============================================================
-   TOMBOL LOGIN: ABU-ABU (DISABLED) & LOADING
-   ============================================================ */
-.btn-login:disabled {
-    background-color: #D9D9D9 !important; 
-    color: #FFFFFF !important;
-    cursor: not-allowed;
-    border: 1px solid #D9D9D9;
-    margin-top: 15px;
-}
-
-
-
-/* === OFFLINE (Kuning) === */
-.form-message.offline {
-    background-color: #FFFFFF !important;
-    border: 1px solid #D9D9D9 !important;
-    border-radius: 10px !important;
-}
-
-/* Wrapper ikon Wi-Fi */
-.form-message.offline .msg-icon-wrapper {
-    padding: 5px;
-    width: 70px;
-    height: 70px;
-    flex-shrink: 0;
-}
-
-/* Ukuran ikon Wi-Fi dari Figma */
-.form-message.offline .msg-icon-wrapper svg {
-    display: block;
-    width: 45px !important;
-    height: 35px !important;
-    flex-shrink: 0;
-}
-
-/* Judul notifikasi */
-.form-message.offline .msg-title {
-    font-family: 'Poppins', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 15px !important;
-    line-height: 22px !important;
-    color: #FEB807 !important;
-    text-transform: uppercase !important;
-    margin: 0 0 2px 0 !important;
-}
-
-/* Deskripsi notifikasi */
-.form-message.offline .msg-desc {
-    font-family: 'Poppins', sans-serif !important;
-    font-weight: 400 !important;
-    font-size: 12px !important;
-    line-height: 18px !important;
-    color: #FEB807 !important;
-    margin: 0 !important;
-}
-
-
-
-
-/* ================================
-   NOTIFIKASI LOGIN — SESUAI FIGMA
-================================ */
-
-.form-message {
-    width: 100%;
-    max-width: 100%;
-    min-height: 0;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 20px;
-    padding: 12px 30px;
-    margin: 0 auto 24px;
-    background: #FFFFFF;
-    border: 1px solid #D9D9D9;
-    border-radius: 16px;
-    box-shadow: none;
-    text-align: left;
-}
 
 .form-message[hidden] {
     display: none !important;
 }
 
-/* Wrapper ikon */
+.form-message:not([hidden]) {
+    position: fixed;
+    top: 21px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    height: 71px;
+    padding: 0;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    animation: notificationSlideDown 0.25s ease-out;
+}
+
+@keyframes notificationSlideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* Area ikon di sebelah kiri */
 .notification-icon-wrapper {
-    width: 62px;
-    min-width: 62px;
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+
+    padding: 5px;
+    box-sizing: border-box;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
-/* SVG harus tampil utuh, tidak berubah jadi lingkaran saja */
-.notification-icon-wrapper svg {
+/* Ukuran SVG */
+.notification-icon-wrapper .notification-icon {
     display: block;
     width: auto;
     height: auto;
     max-width: 45px;
     max-height: 41px;
     flex-shrink: 0;
+    overflow: visible;
 }
 
-/* Konten teks */
+/* Ikon sukses */
+.notification-icon-wrapper.success .notification-icon {
+    width: 40.33px;
+    height: 40.33px;
+}
+
+/* Ikon error server */
+.notification-icon-wrapper.server .notification-icon {
+    width: 40px;
+    height: 40px;
+}
+
+/* Ikon autentikasi */
+.notification-icon-wrapper.auth .notification-icon {
+    width: 43px;
+    height: 40px;
+}
+
+/* Ikon koneksi internet */
+.notification-icon-wrapper.offline .notification-icon {
+    width: 45px;
+    height: 35px;
+}
+
+/* Area teks */
 .notification-content {
-    min-width: 0;
     flex: 1;
+    min-width: 0;
+    height: 100%;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 2px;
-    text-align: left;
-}
+    align-items: flex-start;
 
-.notification-title {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.35;
-}
-
-.notification-desc {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 1.5;
+    padding: 0 8px 0 0;
+    box-sizing: border-box;
     overflow-wrap: anywhere;
 }
 
-/* Login berhasil */
+/* Judul notifikasi */
+.notification-title {
+    width: 100%;
+    margin: 0 0 2px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 22px;
+
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+/* Deskripsi notifikasi */
+.notification-desc {
+    width: 100%;
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+
+    overflow-wrap: anywhere;
+}
+
+/* Warna login berhasil */
 .form-message.success .notification-title,
 .form-message.success .notification-desc {
     color: #15A367;
 }
 
-/* Gagal karena server */
+/* Warna kesalahan server */
 .form-message.server .notification-title,
 .form-message.server .notification-desc {
-    color: #D02316;
+    color: #C41B1B;
 }
 
-/* Email/password salah */
+/* Warna kesalahan autentikasi */
 .form-message.auth .notification-title,
 .form-message.auth .notification-desc {
     color: #D02316;
 }
 
-/* Koneksi internet terputus */
+/* Warna koneksi internet terputus */
 .form-message.offline .notification-title,
 .form-message.offline .notification-desc {
     color: #FEB807;
 }
 
-/* Responsif untuk layar kecil */
-@media (max-width: 480px) {
-    .form-message {
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 10px;
+/* Tampilan layar HP */
+@media (max-width: 400px) {
+    .form-message:not([hidden]) {
+        top: 70px;
+        width: calc(100vw - 32px);
+        max-width: 352px;
     }
 
     .notification-icon-wrapper {
-        width: 42px;
-        min-width: 42px;
+        width: 62px;
+        min-width: 62px;
     }
 
-    .notification-icon-wrapper svg {
-        max-width: 40px;
-        max-height: 35px;
+    .notification-content {
+        padding-right: 7px;
     }
 
     .notification-title {
         font-size: 12px;
-        line-height: 1.4;
+        line-height: 16px;
     }
 
     .notification-desc {
         font-size: 11px;
-        line-height: 1.5;
+        line-height: 15px;
     }
+}
+
+/* ============================================================
+   VALIDASI INPUT
+   ============================================================ */
+
+.input-wrapper.invalid {
+    border: 1px solid #D02316 !important;
+}
+
+.error-message {
+    display: none;
+    align-items: center;
+    gap: 6px;
+
+    margin: 0 0 0 7px;
+    min-height: 0;
+
+    color: #D02316 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.error-message:not(:empty) {
+    display: flex;
+}
+
+.error-message:not(:empty)::before {
+    content: '!';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+
+    border: 1.5px solid #D02316;
+    border-radius: 50%;
+
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ============================================================
+   TOMBOL LOGIN DISABLED / LOADING
+   ============================================================ */
+
+.btn-login:disabled {
+    background-color: #D9D9D9 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #D9D9D9;
+    cursor: not-allowed;
+    opacity: 1;
 }
