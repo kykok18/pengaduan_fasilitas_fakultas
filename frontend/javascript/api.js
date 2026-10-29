@@ -131,3 +131,24 @@ function clearUserSession() {
 }
 
 
+/* Mengambil data sesi pengguna dari localStorage */
+function getUserSession() {
+    const userData = localStorage.getItem("user");
+
+    if (!userData) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(userData);
+    } catch (error) {
+        console.error("Data sesi pengguna tidak valid:", error);
+        localStorage.removeItem("user");
+        return null;
+    }
+}
+
+/* Mengambil profil pengguna dari API */
+async function apiGetProfile() {
+    return apiRequest("User.php", null, "GET");
+}

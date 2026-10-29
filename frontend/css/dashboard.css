@@ -1034,3 +1034,231 @@ body {
     color: #000000;
     max-width: 242px;
 }
+
+/* ============================================================
+   UPDATE DASHBOARD (Tampilan Semua Pengaduan)
+   ============================================================ */
+
+/* Search & CTA Row */
+.search-cta-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 0 16px;
+    height: 40px;
+}
+
+.search-box i {
+    color: #666;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: var(--font-primary);
+    font-size: 12px;
+    color: var(--text-dark);
+}
+
+.btn-cta-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--logo-green);
+    color: var(--white);
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Filter Chips (Ubah gaya dari tombol kecil menjadi baris penuh) */
+.filter-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    scrollbar-width: none;
+}
+.filter-chips::-webkit-scrollbar { display: none; }
+
+.chip {
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: var(--white);
+    border: 1px solid #D9D9D9;
+    color: var(--logo-green);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.chip.active {
+    border-color: var(--logo-green);
+    font-weight: 600;
+}
+
+/* List Report Item (Menggunakan Flexbox Horizontal) */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.report-card-dash {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    height: 120px; /* Tinggi fix agar seragam */
+}
+
+.report-image {
+    position: relative;
+    flex: 0 0 110px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.report-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Badge Kategori di atas gambar */
+.badge-category {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 2px 8px;
+    background: var(--white);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    color: var(--logo-green);
+    font-size: 8px;
+    font-weight: 600;
+}
+
+/* Konten Kanan */
+.report-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px;
+}
+
+.report-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.report-content-header h4 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+}
+
+.badge-status {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 8px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.status-proses    { background: #FFC107; color: #000; }
+.status-perbaikan { background: #17a2b8; color: #fff; }
+.status-selesai   { background: #2e9368; color: #fff; }
+
+/* Meta Data (Lokasi, Tanggal) */
+.report-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--logo-green);
+}
+
+.report-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Actions (Like, Dislike, Comment) */
+.report-footer {
+    margin-top: auto;
+}
+
+.report-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #999;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.report-actions span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Paginasi */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.page-btn {
+    padding: 8px 14px;
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    background: var(--white);
+    font-family: var(--font-primary);
+    font-size: 12px;
+    color: var(--logo-green);
+    cursor: pointer;
+}
+
+.page-btn.active {
+    border-color: var(--logo-green);
+    font-weight: 700;
+}
+
+.page-dots {
+    color: var(--logo-green);
+    font-weight: 700;
+}
