@@ -31,11 +31,30 @@ class DashboardController
             errorResponse("Pengguna tidak ditemukan", 404);
         }
 
-        // Ambil pengaduan terbaru dari seluruh pengguna.
-        $pengaduan = $this->dashboardModel
-            ->getPengaduanTerbaru(5);
+        // Ambil parameter pagination, pencarian, dan status.
+        $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+        $limit = filter_input(INPUT_GET, 'limit', FILTER_VALIDATE_INT);
 
-        if ($pengaduan === false) {
+        $page = ($page !== false && $page !== null && $page > 0)
+            ? $page
+            : 1;
+
+        $limit = ($limit !== false && $limit !== null && $limit > 0)
+            ? min($limit, 100)
+            : 5;
+
+        $search = trim($_GET['search'] ?? '');
+        $status = trim($_GET['status'] ?? '');
+
+        // Ambil pengaduan terbaru dari seluruh pengguna.
+        $hasil = $this->dashboardModel->getPengaduanTerbaru(
+            $limit,
+            $page,
+            $search,
+            $status
+        );
+
+        if ($hasil === false) {
             errorResponse("Gagal mengambil data pengaduan", 500);
         }
 
@@ -43,7 +62,8 @@ class DashboardController
             "Data dashboard berhasil diambil",
             [
                 "user" => $user,
-                "pengaduan" => $pengaduan
+                "pengaduan" => $hasil['data'],
+                "pagination" => $hasil['pagination']
             ]
         );
     }

@@ -16,11 +16,23 @@ $user = getenv('DB_USERNAME') ?: ($env['DB_USERNAME'] ?? 'root');
 $password = getenv('DB_PASSWORD') ?: ($env['DB_PASSWORD'] ?? '');
 $dbName = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'pengaduan_fasilitas_fakultasDB');
 
-$conn = mysqli_connect($host, $user, $password, $dbName, (int) $port);
 
-if (!$conn) {
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+try {
+    $conn = mysqli_connect($host, $user, $password, $dbName, (int) $port);
+    mysqli_set_charset($conn, 'utf8mb4');
+} catch (mysqli_sql_exception $e) {
+    error_log('Koneksi database gagal: ' . $e->getMessage());
+
     http_response_code(500);
-    die('Koneksi database gagal: ' . mysqli_connect_error());
-}
+    header('Content-Type: application/json; charset=utf-8');
 
-mysqli_set_charset($conn, 'utf8mb4');
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Terjadi kesalahan pada server'
+    ]);
+
+    exit;
+
+}
