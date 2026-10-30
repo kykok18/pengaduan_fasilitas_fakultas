@@ -858,8 +858,8 @@ box-shadow:
 }
 
 .report-content h3 {
-    font-size: 11px;
-    color: var(--text-dark);
+    font-size: 15px;
+    color: #0B5E3B;
     font-weight: 700;
     padding: 10px;
     gap: 10px;
@@ -870,7 +870,7 @@ box-shadow:
     flex-direction: column;
     font-size: 11px;
     font-weight: 500;
-    color: #0B5E3B;
+    color: #000000;
     margin-bottom: 5px;
     padding: 10px;
     gap: 10px;

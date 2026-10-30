@@ -9,8 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerContent = document.getElementById('registerContent');
 
     function showRegisterContent() {
-        if (registerSkeleton) registerSkeleton.classList.add('skeleton-hidden');
-        if (registerContent) registerContent.classList.remove('skeleton-hidden');
+        if (registerSkeleton) {
+            registerSkeleton.classList.add('skeleton-hidden');
+        }
+
+        if (registerContent) {
+            registerContent.classList.remove('skeleton-hidden');
+        }
     }
 
     async function checkSessionAndLoad() {
@@ -32,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const formMessage = document.getElementById('formMessage');
     const submitBtn = registerForm.querySelector('.btn-register');
+    const loginLink = document.querySelector('.login-text a');
 
     /* ============================================================
        TOGGLE PASSWORD
@@ -53,16 +59,35 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ============================================================
        FUNGSI UPDATE STATUS TOMBOL
        ============================================================ */
-    function updateButtonState() {
-        const hasInvalidInput = document.querySelector('.input-wrapper.invalid');
-        const hasFormError = !formMessage.hidden && formMessage.classList.contains('error');
+    
+function updateButtonState() {
+    const hasInvalidInput = document.querySelector('.input-wrapper.invalid');
+    const hasFormError = formMessage &&
+        !formMessage.hidden &&
+        formMessage.classList.contains('error');
 
-        if (hasInvalidInput || hasFormError) {
-            submitBtn.disabled = true;
-        } else {
-            submitBtn.disabled = false;
-        }
+    const isLoading = submitBtn.dataset.loading === 'true';
+
+    const isDisabled = Boolean(
+        hasInvalidInput || hasFormError || isLoading
+    );
+
+    // Tombol Daftar
+    submitBtn.disabled = isDisabled;
+
+    // Link Masuk di sini
+    if (loginLink) {
+    loginLink.classList.toggle('disabled', isDisabled);
+    loginLink.setAttribute('aria-disabled', String(isDisabled));
+
+    if (isDisabled) {
+        loginLink.setAttribute('tabindex', '-1');
+    } else {
+        loginLink.removeAttribute('tabindex');
     }
+}
+}
+
 
     /* ============================================================
        ERROR HANDLING
@@ -217,7 +242,8 @@ function hideMessage() {
         }
 
         const originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
+        submitBtn.dataset.loading = 'true';
+        updateButtonState();
         submitBtn.textContent = 'Loading...';
 
         try {
@@ -229,6 +255,8 @@ function hideMessage() {
             );
 
             submitBtn.textContent = originalText;
+            delete submitBtn.dataset.loading;
+            updateButtonState();
 
             // LOGIKA RESPONS API
             if (response.ok && response.status === 'success') {
@@ -275,7 +303,9 @@ function hideMessage() {
         } catch (error) {
             // MENANGANI JIKA TERJADI ERROR PADA PROSES API / KODE
             submitBtn.textContent = originalText;
+            delete submitBtn.dataset.loading;
             console.error(error);
+            updateButtonState();
             showMessage(`
                 <div class="msg-title">REGISTRASI GAGAL</div>
                 <div class="msg-desc">
@@ -283,6 +313,8 @@ function hideMessage() {
                 </div>
             `, 'error');
         }
+
+        delete submitBtn.dataset.loading;
         
         // Jangan panggil updateButtonState() di sini jika sukses, 
         // agar notifikasi hijau tidak hilang sebelum redirect.
