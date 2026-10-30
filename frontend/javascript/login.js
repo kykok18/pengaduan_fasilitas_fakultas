@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setEmailError('E-mail wajib diisi.');
             valid = false;
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setEmailError('Format e-mail tidak valid.');
+            setEmailError('Format E-mail tidak sesuai.');
             valid = false;
         } else {
             setEmailError('');

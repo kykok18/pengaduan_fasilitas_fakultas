@@ -154,6 +154,47 @@ function hideMessage() {
     }
 }
 
+/* ============================================================
+   VALIDASI NAMA LENGKAP
+   ============================================================ */
+function validateFullname() {
+    const value = fullnameInput.value.trim();
+
+    if (!value) {
+        showError(fullnameInput, 'Nama lengkap wajib diisi.');
+        return false;
+    }
+
+    if (value.length < 3) {
+        showError(fullnameInput, 'Nama lengkap minimal 3 karakter.');
+        return false;
+    }
+
+    clearError(fullnameInput);
+    return true;
+}
+
+/* ============================================================
+   VALIDASI EMAIL
+   ============================================================ */
+function validateEmail() {
+    const value = emailInput.value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!value) {
+        showError(emailInput, 'E-mail wajib diisi.');
+        return false;
+    }
+
+    if (!emailPattern.test(value)) {
+        showError(emailInput, 'Format e-mail tidak valid.');
+        return false;
+    }
+
+    clearError(emailInput);
+    return true;
+}
+
     /* ============================================================
    VALIDASI PASSWORD
    ============================================================ */
@@ -190,6 +231,27 @@ function validatePassword() {
     clearError(passwordInput);
     return true;
 }
+
+/* ============================================================
+   VALIDASI KONFIRMASI PASSWORD
+   ============================================================ */
+function validateConfirmPassword() {
+    const value = confirmPasswordInput.value;
+
+    if (!value) {
+        showError(confirmPasswordInput, 'Konfirmasi password wajib diisi.');
+        return false;
+    }
+
+    if (value !== passwordInput.value) {
+        showError(confirmPasswordInput, 'Konfirmasi password tidak sesuai.');
+        return false;
+    }
+
+    clearError(confirmPasswordInput);
+    return true;
+}
+
 
 /* ============================================================
    FILTER KARAKTER PASSWORD
