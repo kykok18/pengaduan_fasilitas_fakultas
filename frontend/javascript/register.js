@@ -155,44 +155,47 @@ function hideMessage() {
 }
 
     /* ============================================================
-       VALIDASI
-       ============================================================ */
-    function validateFullname() {
-        const value = fullnameInput.value.trim();
-        if (!value) { showError(fullnameInput, 'Nama lengkap wajib diisi.'); return false; }
-        if (value.length < 3) { showError(fullnameInput, 'Nama lengkap minimal 3 karakter.'); return false; }
-        clearError(fullnameInput); return true;
+   VALIDASI PASSWORD
+   ============================================================ */
+
+const allowedPasswordPattern = /^[A-Za-z0-9!@#$%^&*()_+.,?=-]*$/;
+
+function validatePassword() {
+    const value = passwordInput.value;
+
+    if (!value) {
+        showError(passwordInput, 'Password wajib diisi.');
+        return false;
     }
 
-    function validateEmail() {
-        const value = emailInput.value.trim();
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value) { showError(emailInput, 'E-mail wajib diisi.'); return false; }
-        if (!emailPattern.test(value)) { showError(emailInput, 'Format e-mail tidak valid.'); return false; }
-        clearError(emailInput); return true;
+    if (!allowedPasswordPattern.test(value)) {
+        showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.');
+        return false;
     }
 
-    function validatePassword() {
-        const value = passwordInput.value;
-        if (!value) { showError(passwordInput, 'Password wajib diisi.'); return false; }
-        if (value.length < 8) { showError(passwordInput, 'Password minimal 8 karakter.'); return false; }
-         if (!/[^A-Za-z0-9\s]/.test(value)) {
-            showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.'); return false;
-        }
-        clearError(passwordInput); return true;
+    if (value.length < 8) {
+        showError(passwordInput, 'Password minimal 8 karakter.');
+        return false;
     }
 
-    function validateConfirmPassword() {
-        const value = confirmPasswordInput.value;
-        if (!value) { showError(confirmPasswordInput, 'Konfirmasi password wajib diisi.'); return false; }
-        if (value !== passwordInput.value) { showError(confirmPasswordInput, 'Konfirmasi password tidak cocok.'); return false; }
-        clearError(confirmPasswordInput); return true;
+    if (!/[A-Z]/.test(value) ||
+        !/[a-z]/.test(value) ||
+        !/[0-9]/.test(value) ||
+        !/[!@#$%^&*()_+.,?=-]/.test(value)) {
+
+        showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.');
+        return false;
     }
 
-    /* ============================================================
-       EVENT LISTENER VALIDASI
-       ============================================================ */
-    fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonState(); });
+    clearError(passwordInput);
+    return true;
+}
+
+/* ============================================================
+   FILTER KARAKTER PASSWORD
+   ============================================================ */
+
+fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonState(); });
     emailInput.addEventListener('blur', () => { validateEmail(); updateButtonState(); });
     passwordInput.addEventListener('blur', () => { validatePassword(); updateButtonState(); });
     confirmPasswordInput.addEventListener('blur', () => { validateConfirmPassword(); updateButtonState(); });

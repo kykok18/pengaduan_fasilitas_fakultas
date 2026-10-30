@@ -96,7 +96,7 @@ ul {
 
 .section-header p {
     color: #A2A2A2;
-    font-size: 10px;
+    font-size: 14px;
     line-height: 1.4;
     margin-top: 5px; /* Menarik teks ke atas */
 }
@@ -259,6 +259,10 @@ ul {
     max-width: 100%;
 }
 
+.hero-content h1 span:first-child {
+    color: #FFFFFF;
+}
+
 .hero h1 {
     font-size: 1.8rem;
     font-weight: 700;
@@ -371,9 +375,14 @@ ul {
     flex-shrink: 0;
 }
 
-.stat-icon iconify-icon {
-    font-size: 24px;
-    color: #0B5E3B;
+/* SVG ICON */
+.stat-icon > svg {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 24px;
+    max-height: 24px;
+    flex-shrink: 0;
 }
 
 /* =========================================
@@ -806,14 +815,15 @@ box-shadow:
     align-items: center;
     justify-content: center;
 
-    padding: 3px 8px;
+    padding: 4px 9px;
     border-radius: 20px;
 
     font-family: 'Poppins', sans-serif;
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
+    margin-top: 20px;
 
     box-sizing: border-box;
 }
@@ -838,7 +848,7 @@ box-shadow:
 
 
 .status-proses {
-    background: #ffc107;
+    background: #FFC107 ;
     color: #333;
 }
 
@@ -848,7 +858,7 @@ box-shadow:
 }
 
 .status-selesai {
-    background: #2E9368;
+    background: #15A367;
     color: var(--white);
 }
 
@@ -937,7 +947,7 @@ box-shadow:
 /* Merapatkan jarak dari Pengaduan Terkini ke FAQ */
 .report-section {
     padding-bottom: 5px !important; /* Mengurangi jarak bawah */
-    padding-top: 20px;
+    padding-top: 15px;
 }
 
 /* ============================================================
@@ -1060,7 +1070,7 @@ footer {
 
 .footer-header-text p {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 21px;
     margin: 0;
     color: #FFFFFF;
@@ -1074,7 +1084,7 @@ footer {
 /* Deskripsi */
 .footer-desc {
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 16px;
     color: #FFFFFF;
     padding: 0 5px;
@@ -1098,7 +1108,7 @@ footer {
 }
 
 .footer-links h4 {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 21px;
     color: #FFFFFF;
@@ -1120,7 +1130,7 @@ footer {
     display: inline-block;
     padding: 5px;
     gap: 10px;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 500;
     line-height: 30px;
     color: #D9D9D9;
