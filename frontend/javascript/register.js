@@ -9,8 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerContent = document.getElementById('registerContent');
 
     function showRegisterContent() {
-        if (registerSkeleton) registerSkeleton.classList.add('skeleton-hidden');
-        if (registerContent) registerContent.classList.remove('skeleton-hidden');
+        if (registerSkeleton) {
+            registerSkeleton.classList.add('skeleton-hidden');
+        }
+
+        if (registerContent) {
+            registerContent.classList.remove('skeleton-hidden');
+        }
     }
 
     async function checkSessionAndLoad() {
@@ -32,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const formMessage = document.getElementById('formMessage');
     const submitBtn = registerForm.querySelector('.btn-register');
+    const loginLink = document.querySelector('.login-text a');
 
     /* ============================================================
        TOGGLE PASSWORD
@@ -53,16 +59,35 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ============================================================
        FUNGSI UPDATE STATUS TOMBOL
        ============================================================ */
-    function updateButtonState() {
-        const hasInvalidInput = document.querySelector('.input-wrapper.invalid');
-        const hasFormError = !formMessage.hidden && formMessage.classList.contains('error');
+    
+function updateButtonState() {
+    const hasInvalidInput = document.querySelector('.input-wrapper.invalid');
+    const hasFormError = formMessage &&
+        !formMessage.hidden &&
+        formMessage.classList.contains('error');
 
-        if (hasInvalidInput || hasFormError) {
-            submitBtn.disabled = true;
-        } else {
-            submitBtn.disabled = false;
-        }
+    const isLoading = submitBtn.dataset.loading === 'true';
+
+    const isDisabled = Boolean(
+        hasInvalidInput || hasFormError || isLoading
+    );
+
+    // Tombol Daftar
+    submitBtn.disabled = isDisabled;
+
+    // Link Masuk di sini
+    if (loginLink) {
+    loginLink.classList.toggle('disabled', isDisabled);
+    loginLink.setAttribute('aria-disabled', String(isDisabled));
+
+    if (isDisabled) {
+        loginLink.setAttribute('tabindex', '-1');
+    } else {
+        loginLink.removeAttribute('tabindex');
     }
+}
+}
+
 
     /* ============================================================
        ERROR HANDLING
@@ -129,45 +154,110 @@ function hideMessage() {
     }
 }
 
+/* ============================================================
+   VALIDASI NAMA LENGKAP
+   ============================================================ */
+function validateFullname() {
+    const value = fullnameInput.value.trim();
+
+    if (!value) {
+        showError(fullnameInput, 'Nama lengkap wajib diisi.');
+        return false;
+    }
+
+    if (value.length < 3) {
+        showError(fullnameInput, 'Nama lengkap minimal 3 karakter.');
+        return false;
+    }
+
+    clearError(fullnameInput);
+    return true;
+}
+
+/* ============================================================
+   VALIDASI EMAIL
+   ============================================================ */
+function validateEmail() {
+    const value = emailInput.value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!value) {
+        showError(emailInput, 'E-mail wajib diisi.');
+        return false;
+    }
+
+    if (!emailPattern.test(value)) {
+        showError(emailInput, 'Format e-mail tidak valid.');
+        return false;
+    }
+
+    clearError(emailInput);
+    return true;
+}
+
     /* ============================================================
-       VALIDASI
-       ============================================================ */
-    function validateFullname() {
-        const value = fullnameInput.value.trim();
-        if (!value) { showError(fullnameInput, 'Nama lengkap wajib diisi.'); return false; }
-        if (value.length < 3) { showError(fullnameInput, 'Nama lengkap minimal 3 karakter.'); return false; }
-        clearError(fullnameInput); return true;
+   VALIDASI PASSWORD
+   ============================================================ */
+
+const allowedPasswordPattern = /^[A-Za-z0-9!@#$%^&*()_+.,?=-]*$/;
+
+function validatePassword() {
+    const value = passwordInput.value;
+
+    if (!value) {
+        showError(passwordInput, 'Password wajib diisi.');
+        return false;
     }
 
-    function validateEmail() {
-        const value = emailInput.value.trim();
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!value) { showError(emailInput, 'E-mail wajib diisi.'); return false; }
-        if (!emailPattern.test(value)) { showError(emailInput, 'Format e-mail tidak valid.'); return false; }
-        clearError(emailInput); return true;
+    if (!allowedPasswordPattern.test(value)) {
+        showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.');
+        return false;
     }
 
-    function validatePassword() {
-        const value = passwordInput.value;
-        if (!value) { showError(passwordInput, 'Password wajib diisi.'); return false; }
-        if (value.length < 8) { showError(passwordInput, 'Password minimal 8 karakter.'); return false; }
-         if (!/[^A-Za-z0-9\s]/.test(value)) {
-            showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.'); return false;
-        }
-        clearError(passwordInput); return true;
+    if (value.length < 8) {
+        showError(passwordInput, 'Password minimal 8 karakter.');
+        return false;
     }
 
-    function validateConfirmPassword() {
-        const value = confirmPasswordInput.value;
-        if (!value) { showError(confirmPasswordInput, 'Konfirmasi password wajib diisi.'); return false; }
-        if (value !== passwordInput.value) { showError(confirmPasswordInput, 'Konfirmasi password tidak cocok.'); return false; }
-        clearError(confirmPasswordInput); return true;
+    if (!/[A-Z]/.test(value) ||
+        !/[a-z]/.test(value) ||
+        !/[0-9]/.test(value) ||
+        !/[!@#$%^&*()_+.,?=-]/.test(value)) {
+
+        showError(passwordInput, 'Password harus mengandung huruf besar, huruf kecil, angka dan simbol.');
+        return false;
     }
 
-    /* ============================================================
-       EVENT LISTENER VALIDASI
-       ============================================================ */
-    fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonState(); });
+    clearError(passwordInput);
+    return true;
+}
+
+/* ============================================================
+   VALIDASI KONFIRMASI PASSWORD
+   ============================================================ */
+function validateConfirmPassword() {
+    const value = confirmPasswordInput.value;
+
+    if (!value) {
+        showError(confirmPasswordInput, 'Konfirmasi password wajib diisi.');
+        return false;
+    }
+
+    if (value !== passwordInput.value) {
+        showError(confirmPasswordInput, 'Konfirmasi password tidak sesuai.');
+        return false;
+    }
+
+    clearError(confirmPasswordInput);
+    return true;
+}
+
+
+/* ============================================================
+   FILTER KARAKTER PASSWORD
+   ============================================================ */
+
+fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonState(); });
     emailInput.addEventListener('blur', () => { validateEmail(); updateButtonState(); });
     passwordInput.addEventListener('blur', () => { validatePassword(); updateButtonState(); });
     confirmPasswordInput.addEventListener('blur', () => { validateConfirmPassword(); updateButtonState(); });
@@ -217,7 +307,8 @@ function hideMessage() {
         }
 
         const originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
+        submitBtn.dataset.loading = 'true';
+        updateButtonState();
         submitBtn.textContent = 'Loading...';
 
         try {
@@ -229,6 +320,8 @@ function hideMessage() {
             );
 
             submitBtn.textContent = originalText;
+            delete submitBtn.dataset.loading;
+            updateButtonState();
 
             // LOGIKA RESPONS API
             if (response.ok && response.status === 'success') {
@@ -275,7 +368,9 @@ function hideMessage() {
         } catch (error) {
             // MENANGANI JIKA TERJADI ERROR PADA PROSES API / KODE
             submitBtn.textContent = originalText;
+            delete submitBtn.dataset.loading;
             console.error(error);
+            updateButtonState();
             showMessage(`
                 <div class="msg-title">REGISTRASI GAGAL</div>
                 <div class="msg-desc">
@@ -283,6 +378,8 @@ function hideMessage() {
                 </div>
             `, 'error');
         }
+
+        delete submitBtn.dataset.loading;
         
         // Jangan panggil updateButtonState() di sini jika sukses, 
         // agar notifikasi hijau tidak hilang sebelum redirect.

@@ -538,3 +538,25 @@ body {
     color: #FEB807 !important;
     margin: 0 !important;
 }
+
+/* Link masuk saat kondisi disabled */
+.login-link.disabled {
+    color: #999999;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+    text-decoration: none;
+}
+
+/* LINK LOGIN - STATE DISABLED */
+.login-text a.disabled,
+.login-text a.disabled:link,
+.login-text a.disabled:visited,
+.login-text a.disabled:hover,
+.login-text a.disabled:active {
+    color: #999999 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    text-decoration: none !important;
+}

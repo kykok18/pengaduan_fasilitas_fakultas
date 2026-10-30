@@ -701,25 +701,6 @@
     display: flex;
 }
 
-.error-message:not(:empty)::before {
-    content: '!';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-
-    border: 1.5px solid #D02316;
-    border-radius: 50%;
-
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
-}
-
 /* ============================================================
    TOMBOL LOGIN DISABLED / LOADING
    ============================================================ */
