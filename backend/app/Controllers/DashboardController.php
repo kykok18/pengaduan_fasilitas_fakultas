@@ -20,7 +20,7 @@ class DashboardController
         // Identitas pengguna berasal dari session.
         $id_user = $_SESSION['id_user'];
 
-        // Ambil profil pengguna yang sedang login.
+        // Mengambil profil pengguna.
         $user = $this->userModel->findById($id_user);
 
         if ($user === false) {
@@ -31,7 +31,7 @@ class DashboardController
             errorResponse("Pengguna tidak ditemukan", 404);
         }
 
-        // Ambil parameter pagination, pencarian, dan status.
+        // Mengambil parameter pagination.
         $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
         $limit = filter_input(INPUT_GET, 'limit', FILTER_VALIDATE_INT);
 
@@ -43,10 +43,23 @@ class DashboardController
             ? min($limit, 100)
             : 5;
 
+        // Mengambil parameter pencarian dan filter.
         $search = trim($_GET['search'] ?? '');
         $status = trim($_GET['status'] ?? '');
 
-        // Ambil pengaduan terbaru dari seluruh pengguna.
+        // Validasi status pengaduan.
+        $statusValid = [
+            'diajukan',
+            'diproses',
+            'selesai',
+            'ditolak'
+        ];
+
+        if ($status !== '' && !in_array($status, $statusValid, true)) {
+            errorResponse("Status pengaduan tidak valid", 400);
+        }
+
+        // Mengambil pengaduan terbaru seluruh pengguna.
         $hasil = $this->dashboardModel->getPengaduanTerbaru(
             $limit,
             $page,
