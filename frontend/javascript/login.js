@@ -107,20 +107,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // VALIDASI
     // =========================
     function setEmailError(message) {
-        const wrapper = document.getElementById('emailWrapper');
-        const errorText = document.getElementById('emailError');
+    const wrapper = document.getElementById('emailWrapper');
+    const errorText = document.getElementById('emailError');
 
-        if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
-        if (errorText) errorText.textContent = message || '';
-    }
+    if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
+    if (errorText) errorText.textContent = message || '';
+
+    updateButtonState();
+}
 
     function setPasswordError(message) {
-        const wrapper = document.getElementById('passwordWrapper');
-        const errorText = document.getElementById('passwordError');
+    const wrapper = document.getElementById('passwordWrapper');
+    const errorText = document.getElementById('passwordError');
 
-        if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
-        if (errorText) errorText.textContent = message || '';
-    }
+    if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
+    if (errorText) errorText.textContent = message || '';
+
+    updateButtonState();
+}
 
     function validateForm() {
         const email = emailInput.value.trim();
@@ -146,6 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return valid;
     }
+
+    function updateButtonState() {
+    const hasError = Boolean(
+        document.querySelector('.input-wrapper.invalid') ||
+        document.querySelector('.error-message:not(:empty)')
+    );
+
+    const isLoading = submitBtn.dataset.loading === 'true';
+
+    submitBtn.disabled = hasError || isLoading;
+}
 
     // =========================
     // NOTIFIKASI
@@ -201,15 +216,19 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         hideMessage();
 
-        if (!validateForm()) return;
+        const isValid = validateForm();
+updateButtonState();
+
+if (!isValid) return;
 
         const email = emailInput.value.trim();
         const password = passwordInput.value;
         const originalText = submitBtn.textContent;
         let loginSucceeded = false;
 
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Loading...';
+        submitBtn.dataset.loading = 'true';
+updateButtonState();
+submitBtn.textContent = 'Loading...';
 
         try {
             if (!navigator.onLine) {
@@ -262,6 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!loginSucceeded) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
+                updateButtonState();
             }
         }
     });
