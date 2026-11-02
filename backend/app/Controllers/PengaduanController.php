@@ -46,6 +46,73 @@ class PengaduanController
 
         $input = $_POST;
 
+        // 2.1 Validasi Idempotency-Key untuk mencegah request duplikat.
+        $id_user = (int) $_SESSION['id_user'];
+        $idempotencyKey = trim($_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '');
+
+        if (!preg_match('/^[A-Za-z0-9._:-]{8,100}$/D', $idempotencyKey)) {
+            errorResponse(
+                'Header Idempotency-Key wajib diisi dengan 8-100 karakter yang valid',
+                400
+            );
+        }
+
+        // Buat fingerprint dari data form dan isi file yang dikirim.
+        $dataFingerprint = $input;
+        ksort($dataFingerprint);
+
+        $fileFingerprint = [];
+
+        foreach ($_FILES as $field => $file) {
+            $fileFingerprint[$field] = [
+                'error' => $file['error'] ?? null,
+                'size' => $file['size'] ?? null,
+                'sha256' => null
+            ];
+
+            if (
+                ($file['error'] ?? null) === UPLOAD_ERR_OK &&
+                !empty($file['tmp_name']) &&
+                is_uploaded_file($file['tmp_name'])
+            ) {
+                $fileFingerprint[$field]['sha256'] =
+                    hash_file('sha256', $file['tmp_name']);
+            }
+        }
+
+        ksort($fileFingerprint);
+
+        $requestFingerprint = hash(
+            'sha256',
+            json_encode(
+                [
+                    'input' => $dataFingerprint,
+                    'files' => $fileFingerprint
+                ],
+                JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE
+            )
+        );
+
+        // Cek apakah key ini pernah digunakan untuk request sukses.
+        $cachePengaduan = $_SESSION['pengaduan_idempotency'][$id_user] ?? [];
+
+        if (isset($cachePengaduan[$idempotencyKey])) {
+            $cachedRequest = $cachePengaduan[$idempotencyKey];
+
+            if ($cachedRequest['fingerprint'] !== $requestFingerprint) {
+                errorResponse(
+                    'Idempotency-Key sudah digunakan untuk data pengaduan yang berbeda',
+                    409
+                );
+            }
+
+            successResponse(
+                'Pengaduan sebelumnya sudah diproses',
+                $cachedRequest['data'],
+                200
+            );
+        }
+
         // 3. Validasi ID fasilitas.
         $id_fasilitas = filter_var(
             $input['id_fasilitas'] ?? null,
@@ -247,7 +314,7 @@ class PengaduanController
             );
         }
 
-        // 8. Periksa MIME berdasarkan isi file.
+                // 8. Periksa MIME berdasarkan isi file.
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
         if ($finfo === false) {
@@ -260,10 +327,11 @@ class PengaduanController
         $mimeType = finfo_file($finfo, $foto['tmp_name']);
         finfo_close($finfo);
 
+        // JPEG mencakup ekstensi .jpg, .jpeg dan webp
         $tipeFotoDiizinkan = [
             'image/jpeg' => 'jpg',
             'image/png' => 'png',
-            'image/webp' => 'webp'
+            'image/webp' => 'webp',
         ];
 
         if (
@@ -289,7 +357,7 @@ class PengaduanController
         $tipeGambarDiizinkan = [
             IMAGETYPE_JPEG => 'image/jpeg',
             IMAGETYPE_PNG => 'image/png',
-            IMAGETYPE_WEBP => 'image/webp'
+            IMAGETYPE_WEBP => 'image/webp',
         ];
 
         if (
@@ -298,6 +366,26 @@ class PengaduanController
         ) {
             errorResponse(
                 'Isi file tidak sesuai dengan format foto yang diizinkan',
+                400
+            );
+        }
+
+        // 8.1 Validasi dimensi gambar untuk membatasi penggunaan memori.
+        $lebarGambar = $infoGambar[0];
+        $tinggiGambar = $infoGambar[1];
+
+        $maksimalDimensi = 6000;
+        $maksimalPixel = 20000000;
+
+        if (
+            $lebarGambar <= 0 ||
+            $tinggiGambar <= 0 ||
+            $lebarGambar > $maksimalDimensi ||
+            $tinggiGambar > $maksimalDimensi ||
+            ($lebarGambar * $tinggiGambar) > $maksimalPixel
+        ) {
+            errorResponse(
+                'Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel.',
                 400
             );
         }
@@ -340,7 +428,73 @@ class PengaduanController
         $tujuanFoto = $direktoriUpload . '/' . $namaFile;
         $pathFoto = 'uploads/pengaduan/' . $namaFile;
 
-        if (!move_uploaded_file($foto['tmp_name'], $tujuanFoto)) {
+        // 10.1 Decode gambar berdasarkan MIME yang sudah divalidasi.
+        $gambar = false;
+
+        switch ($mimeType) {
+            case 'image/jpeg':
+                $gambar = @imagecreatefromjpeg($foto['tmp_name']);
+                break;
+
+            case 'image/png':   
+                $gambar = @imagecreatefrompng($foto['tmp_name']);
+                break;
+
+            case 'image/webp':
+                $gambar = @imagecreatefromwebp($foto['tmp_name']);
+                break;
+        }
+
+        if ($gambar === false) {
+            errorResponse(
+                'Gambar gagal diproses oleh server',
+                400
+            );
+        }
+
+        // 10.2 Encode ulang gambar ke file sementara.
+        $fileSementara = tempnam($direktoriUpload, 'img_');
+
+        if ($fileSementara === false) {
+            imagedestroy($gambar);
+
+            errorResponse(
+                'Gagal menyiapkan file sementara',
+                500
+            );
+        }
+
+        $berhasilEncode = false;
+
+        switch ($mimeType) {
+            case 'image/jpeg':
+                $berhasilEncode = imagejpeg($gambar, $fileSementara, 85);
+                break;
+
+            case 'image/png':
+                $berhasilEncode = imagepng($gambar, $fileSementara, 6);
+                break;
+
+            case 'image/webp':
+                $berhasilEncode = imagewebp($gambar, $fileSementara, 85);
+                break;
+        }
+
+        imagedestroy($gambar);
+
+        if (!$berhasilEncode) {
+            @unlink($fileSementara);
+
+            errorResponse(
+                'Gambar gagal disimpan ulang',
+                500
+            );
+        }
+
+        // 10.3 Pindahkan hasil encode ke nama file final.
+        if (!rename($fileSementara, $tujuanFoto)) {
+            @unlink($fileSementara);
+
             errorResponse(
                 'Foto gagal disimpan ke server',
                 500
@@ -378,8 +532,8 @@ class PengaduanController
             );
         }
 
-        // 13. Kirim respons sukses.
-        successResponse('Pengaduan berhasil dibuat', [
+        // 13. Siapkan data respons sukses.
+        $responseData = [
             'id_pengaduan' => (int) $pengaduan['id_pengaduan'],
             'id_user' => (int) $pengaduan['id_user'],
             'id_fasilitas' => (int) $pengaduan['id_fasilitas'],
@@ -389,6 +543,31 @@ class PengaduanController
             'foto' => $pengaduan['foto'],
             'status' => $pengaduan['status'],
             'created_at' => $pengaduan['created_at']
-        ], 201);
+        ];
+
+        // Simpan hasil sukses agar retry dengan key yang sama tidak membuat duplikat.
+        if (!isset($_SESSION['pengaduan_idempotency'][$id_user])) {
+            $_SESSION['pengaduan_idempotency'][$id_user] = [];
+        }
+
+        $_SESSION['pengaduan_idempotency'][$id_user][$idempotencyKey] = [
+            'fingerprint' => $requestFingerprint,
+            'data' => $responseData,
+            'created_at' => time()
+        ];
+
+        // Batasi cache maksimal 30 key per user.
+        while (count($_SESSION['pengaduan_idempotency'][$id_user]) > 30) {
+            $keyTerlama = array_key_first(
+                $_SESSION['pengaduan_idempotency'][$id_user]
+            );
+
+            unset(
+                $_SESSION['pengaduan_idempotency'][$id_user][$keyTerlama]
+            );
+        }
+
+        // 14. Kirim respons sukses.
+        successResponse('Pengaduan berhasil dibuat', $responseData, 201);
     }
 }

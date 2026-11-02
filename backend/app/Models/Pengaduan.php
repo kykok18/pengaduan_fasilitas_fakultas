@@ -80,7 +80,7 @@ class Pengaduan
         mysqli_free_result($result);
         mysqli_stmt_close($stmt);
 
-        return $exists;
+        return $exists ? true : null;
     }
 
     public function findByNamaFasilitas($namaFasilitas)

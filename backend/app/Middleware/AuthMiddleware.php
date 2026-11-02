@@ -24,6 +24,15 @@ class AuthMiddleware
                 "Silakan login terlebih dahulu",
                 401
             );
+        }if (
+            !isset($_SESSION['id_user']) ||
+            !is_numeric($_SESSION['id_user']) ||
+            (int) $_SESSION['id_user'] <= 0
+        ) {
+            errorResponse(
+                "Silakan login terlebih dahulu",
+                401
+            );
         }
     }
 }
