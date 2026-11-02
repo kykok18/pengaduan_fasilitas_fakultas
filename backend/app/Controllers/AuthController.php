@@ -69,7 +69,7 @@ class AuthController
         }
 
         // Hash password
-               $password_hash = hashPassword($password);
+        $password_hash = hashPassword($password);
 
         // Simpan user
         $id_user = $this->userModel->create(
