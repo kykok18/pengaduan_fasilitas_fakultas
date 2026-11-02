@@ -36,7 +36,54 @@ class PengaduanController
             errorResponse('Silakan login terlebih dahulu', 401);
         }
 
-        // 2. Pastikan request menggunakan multipart/form-data.
+        $id_user = (int) $_SESSION['id_user'];
+
+        // Lepaskan session lock PHP agar request lain dari user
+        // yang sama bisa mencapai pengecekan lock database.
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
+
+        // 2. Ambil lock berdasarkan user.
+        $lockStatus = $this->pengaduanModel->acquirePengaduanLock(
+            $id_user
+        );
+
+        if ($lockStatus === false) {
+            errorResponse(
+                'Gagal memeriksa proses pengaduan. Silakan coba lagi.',
+                500
+            );
+        }
+
+        if ($lockStatus !== 1) {
+            errorResponse(
+                'Pengaduan Anda sedang diproses. Tunggu hingga selesai.',
+                409
+            );
+        }
+
+        // Daftarkan pelepasan lock segera setelah lock berhasil didapat.
+        $model = $this->pengaduanModel;
+
+        register_shutdown_function(
+            function () use ($model, $id_user) {
+                $model->releasePengaduanLock($id_user);
+            }
+        );
+
+        // 3. Daftarkan pelepasan lock saat request berakhir.
+        // Tetap dijalankan meskipun successResponse/errorResponse
+        // memanggil exit().
+        $model = $this->pengaduanModel;
+
+        register_shutdown_function(
+            function () use ($model, $id_user) {
+                $model->releasePengaduanLock($id_user);
+            }
+        );
+
+        // 4. Pastikan request menggunakan multipart/form-data.
         if (empty($_POST) && empty($_FILES)) {
             errorResponse(
                 'Data kosong. Gunakan multipart/form-data dan sertakan foto.',
@@ -46,74 +93,7 @@ class PengaduanController
 
         $input = $_POST;
 
-        // 2.1 Validasi Idempotency-Key untuk mencegah request duplikat.
-        $id_user = (int) $_SESSION['id_user'];
-        $idempotencyKey = trim($_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '');
-
-        if (!preg_match('/^[A-Za-z0-9._:-]{8,100}$/D', $idempotencyKey)) {
-            errorResponse(
-                'Header Idempotency-Key wajib diisi dengan 8-100 karakter yang valid',
-                400
-            );
-        }
-
-        // Buat fingerprint dari data form dan isi file yang dikirim.
-        $dataFingerprint = $input;
-        ksort($dataFingerprint);
-
-        $fileFingerprint = [];
-
-        foreach ($_FILES as $field => $file) {
-            $fileFingerprint[$field] = [
-                'error' => $file['error'] ?? null,
-                'size' => $file['size'] ?? null,
-                'sha256' => null
-            ];
-
-            if (
-                ($file['error'] ?? null) === UPLOAD_ERR_OK &&
-                !empty($file['tmp_name']) &&
-                is_uploaded_file($file['tmp_name'])
-            ) {
-                $fileFingerprint[$field]['sha256'] =
-                    hash_file('sha256', $file['tmp_name']);
-            }
-        }
-
-        ksort($fileFingerprint);
-
-        $requestFingerprint = hash(
-            'sha256',
-            json_encode(
-                [
-                    'input' => $dataFingerprint,
-                    'files' => $fileFingerprint
-                ],
-                JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE
-            )
-        );
-
-        // Cek apakah key ini pernah digunakan untuk request sukses.
-        $cachePengaduan = $_SESSION['pengaduan_idempotency'][$id_user] ?? [];
-
-        if (isset($cachePengaduan[$idempotencyKey])) {
-            $cachedRequest = $cachePengaduan[$idempotencyKey];
-
-            if ($cachedRequest['fingerprint'] !== $requestFingerprint) {
-                errorResponse(
-                    'Idempotency-Key sudah digunakan untuk data pengaduan yang berbeda',
-                    409
-                );
-            }
-
-            successResponse(
-                'Pengaduan sebelumnya sudah diproses',
-                $cachedRequest['data'],
-                200
-            );
-        }
-
-        // 3. Validasi ID fasilitas.
+        // 5. Validasi ID fasilitas.
         $id_fasilitas = filter_var(
             $input['id_fasilitas'] ?? null,
             FILTER_VALIDATE_INT
@@ -121,7 +101,8 @@ class PengaduanController
 
         // Mendukung field kategori dari frontend lama.
         if (
-            ($id_fasilitas === false || $id_fasilitas === null ||
+            ($id_fasilitas === false ||
+                $id_fasilitas === null ||
                 (int) $id_fasilitas <= 0) &&
             isset($input['kategori']) &&
             is_string($input['kategori'])
@@ -159,7 +140,8 @@ class PengaduanController
 
         // Mendukung field ID fasilitas lama.
         if (
-            ($id_fasilitas === false || $id_fasilitas === null ||
+            ($id_fasilitas === false ||
+                $id_fasilitas === null ||
                 (int) $id_fasilitas <= 0) &&
             isset($input['id_fasilitas_legacy'])
         ) {
@@ -177,7 +159,7 @@ class PengaduanController
             errorResponse('ID fasilitas tidak valid', 400);
         }
 
-        // 4. Validasi input teks.
+        // 6. Validasi input teks.
         foreach (['judul', 'lokasi', 'deskripsi'] as $field) {
             if (
                 isset($input[$field]) &&
@@ -189,10 +171,24 @@ class PengaduanController
                 );
             }
         }
-        
-        $judul = preg_replace('/^[\s\p{Z}]+|[\s\p{Z}]+$/u', '', $input['judul'] ?? '');
-        $lokasi = preg_replace('/^[\s\p{Z}]+|[\s\p{Z}]+$/u', '', $input['lokasi'] ?? '');
-        $deskripsi = preg_replace('/^[\s\p{Z}]+|[\s\p{Z}]+$/u', '', $input['deskripsi'] ?? '');
+
+        $judul = preg_replace(
+            '/^[\s\p{Z}]+|[\s\p{Z}]+$/u',
+            '',
+            $input['judul'] ?? ''
+        );
+
+        $lokasi = preg_replace(
+            '/^[\s\p{Z}]+|[\s\p{Z}]+$/u',
+            '',
+            $input['lokasi'] ?? ''
+        );
+
+        $deskripsi = preg_replace(
+            '/^[\s\p{Z}]+|[\s\p{Z}]+$/u',
+            '',
+            $input['deskripsi'] ?? ''
+        );
 
         if ($judul === '') {
             errorResponse('Judul pengaduan wajib diisi', 400);
@@ -230,7 +226,7 @@ class PengaduanController
             );
         }
 
-        // 5. Pastikan fasilitas tersedia di database.
+        // 7. Pastikan fasilitas tersedia di database.
         $exists = $this->pengaduanModel->fasilitasExists(
             (int) $id_fasilitas
         );
@@ -246,7 +242,7 @@ class PengaduanController
             errorResponse('Fasilitas tidak ditemukan', 404);
         }
 
-        // 6. Foto wajib diunggah.
+        // 8. Foto wajib diunggah.
         if (!isset($_FILES['foto'])) {
             errorResponse(
                 'Foto bukti pengaduan wajib diunggah',
@@ -290,7 +286,7 @@ class PengaduanController
                 break;
         }
 
-        // 7. Validasi ukuran foto.
+        // 9. Validasi ukuran foto.
         $maksimalUkuran = 5 * 1024 * 1024;
 
         if (
@@ -314,7 +310,7 @@ class PengaduanController
             );
         }
 
-                // 8. Periksa MIME berdasarkan isi file.
+        // 10. Periksa MIME berdasarkan isi file.
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
 
         if ($finfo === false) {
@@ -327,7 +323,6 @@ class PengaduanController
         $mimeType = finfo_file($finfo, $foto['tmp_name']);
         finfo_close($finfo);
 
-        // JPEG mencakup ekstensi .jpg, .jpeg dan webp
         $tipeFotoDiizinkan = [
             'image/jpeg' => 'jpg',
             'image/png' => 'png',
@@ -344,7 +339,7 @@ class PengaduanController
             );
         }
 
-        // Pastikan file benar-benar gambar yang valid.
+        // 11. Pastikan file benar-benar gambar yang valid.
         $infoGambar = @getimagesize($foto['tmp_name']);
 
         if ($infoGambar === false) {
@@ -370,7 +365,7 @@ class PengaduanController
             );
         }
 
-        // 8.1 Validasi dimensi gambar untuk membatasi penggunaan memori.
+        // 11.1 Validasi dimensi gambar.
         $lebarGambar = $infoGambar[0];
         $tinggiGambar = $infoGambar[1];
 
@@ -390,7 +385,7 @@ class PengaduanController
             );
         }
 
-        // 9. Siapkan folder penyimpanan.
+        // 12. Siapkan folder penyimpanan.
         $direktoriUpload =
             dirname(__DIR__, 3) . '/uploads/pengaduan';
 
@@ -412,7 +407,7 @@ class PengaduanController
             );
         }
 
-        // 10. Buat nama file unik.
+        // 13. Buat nama file unik.
         try {
             $namaFile = 'pengaduan_' .
                 time() . '_' .
@@ -428,7 +423,7 @@ class PengaduanController
         $tujuanFoto = $direktoriUpload . '/' . $namaFile;
         $pathFoto = 'uploads/pengaduan/' . $namaFile;
 
-        // 10.1 Decode gambar berdasarkan MIME yang sudah divalidasi.
+        // 13.1 Decode gambar berdasarkan MIME.
         $gambar = false;
 
         switch ($mimeType) {
@@ -436,7 +431,7 @@ class PengaduanController
                 $gambar = @imagecreatefromjpeg($foto['tmp_name']);
                 break;
 
-            case 'image/png':   
+            case 'image/png':
                 $gambar = @imagecreatefrompng($foto['tmp_name']);
                 break;
 
@@ -452,7 +447,7 @@ class PengaduanController
             );
         }
 
-        // 10.2 Encode ulang gambar ke file sementara.
+        // 13.2 Encode ulang gambar ke file sementara.
         $fileSementara = tempnam($direktoriUpload, 'img_');
 
         if ($fileSementara === false) {
@@ -468,15 +463,27 @@ class PengaduanController
 
         switch ($mimeType) {
             case 'image/jpeg':
-                $berhasilEncode = imagejpeg($gambar, $fileSementara, 85);
+                $berhasilEncode = imagejpeg(
+                    $gambar,
+                    $fileSementara,
+                    85
+                );
                 break;
 
             case 'image/png':
-                $berhasilEncode = imagepng($gambar, $fileSementara, 6);
+                $berhasilEncode = imagepng(
+                    $gambar,
+                    $fileSementara,
+                    6
+                );
                 break;
 
             case 'image/webp':
-                $berhasilEncode = imagewebp($gambar, $fileSementara, 85);
+                $berhasilEncode = imagewebp(
+                    $gambar,
+                    $fileSementara,
+                    85
+                );
                 break;
         }
 
@@ -491,7 +498,7 @@ class PengaduanController
             );
         }
 
-        // 10.3 Pindahkan hasil encode ke nama file final.
+        // 13.3 Pindahkan hasil encode ke nama file final.
         if (!rename($fileSementara, $tujuanFoto)) {
             @unlink($fileSementara);
 
@@ -501,9 +508,9 @@ class PengaduanController
             );
         }
 
-        // 11. Simpan data beserta path foto.
+        // 14. Simpan data beserta path foto.
         $id_pengaduan = $this->pengaduanModel->create(
-            (int) $_SESSION['id_user'],
+            $id_user,
             (int) $id_fasilitas,
             $judul,
             $lokasi,
@@ -520,7 +527,7 @@ class PengaduanController
             errorResponse('Gagal membuat pengaduan', 500);
         }
 
-        // 12. Ambil data pengaduan yang baru dibuat.
+        // 15. Ambil data pengaduan yang baru dibuat.
         $pengaduan = $this->pengaduanModel->findById(
             (int) $id_pengaduan
         );
@@ -532,7 +539,7 @@ class PengaduanController
             );
         }
 
-        // 13. Siapkan data respons sukses.
+        // 16. Siapkan data respons sukses.
         $responseData = [
             'id_pengaduan' => (int) $pengaduan['id_pengaduan'],
             'id_user' => (int) $pengaduan['id_user'],
@@ -545,29 +552,11 @@ class PengaduanController
             'created_at' => $pengaduan['created_at']
         ];
 
-        // Simpan hasil sukses agar retry dengan key yang sama tidak membuat duplikat.
-        if (!isset($_SESSION['pengaduan_idempotency'][$id_user])) {
-            $_SESSION['pengaduan_idempotency'][$id_user] = [];
-        }
-
-        $_SESSION['pengaduan_idempotency'][$id_user][$idempotencyKey] = [
-            'fingerprint' => $requestFingerprint,
-            'data' => $responseData,
-            'created_at' => time()
-        ];
-
-        // Batasi cache maksimal 30 key per user.
-        while (count($_SESSION['pengaduan_idempotency'][$id_user]) > 30) {
-            $keyTerlama = array_key_first(
-                $_SESSION['pengaduan_idempotency'][$id_user]
-            );
-
-            unset(
-                $_SESSION['pengaduan_idempotency'][$id_user][$keyTerlama]
-            );
-        }
-
-        // 14. Kirim respons sukses.
-        successResponse('Pengaduan berhasil dibuat', $responseData, 201);
+        // 17. Kirim respons sukses.
+        successResponse(
+            'Pengaduan berhasil dibuat',
+            $responseData,
+            201
+        );
     }
 }

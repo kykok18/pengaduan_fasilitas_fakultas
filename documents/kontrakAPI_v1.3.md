@@ -525,14 +525,20 @@ Data berisi daftar fasilitas dari database.
 
 Endpoint digunakan untuk membuat pengaduan fasilitas kampus.
 
+Pengguna wajib login sebelum mengirimkan pengaduan. Backend memvalidasi data, memeriksa fasilitas, memproses foto, dan menyimpan pengaduan ke database.
+
 ## 8.2 Request Headers
 
 ```http
 Cookie: PHPSESSID=<session_id>
-Idempotency-Key: <unique_key>
+Content-Type: multipart/form-data
 ```
 
-`Idempotency-Key` digunakan untuk mencegah pembuatan pengaduan ganda akibat request yang dikirim ulang.
+Client harus menyertakan cookie session yang diperoleh setelah login.
+
+Endpoint ini tidak menggunakan header `Idempotency-Key`.
+
+Backend menggunakan mekanisme concurrent request lock berbasis `id_user` untuk mencegah beberapa proses pengaduan dari pengguna yang sama berjalan secara bersamaan.
 
 ## 8.3 Request Body
 
@@ -542,13 +548,13 @@ Format request:
 multipart/form-data
 ```
 
-| Field        | Tipe    | Wajib | Keterangan           |
-| ------------ | ------- | ----- | -------------------- |
-| id_fasilitas | integer | Ya    | ID fasilitas         |
-| judul        | string  | Ya    | Judul pengaduan      |
-| lokasi       | string  | Ya    | Lokasi kerusakan     |
-| deskripsi    | string  | Ya    | Deskripsi pengaduan  |
-| foto         | file    | Ya    | Foto bukti pengaduan |
+| Field        | Tipe    | Wajib | Keterangan                 |
+| ------------ | ------- | ----- | -------------------------- |
+| id_fasilitas | integer | Ya    | ID fasilitas yang diadukan |
+| judul        | string  | Ya    | Judul pengaduan            |
+| lokasi       | string  | Ya    | Lokasi kerusakan           |
+| deskripsi    | string  | Ya    | Deskripsi pengaduan        |
+| foto         | file    | Ya    | Foto bukti pengaduan       |
 
 Field kompatibilitas lama:
 
@@ -572,6 +578,7 @@ foto: komputer.jpg
 
 - Pengguna wajib login.
 - Session harus valid.
+- ID pengguna harus berupa integer positif.
 
 ### Validasi fasilitas
 
@@ -610,27 +617,27 @@ foto: komputer.jpg
 
 ## 8.6 Response Berhasil
 
-HTTP Status mengikuti implementasi `successResponse()`.
+HTTP Status: `201 Created`
 
 ```json
 {
   "status": "success",
   "message": "Pengaduan berhasil dibuat",
   "data": {
-    "id_pengaduan": 19,
-    "id_user": 31,
+    "id_pengaduan": 24,
+    "id_user": 28,
     "id_fasilitas": 1,
     "judul": "Komputer Lab A Tidak Menyala",
     "lokasi": "Lab Komputer A",
     "deskripsi": "Komputer tidak dapat dinyalakan ketika digunakan.",
     "foto": "uploads/pengaduan/contoh.jpg",
     "status": "diajukan",
-    "created_at": "2026-11-02 01:00:00"
+    "created_at": "2026-11-02 11:55:57"
   }
 }
 ```
 
-Nilai ID, nama file, dan waktu di atas ilustratif. Gunakan response Postman aktual sebagai bukti pengujian.
+Nilai ID, nama file, dan waktu di atas merupakan contoh. Nilai aktual berasal dari database.
 
 ## 8.7 Response Error
 
@@ -638,9 +645,7 @@ Nilai ID, nama file, dan waktu di atas ilustratif. Gunakan response Postman aktu
 | ---- | -------------------------------------------------------------------------- |
 | 405  | Method tidak diizinkan                                                     |
 | 401  | Silakan login terlebih dahulu                                              |
-| 400  | Idempotency-Key wajib dikirim                                              |
-| 400  | Idempotency-Key tidak valid                                                |
-| 409  | Idempotency-Key sudah digunakan untuk data pengaduan yang berbeda          |
+| 400  | Data kosong. Gunakan multipart/form-data dan sertakan foto.                |
 | 400  | ID fasilitas tidak valid                                                   |
 | 500  | Gagal memeriksa data fasilitas                                             |
 | 404  | Fasilitas tidak ditemukan                                                  |
@@ -669,10 +674,29 @@ Nilai ID, nama file, dan waktu di atas ilustratif. Gunakan response Postman aktu
 | 500  | Gagal menyiapkan file sementara                                            |
 | 500  | Gambar gagal disimpan ulang                                                |
 | 500  | Foto gagal disimpan ke server                                              |
+| 500  | Gagal memeriksa proses pengaduan. Silakan coba lagi.                       |
+| 409  | Pengaduan Anda sedang diproses. Tunggu hingga selesai.                     |
 | 500  | Gagal membuat pengaduan                                                    |
 | 500  | Pengaduan tersimpan, tetapi gagal mengambil data hasil penyimpanan         |
 
-## 8.8 Contoh Error Format Foto
+## 8.8 Contoh Response Error: Request Bersamaan
+
+HTTP Status: `409 Conflict`
+
+```json
+{
+  "status": "error",
+  "message": "Pengaduan Anda sedang diproses. Tunggu hingga selesai."
+}
+```
+
+Response tersebut diberikan ketika pengguna mengirimkan request pengaduan baru saat proses pengaduan sebelumnya dari pengguna yang sama masih berlangsung.
+
+Request yang ditolak tidak membuat data pengaduan baru.
+
+## 8.9 Contoh Response Error: Format Foto
+
+HTTP Status: `400 Bad Request`
 
 ```json
 {
@@ -681,103 +705,65 @@ Nilai ID, nama file, dan waktu di atas ilustratif. Gunakan response Postman aktu
 }
 ```
 
-## 8.9 Contoh Error Idempotency-Key
-
-```json
-{
-  "status": "error",
-  "message": "Idempotency-Key sudah digunakan untuk data pengaduan yang berbeda"
-}
-```
-
 ---
 
-# 9. Mekanisme Idempotency
+# 9. Mekanisme Pencegahan Request Pengaduan Bersamaan
 
 ## 9.1 Tujuan
 
-Idempotency mencegah pembuatan pengaduan ganda akibat request yang dikirim ulang.
+Mencegah beberapa proses pengaduan dari pengguna yang sama berjalan secara bersamaan.
 
-Contoh kondisi:
+Mekanisme ini digunakan untuk menangani kondisi seperti:
 
-- Pengguna menekan tombol submit dua kali.
-- Jaringan mengalami gangguan.
-- Client mengirim ulang request karena tidak menerima response.
-- Request pertama berhasil diproses, tetapi response tidak diterima client.
+- Pengguna menekan tombol submit beberapa kali dengan cepat.
+- Client mengirimkan beberapa request pengaduan secara bersamaan.
+- Request pertama masih diproses ketika request kedua dikirimkan.
+- Pengguna mengirimkan request baru sebelum proses sebelumnya selesai.
+
+Mekanisme ini bukan deduplikasi permanen berdasarkan isi pengaduan.
 
 ## 9.2 Cara Kerja
 
-Client mengirimkan header:
+Backend menggunakan MySQL advisory lock melalui fungsi `GET_LOCK()` dan `RELEASE_LOCK()`.
 
-```http
-Idempotency-Key: pengaduan-test-001
-```
+Lock dibuat berdasarkan `id_user`.
 
-Server memeriksa key dan fingerprint request.
+Alur proses:
 
-| Kondisi                      | Perilaku                              |
-| ---------------------------- | ------------------------------------- |
-| Key baru                     | Request diproses                      |
-| Key sama dan payload sama    | Response sebelumnya dikembalikan      |
-| Key sama dan payload berbeda | Request ditolak dengan konflik        |
-| Key berbeda                  | Request dianggap sebagai request baru |
+1. Backend memvalidasi session pengguna.
+2. Backend mengambil `id_user` dari session.
+3. Backend melepaskan PHP session lock agar request lain dapat mencapai pengecekan lock database.
+4. Backend mencoba mengambil advisory lock berdasarkan `id_user`.
+5. Jika lock berhasil diperoleh, request melanjutkan proses validasi, upload foto, dan penyimpanan pengaduan.
+6. Jika lock sedang dipegang request lain dari pengguna yang sama, backend mengembalikan HTTP `409 Conflict`.
+7. Setelah request selesai, backend melepaskan lock.
 
-Fingerprint request mempertimbangkan data pengaduan dan konten file yang diunggah.
+## 9.3 Perilaku Lock
 
-## 9.3 Retry dengan Key dan Payload Sama
+| Kondisi                                                       | Perilaku                        |
+| ------------------------------------------------------------- | ------------------------------- |
+| Tidak ada proses pengaduan aktif dari pengguna                | Request dapat diproses          |
+| Request pertama berhasil memperoleh lock                      | Proses pengaduan dilanjutkan    |
+| Request kedua dari pengguna yang sama masuk ketika lock aktif | Request ditolak dengan HTTP 409 |
+| Request baru dikirim setelah proses sebelumnya selesai        | Request dapat diproses kembali  |
+| Request dari pengguna berbeda                                 | Dapat diproses secara bersamaan |
+| Terjadi kegagalan saat memeriksa lock                         | Backend mengembalikan HTTP 500  |
 
-Contoh response:
+## 9.4 Batasan Mekanisme
 
-```json
-{
-  "status": "success",
-  "message": "Pengaduan sebelumnya sudah diproses",
-  "data": {
-    "id_pengaduan": 18
-  }
-}
-```
+Mekanisme concurrent request lock memiliki batasan berikut:
 
-HTTP status retry mengikuti implementasi aktual.
+- Lock hanya berlaku selama proses request berlangsung.
+- Lock dibuat berdasarkan ID pengguna, bukan berdasarkan isi pengaduan.
+- Request baru setelah proses sebelumnya selesai tetap dianggap sebagai pengaduan baru.
+- Pengguna tetap dapat membuat pengaduan dengan judul, lokasi, deskripsi, atau foto yang sama setelah proses sebelumnya selesai.
+- Mekanisme ini tidak menjamin pencegahan retry setelah request pertama selesai tetapi response tidak diterima client.
+- Mekanisme ini tidak menggunakan `Idempotency-Key`.
+- Mekanisme ini tidak menggunakan fingerprint payload untuk mendeteksi kesamaan isi pengaduan.
 
-## 9.4 Key Sama dengan Payload Berbeda
-
-HTTP Status: `409 Conflict`
-
-```json
-{
-  "status": "error",
-  "message": "Idempotency-Key sudah digunakan untuk data pengaduan yang berbeda"
-}
-```
-
-## 9.5 Batasan Idempotency
-
-Implementasi idempotency menggunakan cache session.
-
-Artinya:
-
-- Cache terikat pada session pengguna.
-- Cache tidak disimpan sebagai tabel database.
-- Cache dapat hilang ketika session berakhir.
-- Key yang sama pada session berbeda tidak dianggap sebagai key yang sama.
-- Cache dibatasi maksimal 30 key per user/session.
-
-Idempotency session-based membantu mencegah request ganda pada session yang sama, tetapi bukan deduplikasi permanen lintas session atau perangkat.
+Dengan demikian, fitur ini berfokus pada pencegahan proses pengaduan yang berjalan secara bersamaan, bukan deduplikasi permanen.
 
 ---
-
-# 10. API Riwayat Pengaduan
-
-## 10.1 Status Endpoint
-
-Berdasarkan arsip backend yang diperiksa:
-
-- File `backend/api/riwayat.php` belum tersedia.
-- File `RiwayatController.php` belum tersedia.
-- Model Riwayat tidak otomatis menjadi endpoint HTTP.
-
-Karena itu, `GET /riwayat.php` belum dapat dinyatakan sebagai API aktif berdasarkan arsip ini.
 
 ## 10.2 Kebutuhan Fungsional
 
@@ -863,20 +849,22 @@ Ketentuan keamanan:
 
 ## 12.6 Membuat Pengaduan
 
-| No  | Skenario                     | Hasil yang Diharapkan            |
-| --- | ---------------------------- | -------------------------------- |
-| 1   | Data valid dan foto valid    | Pengaduan berhasil dibuat        |
-| 2   | Judul kosong                 | Request ditolak                  |
-| 3   | Lokasi kosong                | Request ditolak                  |
-| 4   | Deskripsi kosong             | Request ditolak                  |
-| 5   | Foto tidak dikirim           | Request ditolak                  |
-| 6   | Format foto tidak valid      | Request ditolak                  |
-| 7   | Foto melebihi batas ukuran   | Request ditolak                  |
-| 8   | ID fasilitas tidak valid     | Request ditolak                  |
-| 9   | Request tanpa login          | HTTP 401                         |
-| 10  | Key sama dan payload sama    | Response sebelumnya dikembalikan |
-| 11  | Key sama dan payload berbeda | HTTP 409                         |
-| 12  | Key baru                     | Pengaduan baru dibuat            |
+| No  | Skenario                                                                | Hasil yang Diharapkan                                   |
+| --- | ----------------------------------------------------------------------- | ------------------------------------------------------- |
+| 1   | Data valid dan foto valid                                               | HTTP 201, pengaduan berhasil dibuat                     |
+| 2   | Judul kosong                                                            | HTTP 400                                                |
+| 3   | Lokasi kosong                                                           | HTTP 400                                                |
+| 4   | Deskripsi kosong                                                        | HTTP 400                                                |
+| 5   | Foto tidak dikirim                                                      | HTTP 400                                                |
+| 6   | Format foto tidak valid                                                 | HTTP 400                                                |
+| 7   | Foto melebihi batas ukuran                                              | HTTP 413                                                |
+| 8   | ID fasilitas tidak valid                                                | HTTP 400                                                |
+| 9   | Request tanpa login                                                     | HTTP 401                                                |
+| 10  | Request kedua dari user yang sama ketika request pertama masih diproses | HTTP 409                                                |
+| 11  | Request baru dari user yang sama setelah proses sebelumnya selesai      | HTTP 201                                                |
+| 12  | Request bersamaan dari user berbeda                                     | Dapat diproses secara bersamaan                         |
+| 13  | Terjadi kegagalan saat memeriksa lock                                   | HTTP 500                                                |
+| 14  | Request bersamaan ditolak                                               | Tidak ada data pengaduan baru dari request yang ditolak |
 
 ---
 

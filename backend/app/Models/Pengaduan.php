@@ -240,4 +240,81 @@ class Pengaduan
 
         return $pengaduan ?: null;
     }
+
+    public function acquirePengaduanLock($id_user)
+    {
+        $lockName = 'pengaduan_' . (int) $id_user;
+
+        $query = "SELECT GET_LOCK(?, 0) AS lock_status";
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log(
+                'Gagal menyiapkan lock pengaduan: ' .
+                mysqli_error($this->conn)
+            );
+
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 's', $lockName);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log(
+                'Gagal mengambil lock pengaduan: ' .
+                mysqli_stmt_error($stmt)
+            );
+
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+
+        mysqli_free_result($result);
+        mysqli_stmt_close($stmt);
+
+        if (
+            !is_array($row) ||
+            !array_key_exists('lock_status', $row) ||
+            $row['lock_status'] === null
+        ) {
+            return false;
+        }
+
+        return (int) $row['lock_status'];
+    }
+
+    public function releasePengaduanLock($id_user)
+    {
+        $lockName = 'pengaduan_' . (int) $id_user;
+
+        $query = "SELECT RELEASE_LOCK(?)";
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log(
+                'Gagal menyiapkan pelepasan lock pengaduan: ' .
+                mysqli_error($this->conn)
+            );
+
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 's', $lockName);
+
+        $success = mysqli_stmt_execute($stmt);
+
+        if (!$success) {
+            error_log(
+                'Gagal melepas lock pengaduan: ' .
+                mysqli_stmt_error($stmt)
+            );
+        }
+
+        mysqli_stmt_close($stmt);
+
+        return $success;
+    }
 }
