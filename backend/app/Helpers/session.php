@@ -18,7 +18,7 @@ function startSecureSession()
 
     // Gunakan false untuk HTTP localhost.
     // Aktifkan true ketika aplikasi sudah berjalan melalui HTTPS.
-    $secureCookie = false;
+    $secureCookie = (getenv('APP_ENV') === 'production');
 
     session_set_cookie_params([
         'lifetime' => 0,
