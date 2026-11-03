@@ -1914,3 +1914,33 @@ body {
     color: rgba(0, 0, 0, 0.72);
     text-align: center;
 }
+
+
+/* ============================================================
+   ANIMASI SPINNER LOADING
+   ============================================================ */
+
+.loading-icon-wrapper svg {
+    display: block;
+    width: 48px;
+    height: 48px;
+
+    animation: dashboardSpinnerRotate 1s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes dashboardSpinnerRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading-icon-wrapper svg {
+        animation: none;
+    }
+}
