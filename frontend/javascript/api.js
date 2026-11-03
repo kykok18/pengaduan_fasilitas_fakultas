@@ -107,8 +107,15 @@ async function apiLogout() {
  * Catatan: gunakan fungsi ini hanya jika dashboard.php memang
  * mengizinkan request GET.
  */
-async function apiGetDashboard() {
-  return apiRequest("dashboard.php", null, "GET");
+async function apiGetDashboard(params = {}) {
+    const query = new URLSearchParams({
+        page: params.page || 1,
+        limit: params.limit || 5,
+        search: params.search || '',
+        status: params.status === 'semua' ? '' : (params.status || '')
+    });
+
+    return apiRequest(`dashboard.php?${query.toString()}`, null, "GET");
 }
 
 /**

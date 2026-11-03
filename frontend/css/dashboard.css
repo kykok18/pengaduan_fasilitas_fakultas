@@ -275,7 +275,7 @@ body {
 }
 
 .welcome-section p {
-    margin-bottom: 39.5px;
+    margin-bottom: 20px;
 
     color: var(--dark-green-bg);
     font-size: 12px;
@@ -346,7 +346,6 @@ body {
 }
 
 .cta-text h3 {
-    margin: 0;
 
     color: var(--logo-green);
     font-size: 14px;
@@ -440,7 +439,6 @@ body {
     
     background-color: var(--white);
     border-radius: var(--radius-large);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     
     
     /* PASTIKAN TIDAK ADA height / min-height DI SINI */
@@ -449,8 +447,8 @@ body {
 /* Gambar kiri */
 .report-image {
     position: relative;
-    flex: 0 0 120px; /* Lebar gambar */
-    height: 100px;   /* Tinggi gambar sebagai patokan */
+    flex: 0 0 129px; /* Lebar gambar */
+    height: 99px;   /* Tinggi gambar sebagai patokan */
     overflow: hidden;
 }
 
@@ -487,6 +485,7 @@ body {
     flex-direction: column;
     justify-content: space-between; /* Menyebar teks dari atas ke bawah */
     padding: 8px 12px 8px 0; /* Padding atas-bawah 8px agar seimbang */
+    margin-left: 12px;
 }
 
 /* Header: judul + badge status */
@@ -528,10 +527,10 @@ body {
 
     margin-top: 6px; /* Jarak dari judul ke lokasi */
 
-    color: var(--logo-green); /* Warna teks (hijau) */
+    color: #474747; /* Warna teks (hijau) */
     
     /* UBAH UKURAN TEKS DI SINI */
-    font-size: 11px; /* Silakan ganti angkanya (misal: 10px, 12px, 13px) */
+    font-size: 8px; /* Silakan ganti angkanya (misal: 10px, 12px, 13px) */
     font-weight: 500;
     line-height: 16px;
 }
@@ -542,11 +541,7 @@ body {
     gap: 13.04px; /* Jarak antara ikon pin/kalender dengan teks */
 }
 
-/* Ukuran Ikon */
-.report-meta i {
-    font-size: 14px; /* Sesuaikan ukuran ikon pin dan kalender di sini */
-    color: var(--logo-green);
-}
+
 
 /* Footer aksi */
 .report-footer {
@@ -624,7 +619,7 @@ body {
     flex-direction: column;
     overflow-y: auto;
 
-    width: 222px;
+    width: 263px;
     height: 100vh;
     padding: 12px 13px;
 
@@ -649,6 +644,7 @@ body {
     gap: 8px;
 
     margin-bottom: 10px;
+    margin-left: 30px;
 }
 
 .sidebar-logo {
@@ -670,7 +666,7 @@ body {
     margin-bottom: 2px;
 
     color: var(--logo-green);
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 700;
 }
 
@@ -678,7 +674,7 @@ body {
     margin-bottom: 1px;
 
     color: var(--logo-green);
-    font-size: 6px;
+    font-size: 7px;
     font-weight: 500;
 }
 
@@ -753,64 +749,91 @@ body {
     font-weight: 400;
 }
 
+
 /* ============================================================
-   FILTER CHIPS (Fixed Size Sesuai Figma)
+   FILTER CHIPS - SESUAI FIGMA
    ============================================================ */
 
+
 .filter-chips {
-    display: grid;
-    /* Membagi 4 kolom dengan lebar yang sama rata */
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 8px; /* Jarak antar tombol */
-    margin-bottom: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
     width: 100%;
+    max-width: none;
+    height: 25px;
+
+    margin: 0 0 24px;
+    padding: 0;
+    gap: 8px;
 }
 
 
-.chip {
-    /* Mengikuti ukuran Figma */
+/* Styling dasar semua tombol */
+.filter-chips .chip {
     box-sizing: border-box;
+
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 0 0px; /* Padding disesuaikan agar teks di tengah */
-    
-    /* Ukuran Fixed */
-    width: 71.36px; 
+
+    flex: 0 0 auto;
+    width: 71.36px;
     height: 25px;
-    
-    /* Styling */
+
+    margin: 0;
+    padding: 0;
+
     background: #FFFFFF;
-    border: 1px solid #D9D9D9; /* Default abu-abu */
+    border: 1px solid #D9D9D9;
     border-radius: 10px;
-    
-    /* Teks */
-    font-family: 'Poppins';
+
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
     color: #0B5E3B;
-    
+
+    white-space: nowrap;
     cursor: pointer;
+
     transition: all 0.2s ease;
-    white-space: nowrap; /* Mencegah teks turun ke bawah */
 }
 
-/* Khusus untuk chip "Dalam Perbaikan" yang teksnya panjang */
-/* Kita buat otomatis menyesuaikan teksnya agar tidak terpotong */
-.chip:nth-child(3) {
-    width: auto;
-    padding: 0 10px;
+/* Tombol ketiga: Dalam Perbaikan */
+.filter-chips .chip:nth-child(3) {
+    width: 122.33px;
+    padding: 0;
 }
 
-/* Styling untuk Chip yang sedang aktif (Semua) */
-.chip.active {
-    border: 1px solid #0B5E3B; /* Border hijau tebal */
-    border-radius: 10px;
+/* Tombol aktif */
+.filter-chips .chip.active {
+    border: 1px solid #0B5E3B;
     font-weight: 500;
 }
+
+/* Responsif untuk layar lebih kecil */
+@media (max-width: 390px) {
+    .filter-chips {
+        gap: 6px;
+    }
+
+    .filter-chips .chip {
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto;
+        font-size: 10px;
+    }
+
+    .filter-chips .chip:nth-child(3) {
+        flex: 1.7 1 0;
+        width: auto;
+    }
+}
+
 
 /* ============================================================
    ERROR STATE (Gagal Memuat Pengaduan)
@@ -959,7 +982,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 7.5px 7px;
+    padding: 10px 10px;
     background-color: var(--logo-green);
     color: var(--white);
     font-size: 10px;
@@ -1054,7 +1077,7 @@ body {
     background: var(--white);
     border-radius: 20px;
     padding: 0 16px;
-    height: 40px;
+    height: 30px;
 }
 
 .search-box i {
@@ -1078,40 +1101,16 @@ body {
     justify-content: center;
     background: var(--logo-green);
     color: var(--white);
-    height: 40px;
-    padding: 0 20px;
+    height: 30px;
+    padding: 7.5px 7px;
     border-radius: 10px;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
 }
 
-/* Filter Chips (Ubah gaya dari tombol kecil menjadi baris penuh) */
-.filter-chips {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-    scrollbar-width: none;
-}
-.filter-chips::-webkit-scrollbar { display: none; }
 
-.chip {
-    padding: 6px 16px;
-    border-radius: 20px;
-    background: var(--white);
-    border: 1px solid #D9D9D9;
-    color: var(--logo-green);
-    font-size: 12px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-.chip.active {
-    border-color: var(--logo-green);
-    font-weight: 600;
-}
 
 /* List Report Item (Menggunakan Flexbox Horizontal) */
 .reports-list {
@@ -1130,12 +1129,12 @@ body {
     background-color: var(--white);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    height: 120px; /* Tinggi fix agar seragam */
+    height: 99px; /* Tinggi fix agar seragam */
 }
 
 .report-image {
     position: relative;
-    flex: 0 0 110px;
+    flex: 0 0 129px;
     height: 100%;
     overflow: hidden;
 }
@@ -1167,22 +1166,22 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 12px;
+    padding: 7px;
 }
 
 .report-content-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 4px;
+    gap: 10px;
+    margin-bottom: 1px;
 }
 
 .report-content-header h4 {
     margin: 0;
     font-size: 12px;
     font-weight: 600;
-    color: #000;
+    color: #0B5E3B;
 }
 
 .badge-status {
@@ -1196,20 +1195,12 @@ body {
 .status-perbaikan { background: #17a2b8; color: #fff; }
 .status-selesai   { background: #2e9368; color: #fff; }
 
-/* Meta Data (Lokasi, Tanggal) */
-.report-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--logo-green);
-}
+
 
 .report-meta span {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 /* Actions (Like, Dislike, Comment) */
@@ -1221,7 +1212,7 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-    color: #999;
+    color: #0000004F;
     font-size: 10px;
     font-weight: 700;
 }
@@ -1232,33 +1223,528 @@ body {
     gap: 4px;
 }
 
-/* Paginasi */
+
+/* ============================================================
+   PAGINATION - SESUAI FIGMA
+   ============================================================ */
+
+/* Wadah Pagination */
 .pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: 32px;
+
+    gap: 12px;
+    margin: 32px auto;
+    padding: 0;
+}
+
+/* Styling dasar tombol */
+.pagination .page-btn {
+    box-sizing: border-box;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    border-radius: 5px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 100%;
+    color: #0B5E3B;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Nomor halaman yang aktif */
+.pagination .page-btn.active {
+    border: 1px solid #0B5E3B;
+    border-radius: 5px;
+    font-weight: 400;
+}
+
+/* Tombol Prev dan Next */
+.pagination .page-btn.prev,
+.pagination .page-btn.next {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+
+    width: 68px;
+    height: 32px;
+
+    gap: 6px;
+    padding: 0 5px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #FFFFFF;
 }
 
-.page-btn {
-    padding: 8px 14px;
-    border: 1px solid #D9D9D9;
+/* Ikon Previous dan Next */
+.pagination .page-btn i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+    color: currentColor;
+}
+
+/* Kondisi Disabled */
+.pagination .page-btn:disabled {
+    color: #D9D9D9;
+    background: #FFFFFF;
+    border-color: transparent;
+
+    cursor: not-allowed;
+}
+
+/* Ikon ikut berubah warna saat disabled */
+.pagination .page-btn:disabled i {
+    color: #D9D9D9;
+}
+
+/* Hover hanya untuk tombol aktif */
+.pagination .page-btn:not(:disabled):hover {
+    background: #F0F8F3;
+}
+
+/* Tanda titik jika halaman banyak */
+.pagination .page-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 20px;
+    height: 32px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #0B5E3B;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 390px) {
+    .pagination {
+        gap: 8px;
+    }
+
+    .pagination .page-btn.prev,
+    .pagination .page-btn.next {
+        width: 68px;
+    }
+}
+
+
+.report-meta span svg {
+    display: block;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+.report-meta span:first-child svg {
+    width: 9px;
+    height: 11px;
+}
+
+.report-meta span:last-child svg {
+    width: 11px;
+    height: 11px;
+}
+
+/* Paksa warna ikon lokasi dan kalender */
+.report-meta,
+.report-meta span {
+    color: #474747 !important;
+}
+
+.report-meta span svg path {
+    fill: #474747 !important;
+}
+
+
+/* =========================================
+   LOGOUT SIDEBAR
+   ========================================= */
+
+/* Wadah menu Logout */
+.sidebar-logout {
+    margin-top: auto;
+    padding: 16px 10px 12px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Tampilan tombol Logout */
+.sidebar-logout a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 10px 8px;
+
+    color: #D02316;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+
     border-radius: 8px;
-    background: var(--white);
-    font-family: var(--font-primary);
+    transition: background-color 0.2s ease;
+}
+
+/* Ikon Logout */
+.sidebar-logout a i {
+    width: 20px;
+    font-size: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+
+/* Efek ketika menggunakan keyboard */
+.sidebar-logout a:focus-visible {
+    outline: 2px solid #D02316;
+    outline-offset: 2px;
+}
+
+
+/* Overlay Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================
+   MODAL LOGOUT - SESUAI FIGMA
+   ========================================= */
+
+.logout-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    height: 153px;
+
+    padding: 10px;
+    gap: 16px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+
+    text-align: center;
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+/* Modal aktif */
+.modal-overlay.active .logout-modal {
+    transform: translateY(0);
+}
+
+/* Modal khusus kondisi gagal */
+#logoutErrorState {
+    height: 166px;
+}
+
+
+.modal-overlay.active .logout-modal {
+    transform: translateY(0);
+}
+
+
+/* Ikon Logout */
+.logout-modal .modal-icon-circle {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* Teks judul */
+.logout-modal h3 {
+    margin: 0;
     font-size: 12px;
-    color: var(--logo-green);
+    font-weight: 700;
+    line-height: 18px;
+}
+
+/* Teks deskripsi */
+.logout-modal p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* Wadah tombol */
+.logout-modal .modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/* Ikon konfirmasi dan loading */
+.modal-icon-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 35px;
+    height: 35px;
+
+    border: 1px solid #D02316;
+    border-radius: 50%;
+
+    color: #D02316;
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+/* Ikon Logout Gagal */
+.modal-icon-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 35px;
+    height: 35px;
+
+    background: #D02316;
+    border-radius: 50%;
+
+    color: #FFFFFF;
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+/* Judul modal */
+.logout-modal h3 {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+
+    color: #000000;
+    text-align: center;
+}
+
+/* Deskripsi modal */
+.logout-modal p {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+
+    color: rgba(0, 0, 0, 0.72);
+    text-align: center;
+}
+
+
+/* Tombol Modal (Konfirmasi) */
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-modal-cancel {
+    width: 84px;
+    height: 30px;
+    border: 1px solid #474747;
+    border-radius: 8px;
+    background: transparent;
+    color: #474747;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.page-btn.active {
-    border-color: var(--logo-green);
-    font-weight: 700;
+.btn-modal-confirm {
+    width: 84px;
+    height: 30px;
+    background: #D02316;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
-.page-dots {
-    color: var(--logo-green);
+/* Tombol Retry (Gagal) */
+.btn-modal-retry {
+    width: 82px;
+    height: 30px;
+    background: #0B5E3B;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Teks Loading Modal */
+.modal-loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #000000;
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   OVERLAY LOGOUT BERHASIL
+   ========================================= */
+
+/* Membuat overlay tetap terlihat saat popup berhasil */
+.modal-overlay.logout-success-active {
+    opacity: 1;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Memastikan popup berada di atas overlay */
+.toast-success {
+    z-index: 10001;
+}
+
+
+/* =========================================
+   LOGOUT BERHASIL - SESUAI FIGMA
+   ========================================= */
+
+.toast-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    height: 125px;
+    padding: 10px;
+    gap: 16px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+
+    z-index: 10001;
+}
+
+/* Lingkaran ikon berhasil */
+.toast-success .toast-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    width: 35px;
+    height: 35px;
+}
+
+/* Ukuran ikon SVG */
+.toast-success .toast-icon svg {
+    display: block;
+    width: 35px;
+    height: 35px;
+}
+
+/* Wadah judul dan deskripsi */
+.toast-success .toast-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    gap: 0;
+}
+
+/* Judul Logout Berhasil */
+.toast-success .toast-content h4 {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
     font-weight: 700;
+    line-height: 18px;
+
+    color: #000000;
+    text-align: center;
+}
+
+/* Deskripsi Logout */
+.toast-success .toast-content p {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+
+    color: rgba(0, 0, 0, 0.72);
+    text-align: center;
 }

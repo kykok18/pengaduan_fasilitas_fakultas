@@ -353,7 +353,7 @@ fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonS
             ) {
                 showError(
                     emailInput,
-                    'E-mail sudah terdaftar, silakan gunakan E-mail lain untuk masuk.'
+                    'E-mail sudah terdaftar, silakan gunakan E-mail lain untuk mendaftar.'
                 );
 
             } else {

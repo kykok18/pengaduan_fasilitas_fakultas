@@ -165,31 +165,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // NOTIFIKASI
     // =========================
-    const messages = {
-        success: {
-            title: 'LOGIN BERHASIL',
-            desc: 'Login berhasil. Anda akan dialihkan ke halaman dashboard.'
-        },
-        server: {
-            title: 'LOGIN GAGAL',
-            desc: 'Terjadi kesalahan pada sistem. Silakan coba lagi.'
-        },
-        auth: {
-            title: 'GAGAL MELAKUKAN AUTENTIKASI',
-            desc: 'Mohon isi E-mail dan password dengan benar.'
-        },
-        offline: {
-            title: 'KONEKSI INTERNET TERPUTUS',
-            desc: 'Periksa koneksi internet Anda. Silakan coba lagi.'
-        }
-    };
+    
+const messages = {
+    success: {
+        title: 'LOGIN BERHASIL',
+        desc: 'Login berhasil. Anda akan dialihkan ke halaman dashboard.'
+    },
+    logoutSuccess: {
+        title: 'LOGOUT BERHASIL',
+        desc: 'Anda telah berhasil keluar dari akun. Silakan login kembali untuk melanjutkan.'
+    },
+    server: {
+        title: 'LOGIN GAGAL',
+        desc: 'Terjadi kesalahan pada sistem. Silakan coba lagi.'
+    },
+    auth: {
+        title: 'GAGAL MELAKUKAN AUTENTIKASI',
+        desc: 'Mohon isi E-mail dan password dengan benar.'
+    },
+    offline: {
+        title: 'KONEKSI INTERNET TERPUTUS',
+        desc: 'Periksa koneksi internet Anda. Silakan coba lagi.'
+    }
+};
+
 
     function showMessage(type) {
         const selected = messages[type] || messages.server;
 
         formMessage.innerHTML = `
             <div class="notification-icon-wrapper ${type}">
-                ${icons[type] || icons.server}
+                ${type === 'logoutSuccess' ? icons.success : (icons[type] || icons.server)}
             </div>
             <div class="notification-content">
                 <div class="notification-title">${selected.title}</div>
@@ -197,7 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        formMessage.className = `form-message ${type}`;
+        formMessage.className = `form-message ${
+    type === 'logoutSuccess' ? 'success' : type
+}`;
         formMessage.hidden = false;
         formMessage.setAttribute('role', 'alert');
         formMessage.setAttribute('aria-live', 'polite');
@@ -208,6 +216,10 @@ document.addEventListener('DOMContentLoaded', () => {
         formMessage.innerHTML = '';
         formMessage.className = 'form-message';
     }
+
+    
+
+
 
     // =========================
     // SUBMIT LOGIN
@@ -278,11 +290,18 @@ submitBtn.textContent = 'Loading...';
             console.error('Login error:', error);
             showMessage(navigator.onLine ? 'server' : 'offline');
         } finally {
-            if (!loginSucceeded) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-                updateButtonState();
-            }
+            
+if (!loginSucceeded) {
+    // Hentikan status loading
+    submitBtn.dataset.loading = 'false';
+
+    // Kembalikan tulisan tombol
+    submitBtn.textContent = originalText;
+
+    // Perbarui kondisi tombol
+    updateButtonState();
+}
+
         }
     });
 
@@ -304,3 +323,5 @@ submitBtn.textContent = 'Loading...';
         showMessage('offline');
     });
 });
+
+
