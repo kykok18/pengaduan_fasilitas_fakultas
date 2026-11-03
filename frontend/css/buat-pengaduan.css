@@ -73,11 +73,26 @@
 
 
 /* Textarea */
+
 textarea.form-control {
-    height: 100px;
-    padding: 16px;
-    resize: vertical;
+    width: 100%;
+    height: 57px;
+    min-height: 57px;
+
+    padding: 19px 16px;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 18px;
+
+    box-sizing: border-box;
+    resize: none;
 }
+
 
 /* Select (Dropdown Kategori) */
 select.form-control {
@@ -112,8 +127,8 @@ select.form-control {
     min-height: 16px;
     gap: 6px;
 
-    margin-top: 6px;
-    margin-bottom: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     padding: 0 4px;
 
     color: #D02316;
@@ -122,6 +137,11 @@ select.form-control {
     font-weight: 600;
     line-height: 15px;
 }
+
+.form-group .error-message.active {
+    margin-top: -6px;
+}
+
 
 /* Tampilkan pesan saat validasi gagal */
 .error-message.active {
@@ -467,18 +487,25 @@ select.form-control {
     transition: transform 0.2s ease;
 }
 
-.upload-group.input-error .btn-choose-file {
-  border: 1px solid #D02316;
-}
 
 .upload-group.input-error {
   border-color: #D02316;
 }
 
-.upload-group.input-error .btn-choose-file {
-    outline: 1px solid #D02316;
-    border-radius: 10px;
+
+/* Border luar upload tetap merah saat error */
+.upload-group.input-error {
+    border: 1px solid #D02316;
 }
+
+/* Tombol Choose File tetap abu-abu */
+.upload-group.input-error .btn-choose-file {
+    background: #D9D9D9;
+    border: none;
+    outline: none;
+    border-radius: 0;
+}
+
 
 
 /* ============================================================
@@ -567,4 +594,47 @@ select.form-control {
 .form-message.success .msg-title,
 .form-message.success .msg-desc {
     color: #15A367;
+}
+
+
+/* ==========================================
+   MERAPIKAN JARAK VALIDASI ERROR
+   ========================================== */
+
+/* Jarak normal antar form */
+.form-group {
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Pesan error lebih dekat ke input */
+.form-group .error-message.active {
+    margin-top: -6px;
+    margin-bottom: -4px;
+    padding: 0 4px;
+}
+
+/* Samakan error Bukti Foto */
+.form-group #errorFoto.active {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    margin-top: -6px;
+    margin-bottom: -4px;
+
+    padding: 0 4px;
+
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+}
+
+/* Samakan ikon seluruh pesan error */
+.form-group .error-message svg,
+.form-group #errorFoto svg {
+    display: block;
+    width: 14px;
+    height: 13px;
+    flex: 0 0 14px;
 }

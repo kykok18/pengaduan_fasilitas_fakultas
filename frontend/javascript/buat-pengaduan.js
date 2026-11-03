@@ -302,7 +302,7 @@ const facilityList = result.data?.fasilitas ?? [];
 
     customOptions.innerHTML = "";
     inputKategori.value = "";
-    selectLabel.textContent = "Pilih Kategori";
+    selectLabel.textContent = "Pilih Fasilitas";
     selectLabel.classList.remove("has-value");
 
     if (!Array.isArray(facilityList) || facilityList.length === 0) {
@@ -422,7 +422,7 @@ if (response.ok && result.status === "success") {
         form.reset();
 
         inputKategori.value = "";
-        selectLabel.textContent = "Pilih Kategori";
+        selectLabel.textContent = "Pilih Fasilitas";
         selectLabel.classList.remove("has-value");
 
         fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB"; 
