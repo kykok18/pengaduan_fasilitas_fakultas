@@ -16,11 +16,27 @@ $user = getenv('DB_USERNAME') ?: ($env['DB_USERNAME'] ?? 'root');
 $password = getenv('DB_PASSWORD') ?: ($env['DB_PASSWORD'] ?? '');
 $dbName = getenv('DB_NAME') ?: ($env['DB_NAME'] ?? 'pengaduan_fasilitas_fakultasDB');
 
+// Aktifkan SSL (wajib untuk Aiven). Default: nonaktif untuk localhost.
+$useSsl = filter_var(
+    getenv('DB_SSL') ?: ($env['DB_SSL'] ?? 'false'),
+    FILTER_VALIDATE_BOOLEAN
+);
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
-    $conn = mysqli_connect($host, $user, $password, $dbName, (int) $port);
+    $conn = mysqli_init();
+    mysqli_options($conn, MYSQLI_OPT_CONNECT_TIMEOUT, 10);
+    mysqli_real_connect(
+        $conn,
+        $host,
+        $user,
+        $password,
+        $dbName,
+        (int) $port,
+        null,
+        $useSsl ? MYSQLI_CLIENT_SSL : 0
+    );
     mysqli_set_charset($conn, 'utf8mb4');
 } catch (mysqli_sql_exception $e) {
     error_log('Koneksi database gagal: ' . $e->getMessage());
@@ -34,5 +50,4 @@ try {
     ]);
 
     exit;
-
 }
