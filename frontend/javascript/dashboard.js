@@ -93,10 +93,12 @@
                     label: 'Diajukan',
                     className: 'status-proses'
                 },
-                diproses: {
-                    label: 'Diproses',
-                    className: 'status-proses'
-                },
+                
+diproses: {
+    label: 'Dalam Perbaikan',
+    className: 'status-proses'
+},
+
                 selesai: {
                     label: 'Selesai',
                     className: 'status-selesai'
@@ -256,15 +258,18 @@
                 state === 'error' ? 'flex' : 'none';
         }
 
-        // Membuka modal ketika tombol Logout diklik
-        logoutBtn.addEventListener('click', (event) => {
-            event.preventDefault();
+        
+if (logoutBtn && logoutOverlay) {
+    logoutBtn.addEventListener('click', (event) => {
+        event.preventDefault();
 
-            if (loggingOut) return;
+        if (loggingOut) return;
 
-            showLogoutState('confirm');
-            logoutOverlay.classList.add('active');
-        });
+        showLogoutState('confirm');
+        logoutOverlay.classList.add('active');
+    });
+}
+
 
         // Menutup modal konfirmasi
         function closeLogoutModal() {
@@ -274,18 +279,37 @@
         }
 
         // Tombol Batal
-        cancelLogout.addEventListener('click', closeLogoutModal);
+if (cancelLogout) {
+    cancelLogout.addEventListener('click', closeLogoutModal);
+}
 
         // Menjalankan proses Logout
         async function performLogout() {
             if (loggingOut) return;
 
-            loggingOut = true;
-            showLogoutState('loading');
+            
+loggingOut = true;
 
-            try {
-                // Mengirim permintaan Logout ke backend
-                const result = await apiLogout();
+// Tampilkan modal Loading
+showLogoutState('loading');
+
+// Catat waktu mulai Loading
+const loadingStartTime = Date.now();
+
+try {
+    // Mengirim permintaan Logout ke backend
+    const result = await apiLogout();
+
+    // Menghitung waktu Loading yang sudah berlalu
+    const elapsedTime = Date.now() - loadingStartTime;
+
+    // Pastikan Loading terlihat minimal 1,5 detik
+    if (elapsedTime < 1500) {
+        await new Promise(resolve => {
+            setTimeout(resolve, 1500 - elapsedTime);
+        });
+    }
+
 
                 // Memastikan Logout berhasil di server
                 if (!result.ok) {
@@ -299,15 +323,32 @@
                     localStorage.removeItem('user');
                 }
 
-                // Menutup modal
-                logoutOverlay.classList.remove('active');
-
                 
-    // Menyimpan status bahwa Logout berhasil
-    sessionStorage.setItem('logoutSuccess', 'true');
+            
+            
+// Menyembunyikan modal konfirmasi dan loading
+showLogoutState('');
 
-    // Langsung arahkan pengguna ke halaman Login
+// Mengaktifkan overlay gelap
+logoutOverlay.classList.add('active');
+logoutOverlay.classList.add('logout-success-active');
+
+// Menampilkan popup Logout Berhasil
+logoutSuccessToast.style.display = 'flex';
+
+// Setelah 2 detik, arahkan ke halaman Login
+setTimeout(() => {
+    logoutSuccessToast.style.display = 'none';
+
+    logoutOverlay.classList.remove('active');
+    logoutOverlay.classList.remove('logout-success-active');
+
     window.location.replace('login.html');
+}, 2000);
+
+
+
+
 
 
             } catch (error) {
@@ -321,11 +362,17 @@
             }
         }
 
+        
         // Tombol Ya, Logout
-        confirmLogout.addEventListener('click', performLogout);
+        if (confirmLogout) {
+            confirmLogout.addEventListener('click', performLogout);
+        }
 
         // Tombol Coba Lagi
-        retryLogout.addEventListener('click', performLogout);
+        if (retryLogout) {
+            retryLogout.addEventListener('click', performLogout);
+        }
+
 
 
         // =========================================================

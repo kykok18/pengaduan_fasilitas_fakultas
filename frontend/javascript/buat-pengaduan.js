@@ -231,14 +231,20 @@ const hideNotification = () => {
       },
     });
 
-    const result = await response.json();
+
+    
+const result = await response.json();
+
+
 
     if (!response.ok || result.status !== "success") {
       throw new Error(result.message || "Gagal memuat fasilitas.");
     }
 
     // Kontrak API 1.3: data langsung berupa array
-    const facilityList = result.data ?? [];
+    
+const facilityList = result.data?.fasilitas ?? [];
+
 
     customOptions.innerHTML = "";
     inputKategori.value = "";
@@ -338,7 +344,8 @@ const hideNotification = () => {
         );
       }
 
-      if (response.ok && result.status === "success") { {
+      
+if (response.ok && result.status === "success") {
         showNotification(
           "success",
           "PENGADUAN BERHASIL DIKIRIM",

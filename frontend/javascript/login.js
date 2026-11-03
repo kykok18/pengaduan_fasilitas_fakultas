@@ -218,24 +218,7 @@ const messages = {
     }
 
     
-// =======================================
-// NOTIFIKASI LOGOUT BERHASIL
-// =======================================
 
-const logoutSuccess = sessionStorage.getItem('logoutSuccess');
-
-if (logoutSuccess === 'true') {
-    // Hapus status agar tidak muncul berulang kali
-    sessionStorage.removeItem('logoutSuccess');
-
-    // Tampilkan notifikasi menggunakan sistem yang sudah ada
-    showMessage('logoutSuccess');
-
-    // Sembunyikan notifikasi setelah 4 detik
-    setTimeout(() => {
-        hideMessage();
-    }, 4000);
-}
 
 
     // =========================

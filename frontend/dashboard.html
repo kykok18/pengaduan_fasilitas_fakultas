@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard — Pengaduan Fasilitas Kampus FITK</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="css/skeleton.css">
@@ -132,17 +132,16 @@
     Diajukan
 </button>
 
-<button class="chip" data-filter="dalampengajuan">
-    Dalam Pengajuan
+
+<button class="chip" data-filter="diproses">
+    Dalam Perbaikan
 </button>
+
 
 <button class="chip" data-filter="selesai">
     Selesai
 </button>
 
-<button class="chip" data-filter="ditolak">
-    Ditolak
-</button>
         </div>
 
         <!-- 0. STATE LOADING -->
@@ -177,16 +176,26 @@
             <!-- Data akan dimuat lewat JS -->
         </div>
 
-        <!-- Paginasi -->
-        <div class="pagination" id="pagination">
-            <button class="page-btn prev" id="prevPage" type="button">
-                &lt; Prev
-            </button>
+        
+<!-- Pagination -->
+<div class="pagination" id="pagination">
 
-            <button class="page-btn next" id="nextPage" type="button">
-                Next &gt;
-            </button>
-        </div>
+    <!-- Tombol Previous -->
+    <button class="page-btn prev" id="prevPage" type="button">
+        <i class="fas fa-chevron-left"></i>
+        <span>Prev</span>
+    </button>
+
+    <!-- Nomor halaman dibuat otomatis oleh JavaScript -->
+
+    <!-- Tombol Next -->
+    <button class="page-btn next" id="nextPage" type="button">
+        <span>Next</span>
+        <i class="fas fa-chevron-right"></i>
+    </button>
+
+</div>
+
 
 
     <!-- ... (Kode HTML sebelumnya tetap sama sampai bagian MAIN CONTENT) ... -->
@@ -205,8 +214,13 @@
             <div class="modal-icon-circle">
                 <i class="fas fa-sign-out-alt"></i>
             </div>
-            <h3>Konfirmasi Logout</h3>
-            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+            
+<!-- Kelompok teks Konfirmasi Logout -->
+<div class="modal-text-group">
+    <h3>Konfirmasi Logout</h3>
+    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+</div>
+
             <div class="modal-actions">
                 <button class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
                 <button class="btn-modal-confirm" id="btnConfirmLogout">Ya, Logout</button>
@@ -218,8 +232,10 @@
             <div class="modal-icon-circle">
                 <i class="fas fa-sign-out-alt"></i>
             </div>
-            <h3>Konfirmasi Logout</h3>
-            <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+            <div class="modal-text-group">
+    <h3>Konfirmasi Logout</h3>
+    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+</div>
             <div class="modal-loading-text">Loading...</div>
         </div>
 
@@ -228,8 +244,10 @@
             <div class="modal-icon-error">
                 <i class="fas fa-exclamation"></i>
             </div>
-            <h3>Logout Gagal</h3>
-            <p>Terjadi kesalahan saat keluar dari akun. Silakan coba kembali.</p>
+            <div class="modal-text-group">
+    <h3>Logout Gagal</h3>
+    <p>Terjadi kesalahan saat keluar dari akun. Silakan coba kembali.</p>
+</div>
             <button class="btn-modal-retry" id="btnRetryLogout">Coba Lagi</button>
         </div>
     </div>

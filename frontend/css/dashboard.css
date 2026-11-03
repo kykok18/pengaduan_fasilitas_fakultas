@@ -749,64 +749,91 @@ body {
     font-weight: 400;
 }
 
+
 /* ============================================================
-   FILTER CHIPS (Fixed Size Sesuai Figma)
+   FILTER CHIPS - SESUAI FIGMA
    ============================================================ */
 
+
 .filter-chips {
-    display: grid;
-    /* Membagi 4 kolom dengan lebar yang sama rata */
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 8px; /* Jarak antar tombol */
-    margin-bottom: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
     width: 100%;
+    max-width: none;
+    height: 25px;
+
+    margin: 0 0 24px;
+    padding: 0;
+    gap: 8px;
 }
 
 
-.chip {
-    /* Mengikuti ukuran Figma */
+/* Styling dasar semua tombol */
+.filter-chips .chip {
     box-sizing: border-box;
+
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 0 0px; /* Padding disesuaikan agar teks di tengah */
-    
-    /* Ukuran Fixed */
-    width: 71.36px; 
+
+    flex: 0 0 auto;
+    width: 71.36px;
     height: 25px;
-    
-    /* Styling */
+
+    margin: 0;
+    padding: 0;
+
     background: #FFFFFF;
-    border: 1px solid #D9D9D9; /* Default abu-abu */
+    border: 1px solid #D9D9D9;
     border-radius: 10px;
-    
-    /* Teks */
-    font-family: 'Poppins';
+
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
     color: #0B5E3B;
-    
+
+    white-space: nowrap;
     cursor: pointer;
+
     transition: all 0.2s ease;
-    white-space: nowrap; /* Mencegah teks turun ke bawah */
 }
 
-/* Khusus untuk chip "Dalam Perbaikan" yang teksnya panjang */
-/* Kita buat otomatis menyesuaikan teksnya agar tidak terpotong */
-.chip:nth-child(3) {
-    width: auto;
-    padding: 0 10px;
+/* Tombol ketiga: Dalam Perbaikan */
+.filter-chips .chip:nth-child(3) {
+    width: 122.33px;
+    padding: 0;
 }
 
-/* Styling untuk Chip yang sedang aktif (Semua) */
-.chip.active {
-    border: 1px solid #0B5E3B; /* Border hijau tebal */
-    border-radius: 10px;
+/* Tombol aktif */
+.filter-chips .chip.active {
+    border: 1px solid #0B5E3B;
     font-weight: 500;
 }
+
+/* Responsif untuk layar lebih kecil */
+@media (max-width: 390px) {
+    .filter-chips {
+        gap: 6px;
+    }
+
+    .filter-chips .chip {
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto;
+        font-size: 10px;
+    }
+
+    .filter-chips .chip:nth-child(3) {
+        flex: 1.7 1 0;
+        width: auto;
+    }
+}
+
 
 /* ============================================================
    ERROR STATE (Gagal Memuat Pengaduan)
@@ -1083,31 +1110,7 @@ body {
     white-space: nowrap;
 }
 
-/* Filter Chips (Ubah gaya dari tombol kecil menjadi baris penuh) */
-.filter-chips {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-    scrollbar-width: none;
-}
-.filter-chips::-webkit-scrollbar { display: none; }
 
-.chip {
-    padding: 6px 16px;
-    border-radius: 20px;
-    background: var(--white);
-    border: 1px solid #D9D9D9;
-    color: var(--logo-green);
-    font-size: 12px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-.chip.active {
-    border-color: var(--logo-green);
-    font-weight: 600;
-}
 
 /* List Report Item (Menggunakan Flexbox Horizontal) */
 .reports-list {
@@ -1220,36 +1223,135 @@ body {
     gap: 4px;
 }
 
-/* Paginasi */
+
+/* ============================================================
+   PAGINATION - SESUAI FIGMA
+   ============================================================ */
+
+/* Wadah Pagination */
 .pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: 32px;
+
+    gap: 12px;
+    margin: 32px auto;
+    padding: 0;
+}
+
+/* Styling dasar tombol */
+.pagination .page-btn {
+    box-sizing: border-box;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    border-radius: 5px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 100%;
+    color: #0B5E3B;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Nomor halaman yang aktif */
+.pagination .page-btn.active {
+    border: 1px solid #0B5E3B;
+    border-radius: 5px;
+    font-weight: 400;
+}
+
+/* Tombol Prev dan Next */
+.pagination .page-btn.prev,
+.pagination .page-btn.next {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    margin-top: 32px;
-    margin-bottom: 32px;
-}
 
-.page-btn {
-    padding: 8px 14px;
-    border: 1px solid #D9D9D9;
+    width: 68px;
+    height: 32px;
+
+    gap: 6px;
+    padding: 0 5px;
+
+    border: none;
     border-radius: 7px;
-    background: var(--white);
-    font-family: var(--font-primary);
-    font-size: 12px;
-    color: var(--logo-green);
-    cursor: pointer;
+
+    background: #FFFFFF;
 }
 
-.page-btn.active {
-    border-color: var(--logo-green);
-    font-weight: 700;
+/* Ikon Previous dan Next */
+.pagination .page-btn i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+    color: currentColor;
 }
 
-.page-dots {
-    color: var(--logo-green);
-    font-weight: 700;
+/* Kondisi Disabled */
+.pagination .page-btn:disabled {
+    color: #D9D9D9;
+    background: #FFFFFF;
+    border-color: transparent;
+
+    cursor: not-allowed;
 }
+
+/* Ikon ikut berubah warna saat disabled */
+.pagination .page-btn:disabled i {
+    color: #D9D9D9;
+}
+
+/* Hover hanya untuk tombol aktif */
+.pagination .page-btn:not(:disabled):hover {
+    background: #F0F8F3;
+}
+
+/* Tanda titik jika halaman banyak */
+.pagination .page-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 20px;
+    height: 32px;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #0B5E3B;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 390px) {
+    .pagination {
+        gap: 8px;
+    }
+
+    .pagination .page-btn.prev,
+    .pagination .page-btn.next {
+        width: 68px;
+    }
+}
+
 
 .report-meta span svg {
     display: block;
@@ -1314,10 +1416,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Efek ketika diarahkan kursor */
-.sidebar-logout a:hover {
-    background-color: #FFF0F0;
-}
 
 /* Efek ketika menggunakan keyboard */
 .sidebar-logout a:focus-visible {
@@ -1345,69 +1443,155 @@ body {
     visibility: visible;
 }
 
-/* Kotak Modal */
+
+/* =========================================
+   MODAL LOGOUT - SESUAI FIGMA
+   ========================================= */
+
 .logout-modal {
-    background: #FFFFFF;
-    border-radius: 10px;
-    padding: 24px 20px;
-    width: 352px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    text-align: center;
+
+    position: relative;
+
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    height: 153px;
+
+    padding: 10px;
     gap: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+    background: #FFFFFF;
+    border-radius: 10px;
+
+    text-align: center;
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
     transform: translateY(20px);
     transition: transform 0.3s ease;
 }
+
+/* Modal aktif */
+.modal-overlay.active .logout-modal {
+    transform: translateY(0);
+}
+
+/* Modal khusus kondisi gagal */
+#logoutErrorState {
+    height: 166px;
+}
+
 
 .modal-overlay.active .logout-modal {
     transform: translateY(0);
 }
 
-/* Ikon Konfirmasi */
-.modal-icon-circle {
+
+/* Ikon Logout */
+.logout-modal .modal-icon-circle {
     width: 35px;
     height: 35px;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* Teks judul */
+.logout-modal h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+}
+
+/* Teks deskripsi */
+.logout-modal p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* Wadah tombol */
+.logout-modal .modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/* Ikon konfirmasi dan loading */
+.modal-icon-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 35px;
+    height: 35px;
+
     border: 1px solid #D02316;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
     color: #D02316;
-    font-size: 16px;
+    font-size: 20px;
+
+    flex-shrink: 0;
 }
 
-/* Ikon Gagal */
+/* Ikon Logout Gagal */
 .modal-icon-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 35px;
     height: 35px;
-    background-color: #D02316;
+
+    background: #D02316;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
     color: #FFFFFF;
-    font-size: 16px;
+    font-size: 20px;
+
+    flex-shrink: 0;
 }
 
-/* Teks Modal */
+/* Judul modal */
 .logout-modal h3 {
+    margin: 0;
+
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
     font-weight: 700;
+    line-height: 18px;
+
     color: #000000;
-    margin: 0;
+    text-align: center;
 }
 
+/* Deskripsi modal */
 .logout-modal p {
+    margin: 0;
+
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
     font-weight: 400;
-    color: rgba(0, 0, 0, 0.72);
-    margin: 0;
     line-height: 18px;
+
+    color: rgba(0, 0, 0, 0.72);
+    text-align: center;
 }
+
 
 /* Tombol Modal (Konfirmasi) */
 .modal-actions {
@@ -1466,54 +1650,101 @@ body {
     margin-top: 8px;
 }
 
-/* ============================================================
-   TOAST NOTIFIKASI SUKSES
-   ============================================================ */
+
+/* =========================================
+   OVERLAY LOGOUT BERHASIL
+   ========================================= */
+
+/* Membuat overlay tetap terlihat saat popup berhasil */
+.modal-overlay.logout-success-active {
+    opacity: 1;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Memastikan popup berada di atas overlay */
+.toast-success {
+    z-index: 10001;
+}
+
+
+/* =========================================
+   LOGOUT BERHASIL - SESUAI FIGMA
+   ========================================= */
+
 .toast-success {
     position: fixed;
-    top: 20px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    background: #FFFFFF;
-    border: 1px solid #D9D9D9;
-    border-radius: 10px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    transform: translate(-50%, -50%);
+
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     width: 352px;
+    max-width: calc(100vw - 32px);
+    height: 125px;
+    padding: 10px;
+    gap: 16px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+
     z-index: 10001;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    animation: slideDown 0.3s ease forwards;
 }
 
-@keyframes slideDown {
-    from { top: -100px; opacity: 0; }
-    to { top: 20px; opacity: 1; }
-}
-
-.toast-icon {
+/* Lingkaran ikon berhasil */
+.toast-success .toast-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-shrink: 0;
+
+    width: 35px;
+    height: 35px;
 }
 
-.toast-icon svg {
-    width: 40px;
-    height: 40px;
+/* Ukuran ikon SVG */
+.toast-success .toast-icon svg {
+    display: block;
+    width: 35px;
+    height: 35px;
 }
 
-.toast-content h4 {
+/* Wadah judul dan deskripsi */
+.toast-success .toast-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    gap: 0;
+}
+
+/* Judul Logout Berhasil */
+.toast-success .toast-content h4 {
+    margin: 0;
+
     font-family: 'Poppins', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
-    color: #15A367;
-    margin: 0 0 4px 0;
+    line-height: 18px;
+
+    color: #000000;
+    text-align: center;
 }
 
-.toast-content p {
+/* Deskripsi Logout */
+.toast-success .toast-content p {
+    margin: 0;
+
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
     font-weight: 400;
-    color: #474747;
-    margin: 0;
     line-height: 18px;
+
+    color: rgba(0, 0, 0, 0.72);
+    text-align: center;
 }
