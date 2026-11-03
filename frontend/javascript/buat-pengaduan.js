@@ -45,11 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const validateFile = async () => {
   const file = inputFile.files[0];
 
-  if (!file) {
-    showError(errorFoto, uploadWrapper);
-    errorFoto.textContent = "Foto bukti pengaduan wajib diunggah.";
+  
+if (!file) {
+    setFotoError("Bukti foto wajib diisi.");
     return false;
-  }
+}
+
 
   const allowedTypes = [
     "image/jpeg",
@@ -57,17 +58,25 @@ document.addEventListener("DOMContentLoaded", () => {
     "image/webp",
   ];
 
-  if (!allowedTypes.includes(file.type)) {
-    showError(errorFoto, uploadWrapper);
-    errorFoto.textContent = "Format foto harus JPEG, JPG, PNG, atau WebP.";
+  
+if (!allowedTypes.includes(file.type)) {
+    setFotoError(
+        "Format file tidak didukung. Gunakan JPG, PNG, WebP."
+    );
     return false;
-  }
+}
 
-  if (file.size === 0 || file.size > 10 * 1024 * 1024) {
-    showError(errorFoto, uploadWrapper);
-    errorFoto.textContent = "Ukuran foto harus lebih dari 0 dan maksimal 10 MB.";
+
+
+if (file.size === 0 || file.size > 10 * 1024 * 1024) {
+    setFotoError(
+        file.size === 0
+            ? "File foto tidak boleh kosong."
+            : "Ukuran file terlalu besar. Maksimal 10 MB."
+    );
     return false;
-  }
+}
+
 
   // Periksa apakah file benar-benar gambar dan dimensinya valid
   const image = new Image();
@@ -89,16 +98,21 @@ document.addEventListener("DOMContentLoaded", () => {
       height > 6000 ||
       megapixels > 20
     ) {
-      showError(errorFoto, uploadWrapper);
-      errorFoto.textContent =
-        "Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel.";
+      
+setFotoError(
+    "Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel."
+);
+
 
       return false;
     }
 
   } catch {
-    showError(errorFoto, uploadWrapper);
-    errorFoto.textContent = "File yang diunggah bukan gambar yang valid.";
+    
+setFotoError(
+    "File yang diunggah bukan gambar yang valid."
+);
+
     return false;
 
   } finally {
@@ -132,6 +146,22 @@ document.addEventListener("DOMContentLoaded", () => {
         .classList.remove("input-error");
     }
   };
+
+  
+/* ==========================================
+   PESAN ERROR KHUSUS BUKTI FOTO
+   ========================================== */
+
+const setFotoError = (message) => {
+    const errorFotoText = errorFoto.querySelector("span");
+
+    if (errorFotoText) {
+        errorFotoText.textContent = message;
+    }
+
+    showError(errorFoto, uploadWrapper);
+};
+
 
   // ==========================================
 // FUNGSI NOTIFIKASI
@@ -289,11 +319,11 @@ const facilityList = result.data?.fasilitas ?? [];
       return;
     }
 
-    isSubmitting = true;
+    
+isSubmitting = true;
 
-    btnSubmit.classList.remove("is-disabled");
-    btnSubmit.textContent = "Mengirim...";
-    btnSubmit.disabled = true;
+hideNotification();
+
 
     hideNotification();
 
@@ -303,14 +333,26 @@ const facilityList = result.data?.fasilitas ?? [];
     if (inputDeskripsi.value.trim() === "") showError(errorDeskripsi);
     const fotoValid = await validateFile();
 
-    if (!isFormValid() || !fotoValid) {
-      btnSubmit.classList.add("is-disabled");
-      const firstErrorInput = document.querySelector(
-        ".form-control.input-error",
-      );
-      if (firstErrorInput) firstErrorInput.focus();
-      return;
+    
+if (!isFormValid() || !fotoValid) {
+    btnSubmit.classList.add("is-disabled");
+
+    // Kembalikan kondisi tombol karena validasi gagal
+    isSubmitting = false;
+    btnSubmit.textContent = "Kirim Pengaduan";
+    btnSubmit.disabled = false;
+
+    const firstErrorInput = document.querySelector(
+        ".form-control.input-error"
+    );
+
+    if (firstErrorInput) {
+        firstErrorInput.focus();
     }
+
+    return;
+}
+
 
     btnSubmit.classList.remove("is-disabled");
 

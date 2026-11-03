@@ -455,3 +455,36 @@ select.form-control {
     outline: 1px solid #D02316;
     border-radius: 10px;
 }
+
+
+/* ============================================================
+   ERROR MESSAGE - BUKTI FOTO
+   ============================================================ */
+
+#errorFoto {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    color: #D02316;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+#errorFoto.active {
+    display: flex;
+}
+
+#errorFoto svg {
+    display: block;
+    width: 14px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
+#errorFoto span {
+    flex: 1;
+    min-width: 0;
+}
