@@ -275,7 +275,7 @@ class PengaduanController
 
             case UPLOAD_ERR_INI_SIZE:
             case UPLOAD_ERR_FORM_SIZE:
-                errorResponse('Ukuran foto maksimal 5 MB', 413);
+                errorResponse('Ukuran foto maksimal 10 MB', 413);
                 break;
 
             default:
@@ -295,7 +295,7 @@ class PengaduanController
             $foto['size'] > $maksimalUkuran
         ) {
             errorResponse(
-                'Ukuran foto harus lebih dari 0 dan maksimal 5 MB',
+                'Ukuran foto harus lebih dari 0 dan maksimal 10 MB',
                 400
             );
         }

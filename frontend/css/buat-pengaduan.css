@@ -152,110 +152,102 @@ select.form-control {
 }
 
 
+
 /* ============================================================
-   UPLOAD FILE
+   UPLOAD BUKTI FOTO - SESUAI FIGMA
    ============================================================ */
 
 .upload-group {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: row;
+    align-items: stretch;
+
     width: 100%;
-    height: 57px;
-    background: transparent;
-    border: none;
-    overflow: visible;
+    height: 56px;
+    padding: 0;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
-.upload-wrapper {
+/* Input file asli tetap tersedia untuk JavaScript */
+.upload-group input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Keterangan file sebelah kiri */
+.upload-group .upload-text {
     display: flex;
     align-items: center;
+
     flex: 1;
     min-width: 0;
-    height: 57px;
-    padding: 0 12px;
-    background-color: var(--white);
-    border: 1px solid #D9D9D9;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: border-color var(--transition-fast);
-}
 
-.upload-wrapper.input-error {
-    border-color: #D02316;
-}
+    padding: 0 10px;
+    margin: 0;
 
-.upload-text {
-    font-family: var(--font-primary);
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
     color: #A2A2A2;
+
     white-space: nowrap;
-}
-
-.upload-file-info {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    max-width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #D9D9D9;
-    border-radius: 8px;
-}
-
-.upload-file-info.active {
-    display: flex;
-}
-
-.upload-file-info svg {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-}
-
-.upload-file-name {
-    font-family: var(--font-primary);
-    font-size: 10px;
-    color: var(--text-dark);
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 150px;
 }
 
-.btn-remove-file {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--text-dark);
-}
-
-.upload-file-info.active .btn-remove-file {
+/* Tombol Choose File di sebelah kanan */
+.upload-group .btn-choose-file {
     display: flex;
-}
-
-.btn-choose-file {
-    display: flex;
-    align-items: center;
     justify-content: center;
-    height: 57px;
-    padding: 0 16px;
-    border: none;
-    border-radius: 10px;
+    align-items: center;
+
+    flex: 0 0 auto;
+    width: 100px;
+    height: 100%;
+    padding: 0 8px;
+    margin: 0;
+
     background: #D9D9D9;
-    color: #777;
-    font-family: var(--font-primary);
-    font-size: 10px;
+    border: none;
+    border-radius: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: #000000;
+
     cursor: pointer;
-    white-space: nowrap;
 }
 
-input[type="file"] {
-    display: none;
+/* Fokus keyboard pada input */
+.upload-group:focus-within {
+    outline: 2px solid #0B5E3B;
+    outline-offset: 2px;
 }
+
+/* Layar HP kecil */
+@media (max-width: 390px) {
+    .upload-group .upload-text {
+        font-size: 9px;
+        padding: 0 8px;
+    }
+
+    .upload-group .btn-choose-file {
+        width: 85px;
+        font-size: 10px;
+    }
+}
+
 
 /* ============================================================
    TOMBOL SUBMIT

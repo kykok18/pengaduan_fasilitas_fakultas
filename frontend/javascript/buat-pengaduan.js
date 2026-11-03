@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   }
 
-  if (file.size === 0 || file.size > 5 * 1024 * 1024) {
+  if (file.size === 0 || file.size > 10 * 1024 * 1024) {
     showError(errorFoto, uploadWrapper);
-    errorFoto.textContent = "Ukuran foto harus lebih dari 0 dan maksimal 5 MB.";
+    errorFoto.textContent = "Ukuran foto harus lebih dari 0 dan maksimal 10 MB.";
     return false;
   }
 
@@ -233,13 +233,20 @@ const hideNotification = () => {
 
 
     
+
 const result = await response.json();
 
+// Jika belum login atau session sudah berakhir
+if (response.status === 401) {
+  clearUserSession();
+  window.location.replace("login.html");
+  return;
+}
 
+if (!response.ok || result.status !== "success") {
+  throw new Error(result.message || "Gagal memuat fasilitas.");
+}
 
-    if (!response.ok || result.status !== "success") {
-      throw new Error(result.message || "Gagal memuat fasilitas.");
-    }
 
     // Kontrak API 1.3: data langsung berupa array
     
@@ -359,7 +366,7 @@ if (response.ok && result.status === "success") {
         selectLabel.textContent = "Pilih Kategori";
         selectLabel.classList.remove("has-value");
 
-        fileNameDisplay.textContent = "Upload Foto, JPG, PNG."; 
+        fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB"; 
 
         hideError(errorJudul);
         hideError(errorKategori);
@@ -376,12 +383,12 @@ if (response.ok && result.status === "success") {
     result.message || "Pengaduan Anda sedang diproses. Tunggu hingga selesai."
   );
 
+
 } else if (response.status === 401) {
-  showNotification(
-    "error",
-    "SESSION BERAKHIR",
-    result.message || "Silakan login kembali untuk mengirim pengaduan."
-  );
+  clearUserSession();
+  window.location.replace("login.html");
+  return;
+
 
 } else {
   showNotification(
