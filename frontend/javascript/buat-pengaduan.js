@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   }
 
-  if (file.size === 0 || file.size > 5 * 1024 * 1024) {
+  if (file.size === 0 || file.size > 10 * 1024 * 1024) {
     showError(errorFoto, uploadWrapper);
-    errorFoto.textContent = "Ukuran foto harus lebih dari 0 dan maksimal 5 MB.";
+    errorFoto.textContent = "Ukuran foto harus lebih dari 0 dan maksimal 10 MB.";
     return false;
   }
 

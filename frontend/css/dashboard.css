@@ -951,27 +951,7 @@ body {
     display: flex; /* Tampilkan jika class active ditambahkan via JS */
 }
 
-/* Ikon Lingkaran Gagal */
-.error-icon-wrapper {
-    position: relative;
-    width: 91px;
-    height: 94px;
-    border: 1px solid #D02316;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
 
-.error-icon-wrapper::after {
-    content: '';
-    position: absolute;
-    width: 56px;
-    height: 56px;
-    border: 2px solid #D02316;
-    border-radius: 50%;
-}
 
 .error-icon-wrapper i {
     color: #D02316;
