@@ -665,7 +665,11 @@ if (allReports.length > 0) {
                 currentFilter = chip.dataset.filter || 'semua';
                 currentPage = 1;
 
-                fetchPengaduanData();
+                
+if (reportsContainer && loadingState) {
+    fetchPengaduanData();
+}
+
             });
         });
 
