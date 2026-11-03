@@ -145,23 +145,23 @@ diproses: {
     };
 
             const getFotoURL = (fotoPath) => {
-            if (!fotoPath) return '';
+    if (!fotoPath) return '';
 
-            // Jika backend sudah mengirim URL lengkap.
-            if (/^https?:\/\//i.test(fotoPath)) {
-                return fotoPath;
-            }
+    // Jika backend sudah mengirim URL lengkap
+    if (/^https?:\/\//i.test(fotoPath)) {
+        return fotoPath;
+    }
 
-            const projectBaseURL = API_BASE_URL.replace(/\/backend\/api$/, '');
+    // API_BASE_URL mengarah ke folder backend/api
+    const backendRoot = API_BASE_URL.replace(/\/api\/?$/, '/');
 
-            // Jika path diawali slash, gunakan origin dan path tersebut.
-            if (fotoPath.startsWith('/')) {
-                return `${window.location.origin}${fotoPath}`;
-            }
+    // Bersihkan slash di awal path foto
+    const cleanPath = String(fotoPath).replace(/^\/+/, '');
 
-            // Jika path relatif, gunakan root project.
-            return `${projectBaseURL}/${fotoPath.replace(/^\.?\//, '')}`;
-        };
+    // Gabungkan URL backend dengan path foto
+    return new URL(cleanPath, backendRoot).href;
+};
+
 
         // =========================================================
         // 4. IDENTITAS PENGGUNA
@@ -411,7 +411,7 @@ setTimeout(() => {
                     <div class="report-image">
                         ${
                             foto
-                                ? `<img src="${foto}" alt="${judul}" onerror="this.style.display='none'">`
+                                ? `<img src="${foto}" alt="${judul}" loading="lazy">`
                                 : ''
                         }
                         <span class="badge-category">${fasilitas}</span>

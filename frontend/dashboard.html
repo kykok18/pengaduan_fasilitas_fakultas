@@ -160,7 +160,18 @@
         <!-- 0. STATE LOADING -->
         <div class="loading-state" id="loadingState">
             <div class="loading-icon-wrapper">
-                <i class="fas fa-spinner"></i> 
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1768_3226)">
+<path opacity="0.1" d="M42 24C42 33.9411 33.9411 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C33.9411 6 42 14.0589 42 24Z" stroke-width="4" stroke="#0B5E3B"/>
+<path d="M24 6.00003C19.3592 5.99168 14.896 7.7841 11.55 11" stroke-width="4" stroke-linecap="round" stroke="#0B5E3B"/>
+</g>
+<defs>
+<clipPath id="clip0_1768_3226">
+<rect width="48" height="48" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+ 
             </div>
             <h3>Loading...</h3>
             <p>Mohon tunggu sebentar, data pengaduan sedang dimuat.</p>
@@ -168,7 +179,11 @@
 
         <!-- 1. STATE ERROR -->
         <div class="error-state" id="errorState">
-            <div class="error-icon-wrapper"><i class="fas fa-exclamation"></i></div>
+            <div class="error-icon-wrapper"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M57 29C57 44.464 44.464 57 29 57C13.536 57 1 44.464 1 29C1 13.536 13.536 1 29 1C44.464 1 57 13.536 57 29Z" stroke-width="2" stroke="#D02316"/>
+<path d="M29 15V31.8M29 41.6V43" stroke-width="2" stroke-linecap="round" stroke="#D02316"/>
+</svg>
+</div>
             <h3>Gagal Memuat Pengaduan</h3>
             <p>Terjadi kesalahan saat memuat data. Periksa koneksi internet Anda.</p>
             <button class="btn-retry" id="btnRetry">Coba Lagi</button>
@@ -177,10 +192,16 @@
         <!-- 2. STATE KOSONG -->
         <div class="empty-state" id="emptyState">
             <div class="empty-icon-wrapper">
-                <i class="fas fa-file-alt" style="font-size: 40px; color: #0B5E3B;"></i>
+                <svg width="39" height="49" viewBox="0 0 39 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 5.7V43.3C1 44.5465 1.48728 45.742 2.35463 46.6234C3.22199 47.5048 4.39837 48 5.625 48H33.375C34.6016 48 35.778 47.5048 36.6454 46.6234C37.5127 45.742 38 44.5465 38 43.3V15.9037C37.9999 15.2776 37.8767 14.6578 37.6377 14.0807C37.3986 13.5036 37.0485 12.9809 36.6079 12.5432L26.3404 2.3395C25.4763 1.48095 24.3159 1.00015 23.1075 1H5.625C4.39837 1 3.22199 1.49518 2.35463 2.3766C1.48728 3.25802 1 4.45348 1 5.7Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
+<path d="M11.0556 40.8874C10.9512 40.8887 10.8477 40.8664 10.7509 40.8218C10.6542 40.7772 10.5661 40.7112 10.4917 40.6276C10.4065 40.5315 10.3409 40.4151 10.2997 40.2868C10.2585 40.1584 10.2426 40.0213 10.2532 39.8851L10.5893 35.1332C10.6037 34.9126 10.6886 34.7056 10.8279 34.5516L22.8203 20.8653C23.4891 20.1524 24.3777 19.7698 25.2925 19.8011C26.2015 19.8091 27.0738 20.2118 27.7322 20.9272C28.3636 21.6672 28.7268 22.6521 28.7489 23.6848C28.771 24.7174 28.4505 25.7214 27.8515 26.4958L15.8482 40.244C15.7139 40.3967 15.538 40.4927 15.3494 40.5162L11.1315 40.9493L11.0556 40.8874ZM12.1399 35.6159L11.9122 39.0065L14.8832 38.6971L26.7021 25.1841C26.9325 24.8728 27.0798 24.4926 27.1265 24.0886C27.1732 23.6846 27.1173 23.2739 26.9654 22.9051C26.8135 22.5363 26.5721 22.225 26.2698 22.0082C25.9675 21.7914 25.617 21.6782 25.26 21.682C25.0253 21.6643 24.7898 21.7012 24.568 21.7906C24.3462 21.8799 24.1426 22.0198 23.9697 22.2018L12.1399 35.6159Z" fill="#0B5E3B" stroke="#0B5E3B"/>
+<path d="M24.125 1V10.4C24.125 11.6465 24.6123 12.842 25.4796 13.7234C26.347 14.6048 27.5234 15.1 28.75 15.1H38" stroke-width="2" stroke-linejoin="round" stroke="#0B5E3B"/>
+</svg>
+
+
             </div>
             <h3>Belum Ada Pengaduan</h3>
-            <p>Saat ini belum ada pengaduan fasilitas kampus dari seluruh pengguna.</p>
+            <p>Saat ini belum ada pengaduan fasilitas dari seluruh pengguna. Jadilah yang pertama untuk menyampaikan pengaduan.</p>
             <a href="buat-pengaduan.html" class="btn-empty-action">Buat Pengaduan</a>
         </div>
 
