@@ -417,164 +417,261 @@ body {
 }
 
 
+
 /* ============================================================
-   8. REPORTS LIST (VERTIKAL — TANPA SCROLL HORIZONTAL)
+   REPORTS LIST - SESUAI FIGMA
    ============================================================ */
 
 .reports-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     width: 100%;
+    gap: 10px;
 }
 
-/* Kartu pengaduan */
+/* Kartu Pengaduan */
 .report-card-dash {
+    position: relative;
     display: flex;
-    align-items: stretch; /* Membuat gambar & teks sama-sama memenuhi tinggi kartu */
-    gap: 12px;
+    align-items: stretch;
+
     width: 100%;
-    padding: 0; /* Penting: 0 agar gambar nempel ke ujung */
-    overflow: hidden; /* Agar sudut gambar melengkung rapi */
-    
-    background-color: var(--white);
-    border-radius: var(--radius-large);
-    
-    
-    /* PASTIKAN TIDAK ADA height / min-height DI SINI */
+    height: 120px;
+    padding: 0;
+    gap: 0;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: none;
 }
 
-/* Gambar kiri */
+/* Gambar Kiri */
 .report-image {
     position: relative;
-    flex: 0 0 129px; /* Lebar gambar */
-    height: 99px;   /* Tinggi gambar sebagai patokan */
+    flex: 0 0 129px;
+    width: 129px;
+    height: 99px;
     overflow: hidden;
 }
 
 .report-image img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
     border-radius: 10px;
 }
 
-/* Badge kategori di atas gambar */
+/* Badge Kategori */
 .badge-category {
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 9px;
+    left: 8px;
 
-    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    background-color: var(--white);
-    border: 1px solid #d9d9d9;
-    border-radius: 20px;
+    min-width: 27px;
+    height: 14px;
+    padding: 0 6px;
 
-    color: var(--logo-green);
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
     font-size: 6px;
     font-weight: 600;
     line-height: 9px;
+    color: #0B5E3B;
 }
 
-/* Konten kanan */
+/* Konten Kanan */
 .report-content {
+    display: flex;
     flex: 1;
     min-width: 0;
-    display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Menyebar teks dari atas ke bawah */
-    padding: 8px 12px 8px 0; /* Padding atas-bawah 8px agar seimbang */
-    margin-left: 12px;
+    justify-content: space-between;
+
+    height: 99px;
+    padding: 5px 10px 4px 12px;
+    margin: 0;
 }
 
-/* Header: judul + badge status */
+/* Header Judul */
 .report-content-header {
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 18px;
+
+    margin: 0;
+    padding: 0;
 }
 
+/* Judul Pengaduan */
 .report-content-header h4 {
-    margin: 0 0 2px 0;
-    font-size: 10px;
+    margin: 0;
+    padding: 0 0 0 0;
+
+    max-width: calc(100% - 52px);
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
     font-weight: 600;
+    line-height: 18px;
+
+    color: #0B5E3B;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Badge status */
+/* Badge Status Pengaduan */
 .badge-status {
-    flex-shrink: 0;
-    padding: 2px 8px;
+    position: absolute;
+    top: 9px;
+    right: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 43px;
+    height: 14px;
+    padding: 0 4px;
+
     border-radius: 10px;
 
+    font-family: 'Poppins', sans-serif;
     font-size: 8px;
     font-weight: 600;
     line-height: 12px;
-    text-align: center;
     white-space: nowrap;
 }
 
-.status-proses    { background-color: #ffc107; color: #000; }
-.status-perbaikan { background-color: #17a2b8; color: #fff; }
-.status-selesai   { background-color: #2e9368; color: #fff; }
+/* Status */
+.status-proses {
+    background: #FFC107;
+    color: #000000;
+}
 
-/* Metadata lokasi & tanggal */
+.status-perbaikan {
+    background: #17A2B8;
+    color: #FFFFFF;
+}
+
+.status-selesai {
+    background: #2E9368;
+    color: #FFFFFF;
+}
+
+/* Lokasi dan Tanggal */
 .report-meta {
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Jarak vertikal antara baris lokasi dan tanggal */
+    justify-content: center;
 
-    margin-top: 6px; /* Jarak dari judul ke lokasi */
+    width: 100%;
+    gap: 1px;
+    margin: 0;
 
-    color: #474747; /* Warna teks (hijau) */
-    
-    /* UBAH UKURAN TEKS DI SINI */
-    font-size: 8px; /* Silakan ganti angkanya (misal: 10px, 12px, 13px) */
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
     font-weight: 500;
-    line-height: 16px;
+    line-height: 12px;
+
+    color: #474747;
 }
 
 .report-meta span {
     display: flex;
     align-items: center;
-    gap: 13.04px; /* Jarak antara ikon pin/kalender dengan teks */
+
+    min-width: 0;
+    min-height: 20px;
+    gap: 10px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* Ikon Lokasi dan Kalender */
+.report-meta span svg {
+    display: block;
+    flex-shrink: 0;
+    overflow: visible;
+}
 
+.report-meta span:first-child svg {
+    width: 9px;
+    height: 11px;
+}
 
-/* Footer aksi */
+.report-meta span:last-child svg {
+    width: 11px;
+    height: 11px;
+}
+
+/* Footer Kartu */
 .report-footer {
-    margin-top: 4px; /* Jarak tombol like ke tanggal */
-    padding-top: 0;
-    border-top: none;
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 20px;
+    min-height: 20px;
+
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
-/* Footer aksi (like, dislike, komentar) */
+/* Upvote, Downvote, Komentar */
 .report-actions {
     display: flex;
     align-items: center;
-    gap: 24px; /* Jarak antar grup ikon (Jempol - Jempol - Komentar) */
 
-    color: rgba(0, 0, 0, 0.31);
-    
-    /* 1. UBAH UKURAN ANGKA DI SINI */
-    font-size: 10px; /* Sebelumnya mungkin 10px, ganti jadi 12px atau 13px */
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
     font-weight: 700;
-    line-height: 16px;
+    line-height: 12px;
+
+    color: rgba(0, 0, 0, 0.25);
 }
 
 .report-actions span {
     display: flex;
     align-items: center;
-    gap: 6.96px; /* Jarak antara ikon dengan angkanya */
+    gap: 4px;
 }
 
-/* 2. UBAH UKURAN IKON (JEMPOL & KOMENTAR) DI SINI */
+/* Ikon Interaksi */
 .report-actions i {
-    margin-right: 0;
-    font-size: 14px; /* Sebelumnya mungkin 11px, ganti jadi 14px atau 15px */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 14px;
+    height: 12px;
+
+    margin: 0;
+    font-size: 12px;
+
+    color: rgba(0, 0, 0, 0.31);
 }
+
 
 
 
@@ -617,16 +714,12 @@ body {
 
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 
     width: 263px;
     height: 100vh;
-    padding: 12px 13px;
+    overflow-y: auto;
 
-    background-color: var(--white);
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-
-    transition: left var(--transition-normal);
+    background-color: #FFFFFF;
 }
 
 .sidebar.active {
@@ -1116,7 +1209,7 @@ body {
 .reports-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
 }
 
 .report-card-dash {
@@ -1128,7 +1221,6 @@ body {
     overflow: hidden;
     background-color: var(--white);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     height: 99px; /* Tinggi fix agar seragam */
 }
 
@@ -1384,12 +1476,23 @@ body {
    LOGOUT SIDEBAR
    ========================================= */
 
-/* Wadah menu Logout */
+
+/* Logout di bagian bawah sidebar */
 .sidebar-logout {
     margin-top: auto;
     padding: 16px 10px 12px;
     border-top: 1px solid #e0e0e0;
+
+    flex-shrink: 0;
 }
+
+/* Penyesuaian tinggi sidebar pada browser HP */
+@supports (height: 100dvh) {
+    .sidebar {
+        height: 100dvh;
+    }
+}
+
 
 /* Tampilan tombol Logout */
 .sidebar-logout a {
@@ -1458,7 +1561,7 @@ body {
 
     width: 352px;
     max-width: calc(100vw - 32px);
-    height: 153px;
+    height: 166px;
 
     padding: 10px;
     gap: 16px;
@@ -1468,8 +1571,6 @@ body {
 
     text-align: center;
     box-sizing: border-box;
-
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
     transform: translateY(20px);
     transition: transform 0.3s ease;
@@ -1685,7 +1786,7 @@ body {
 
     width: 352px;
     max-width: calc(100vw - 32px);
-    height: 125px;
+    height: 166px;
     padding: 10px;
     gap: 16px;
 

@@ -101,32 +101,56 @@ select.form-control {
     border-color: #D02316;
 }
 
-/* Pesan error (ikon & teks) */
+
+/* Pesan validasi error */
 .error-message {
     display: none;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 16px;
     gap: 6px;
+
+    margin-top: 6px;
+    margin-bottom: 4px;
+    padding: 0 4px;
+
     color: #D02316;
-    font-family: var(--font-primary);
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
     font-weight: 600;
-    margin-top: 4px;
-    padding-left: 4px;
+    line-height: 15px;
 }
 
+/* Tampilkan pesan saat validasi gagal */
 .error-message.active {
     display: flex;
 }
 
+/* Ikon SVG validasi */
 .error-message svg {
-    flex-shrink: 0;
+    display: block;
+    width: 14px;
+    height: 13px;
+
+    flex: 0 0 14px;
+    margin: 0;
+    padding: 0;
 }
 
+/* Teks validasi */
+.error-message span {
+    display: block;
+    flex: 1;
+    min-width: 0;
 
-/* Ikon Seru Merah */
-.error-message i {
-    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    line-height: 15px;
 }
+
 
 /* ============================================================
    UPLOAD FILE

@@ -96,7 +96,7 @@
                 
 diproses: {
     label: 'Dalam Perbaikan',
-    className: 'status-proses'
+    className: 'status-perbaikan'
 },
 
                 selesai: {
