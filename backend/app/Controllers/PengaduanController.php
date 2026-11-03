@@ -287,7 +287,7 @@ class PengaduanController
         }
 
         // 9. Validasi ukuran foto.
-        $maksimalUkuran = 5 * 1024 * 1024;
+        $maksimalUkuran = 10 * 1024 * 1024;
 
         if (
             !isset($foto['size']) ||

@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-install gd mysqli \
     && rm -rf /var/lib/apt/lists/*
 
+RUN printf "upload_max_filesize=10M\npost_max_size=12M\n" > /usr/local/etc/php/conf.d/uploads.ini
+
 WORKDIR /var/www/html
 COPY . .
 RUN mkdir -p uploads/pengaduan
