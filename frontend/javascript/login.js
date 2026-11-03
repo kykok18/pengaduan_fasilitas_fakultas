@@ -173,7 +173,7 @@ const messages = {
     },
     logoutSuccess: {
         title: 'LOGOUT BERHASIL',
-        desc: 'Anda telah berhasil keluar dari akun. Silakan login kembali untuk melanjutkan.'
+        desc: 'Anda berhasil logout dari akun ini.'
     },
     server: {
         title: 'LOGIN GAGAL',
