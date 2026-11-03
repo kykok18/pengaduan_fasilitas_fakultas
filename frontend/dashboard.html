@@ -186,7 +186,7 @@
 
 </div>
             <h3>Gagal Memuat Pengaduan</h3>
-            <p>Terjadi kesalahan saat memuat data. Periksa koneksi internet Anda.</p>
+            <p>Terjadi kesalahan saat memuat data pengaduan. Periksa koneksi internet Anda dan coba lagi.</p>
             <button class="btn-retry" id="btnRetry">Coba Lagi</button>
         </div>
 
@@ -206,10 +206,25 @@
             <a href="buat-pengaduan.html" class="btn-empty-action">Buat Pengaduan</a>
         </div>
 
-        <!-- 3. LIST DATA -->
-        <div class="reports-list" id="reportsContainer">
-            <!-- Data akan dimuat lewat JS -->
-        </div>
+       <!-- 3. STATE PENGADUAN TIDAK DITEMUKAN -->
+<div class="not-found-state" id="notFoundState">
+    <div class="not-found-icon-wrapper">
+        <svg width="35" height="31" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M34.6311 29.1089L24.3106 19.9654C26.3734 17.7824 27.5016 15.0253 27.4969 12.1785C27.4969 5.46188 21.3276 0 13.7485 0C6.16931 0 0 5.46188 0 12.1785C0 18.8951 6.16931 24.357 13.7485 24.357C16.9631 24.3589 20.076 23.3593 22.5425 21.5331L32.8647 30.6766C33.0998 30.8837 33.4179 31 33.7496 31C34.0812 31 34.3993 30.8837 34.6345 30.6766C34.8685 30.469 35 30.1876 35 29.8942C35 29.6008 34.8685 29.3194 34.6345 29.1118L34.6311 29.1089ZM13.7485 22.1428C10.7665 22.1388 7.90787 21.0878 5.79927 19.22C3.69068 17.3522 2.50413 14.82 2.49972 12.1785C2.50413 9.53703 3.69068 7.00486 5.79927 5.13705C7.90787 3.26923 10.7665 2.21818 13.7485 2.21428C16.7305 2.21818 19.5891 3.26923 21.6977 5.13705C23.8063 7.00486 24.9928 9.53703 24.9972 12.1785C24.9928 14.82 23.8063 17.3522 21.6977 19.22C19.5891 21.0878 16.7305 22.1388 13.7485 22.1428Z" fill="#0B5E3B"/>
+        </svg>
+    </div>
+
+    <h3>Pengaduan Tidak Ditemukan</h3>
+    <p>
+        Maaf, pengaduan yang Anda cari tidak ditemukan.
+        Silakan coba kata kunci lain atau periksa kembali pencarian Anda.
+    </p>
+</div>
+
+<!-- 4. LIST DATA -->
+<div class="reports-list" id="reportsContainer">
+    <!-- Data akan dimuat lewat JS -->
+</div>  
 
         
 <!-- Pagination -->

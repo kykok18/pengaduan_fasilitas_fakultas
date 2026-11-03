@@ -31,6 +31,7 @@
         const loadingState = document.getElementById('loadingState');
         const errorState = document.getElementById('errorState');
         const emptyState = document.getElementById('emptyState');
+        const notFoundState = document.getElementById('notFoundState');
         const btnRetry = document.getElementById('btnRetry');
 
         const searchInput = document.getElementById('searchInput');
@@ -120,6 +121,7 @@ diproses: {
         loadingState?.classList.add('active');
         errorState?.classList.remove('active');
         emptyState?.classList.remove('active');
+        notFoundState?.classList.remove('show');
 
         if (pagination) {
             pagination.style.display = 'none';
@@ -134,6 +136,7 @@ diproses: {
         loadingState?.classList.remove('active');
         errorState?.classList.add('active');
         emptyState?.classList.remove('active');
+        notFoundState?.classList.remove('show');
 
         if (pagination) {
             pagination.style.display = 'none';
@@ -383,14 +386,35 @@ setTimeout(() => {
 
             reportsContainer.innerHTML = '';
 
-            if (!data || data.length === 0) {
-                reportsContainer.style.display = 'none';
-                emptyState?.classList.add('active');
-                return;
-            }
+            
+if (!data || data.length === 0) {
+    reportsContainer.style.display = 'none';
 
-            emptyState?.classList.remove('active');
-            reportsContainer.style.display = 'flex';
+    // Sembunyikan kedua state terlebih dahulu
+    emptyState?.classList.remove('active');
+    notFoundState?.classList.remove('show');
+
+    // Periksa apakah pengguna sedang mencari atau memfilter
+    const isSearching = currentSearch.trim() !== '';
+    const isFiltering = currentFilter !== 'semua';
+
+    if (isSearching || isFiltering) {
+        // Pencarian/filter tidak menghasilkan pengaduan
+        notFoundState?.classList.add('show');
+    } else {
+        // Tidak ada pengaduan pada tampilan Semua
+        emptyState?.classList.add('active');
+    }
+
+    return;
+}
+
+// Jika data tersedia, sembunyikan semua empty state
+emptyState?.classList.remove('active');
+notFoundState?.classList.remove('show');
+
+reportsContainer.style.display = 'flex';
+
 
             data.forEach(item => {
                 const statusInfo = getStatusInfo(item.status);
@@ -607,9 +631,17 @@ setTimeout(() => {
                     ? dashboardData.pengaduan
                     : [];
 
-                // Render card dan pagination
-                renderReports(allReports);
-                renderPagination(dashboardData.pagination);
+                
+// Render kartu pengaduan
+renderReports(allReports);
+
+// Tampilkan pagination hanya jika ada hasil
+if (allReports.length > 0) {
+    renderPagination(dashboardData.pagination);
+} else if (pagination) {
+    pagination.style.display = 'none';
+}
+
 
                 loadingState?.classList.remove('active');
                 errorState?.classList.remove('active');

@@ -359,7 +359,7 @@ if (response.ok && result.status === "success") {
         selectLabel.textContent = "Pilih Kategori";
         selectLabel.classList.remove("has-value");
 
-        fileNameDisplay.textContent = "Upload Foto, JPG, PNG."; 
+        fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB"; 
 
         hideError(errorJudul);
         hideError(errorKategori);
