@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/backend/api/:path*",
+      "destination": "https://pengaduan-fasilitas-fakultas.onrender.com/backend/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://pengaduan-fasilitas-fakultas.onrender.com/uploads/:path*"
+    }
+  ]
+}
