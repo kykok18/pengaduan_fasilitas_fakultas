@@ -1,31 +1,27 @@
 
 /* ============================================================
-   AUTH GUARD — PROTEKSI HALAMAN
+   AUTH GUARD — Proteksi Halaman Pengguna
    ============================================================ */
 
 (async function () {
     try {
         const response = await apiGetProfile();
 
-        // Jika belum login atau session tidak valid
-        if (response.httpStatus === 401) {
-            clearUserSession();
+        if (!response.ok) {
+            if (response.httpStatus === 401) {
+                clearUserSession();
+            }
+
             window.location.replace("login.html");
             return;
         }
 
-        // Jika berhasil diverifikasi
-        if (response.ok) {
-            document.documentElement.style.visibility = "visible";
-            return;
-        }
-
-        // Jika terjadi error server, jangan anggap sudah login
-        console.error("Gagal memverifikasi sesi:", response.message);
-        window.location.replace("login.html");
+        // Login valid, tampilkan halaman
+        document.body.style.visibility = "visible";
 
     } catch (error) {
-        console.error("Kesalahan pemeriksaan login:", error);
+        console.error("Gagal memverifikasi sesi:", error);
+
         window.location.replace("login.html");
     }
 })();

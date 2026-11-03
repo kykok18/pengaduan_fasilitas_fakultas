@@ -233,13 +233,20 @@ const hideNotification = () => {
 
 
     
+
 const result = await response.json();
 
+// Jika belum login atau session sudah berakhir
+if (response.status === 401) {
+  clearUserSession();
+  window.location.replace("login.html");
+  return;
+}
 
+if (!response.ok || result.status !== "success") {
+  throw new Error(result.message || "Gagal memuat fasilitas.");
+}
 
-    if (!response.ok || result.status !== "success") {
-      throw new Error(result.message || "Gagal memuat fasilitas.");
-    }
 
     // Kontrak API 1.3: data langsung berupa array
     
@@ -376,12 +383,12 @@ if (response.ok && result.status === "success") {
     result.message || "Pengaduan Anda sedang diproses. Tunggu hingga selesai."
   );
 
+
 } else if (response.status === 401) {
-  showNotification(
-    "error",
-    "SESSION BERAKHIR",
-    result.message || "Silakan login kembali untuk mengirim pengaduan."
-  );
+  clearUserSession();
+  window.location.replace("login.html");
+  return;
+
 
 } else {
   showNotification(

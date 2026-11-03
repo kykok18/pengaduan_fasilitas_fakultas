@@ -609,6 +609,14 @@ reportsContainer.style.display = 'flex';
                     status: currentFilter
                 });
 
+                
+if (response.httpStatus === 401) {
+    clearUserSession();
+    window.location.replace("login.html");
+    return;
+}
+
+
                 if (!response || !response.ok) {
                     throw new Error(
                         response?.message || 'Gagal mengambil data dashboard.'
