@@ -649,7 +649,7 @@
 /* Tampilan layar HP */
 @media (max-width: 400px) {
     .form-message:not([hidden]) {
-        top: 70px;
+        top: 20px;
         width: calc(100vw - 32px);
         max-width: 352px;
     }
