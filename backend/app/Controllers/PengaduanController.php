@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../Models/Pengaduan.php';
 require_once __DIR__ . '/../Helpers/response.php';
+require_once __DIR__ . '/../Helpers/cloudinary.php';
 
 class PengaduanController
 {
@@ -385,44 +386,6 @@ class PengaduanController
             );
         }
 
-        // 12. Siapkan folder penyimpanan.
-        $direktoriUpload =
-            dirname(__DIR__, 3) . '/uploads/pengaduan';
-
-        if (
-            !is_dir($direktoriUpload) &&
-            !mkdir($direktoriUpload, 0755, true) &&
-            !is_dir($direktoriUpload)
-        ) {
-            errorResponse(
-                'Direktori penyimpanan foto gagal dibuat',
-                500
-            );
-        }
-
-        if (!is_writable($direktoriUpload)) {
-            errorResponse(
-                'Direktori penyimpanan foto tidak dapat ditulisi',
-                500
-            );
-        }
-
-        // 13. Buat nama file unik.
-        try {
-            $namaFile = 'pengaduan_' .
-                time() . '_' .
-                bin2hex(random_bytes(8)) . '.' .
-                $tipeFotoDiizinkan[$mimeType];
-        } catch (Throwable $e) {
-            errorResponse(
-                'Gagal menyiapkan nama file foto',
-                500
-            );
-        }
-
-        $tujuanFoto = $direktoriUpload . '/' . $namaFile;
-        $pathFoto = 'uploads/pengaduan/' . $namaFile;
-
         // 13.1 Decode gambar berdasarkan MIME.
         $gambar = false;
 
@@ -448,7 +411,7 @@ class PengaduanController
         }
 
         // 13.2 Encode ulang gambar ke file sementara.
-        $fileSementara = tempnam($direktoriUpload, 'img_');
+        $fileSementara = tempnam(sys_get_temp_dir(), 'img_');
 
         if ($fileSementara === false) {
             imagedestroy($gambar);
@@ -498,12 +461,13 @@ class PengaduanController
             );
         }
 
-        // 13.3 Pindahkan hasil encode ke nama file final.
-        if (!rename($fileSementara, $tujuanFoto)) {
-            @unlink($fileSementara);
+        // 13.3 Upload hasil encode ke Cloudinary (storage permanen).
+        $pathFoto = uploadToCloudinary($fileSementara, 'pengaduan');
+        @unlink($fileSementara);
 
+        if ($pathFoto === false) {
             errorResponse(
-                'Foto gagal disimpan ke server',
+                'Foto gagal disimpan ke server penyimpanan',
                 500
             );
         }
@@ -520,10 +484,6 @@ class PengaduanController
 
         // Hapus file jika penyimpanan database gagal.
         if ($id_pengaduan === false) {
-            if (is_file($tujuanFoto)) {
-                @unlink($tujuanFoto);
-            }
-
             errorResponse('Gagal membuat pengaduan', 500);
         }
 
