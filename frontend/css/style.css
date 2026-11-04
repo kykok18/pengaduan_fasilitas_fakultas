@@ -638,11 +638,16 @@ ul {
     display: flex;
     align-items: center;
     gap: 15px;
-    background: var(--white);
-    padding: 0px;
+
+    width: 100%;
+    min-height: 75px;
+
+    padding: 10px;
+    background: #FFFFFF;
     border: 1px solid #F2F2F2;
-    border-radius: var(--border-radius);
-    padding-left: 10px;
+    border-radius: 12px;
+
+    box-sizing: border-box;
 }
 
 .timeline-number {
@@ -880,7 +885,7 @@ box-shadow:
     flex-direction: column;
     font-size: 11px;
     font-weight: 500;
-    color: #000000;
+    color: #474747;
     margin-bottom: 5px;
     padding: 10px;
     gap: 10px;
@@ -1524,5 +1529,82 @@ iconify-icon {
 
     .report-image {
         height: 220px;
+    }
+}
+
+
+/* ==========================================
+   RESPONSIVE MOBILE LANDSCAPE - LANDING PAGE
+   ========================================== */
+
+@media screen and (orientation: landscape)
+       and (max-height: 550px)
+       and (max-width: 1024px) {
+
+    /* Kartu statistik tetap rapi */
+    .stats-section {
+        padding: 20px 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+
+        width: 100%;
+        max-width: 520px;
+
+        padding: 10px 12px;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        width: 100%;
+        height: auto;
+        min-height: 125px;
+
+        padding: 10px 8px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 5px;
+
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+
+        margin: 0;
+
+        flex-shrink: 0;
+    }
+
+    .stat-info {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .stat-info h3 {
+        font-size: 22px;
+        line-height: 28px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .stat-info p {
+        font-size: 10px;
+        line-height: 14px;
+
+        padding: 0;
+        margin: 0;
+
+        overflow-wrap: break-word;
+        word-break: normal;
     }
 }

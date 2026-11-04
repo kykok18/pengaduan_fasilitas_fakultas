@@ -762,3 +762,79 @@
     font-size: 12px;
     line-height: 1.5;
 }
+
+
+/* ==========================================
+   RESPONSIVE MOBILE LANDSCAPE - LOGIN
+   ========================================== */
+
+@media screen and (orientation: landscape)
+       and (max-height: 550px)
+       and (max-width: 1024px) {
+
+    body {
+        background-color: #E6F4EA;
+
+        min-height: 100vh;
+        min-height: 100dvh;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: flex-start;
+
+        padding: 16px;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+
+        margin: 0 auto;
+        padding: 20px 24px;
+
+        flex-shrink: 0;
+
+        background-color: #FFFFFF;
+        border-radius: 16px;
+        box-sizing: border-box;
+    }
+
+    .brand-header {
+        margin-bottom: 12px;
+    }
+
+    .brand-logo {
+        width: 70px;
+        height: 70px;
+
+        margin-top: 0;
+        margin-bottom: 8px;
+    }
+
+    .brand-fakultas {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .brand-universitas {
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .login-judul {
+        font-size: 20px;
+    }
+
+    .login-deskripsi {
+        margin-bottom: 16px;
+    }
+
+    .login-form {
+        gap: 12px;
+    }
+}
