@@ -374,8 +374,9 @@ if (!isFormValid() || !fotoValid) {
     btnSubmit.classList.remove("is-disabled");
 
     // --- MULAI PROSES KE BACKEND ---
-    btnSubmit.textContent = "Mengirim...";
+    btnSubmit.textContent = "Loading...";
     btnSubmit.disabled = true;
+    btnSubmit.classList.add("is-loading");
 
     try {
       const formData = new FormData();
@@ -479,11 +480,12 @@ if (response.ok && result.status === "success") {
     }
 }
 
-     finally {
-  isSubmitting = false;
+    finally {
+    isSubmitting = false;
 
-  btnSubmit.textContent = "Kirim Pengaduan";
-  btnSubmit.disabled = false;
+    btnSubmit.textContent = "Kirim Pengaduan";
+    btnSubmit.disabled = false;
+    btnSubmit.classList.remove("is-loading");
 }
   });
 
