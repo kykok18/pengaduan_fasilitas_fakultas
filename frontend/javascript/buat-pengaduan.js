@@ -294,6 +294,8 @@ if (!response.ok || result.status !== "success") {
   throw new Error(result.message || "Gagal memuat fasilitas.");
 }
 
+// Sesi telah diverifikasi oleh backend
+document.documentElement.classList.add("auth-verified");
 
     // Kontrak API 1.3: data langsung berupa array
     
@@ -321,9 +323,22 @@ const facilityList = result.data?.fasilitas ?? [];
     });
 
   } catch (error) {
-    console.error("Gagal memuat fasilitas:", error);
-    selectLabel.textContent = "Fasilitas gagal dimuat";
-  }
+    console.error("Gagal verifikasi sesi:", error);
+
+    document.body.innerHTML = `
+        <main style="
+            padding: 40px 20px;
+            text-align: center;
+            font-family: Poppins, sans-serif;
+        ">
+            <h3>Halaman belum dapat dibuka</h3>
+            <p>Gagal memverifikasi sesi login.</p>
+            <a href="login.html">Kembali ke Login</a>
+        </main>
+    `;
+
+    document.documentElement.classList.add("auth-verified");
+}
 };
 
   // ==========================================
@@ -404,7 +419,7 @@ if (!isFormValid() || !fotoValid) {
       let result;
       try {
         result = await response.json();
-      } catch (err) {
+      } catch (error) {
         // Jika backend tidak mereturn JSON (misal error PHP Fatal Error)
         throw new Error(
           "Respon server tidak valid (bukan JSON). Cek tab Network.",

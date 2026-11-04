@@ -873,23 +873,32 @@ box-shadow:
 }
 
 
-.report-content h3 {
-    font-size: 15px;
-    color: #0B5E3B;
-    font-weight: 700;
-    padding: 10px;
-    margin: 0;
 
-    /* Judul panjang otomatis menjadi ... */
+/* Judul Pengaduan Terkini */
+.report-content h3 {
     display: block;
     width: 100%;
     min-width: 0;
+
+    font-size: 15px;
+    font-weight: 700;
+    color: #0B5E3B;
+
+    padding: 10px;
+    margin: 0;
     box-sizing: border-box;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Sembunyikan tag BR agar tidak membuat baris baru */
+.report-content h3 br {
+    display: none;
+}
+
+
 
 
 .report-meta {
