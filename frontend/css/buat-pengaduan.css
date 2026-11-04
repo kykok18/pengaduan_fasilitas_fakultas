@@ -248,11 +248,6 @@ select.form-control {
     cursor: pointer;
 }
 
-/* Fokus keyboard pada input */
-.upload-group:focus-within {
-    outline: 2px solid #0B5E3B;
-    outline-offset: 2px;
-}
 
 /* Layar HP kecil */
 @media (max-width: 390px) {
