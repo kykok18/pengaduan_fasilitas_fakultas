@@ -764,8 +764,10 @@
 }
 
 
+
 /* ==========================================
-   RESPONSIVE MOBILE LANDSCAPE - LOGIN
+   LOGIN - MOBILE LANDSCAPE
+   TANPA CARD PUTIH
    ========================================== */
 
 @media screen and (orientation: landscape)
@@ -780,7 +782,6 @@
 
         display: flex;
         flex-direction: column;
-
         align-items: center;
         justify-content: flex-start;
 
@@ -799,8 +800,12 @@
 
         flex-shrink: 0;
 
-        background-color: #FFFFFF;
-        border-radius: 16px;
+        /* Tidak menggunakan card putih */
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+
         box-sizing: border-box;
     }
 
@@ -811,7 +816,6 @@
     .brand-logo {
         width: 70px;
         height: 70px;
-
         margin-top: 0;
         margin-bottom: 8px;
     }
