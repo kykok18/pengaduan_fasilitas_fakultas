@@ -1747,3 +1747,39 @@ iconify-icon {
         line-height: 16px;
     }
 }
+
+
+/* ==========================================
+   SIDEBAR - MOBILE LANDSCAPE
+   ========================================== */
+
+@media screen and (orientation: landscape)
+       and (max-height: 550px)
+       and (max-width: 1024px) {
+
+    .sidebar {
+        height: 100vh;
+        height: 100dvh;
+
+        max-height: 100dvh;
+
+        overflow-y: auto !important;
+        overflow-x: hidden;
+
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+
+    .sidebar-nav {
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .sidebar-nav ul {
+        height: auto;
+        overflow: visible;
+        padding-bottom: 24px;
+    }
+}
+
