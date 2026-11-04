@@ -1624,13 +1624,15 @@ iconify-icon {
         overflow-x: hidden;
     }
 
-    .footer-container {
-        width: 100%;
-        max-width: 600px;
-        padding: 0 20px;
-        margin: 0 auto;
-        box-sizing: border-box;
-    }
+    
+.footer-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 24px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
 
     /* Logo dan identitas fakultas */
     .footer-header {
@@ -1671,22 +1673,26 @@ iconify-icon {
         line-height: 17px;
     }
 
-    /* Navigasi dan bantuan */
-    .footer-links-wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        gap: 32px;
-        flex-wrap: wrap;
+    
+.footer-links-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
 
-        padding: 0;
-        margin-bottom: 20px;
-    }
+    width: 100%;
+    gap: 32px;
+    flex-wrap: nowrap;
 
-    .footer-links {
-        flex: 1 1 150px;
-        min-width: 0;
-    }
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    flex: 1;
+    min-width: 0;
+}
+
 
     .footer-links h4 {
         font-size: 15px;
