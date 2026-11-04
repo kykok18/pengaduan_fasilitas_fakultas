@@ -1608,3 +1608,136 @@ iconify-icon {
         word-break: normal;
     }
 }
+
+
+/* ==========================================
+   FOOTER - MOBILE LANDSCAPE
+   ========================================== */
+
+@media screen and (orientation: landscape)
+       and (max-height: 550px)
+       and (max-width: 1024px) {
+
+    footer {
+        width: 100%;
+        padding: 24px 0 0;
+        overflow-x: hidden;
+    }
+
+    .footer-container {
+        width: 100%;
+        max-width: 600px;
+        padding: 0 20px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    /* Logo dan identitas fakultas */
+    .footer-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        padding: 0;
+        margin-bottom: 14px;
+    }
+
+    .footer-logo {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+
+    .footer-header-text {
+        min-width: 0;
+    }
+
+    .footer-header-text h3 {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .footer-header-text p {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    /* Deskripsi footer */
+    .footer-desc {
+        max-width: 100%;
+        padding: 0;
+        margin-bottom: 20px;
+        font-size: 11px;
+        line-height: 17px;
+    }
+
+    /* Navigasi dan bantuan */
+    .footer-links-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 32px;
+        flex-wrap: wrap;
+
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    .footer-links {
+        flex: 1 1 150px;
+        min-width: 0;
+    }
+
+    .footer-links h4 {
+        font-size: 15px;
+        line-height: 21px;
+        padding: 0;
+        margin-bottom: 8px;
+    }
+
+    .footer-links ul li a {
+        font-size: 12px;
+        line-height: 20px;
+        padding: 3px 0;
+    }
+
+    /* Alamat kampus */
+    .footer-address {
+        width: 100%;
+        min-height: 56px;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .footer-address-icon {
+        width: 28px;
+        flex: 0 0 28px;
+        padding: 8px 0;
+    }
+
+    .footer-address-text {
+        width: auto;
+        min-width: 0;
+        flex: 1;
+        padding: 8px 0;
+    }
+
+    .footer-address-text p {
+        width: 100%;
+        font-size: 11px;
+        line-height: 17px;
+        overflow-wrap: break-word;
+    }
+
+    /* Copyright */
+    .footer-copyright {
+        margin-top: 20px;
+        padding: 12px 16px 16px;
+    }
+
+    .footer-copyright p {
+        margin-top: 0;
+        font-size: 10px;
+        line-height: 16px;
+    }
+}
