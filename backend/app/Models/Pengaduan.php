@@ -317,4 +317,168 @@ class Pengaduan
 
         return $success;
     }
+
+    public function getDetailPengaduan($id_pengaduan)
+    {
+        // 1. Data utama pengaduan dan nama fasilitas.
+        $query = "
+            SELECT
+                p.id_pengaduan,
+                p.judul,
+                f.nama_fasilitas,
+                p.lokasi,
+                p.deskripsi,
+                p.foto,
+                p.status,
+                p.created_at
+            FROM pengaduan p
+            LEFT JOIN fasilitas f
+                ON p.id_fasilitas = f.id_fasilitas
+            WHERE p.id_pengaduan = ?
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log('Gagal menyiapkan detail pengaduan: ' . mysqli_error($this->conn));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 'i', $id_pengaduan);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log('Gagal mengambil detail pengaduan: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+        $pengaduan = mysqli_fetch_assoc($result);
+
+        mysqli_free_result($result);
+        mysqli_stmt_close($stmt);
+
+        if (!$pengaduan) {
+            return null;
+        }
+
+        // 2. Riwayat penanganan admin.
+        $query = "
+            SELECT
+                id_penanganan,
+                status,
+                foto,
+                keterangan,
+                created_at
+            FROM penanganan
+            WHERE id_pengaduan = ?
+            ORDER BY created_at DESC, id_penanganan DESC
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log('Gagal menyiapkan riwayat penanganan: ' . mysqli_error($this->conn));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 'i', $id_pengaduan);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log('Gagal mengambil riwayat penanganan: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+        $penanganan = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $penanganan[] = $row;
+        }
+
+        mysqli_free_result($result);
+        mysqli_stmt_close($stmt);
+
+        // 3. Jumlah upvote dan downvote.
+        $query = "
+            SELECT
+                COALESCE(SUM(tipe_vote = 'upvote'), 0) AS upvote,
+                COALESCE(SUM(tipe_vote = 'downvote'), 0) AS downvote
+            FROM vote
+            WHERE id_pengaduan = ?
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log('Gagal menyiapkan jumlah vote: ' . mysqli_error($this->conn));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 'i', $id_pengaduan);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log('Gagal mengambil jumlah vote: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+        $vote = mysqli_fetch_assoc($result);
+
+        mysqli_free_result($result);
+        mysqli_stmt_close($stmt);
+
+        $vote = [
+            'upvote' => (int) $vote['upvote'],
+            'downvote' => (int) $vote['downvote']
+        ];
+
+        // 4. Komentar beserta nama pengguna.
+        $query = "
+            SELECT
+                k.id_komentar,
+                u.nama,
+                k.isi_komentar,
+                k.created_at
+            FROM komentar k
+            INNER JOIN users u
+                ON k.id_user = u.id_user
+            WHERE k.id_pengaduan = ?
+            ORDER BY k.created_at ASC, k.id_komentar ASC
+        ";
+
+        $stmt = mysqli_prepare($this->conn, $query);
+
+        if (!$stmt) {
+            error_log('Gagal menyiapkan komentar: ' . mysqli_error($this->conn));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, 'i', $id_pengaduan);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            error_log('Gagal mengambil komentar: ' . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+        $komentar = [];
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $komentar[] = $row;
+        }
+
+        mysqli_free_result($result);
+        mysqli_stmt_close($stmt);
+
+        return [
+            'pengaduan' => $pengaduan,
+            'penanganan' => $penanganan,
+            'vote' => $vote,
+            'komentar' => $komentar
+        ];
+    }
 }
