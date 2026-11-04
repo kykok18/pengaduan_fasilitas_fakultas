@@ -1804,3 +1804,85 @@ iconify-icon {
     }
 }
 
+
+/* ==========================================
+   FIX ELLIPSIS PENGADUAN TERKINI
+   ========================================== */
+
+/* Pastikan kartu tidak melebar */
+.report-card,
+.report-content,
+.report-meta {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Judul */
+.report-content h3 {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Lokasi dan tanggal */
+.report-meta > span {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Teks tetap satu baris */
+.report-meta .meta-text {
+    display: inline;
+    white-space: nowrap;
+}
+
+/* Ikon tetap terlihat */
+.report-meta > span svg,
+.report-meta > span i {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    margin-right: 5px;
+}
+
+/* Hilangkan efek baris baru */
+.report-content h3 br,
+.report-meta br {
+    display: none !important;
+}
+
+
+/* FIX JUDUL, LOKASI, DAN TANGGAL */
+
+.report-content h3,
+.report-meta > span {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ikon tetap terlihat */
+.report-meta > span svg,
+.report-meta > span i {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* BR tidak membuat baris baru */
+.report-content h3 br,
+.report-meta br {
+    display: none !important;
+}
+
