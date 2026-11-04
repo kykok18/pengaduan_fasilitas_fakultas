@@ -15,14 +15,12 @@
     min-height: auto;
 
     margin: 47px auto 30px;
-    padding: 24px 17px;
+    padding: 14px 17px 5px;
     margin-top: 19px;
 
     background: #FFFFFF;
     border-radius: 10px;
     box-sizing: border-box;
-
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
 
 /* Judul di dalam Card */
@@ -39,8 +37,8 @@
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Jarak antara input dan error text */
-    margin-bottom: 16px;
+    gap: 10px; /* Jarak antara input dan error text */
+    margin-bottom: 30px;
 }
 
 /* Label Input */
@@ -50,6 +48,7 @@
     font-weight: 600;
     color: var(--logo-green);
     padding-left: 4px;
+    margin-left: 5px;
 }
 
 /* Input, Select, dan Textarea */
@@ -74,11 +73,26 @@
 
 
 /* Textarea */
+
 textarea.form-control {
-    height: 100px;
-    padding: 16px;
-    resize: vertical;
+    width: 100%;
+    height: 57px;
+    min-height: 57px;
+
+    padding: 19px 16px;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 18px;
+
+    box-sizing: border-box;
+    resize: none;
 }
+
 
 /* Select (Dropdown Kategori) */
 select.form-control {
@@ -113,8 +127,8 @@ select.form-control {
     min-height: 16px;
     gap: 6px;
 
-    margin-top: 6px;
-    margin-bottom: 4px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     padding: 0 4px;
 
     color: #D02316;
@@ -123,6 +137,11 @@ select.form-control {
     font-weight: 600;
     line-height: 15px;
 }
+
+.form-group .error-message.active {
+    margin-top: -6px;
+}
+
 
 /* Tampilkan pesan saat validasi gagal */
 .error-message.active {
@@ -229,11 +248,6 @@ select.form-control {
     cursor: pointer;
 }
 
-/* Fokus keyboard pada input */
-.upload-group:focus-within {
-    outline: 2px solid #0B5E3B;
-    outline-offset: 2px;
-}
 
 /* Layar HP kecil */
 @media (max-width: 390px) {
@@ -254,7 +268,7 @@ select.form-control {
    ============================================================ */
 .btn-submit {
     width: 100%;
-    height: 45px;
+    height: 57px;
     
     /* Defaultnya HIJAU */
     background-color: var(--logo-green); 
@@ -266,7 +280,7 @@ select.form-control {
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 34px;
     transition: all var(--transition-fast);
 }
 
@@ -289,39 +303,47 @@ select.form-control {
    NOTIFIKASI PENGADUAN
    ============================================================ */
 
-.form-message {
-    display: none;
-    align-items: center;
-    gap: 16px;
 
-    background-color: var(--white);
+.form-message {
+    box-sizing: border-box;
+
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+
+    padding: 0;
+
+    position: absolute;
+    width: 352px;
+    max-width: calc(100% - 12px);
+    height: 71px;
+
+    left: 50%;
+    top: -38px;
+
+    background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 10px;
-    padding: 12px 16px;
 
-    /* Posisi menumpuk di atas form */
-    position: absolute;
-    top: -10px;
-    left: 6px;
-    right: 6px;
     z-index: 99;
 
-    box-sizing: border-box;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-
-    /* Animasi */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translate(-50%, -10px);
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
 .form-message.show {
     display: flex;
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
 }
+
 
 /* Notifikasi berhasil */
 .form-message.success .msg-title,
@@ -342,13 +364,30 @@ select.form-control {
 }
 
 /* Ikon */
+
 .msg-icon-wrapper {
-    margin-right: 0;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+
+    width: 70px;
+    height: 70px;
+
+    padding: 5px;
+    gap: 10px;
+
+    box-sizing: border-box;
+    flex: 0 0 70px;
+}
+
+.msg-icon-wrapper svg {
+    display: block;
+    width: 40.33px;
+    height: 40.33px;
     flex-shrink: 0;
 }
+
 
 /* Judul notifikasi */
 .msg-title {
@@ -362,7 +401,7 @@ select.form-control {
 /* Deskripsi notifikasi */
 .msg-desc {
     font-family: var(--font-primary);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
     line-height: 16px;
     margin: 0;
@@ -443,18 +482,25 @@ select.form-control {
     transition: transform 0.2s ease;
 }
 
-.upload-group.input-error .btn-choose-file {
-  border: 1px solid #D02316;
-}
 
 .upload-group.input-error {
   border-color: #D02316;
 }
 
-.upload-group.input-error .btn-choose-file {
-    outline: 1px solid #D02316;
-    border-radius: 10px;
+
+/* Border luar upload tetap merah saat error */
+.upload-group.input-error {
+    border: 1px solid #D02316;
 }
+
+/* Tombol Choose File tetap abu-abu */
+.upload-group.input-error .btn-choose-file {
+    background: #D9D9D9;
+    border: none;
+    outline: none;
+    border-radius: 0;
+}
+
 
 
 /* ============================================================
@@ -487,4 +533,114 @@ select.form-control {
 #errorFoto span {
     flex: 1;
     min-width: 0;
+}
+
+
+/* Pastikan centang putih ikon sukses terlihat */
+.form-message.success .msg-icon-wrapper svg path {
+    fill: #FFFFFF !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+
+/* Frame 194 - Container teks */
+.form-message .msg-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    flex: 1;
+    min-width: 0;
+    height: 68px;
+
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Judul */
+.form-message .msg-title {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
+
+    margin: 0;
+    padding: 0;
+}
+
+/* Deskripsi */
+.form-message .msg-desc {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+
+    margin: 0;
+    padding: 0 0 5px;
+
+    box-sizing: border-box;
+}
+
+/* Warna notifikasi sukses */
+.form-message.success .msg-title,
+.form-message.success .msg-desc {
+    color: #15A367;
+}
+
+
+/* ==========================================
+   MERAPIKAN JARAK VALIDASI ERROR
+   ========================================== */
+
+/* Jarak normal antar form */
+.form-group {
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Pesan error lebih dekat ke input */
+.form-group .error-message.active {
+    margin-top: -6px;
+    margin-bottom: -4px;
+    padding: 0 4px;
+}
+
+/* Samakan error Bukti Foto */
+.form-group #errorFoto.active {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    margin-top: -6px;
+    margin-bottom: -4px;
+
+    padding: 0 4px;
+
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+}
+
+/* Samakan ikon seluruh pesan error */
+.form-group .error-message svg,
+.form-group #errorFoto svg {
+    display: block;
+    width: 14px;
+    height: 13px;
+    flex: 0 0 14px;
+}
+
+
+/* Tombol saat sedang mengirim pengaduan */
+.btn-submit.is-loading,
+.btn-submit.is-loading:hover,
+.btn-submit:disabled {
+    background-color: #D9D9D9;
+    color: #FFFFFF;
+    cursor: not-allowed;
+    opacity: 1;
 }

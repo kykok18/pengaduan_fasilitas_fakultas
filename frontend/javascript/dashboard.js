@@ -610,7 +610,7 @@ reportsContainer.style.display = 'flex';
                 });
 
                 
-if (response.httpStatus === 401) {
+if (response?.httpStatus === 401) {
     clearUserSession();
     window.location.replace("login.html");
     return;

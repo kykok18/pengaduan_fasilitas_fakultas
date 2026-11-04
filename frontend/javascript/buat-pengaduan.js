@@ -176,12 +176,29 @@ const showNotification = (type, title, desc) => {
   clearTimeout(notificationTimer);
   clearTimeout(notificationHideTimer);
 
-  const iconSuccess = `
-    <svg width="41" height="41" viewBox="0 0 41 41"
-      fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20.1667 0C9.02917 0 0 9.02917 0 20.1667C0 31.3042 9.02917 40.3333 20.1667 40.3333C31.3042 40.3333 40.3333 31.3042 40.3333 20.1667C40.3333 9.02917 31.3042 0 20.1667 0ZM28.908 16.7567L18.2087 23.8682L14.1295 19.7872L11.5372 22.3795L17.0372 27.8795L19.7413 27.7567L28.908 16.7567Z"
-      fill="#15A367"/>
-    </svg>`;
+  
+
+const iconSuccess = `
+  <svg width="41" height="41"
+       viewBox="0 0 41 41"
+       xmlns="http://www.w3.org/2000/svg">
+
+    <circle
+      cx="20.5"
+      cy="20.5"
+      r="20"
+      fill="#15A367"
+    />
+
+    <path
+      d="M17.2 27.8L10.5 21.1L13.3 18.3L17.2 22.2L27.7 11.7L30.5 14.5Z"
+      fill="#FFFFFF"
+      style="fill: #FFFFFF !important;"
+    />
+
+  </svg>`;
+
+
 
   const iconError = `
     <svg width="40" height="40" viewBox="0 0 40 40"
@@ -285,7 +302,7 @@ const facilityList = result.data?.fasilitas ?? [];
 
     customOptions.innerHTML = "";
     inputKategori.value = "";
-    selectLabel.textContent = "Pilih Kategori";
+    selectLabel.textContent = "Pilih Fasilitas";
     selectLabel.classList.remove("has-value");
 
     if (!Array.isArray(facilityList) || facilityList.length === 0) {
@@ -357,8 +374,9 @@ if (!isFormValid() || !fotoValid) {
     btnSubmit.classList.remove("is-disabled");
 
     // --- MULAI PROSES KE BACKEND ---
-    btnSubmit.textContent = "Mengirim...";
+    btnSubmit.textContent = "Loading...";
     btnSubmit.disabled = true;
+    btnSubmit.classList.add("is-loading");
 
     try {
       const formData = new FormData();
@@ -405,7 +423,7 @@ if (response.ok && result.status === "success") {
         form.reset();
 
         inputKategori.value = "";
-        selectLabel.textContent = "Pilih Kategori";
+        selectLabel.textContent = "Pilih Fasilitas";
         selectLabel.classList.remove("has-value");
 
         fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB"; 
@@ -462,11 +480,12 @@ if (response.ok && result.status === "success") {
     }
 }
 
-     finally {
-  isSubmitting = false;
+    finally {
+    isSubmitting = false;
 
-  btnSubmit.textContent = "Kirim Pengaduan";
-  btnSubmit.disabled = false;
+    btnSubmit.textContent = "Kirim Pengaduan";
+    btnSubmit.disabled = false;
+    btnSubmit.classList.remove("is-loading");
 }
   });
 
