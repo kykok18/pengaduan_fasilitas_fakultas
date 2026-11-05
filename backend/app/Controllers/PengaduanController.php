@@ -462,7 +462,7 @@ class PengaduanController
         }
 
         // 13.3 Upload hasil encode ke Cloudinary (storage permanen).
-        $pathFoto = uploadToCloudinary($fileSementara, 'pengaduan');
+        $pathFoto = uploadToStorage($fileSementara, 'pengaduan');
         @unlink($fileSementara);
 
         if ($pathFoto === false) {
