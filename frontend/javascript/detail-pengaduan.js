@@ -526,6 +526,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // 13. MEMUAT DATA SAAT HALAMAN DIBUKA
   // =========================================================
 
+  
+
   loadDetail();
 
   // Memuat ulang detail saat halaman dikembalikan

@@ -375,35 +375,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Menampilkan notifikasi jika koneksi terputus
     // ketika halaman Login sedang terbuka.
+    
+    // =========================================
+    // NOTIFIKASI SAAT KONEKSI TERPUTUS
+    // =========================================
+
     window.addEventListener('offline', () => {
         showMessage('offline');
     });
-});
 
-// =========================================================
-// RESET HALAMAN LOGIN SAAT KEMBALI DARI RIWAYAT BROWSER
-// =========================================================
 
-// pageshow berjalan ketika halaman ditampilkan,
-// termasuk saat browser memulihkannya dari BFCache.
-window.addEventListener('pageshow', () => {
+    // =========================================
+    // RESET LOGIN SAAT KEMBALI DARI BROWSER BACK
+    // =========================================
 
-    // Mengosongkan kembali seluruh input Login.
-    loginForm.reset();
+    window.addEventListener('pageshow', (event) => {
 
-    emailInput.value = '';
-    passwordInput.value = '';
+        // Hanya reset ketika halaman dipulihkan dari BFCache.
+        if (!event.persisted) return;
 
-    // Menghapus pesan validasi sebelumnya.
-    setEmailError('');
-    setPasswordError('');
+        // Kosongkan email dan password.
+        loginForm.reset();
 
-    // Menghilangkan notifikasi lama.
-    hideMessage();
+        emailInput.value = '';
+        passwordInput.value = '';
 
-    // Mengembalikan tombol ke kondisi awal.
-    submitBtn.dataset.loading = 'false';
-    submitBtn.textContent = 'Login';
+        // Hapus pesan validasi.
+        setEmailError('');
+        setPasswordError('');
 
-    updateButtonState();
+        // Hilangkan notifikasi sebelumnya.
+        hideMessage();
+
+        // Kembalikan tombol Login ke kondisi awal.
+        submitBtn.dataset.loading = 'false';
+        submitBtn.textContent = 'Login';
+
+        updateButtonState();
+    });
+
 });
