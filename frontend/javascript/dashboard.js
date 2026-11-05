@@ -1,6 +1,10 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
+        // Mengambil informasi pengguna dari localStorage melalui api.js.
+        // Data ini digunakan untuk tampilan profil di dashboard.
+        // Status login sebenarnya tetap diverifikasi oleh backend PHP
+        // menggunakan session saat frontend meminta data API.
         // =========================================================
         // 0. AUTH GUARD
         // =========================================================
@@ -44,6 +48,9 @@
         // =========================================================
         // 2. DATA DAN STATE
         // =========================================================
+        // Menyimpan kondisi dashboard yang dapat berubah,
+        // seperti halaman aktif, filter status, dan kata pencarian.
+        // LIMIT menentukan maksimal 5 pengaduan per halaman.
         const LIMIT = 5;
 
         let currentPage = 1;
@@ -56,6 +63,7 @@
         // =========================================================
         // 3. HELPER FUNCTION
         // =========================================================
+
 
         // Menghindari karakter HTML dari data API
         const escapeHTML = (value) => {
@@ -115,6 +123,10 @@ diproses: {
                 className: 'status-proses'
             };
         };
+
+        // Mengatur tampilan dashboard sesuai kondisi pengambilan data.
+        // Loading tampil saat menunggu API, sedangkan Error tampil
+        // apabila proses pengambilan data mengalami kegagalan.
 
         // Menampilkan dan menyembunyikan state
         const showLoading = () => {
@@ -286,6 +298,9 @@ if (cancelLogout) {
     cancelLogout.addEventListener('click', closeLogoutModal);
 }
 
+        // Mengirim permintaan logout ke backend melalui apiLogout().
+        // Selama proses berlangsung, tombol dicegah agar tidak
+        // menjalankan logout berulang kali.
         // Menjalankan proses Logout
         async function performLogout() {
             if (loggingOut) return;
@@ -296,6 +311,8 @@ loggingOut = true;
 // Tampilkan modal Loading
 showLogoutState('loading');
 
+// Mencatat waktu mulai untuk memastikan animasi Loading
+// Logout terlihat minimal 1,5 detik.
 // Catat waktu mulai Loading
 const loadingStartTime = Date.now();
 
@@ -377,7 +394,10 @@ setTimeout(() => {
         }
 
 
-
+        // Menampilkan kartu pengaduan berdasarkan data dari backend.
+        // Jika tidak ada pengaduan, tampilkan Empty State.
+        // Jika pencarian atau filter tidak menghasilkan data,
+        // tampilkan Not Found State.
         // =========================================================
         // 8. RENDER CARD PENGADUAN
         // =========================================================
@@ -595,12 +615,16 @@ reportsContainer.style.display = 'flex';
 
         showLoading();
 
-        // Lanjutkan kode yang sudah ada...
 
             try {
                 if (typeof apiGetDashboard !== 'function') {
                     throw new Error('Fungsi apiGetDashboard tidak ditemukan.');
                 }
+
+                // Memanggil apiGetDashboard() dari api.js menggunakan GET.
+                // Parameter halaman, limit, pencarian, dan filter dikirim ke backend.
+                // await menunggu respons API sebelum data pengaduan ditampilkan.
+                // Cookie PHP Session mengikuti konfigurasi request di api.js.
 
                 const response = await apiGetDashboard({
                     page: currentPage,
@@ -609,12 +633,15 @@ reportsContainer.style.display = 'flex';
                     status: currentFilter
                 });
 
-                
-if (response?.httpStatus === 401) {
-    clearUserSession();
-    window.location.replace("login.html");
-    return;
-}
+                // Jika backend mengembalikan HTTP 401, berarti autentikasi
+                // pengguna tidak valid atau sesi sudah berakhir.
+                // Data pengguna lokal dibersihkan dan pengguna kembali ke Login.
+                                
+                if (response?.httpStatus === 401) {
+                    clearUserSession();
+                    window.location.replace("login.html");
+                    return;
+                }
 
 
                 if (!response || !response.ok) {
@@ -640,15 +667,15 @@ if (response?.httpStatus === 401) {
                     : [];
 
                 
-// Render kartu pengaduan
-renderReports(allReports);
+                // Render kartu pengaduan
+                renderReports(allReports);
 
-// Tampilkan pagination hanya jika ada hasil
-if (allReports.length > 0) {
-    renderPagination(dashboardData.pagination);
-} else if (pagination) {
-    pagination.style.display = 'none';
-}
+                // Tampilkan pagination hanya jika ada hasil
+                if (allReports.length > 0) {
+                    renderPagination(dashboardData.pagination);
+                } else if (pagination) {
+                    pagination.style.display = 'none';
+                }
 
 
                 loadingState?.classList.remove('active');

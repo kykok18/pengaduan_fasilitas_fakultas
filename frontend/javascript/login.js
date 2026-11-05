@@ -1,8 +1,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+
     // =========================
     // SKELETON
     // =========================
+
+    // Menyiapkan tampilan sementara sebelum konten login ditampilkan.
     const loginSkeleton = document.getElementById('loginSkeleton');
     const loginContent = document.getElementById('loginContent');
 
@@ -11,12 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loginContent?.classList.remove('skeleton-hidden');
     }
 
+    // Menampilkan halaman setelah selesai dimuat.
+    // Timer 8 detik menjadi cadangan jika proses load terlalu lama.
     window.addEventListener('load', () => setTimeout(showContent, 200));
     setTimeout(showContent, 8000);
 
     // =========================
     // ELEMEN
     // =========================
+
+    // Menghubungkan JavaScript dengan elemen form pada HTML.
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -24,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const togglePassword = document.getElementById('togglePassword');
     const formMessage = document.getElementById('formMessage');
 
+    // Jika elemen penting tidak ditemukan, hentikan proses.
+    // Ini mencegah JavaScript mengakses elemen yang tidak tersedia.
     if (!loginForm || !emailInput || !passwordInput ||
         !submitBtn || !formMessage) {
         console.error('Elemen form login tidak ditemukan.');
@@ -33,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // IKON NOTIFIKASI SVG
     // =========================
+
+    // Menyimpan ikon berdasarkan kondisi yang diberikan backend.
+    // success: berhasil, server: gangguan sistem,
+    // auth: autentikasi gagal, offline: koneksi terputus.
     const icons = {
         success: `
             <svg class="notification-icon" width="41" height="41"
@@ -85,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // TOGGLE PASSWORD
     // =========================
+
+    // Mengubah tipe password menjadi text ketika ikon mata diklik,
+    // lalu mengembalikannya menjadi password jika diklik lagi.
     if (togglePassword) {
         togglePassword.addEventListener('click', () => {
             const isPassword = passwordInput.type === 'password';
@@ -106,31 +122,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // VALIDASI
     // =========================
+
+    // Mengatur pesan kesalahan email dan memberi border merah.
+    // Jika pesannya kosong, tanda error dihilangkan.
     function setEmailError(message) {
-    const wrapper = document.getElementById('emailWrapper');
-    const errorText = document.getElementById('emailError');
+        const wrapper = document.getElementById('emailWrapper');
+        const errorText = document.getElementById('emailError');
 
-    if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
-    if (errorText) errorText.textContent = message || '';
+        if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
+        if (errorText) errorText.textContent = message || '';
 
-    updateButtonState();
-}
+        updateButtonState();
+    }
 
+    // Mengatur pesan kesalahan dan border pada input password.
     function setPasswordError(message) {
-    const wrapper = document.getElementById('passwordWrapper');
-    const errorText = document.getElementById('passwordError');
+        const wrapper = document.getElementById('passwordWrapper');
+        const errorText = document.getElementById('passwordError');
 
-    if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
-    if (errorText) errorText.textContent = message || '';
+        if (wrapper) wrapper.classList.toggle('invalid', Boolean(message));
+        if (errorText) errorText.textContent = message || '';
 
-    updateButtonState();
-}
+        updateButtonState();
+    }
 
+    // Memvalidasi input sebelum data dikirim ke API login.
+    // Frontend hanya memeriksa kolom wajib dan format email,
+    // bukan menentukan apakah akun benar-benar terdaftar.
     function validateForm() {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
         let valid = true;
 
+        // Memeriksa email kosong, format tidak sesuai, atau valid.
         if (!email) {
             setEmailError('E-mail wajib diisi.');
             valid = false;
@@ -141,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setEmailError('');
         }
 
+        // Password wajib diisi. Kecocokannya diperiksa backend.
         if (!password) {
             setPasswordError('Password wajib diisi.');
             valid = false;
@@ -151,45 +176,49 @@ document.addEventListener('DOMContentLoaded', () => {
         return valid;
     }
 
+    // Tombol dinonaktifkan jika masih ada kesalahan input
+    // atau sedang menunggu proses login selesai.
     function updateButtonState() {
-    const hasError = Boolean(
-        document.querySelector('.input-wrapper.invalid') ||
-        document.querySelector('.error-message:not(:empty)')
-    );
+        const hasError = Boolean(
+            document.querySelector('.input-wrapper.invalid') ||
+            document.querySelector('.error-message:not(:empty)')
+        );
 
-    const isLoading = submitBtn.dataset.loading === 'true';
+        const isLoading = submitBtn.dataset.loading === 'true';
 
-    submitBtn.disabled = hasError || isLoading;
-}
+        submitBtn.disabled = hasError || isLoading;
+    }
 
     // =========================
     // NOTIFIKASI
     // =========================
-    
-const messages = {
-    success: {
-        title: 'LOGIN BERHASIL',
-        desc: 'Login berhasil. Anda akan dialihkan ke halaman dashboard.'
-    },
-    logoutSuccess: {
-        title: 'LOGOUT BERHASIL',
-        desc: 'Anda berhasil logout dari akun ini.'
-    },
-    server: {
-        title: 'LOGIN GAGAL',
-        desc: 'Terjadi kesalahan pada sistem. Silakan coba lagi.'
-    },
-    auth: {
-        title: 'GAGAL MELAKUKAN AUTENTIKASI',
-        desc: 'Mohon isi E-mail dan password dengan benar.'
-    },
-    offline: {
-        title: 'KONEKSI INTERNET TERPUTUS',
-        desc: 'Periksa koneksi internet Anda. Silakan coba lagi.'
-    }
-};
 
+    // Pesan yang ditampilkan berdasarkan hasil proses login.
+    const messages = {
+        success: {
+            title: 'LOGIN BERHASIL',
+            desc: 'Login berhasil. Anda akan dialihkan ke halaman dashboard.'
+        },
+        logoutSuccess: {
+            title: 'LOGOUT BERHASIL',
+            desc: 'Anda berhasil logout dari akun ini.'
+        },
+        server: {
+            title: 'LOGIN GAGAL',
+            desc: 'Terjadi kesalahan pada sistem. Silakan coba lagi.'
+        },
+        auth: {
+            title: 'GAGAL MELAKUKAN AUTENTIKASI',
+            desc: 'Mohon isi E-mail dan password dengan benar.'
+        },
+        offline: {
+            title: 'KONEKSI INTERNET TERPUTUS',
+            desc: 'Periksa koneksi internet Anda. Silakan coba lagi.'
+        }
+    };
 
+    // Memilih ikon dan pesan sesuai jenis notifikasi,
+    // kemudian menampilkannya pada halaman login.
     function showMessage(type) {
         const selected = messages[type] || messages.server;
 
@@ -204,58 +233,77 @@ const messages = {
         `;
 
         formMessage.className = `form-message ${
-    type === 'logoutSuccess' ? 'success' : type
-}`;
+            type === 'logoutSuccess' ? 'success' : type
+        }`;
+
         formMessage.hidden = false;
         formMessage.setAttribute('role', 'alert');
         formMessage.setAttribute('aria-live', 'polite');
     }
 
+    // Menghapus notifikasi sebelumnya dari tampilan.
     function hideMessage() {
         formMessage.hidden = true;
         formMessage.innerHTML = '';
         formMessage.className = 'form-message';
     }
 
-    
-
-
-
     // =========================
     // SUBMIT LOGIN
     // =========================
+
+    // Event submit berjalan ketika pengguna mengirim form Login.
+    // preventDefault mencegah reload halaman secara otomatis.
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         hideMessage();
 
+        // Jalankan validasi frontend sebelum menghubungi backend.
         const isValid = validateForm();
-updateButtonState();
+        updateButtonState();
 
-if (!isValid) return;
+        // Jika input tidak valid, proses dihentikan.
+        // Artinya tidak ada request login yang dikirim.
+        if (!isValid) return;
 
         const email = emailInput.value.trim();
         const password = passwordInput.value;
         const originalText = submitBtn.textContent;
         let loginSucceeded = false;
 
+        // Mengubah tombol menjadi Loading dan menonaktifkannya
+        // selama menunggu respons autentikasi.
         submitBtn.dataset.loading = 'true';
-updateButtonState();
-submitBtn.textContent = 'Loading...';
+        updateButtonState();
+        submitBtn.textContent = 'Loading...';
 
+        // try digunakan untuk menjalankan proses request.
+        // catch menangani error, sedangkan finally mengatur
+        // kondisi tombol setelah proses selesai.
         try {
+
+            // Jangan mengirim request jika browser sedang offline.
             if (!navigator.onLine) {
                 showMessage('offline');
                 return;
             }
 
+            // Memanggil apiLogin(email, password) dari api.js.
+            // Fungsi tersebut menggunakan apiRequest() dan fetch()
             const response = await apiLogin(email, password);
 
+            // Jika respons API tidak tersedia,
+            // tampilkan kesalahan server atau koneksi.
             if (!response) {
                 showMessage(navigator.onLine ? 'server' : 'offline');
                 return;
             }
 
+            // Login dianggap berhasil jika request HTTP berhasil
             if (response.ok && response.status === 'success') {
+
+                // Menyimpan data pengguna dari respons backend
+                // ke localStorage melalui fungsi di api.js.
                 if (
                     response.data &&
                     typeof saveUserSession === 'function'
@@ -266,6 +314,7 @@ submitBtn.textContent = 'Loading...';
                 loginSucceeded = true;
                 showMessage('success');
 
+                // Redirect ke Dashboard setelah notifikasi sukses
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 1500);
@@ -273,6 +322,10 @@ submitBtn.textContent = 'Loading...';
                 return;
             }
 
+            // Memeriksa jenis kegagalan berdasarkan respons API.
+            // 0 berarti helper API gagal memperoleh respons HTTP.
+            // 401/403 berkaitan dengan kegagalan autentikasi/akses.
+            
             if (
                 response.httpStatus === 0 ||
                 !navigator.onLine
@@ -286,42 +339,49 @@ submitBtn.textContent = 'Loading...';
             } else {
                 showMessage('server');
             }
+
         } catch (error) {
+
+            // Menangani error yang terjadi selama proses login.
             console.error('Login error:', error);
             showMessage(navigator.onLine ? 'server' : 'offline');
+
         } finally {
-            
-if (!loginSucceeded) {
-    // Hentikan status loading
-    submitBtn.dataset.loading = 'false';
 
-    // Kembalikan tulisan tombol
-    submitBtn.textContent = originalText;
+            // Jika login gagal, hentikan loading dan
+            // kembalikan tombol agar dapat digunakan lagi.
+            if (!loginSucceeded) {
+                // Hentikan status loading
+                submitBtn.dataset.loading = 'false';
 
-    // Perbarui kondisi tombol
-    updateButtonState();
-}
+                // Kembalikan tulisan tombol
+                submitBtn.textContent = originalText;
 
+                // Perbarui kondisi tombol
+                updateButtonState();
+            }
         }
     });
 
     // =========================
     // RESET ERROR SAAT MENGETIK
     // =========================
+
+    // Menghapus pesan error ketika pengguna memperbaiki email.
     emailInput.addEventListener('input', () => {
         setEmailError('');
         hideMessage();
     });
 
+    // Menghapus pesan error ketika pengguna memperbaiki password.
     passwordInput.addEventListener('input', () => {
         setPasswordError('');
         hideMessage();
     });
 
-    // Jika koneksi terputus saat halaman sedang terbuka
+    // Menampilkan notifikasi jika koneksi terputus
+    // ketika halaman Login sedang terbuka.
     window.addEventListener('offline', () => {
         showMessage('offline');
     });
 });
-
-
