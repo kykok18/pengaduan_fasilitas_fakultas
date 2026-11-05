@@ -45,7 +45,7 @@ class AuthValidator
         }
 
         // Validasi panjang maksimum password
-        if (strlen($password) > 128) {
+        if (strlen($password) > 100) {
             return 'Password maksimal 128 karakter';
         }
 
