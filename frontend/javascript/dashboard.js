@@ -365,7 +365,47 @@ reportsContainer.style.display = 'flex';
                     </div>
                 `;
 
+                
+                // ==========================================
+                // NAVIGASI KE DETAIL PENGADUAN
+                // ==========================================
+
+                // Mengambil ID pengaduan dari data backend.
+                const idPengaduan = item.id_pengaduan;
+
+                // Pastikan ID valid sebelum kartu dibuat interaktif.
+                if (
+                    Number.isSafeInteger(Number(idPengaduan)) &&
+                    Number(idPengaduan) > 0
+                ) {
+
+                    // Menjadikan seluruh kartu bisa diklik.
+                    card.style.cursor = 'pointer';
+
+                    // Supaya kartu juga bisa diakses melalui keyboard.
+                    card.setAttribute('role', 'link');
+                    card.setAttribute('tabindex', '0');
+
+                    // Fungsi untuk membuka halaman detail.
+                    const bukaDetail = () => {
+                        window.location.href =
+                            `detail-pengaduan.html?id_pengaduan=${encodeURIComponent(idPengaduan)}`;
+                    };
+
+                    // Ketika kartu diklik.
+                    card.addEventListener('click', bukaDetail);
+
+                    // Ketika kartu dipilih menggunakan keyboard.
+                    card.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            bukaDetail();
+                        }
+                    });
+                }
+
+                // Memasukkan kartu ke Dashboard.
                 reportsContainer.appendChild(card);
+
             });
         };
 

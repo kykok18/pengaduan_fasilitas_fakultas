@@ -1,0 +1,737 @@
+
+/* ==========================================
+   1. PENGATURAN DASAR
+   ========================================== */
+
+:root {
+  --detail-green: #075B3B;
+  --detail-background: #E6F5EB;
+  --detail-white: #FFFFFF;
+  --detail-border: #D9D9D9;
+  --detail-text: #111111;
+  --detail-muted: #555555;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--detail-background);
+  color: var(--detail-text);
+  font-family: "Poppins", sans-serif;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* ==========================================
+   2. NAVBAR
+   ========================================== */
+
+.detail-navbar {
+  width: 100%;
+  min-height: 72px;
+  background: var(--detail-white);
+}
+
+.detail-navbar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 72px;
+  margin: 0 auto;
+  padding: 12px 24px;
+}
+
+.detail-navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.detail-navbar-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  border: 2px solid var(--detail-green);
+  border-radius: 50%;
+  color: var(--detail-green);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.detail-navbar-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.detail-navbar-text strong {
+  font-size: 14px;
+  color: var(--detail-green);
+}
+
+.detail-navbar-text span {
+  font-size: 10px;
+  color: var(--detail-green);
+}
+
+.detail-navbar-text small {
+  font-size: 9px;
+  color: #D69B28;
+}
+
+.detail-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--detail-background);
+  color: var(--detail-green);
+  font-weight: 700;
+}
+
+
+/* ==========================================
+   3. HALAMAN UTAMA
+   ========================================== */
+
+.detail-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 24px 48px;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+  color: var(--detail-green);
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.detail-back:hover {
+  opacity: 0.85;
+}
+
+.detail-card,
+.detail-comments-card {
+  width: 100%;
+  background: var(--detail-white);
+  border-radius: 14px;
+}
+
+.detail-card {
+  padding: 20px;
+}
+
+.detail-content {
+  width: 100%;
+}
+
+
+/* ==========================================
+   4. FOTO DAN BADGE
+   ========================================== */
+
+.detail-image-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.7 / 1;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #F1F1F1;
+}
+
+.detail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-image-fallback {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: #888888;
+  font-size: 14px;
+}
+
+.detail-category,
+.detail-status {
+  position: absolute;
+  top: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.detail-category {
+  left: 20px;
+  background: #FFFFFF;
+  border: 1px solid var(--detail-border);
+  color: var(--detail-green);
+}
+
+.detail-status {
+  right: 20px;
+  background: #FFBF00;
+  color: #111111;
+}
+
+.detail-status[data-status="dalam perbaikan"] {
+  background: #DBECFF;
+  color: #13519B;
+}
+
+.detail-status[data-status="selesai"] {
+  background: #DCF5E6;
+  color: #116D3F;
+}
+
+.detail-status[data-status="ditolak"] {
+  background: #FFE1DF;
+  color: #BD251B;
+}
+
+
+/* ==========================================
+   5. INFORMASI PENGADUAN
+   ========================================== */
+
+.detail-title {
+  margin: 24px 16px 30px;
+  color: var(--detail-green);
+  font-size: 24px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.detail-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0 16px 36px;
+}
+
+.detail-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: #444444;
+  font-size: 15px;
+}
+
+.detail-meta-item svg {
+  flex-shrink: 0;
+}
+
+.detail-meta-item span {
+  overflow-wrap: anywhere;
+}
+
+.detail-description-section {
+  margin-bottom: 18px;
+}
+
+.detail-description-section h2 {
+  margin: 0 16px 14px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.detail-description {
+  min-height: 90px;
+  padding: 18px;
+  border: 1px solid var(--detail-border);
+  border-radius: 13px;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   6. DUKUNGAN PENGADUAN
+   ========================================== */
+
+.detail-support {
+  padding: 20px;
+  border: 1px solid var(--detail-border);
+  border-radius: 13px;
+}
+
+.detail-support h2 {
+  margin: 0 0 10px;
+  color: var(--detail-green);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.detail-support p {
+  margin: 0 0 28px;
+  color: var(--detail-green);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.detail-vote-group {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  border: 1px solid var(--detail-border);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.detail-vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border: 0;
+  background: transparent;
+  color: #A7A7A7;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.detail-vote-btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.detail-vote-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.detail-vote-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--detail-border);
+}
+
+
+/* ==========================================
+   7. KOMENTAR
+   ========================================== */
+
+.detail-comments-card {
+  margin-top: 18px;
+  padding: 20px;
+}
+
+.detail-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.detail-comment-item {
+  padding: 14px 18px;
+  border: 1px solid var(--detail-border);
+  border-radius: 13px;
+}
+
+.detail-comment-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.detail-comment-author {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.detail-comment-date {
+  font-size: 13px;
+  text-align: right;
+}
+
+.detail-comment-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.detail-comments-title {
+  margin: 0 16px 24px;
+  color: var(--detail-green);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.detail-comment-form {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.detail-comment-form textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 70px;
+  padding: 16px;
+  border: 1px solid var(--detail-border);
+  border-radius: 13px;
+  resize: vertical;
+  outline: none;
+  font-size: 14px;
+}
+
+.detail-comment-form textarea:focus {
+  border-color: var(--detail-green);
+}
+
+.detail-comment-form button {
+  width: 130px;
+  border: 0;
+  border-radius: 13px;
+  background: var(--detail-green);
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.detail-comment-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.detail-comment-info {
+  margin: 8px 0 0;
+  color: #777777;
+  font-size: 12px;
+}
+
+
+/* ==========================================
+   8. LOADING / ERROR / NOT FOUND
+   ========================================== */
+
+.detail-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 520px;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.detail-state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 105px;
+  height: 105px;
+  margin-bottom: 18px;
+  border: 1px solid var(--detail-green);
+  border-radius: 50%;
+}
+
+.detail-state-icon.is-error {
+  border-color: #E21B12;
+}
+
+.detail-state-icon.is-error::before {
+  content: "!";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border: 3px solid #E21B12;
+  border-radius: 50%;
+  color: #E21B12;
+  font-size: 34px;
+}
+
+.detail-state-icon.is-not-found::before {
+  content: "?";
+  color: var(--detail-green);
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.detail-state-icon.is-forbidden::before {
+  content: "×";
+  color: #E21B12;
+  font-size: 55px;
+}
+
+.detail-state-icon.is-forbidden {
+  border-color: #E21B12;
+}
+
+.detail-spinner {
+  width: 44px;
+  height: 44px;
+  border: 5px solid #CFD5D3;
+  border-top-color: var(--detail-green);
+  border-radius: 50%;
+  animation: detailSpin 0.9s linear infinite;
+}
+
+@keyframes detailSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.detail-state h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.detail-state p {
+  max-width: 340px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.detail-retry-btn {
+  min-width: 155px;
+  margin-top: 24px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--detail-green);
+  color: #FFFFFF;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+/* ==========================================
+   9. RESPONSIVE MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+  .detail-navbar,
+  .detail-navbar-inner {
+    min-height: 60px;
+  }
+
+  .detail-navbar-inner {
+    padding: 10px 16px;
+  }
+
+  .detail-navbar-logo {
+    width: 35px;
+    height: 35px;
+    font-size: 9px;
+  }
+
+  .detail-navbar-text strong {
+    font-size: 11px;
+  }
+
+  .detail-navbar-text span {
+    font-size: 8px;
+  }
+
+  .detail-navbar-text small {
+    font-size: 7px;
+  }
+
+  .detail-avatar {
+    width: 31px;
+    height: 31px;
+    font-size: 12px;
+  }
+
+  .detail-page {
+    padding: 20px 16px 32px;
+  }
+
+  .detail-back {
+    gap: 8px;
+    margin-bottom: 22px;
+    font-size: 17px;
+  }
+
+  .detail-card,
+  .detail-comments-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .detail-image-wrapper {
+    aspect-ratio: 1.7 / 1;
+    border-radius: 10px;
+  }
+
+  .detail-category,
+  .detail-status {
+    top: 14px;
+    min-height: 26px;
+    padding: 4px 11px;
+    font-size: 10px;
+  }
+
+  .detail-category {
+    left: 14px;
+  }
+
+  .detail-status {
+    right: 14px;
+  }
+
+  .detail-title {
+    margin: 20px 10px 28px;
+    font-size: 20px;
+  }
+
+  .detail-meta {
+    margin: 0 10px 28px;
+    gap: 12px;
+  }
+
+  .detail-meta-item {
+    font-size: 12px;
+    gap: 7px;
+  }
+
+  .detail-meta-item svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .detail-description-section h2 {
+    margin: 0 10px 12px;
+    font-size: 12px;
+  }
+
+  .detail-description {
+    min-height: 75px;
+    padding: 13px;
+    font-size: 12px;
+  }
+
+  .detail-support {
+    padding: 14px;
+  }
+
+  .detail-support h2 {
+    font-size: 15px;
+  }
+
+  .detail-support p {
+    margin-bottom: 22px;
+    font-size: 12px;
+  }
+
+  .detail-vote-btn {
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .detail-comment-item {
+    padding: 12px;
+  }
+
+  .detail-comment-author {
+    font-size: 12px;
+  }
+
+  .detail-comment-date,
+  .detail-comment-text {
+    font-size: 11px;
+  }
+
+  .detail-comments-title {
+    margin: 0 8px 18px;
+    font-size: 14px;
+  }
+
+  .detail-comment-form {
+    gap: 10px;
+  }
+
+  .detail-comment-form textarea {
+    padding: 12px;
+    font-size: 11px;
+  }
+
+  .detail-comment-form button {
+    width: 95px;
+    font-size: 14px;
+  }
+
+  .detail-state {
+    min-height: 430px;
+  }
+
+  .detail-state h2 {
+    font-size: 17px;
+  }
+
+  .detail-state p {
+    font-size: 11px;
+  }
+}
+
+
+/* ==========================================
+   10. MOBILE LANDSCAPE
+   ========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  .detail-page {
+    padding-top: 16px;
+  }
+
+  .detail-state {
+    min-height: 320px;
+  }
+
+  .detail-image-wrapper {
+    aspect-ratio: 2 / 1;
+  }
+}
