@@ -1,6 +1,14 @@
 
     document.addEventListener('DOMContentLoaded', () => {
 
+        // Memeriksa ulang halaman ketika kembali dari BFCache.
+        // Reload membuat proses pemeriksaan autentikasi dijalankan lagi.
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+
         // Mengambil informasi pengguna dari localStorage melalui api.js.
         // Data ini digunakan untuk tampilan profil di dashboard.
         // Status login sebenarnya tetap diverifikasi oleh backend PHP
@@ -29,7 +37,6 @@
 
         const profileBtn = document.getElementById('profileBtn');
         const profileDropdown = document.getElementById('profileDropdown');
-        const logoutBtn = document.getElementById('logoutBtn');
 
         const reportsContainer = document.getElementById('reportsContainer');
         const loadingState = document.getElementById('loadingState');
@@ -184,7 +191,7 @@ diproses: {
         const setUserInfo = (user) => {
             if (!user) return;
 
-            const nama = user.nama || currentUser.nama;
+            const nama = user.nama || currentUser?.nama;
 
             if (nama && welcomeText) {
                 welcomeText.textContent = `Halo, ${nama}!`;
@@ -242,157 +249,6 @@ diproses: {
         }
 
         
-        // =========================================================
-        // 7. LOGOUT SIDEBAR
-        // =========================================================
-
-        // Mengambil elemen modal dari HTML
-        const logoutOverlay = document.getElementById('logoutModalOverlay');
-        const logoutConfirmState = document.getElementById('logoutConfirmState');
-        const logoutLoadingState = document.getElementById('logoutLoadingState');
-        const logoutErrorState = document.getElementById('logoutErrorState');
-        const logoutSuccessToast = document.getElementById('logoutSuccessToast');
-
-        // Mengambil tombol pada modal
-        const cancelLogout = document.getElementById('btnCancelLogout');
-        const confirmLogout = document.getElementById('btnConfirmLogout');
-        const retryLogout = document.getElementById('btnRetryLogout');
-
-        // Mencegah proses logout dijalankan berkali-kali
-        let loggingOut = false;
-
-        // Mengatur tampilan modal berdasarkan kondisi
-        function showLogoutState(state) {
-            logoutConfirmState.style.display =
-                state === 'confirm' ? 'flex' : 'none';
-
-            logoutLoadingState.style.display =
-                state === 'loading' ? 'flex' : 'none';
-
-            logoutErrorState.style.display =
-                state === 'error' ? 'flex' : 'none';
-        }
-
-        
-if (logoutBtn && logoutOverlay) {
-    logoutBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-
-        if (loggingOut) return;
-
-        showLogoutState('confirm');
-        logoutOverlay.classList.add('active');
-    });
-}
-
-
-        // Menutup modal konfirmasi
-        function closeLogoutModal() {
-            if (loggingOut) return;
-
-            logoutOverlay.classList.remove('active');
-        }
-
-        // Tombol Batal
-if (cancelLogout) {
-    cancelLogout.addEventListener('click', closeLogoutModal);
-}
-
-        // Mengirim permintaan logout ke backend melalui apiLogout().
-        // Selama proses berlangsung, tombol dicegah agar tidak
-        // menjalankan logout berulang kali.
-        // Menjalankan proses Logout
-        async function performLogout() {
-            if (loggingOut) return;
-
-            
-loggingOut = true;
-
-// Tampilkan modal Loading
-showLogoutState('loading');
-
-// Mencatat waktu mulai untuk memastikan animasi Loading
-// Logout terlihat minimal 1,5 detik.
-// Catat waktu mulai Loading
-const loadingStartTime = Date.now();
-
-try {
-    // Mengirim permintaan Logout ke backend
-    const result = await apiLogout();
-
-    // Menghitung waktu Loading yang sudah berlalu
-    const elapsedTime = Date.now() - loadingStartTime;
-
-    // Pastikan Loading terlihat minimal 1,5 detik
-    if (elapsedTime < 1500) {
-        await new Promise(resolve => {
-            setTimeout(resolve, 1500 - elapsedTime);
-        });
-    }
-
-
-                // Memastikan Logout berhasil di server
-                if (!result.ok) {
-                    throw new Error(result.message || 'Logout gagal');
-                }
-
-                // Menghapus data pengguna di frontend
-                if (typeof clearUserSession === 'function') {
-                    clearUserSession();
-                } else {
-                    localStorage.removeItem('user');
-                }
-
-                
-            
-            
-// Menyembunyikan modal konfirmasi dan loading
-showLogoutState('');
-
-// Mengaktifkan overlay gelap
-logoutOverlay.classList.add('active');
-logoutOverlay.classList.add('logout-success-active');
-
-// Menampilkan popup Logout Berhasil
-logoutSuccessToast.style.display = 'flex';
-
-// Setelah 2 detik, arahkan ke halaman Login
-setTimeout(() => {
-    logoutSuccessToast.style.display = 'none';
-
-    logoutOverlay.classList.remove('active');
-    logoutOverlay.classList.remove('logout-success-active');
-
-    window.location.replace('login.html');
-}, 2000);
-
-
-
-
-
-
-            } catch (error) {
-                console.error('Logout error:', error);
-
-                // Menampilkan modal Logout Gagal
-                showLogoutState('error');
-
-            } finally {
-                loggingOut = false;
-            }
-        }
-
-        
-        // Tombol Ya, Logout
-        if (confirmLogout) {
-            confirmLogout.addEventListener('click', performLogout);
-        }
-
-        // Tombol Coba Lagi
-        if (retryLogout) {
-            retryLogout.addEventListener('click', performLogout);
-        }
-
 
         // Menampilkan kartu pengaduan berdasarkan data dari backend.
         // Jika tidak ada pengaduan, tampilkan Empty State.
@@ -509,7 +365,47 @@ reportsContainer.style.display = 'flex';
                     </div>
                 `;
 
+                
+                // ==========================================
+                // NAVIGASI KE DETAIL PENGADUAN
+                // ==========================================
+
+                // Mengambil ID pengaduan dari data backend.
+                const idPengaduan = item.id_pengaduan;
+
+                // Pastikan ID valid sebelum kartu dibuat interaktif.
+                if (
+                    Number.isSafeInteger(Number(idPengaduan)) &&
+                    Number(idPengaduan) > 0
+                ) {
+
+                    // Menjadikan seluruh kartu bisa diklik.
+                    card.style.cursor = 'pointer';
+
+                    // Supaya kartu juga bisa diakses melalui keyboard.
+                    card.setAttribute('role', 'link');
+                    card.setAttribute('tabindex', '0');
+
+                    // Fungsi untuk membuka halaman detail.
+                    const bukaDetail = () => {
+                        window.location.href =
+                            `detail-pengaduan.html?id_pengaduan=${encodeURIComponent(idPengaduan)}`;
+                    };
+
+                    // Ketika kartu diklik.
+                    card.addEventListener('click', bukaDetail);
+
+                    // Ketika kartu dipilih menggunakan keyboard.
+                    card.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter') {
+                            bukaDetail();
+                        }
+                    });
+                }
+
+                // Memasukkan kartu ke Dashboard.
                 reportsContainer.appendChild(card);
+
             });
         };
 
@@ -692,6 +588,11 @@ reportsContainer.style.display = 'flex';
         // =========================================================
         // 11. FILTER STATUS
         // =========================================================
+        // FILTER STATUS
+        // Ketika filter dipilih, status pengaduan diperbarui,
+        // halaman dikembalikan ke halaman pertama,
+        // kemudian data diminta ulang dari backend.
+
         chips.forEach(chip => {
             chip.addEventListener('click', () => {
                 chips.forEach(c => c.classList.remove('active'));
@@ -711,6 +612,10 @@ if (reportsContainer && loadingState) {
         // =========================================================
         // 12. PENCARIAN
         // =========================================================
+        // PENCARIAN
+        // Menggunakan debounce 400 milidetik agar request API
+        // tidak dikirim setiap kali pengguna mengetik satu huruf.
+
         let searchTimeout;
 
         if (searchInput) {
@@ -729,6 +634,11 @@ if (reportsContainer && loadingState) {
         // =========================================================
         // 13. NAVIGASI PAGINATION
         // =========================================================
+        // PAGINATION
+        // Mengatur halaman aktif dan meminta data sesuai nomor
+        // halaman yang dipilih. Tombol Sebelumnya dan Berikutnya
+        // dinonaktifkan pada batas halaman.
+
         if (prevPage) {
             prevPage.addEventListener('click', () => {
                 if (currentPage > 1) {
@@ -772,6 +682,10 @@ if (reportsContainer && loadingState) {
         // =========================================================
         // 14. TOMBOL COBA LAGI
         // =========================================================
+        // RETRY
+        // Jika pengambilan data gagal, tombol Coba Lagi
+        // menjalankan ulang fetchPengaduanData().
+
         if (btnRetry) {
             btnRetry.addEventListener('click', fetchPengaduanData);
         }

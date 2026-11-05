@@ -178,8 +178,9 @@ function validateFullname() {
    VALIDASI EMAIL
    ============================================================ */
 function validateEmail() {
+
     const value = emailInput.value.trim();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (!value) {
         showError(emailInput, 'E-mail wajib diisi.');
@@ -261,6 +262,13 @@ fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonS
     emailInput.addEventListener('blur', () => { validateEmail(); updateButtonState(); });
     passwordInput.addEventListener('blur', () => { validatePassword(); updateButtonState(); });
     confirmPasswordInput.addEventListener('blur', () => { validateConfirmPassword(); updateButtonState(); });
+
+    emailInput.addEventListener("input", () => {
+    emailInput.value = emailInput.value.replace(
+        /[^A-Za-z0-9@._-]/g,
+        ""
+    );
+});
 
     passwordInput.addEventListener('input', () => {
         hideMessage();

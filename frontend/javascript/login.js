@@ -252,8 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // SUBMIT LOGIN
     // =========================
 
-    // Event submit berjalan ketika pengguna mengirim form Login.
-    // preventDefault mencegah reload halaman secara otomatis.
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         hideMessage();
@@ -289,11 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Memanggil apiLogin(email, password) dari api.js.
-            // Fungsi tersebut menggunakan apiRequest() dan fetch()
             const response = await apiLogin(email, password);
 
-            // Jika respons API tidak tersedia,
-            // tampilkan kesalahan server atau koneksi.
             if (!response) {
                 showMessage(navigator.onLine ? 'server' : 'offline');
                 return;
@@ -316,16 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Redirect ke Dashboard setelah notifikasi sukses
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.replace('dashboard.html');
                 }, 1500);
 
                 return;
             }
 
             // Memeriksa jenis kegagalan berdasarkan respons API.
-            // 0 berarti helper API gagal memperoleh respons HTTP.
-            // 401/403 berkaitan dengan kegagalan autentikasi/akses.
-            
+
+
             if (
                 response.httpStatus === 0 ||
                 !navigator.onLine
@@ -381,7 +375,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Menampilkan notifikasi jika koneksi terputus
     // ketika halaman Login sedang terbuka.
+    
+    // =========================================
+    // NOTIFIKASI SAAT KONEKSI TERPUTUS
+    // =========================================
+
     window.addEventListener('offline', () => {
         showMessage('offline');
     });
+
+
+    // =========================================
+    // RESET LOGIN SAAT KEMBALI DARI BROWSER BACK
+    // =========================================
+
+    window.addEventListener('pageshow', (event) => {
+
+        // Hanya reset ketika halaman dipulihkan dari BFCache.
+        if (!event.persisted) return;
+
+        // Kosongkan email dan password.
+        loginForm.reset();
+
+        emailInput.value = '';
+        passwordInput.value = '';
+
+        // Hapus pesan validasi.
+        setEmailError('');
+        setPasswordError('');
+
+        // Hilangkan notifikasi sebelumnya.
+        hideMessage();
+
+        // Kembalikan tombol Login ke kondisi awal.
+        submitBtn.dataset.loading = 'false';
+        submitBtn.textContent = 'Login';
+
+        updateButtonState();
+    });
+
 });
