@@ -1,8 +1,15 @@
+
 document.addEventListener("DOMContentLoaded", () => {
+
+  // =========================================================
+  // 1. ELEMEN FORM
+  // =========================================================
+
+  // Menghubungkan JavaScript dengan elemen form pada HTML.
   const form = document.getElementById("formPengaduan");
   const btnSubmit = document.getElementById("btnSubmit");
 
-  // Elemen Input
+  // Elemen input pengaduan.
   const inputJudul = document.getElementById("judul");
   const inputKategori = document.getElementById("kategori");
   const customSelectWrapper = document.getElementById("customSelectWrapper");
@@ -13,25 +20,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputDeskripsi = document.getElementById("deskripsi");
   const inputFile = document.getElementById("file-upload");
 
-  // Elemen Error (di bawah input)
+  // Elemen pesan validasi di bawah input.
   const errorJudul = document.getElementById("errorJudul");
   const errorKategori = document.getElementById("errorKategori");
   const errorLokasi = document.getElementById("errorLokasi");
   const errorDeskripsi = document.getElementById("errorDeskripsi");
   const errorFoto = document.getElementById("errorFoto");
 
-  // Elemen Upload
+  // Elemen untuk menampilkan nama file yang dipilih.
   const uploadWrapper = document.getElementById("uploadWrapper");
   const fileNameDisplay = document.getElementById("fileName");
 
-  // Elemen Notifikasi Atas
+  // Elemen notifikasi hasil pengiriman.
   const formNotification = document.getElementById("formNotification");
   const notifIcon = document.getElementById("notifIcon");
   const notifTitle = document.getElementById("notifTitle");
   const notifDesc = document.getElementById("notifDesc");
 
+  // Menandai apakah proses pengiriman sedang berlangsung.
   let isSubmitting = false;
 
+
+  // =========================================================
+  // 2. VALIDASI FORM DAN FOTO
+  // =========================================================
+
+  // Memastikan semua kolom wajib sudah diisi sebelum submit.
   const isFormValid = () => {
     return (
       inputJudul.value.trim() !== "" &&
@@ -42,89 +56,97 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   };
 
+
+  // Memeriksa format, ukuran, dan dimensi gambar yang diunggah.
+  // Fungsi async digunakan karena proses membaca gambar
+  // memerlukan waktu sebelum hasil validasinya tersedia.
   const validateFile = async () => {
-  const file = inputFile.files[0];
+    const file = inputFile.files[0];
 
-  
-if (!file) {
-    setFotoError("Bukti foto wajib diisi.");
-    return false;
-}
-
-
-  const allowedTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/webp",
-  ];
-
-  
-if (!allowedTypes.includes(file.type)) {
-    setFotoError(
-        "Format file tidak didukung. Gunakan JPG, PNG, WebP."
-    );
-    return false;
-}
-
-
-
-if (file.size === 0 || file.size > 10 * 1024 * 1024) {
-    setFotoError(
-        file.size === 0
-            ? "File foto tidak boleh kosong."
-            : "Ukuran file terlalu besar. Maksimal 10 MB."
-    );
-    return false;
-}
-
-
-  // Periksa apakah file benar-benar gambar dan dimensinya valid
-  const image = new Image();
-  const imageUrl = URL.createObjectURL(file);
-
-  try {
-    await new Promise((resolve, reject) => {
-      image.onload = resolve;
-      image.onerror = reject;
-      image.src = imageUrl;
-    });
-
-    const width = image.naturalWidth;
-    const height = image.naturalHeight;
-    const megapixels = (width * height) / 1_000_000;
-
-    if (
-      width > 6000 ||
-      height > 6000 ||
-      megapixels > 20
-    ) {
-      
-setFotoError(
-    "Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel."
-);
-
-
+    // Foto wajib dipilih sebelum pengaduan dikirim.
+    if (!file) {
+      setFotoError("Bukti foto wajib diisi.");
       return false;
     }
 
-  } catch {
-    
-setFotoError(
-    "File yang diunggah bukan gambar yang valid."
-);
+    // Hanya menerima gambar JPEG, PNG, atau WebP.
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
 
-    return false;
+    if (!allowedTypes.includes(file.type)) {
+      setFotoError(
+        "Format file tidak didukung. Gunakan JPG, PNG, WebP."
+      );
+      return false;
+    }
 
-  } finally {
-    URL.revokeObjectURL(imageUrl);
-  }
+    // Batas ukuran file maksimal 10 MB.
+    if (file.size === 0 || file.size > 10 * 1024 * 1024) {
+      setFotoError(
+        file.size === 0
+          ? "File foto tidak boleh kosong."
+          : "Ukuran file terlalu besar. Maksimal 10 MB."
+      );
+      return false;
+    }
 
-  hideError(errorFoto, uploadWrapper);
-  return true;
-};
+    // Membaca gambar untuk memastikan file dapat dibuka
+    // dan memiliki dimensi yang sesuai ketentuan.
+    const image = new Image();
+    const imageUrl = URL.createObjectURL(file);
 
+    try {
+      await new Promise((resolve, reject) => {
+        image.onload = resolve;
+        image.onerror = reject;
+        image.src = imageUrl;
+      });
+
+      const width = image.naturalWidth;
+      const height = image.naturalHeight;
+      const megapixels = (width * height) / 1_000_000;
+
+      // Menolak gambar jika melebihi batas dimensi
+      // atau jumlah megapiksel yang diperbolehkan.
+      if (
+        width > 6000 ||
+        height > 6000 ||
+        megapixels > 20
+      ) {
+        setFotoError(
+          "Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel."
+        );
+        return false;
+      }
+
+    } catch {
+      // Menangani file yang tidak dapat dibaca sebagai gambar.
+      setFotoError(
+        "File yang diunggah bukan gambar yang valid."
+      );
+      return false;
+
+    } finally {
+      // Menghapus URL sementara setelah pemeriksaan selesai.
+      URL.revokeObjectURL(imageUrl);
+    }
+
+    hideError(errorFoto, uploadWrapper);
+    return true;
+  };
+
+
+  // =========================================================
+  // 3. TAMPILAN PESAN VALIDASI
+  // =========================================================
+
+  // Menampilkan pesan kesalahan dan border merah pada input.
   const showError = (element, wrapper = null) => {
     element.classList.add("active");
+
     if (wrapper) {
       wrapper.classList.add("input-error");
     } else {
@@ -135,8 +157,11 @@ setFotoError(
     }
   };
 
+
+  // Menghilangkan pesan error ketika input sudah diperbaiki.
   const hideError = (element, wrapper = null) => {
     element.classList.remove("active");
+
     if (wrapper) {
       wrapper.classList.remove("input-error");
     } else {
@@ -147,254 +172,272 @@ setFotoError(
     }
   };
 
-  
-/* ==========================================
-   PESAN ERROR KHUSUS BUKTI FOTO
-   ========================================== */
 
-const setFotoError = (message) => {
+  // Mengubah teks error foto tanpa menghapus ikon SVG-nya.
+  const setFotoError = (message) => {
     const errorFotoText = errorFoto.querySelector("span");
 
     if (errorFotoText) {
-        errorFotoText.textContent = message;
+      errorFotoText.textContent = message;
     }
 
     showError(errorFoto, uploadWrapper);
-};
-
-
-  // ==========================================
-// FUNGSI NOTIFIKASI
-// ==========================================
-
-let notificationTimer;
-let notificationHideTimer;
-
-const showNotification = (type, title, desc) => {
-
-  // Hentikan timer notifikasi sebelumnya
-  clearTimeout(notificationTimer);
-  clearTimeout(notificationHideTimer);
-
-  
-
-const iconSuccess = `
-  <svg width="41" height="41"
-       viewBox="0 0 41 41"
-       xmlns="http://www.w3.org/2000/svg">
-
-    <circle
-      cx="20.5"
-      cy="20.5"
-      r="20"
-      fill="#15A367"
-    />
-
-    <path
-      d="M17.2 27.8L10.5 21.1L13.3 18.3L17.2 22.2L27.7 11.7L30.5 14.5Z"
-      fill="#FFFFFF"
-      style="fill: #FFFFFF !important;"
-    />
-
-  </svg>`;
-
-
-
-  const iconError = `
-    <svg width="40" height="40" viewBox="0 0 40 40"
-      fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 0C31.0457 0 40 8.9543 40 20C40 31.0457 31.0457 40 20 40C8.9543 40 0 31.0457 0 20C0 8.9543 8.9543 0 20 0ZM22.207 20L28.8867 13.3203L26.6797 11.1133L20 17.793L13.3203 11.1133L11.1133 13.3203L17.793 20L11.1133 26.6797L13.3203 28.8867L20 22.207L26.6797 28.8867L28.8867 26.6797L22.207 20Z"
-      fill="#C41B1B"/>
-    </svg>`;
-
-  const iconOffline = `
-    <svg width="48" height="48" viewBox="0 0 48 48"
-      fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M2 17C14.5 5 33.5 5 46 17L42 21C31.7 11.5 16.3 11.5 6 21L2 17ZM10 25C18 17.5 30 17.5 38 25L34 29C28.5 24 19.5 24 14 29L10 25ZM18 33C21.3 30 26.7 30 30 33L24 39L18 33Z"
-      fill="#FFB000"/>
-    </svg>`;
-
-  // Tentukan ikon berdasarkan tipe notifikasi
-  const icons = {
-    success: iconSuccess,
-    error: iconError,
-    offline: iconOffline
   };
 
-  notifIcon.innerHTML = icons[type] || iconError;
 
-  notifTitle.textContent = title;
-  notifDesc.textContent = desc;
+  // =========================================================
+  // 4. NOTIFIKASI HASIL PENGIRIMAN
+  // =========================================================
 
-  // Atur class notifikasi
-  formNotification.className = `form-message ${type}`;
+  // Timer digunakan agar notifikasi otomatis menghilang
+  // setelah ditampilkan selama beberapa detik.
+  let notificationTimer;
+  let notificationHideTimer;
 
-  // Tampilkan notifikasi
-  formNotification.style.display = "flex";
+  const showNotification = (type, title, desc) => {
 
-  requestAnimationFrame(() => {
-    formNotification.classList.add("show");
-  });
+    // Menghentikan timer sebelumnya agar notifikasi
+    // yang baru tidak terganggu oleh timer lama.
+    clearTimeout(notificationTimer);
+    clearTimeout(notificationHideTimer);
 
-  // Kembali ke bagian atas halaman
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+    // Ikon notifikasi ketika pengaduan berhasil dikirim.
+    const iconSuccess = `
+      <svg width="41" height="41"
+           viewBox="0 0 41 41"
+           xmlns="http://www.w3.org/2000/svg">
+        <circle
+          cx="20.5"
+          cy="20.5"
+          r="20"
+          fill="#15A367"
+        />
+        <path
+          d="M17.2 27.8L10.5 21.1L13.3 18.3L17.2 22.2L27.7 11.7L30.5 14.5Z"
+          fill="#FFFFFF"
+          style="fill: #FFFFFF !important;"
+        />
+      </svg>`;
 
-  // Hilangkan notifikasi setelah 5 detik
-  notificationTimer = setTimeout(() => {
+    // Ikon notifikasi ketika pengiriman gagal.
+    const iconError = `
+      <svg width="40" height="40" viewBox="0 0 40 40"
+           fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 0C31.0457 0 40 8.9543 40 20C40 31.0457 31.0457 40 20 40C8.9543 40 0 31.0457 0 20C0 8.9543 8.9543 0 20 0ZM22.207 20L28.8867 13.3203L26.6797 11.1133L20 17.793L13.3203 11.1133L11.1133 13.3203L17.793 20L11.1133 26.6797L13.3203 28.8867L20 22.207L26.6797 28.8867L28.8867 26.6797L22.207 20Z"
+          fill="#C41B1B"/>
+      </svg>`;
+
+    // Ikon notifikasi ketika koneksi internet terputus.
+    const iconOffline = `
+      <svg width="48" height="48" viewBox="0 0 48 48"
+           fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 17C14.5 5 33.5 5 46 17L42 21C31.7 11.5 16.3 11.5 6 21L2 17ZM10 25C18 17.5 30 17.5 38 25L34 29C28.5 24 19.5 24 14 29L10 25ZM18 33C21.3 30 26.7 30 30 33L24 39L18 33Z"
+          fill="#FFB000"/>
+      </svg>`;
+
+    // Memilih ikon berdasarkan jenis notifikasi.
+    const icons = {
+      success: iconSuccess,
+      error: iconError,
+      offline: iconOffline
+    };
+
+    notifIcon.innerHTML = icons[type] || iconError;
+
+    notifTitle.textContent = title;
+    notifDesc.textContent = desc;
+
+    // Menyesuaikan warna notifikasi melalui class CSS.
+    formNotification.className = `form-message ${type}`;
+
+    formNotification.style.display = "flex";
+
+    // Mengaktifkan animasi munculnya notifikasi.
+    requestAnimationFrame(() => {
+      formNotification.classList.add("show");
+    });
+
+    // Menggulir halaman ke atas agar notifikasi terlihat.
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+    // Notifikasi hilang setelah 5 detik,
+    // dengan waktu transisi tambahan 300 milidetik.
+    notificationTimer = setTimeout(() => {
+      formNotification.classList.remove("show");
+
+      notificationHideTimer = setTimeout(() => {
+        formNotification.style.display = "none";
+      }, 300);
+
+    }, 5000);
+  };
+
+
+  // Menyembunyikan notifikasi yang sedang ditampilkan.
+  const hideNotification = () => {
+    clearTimeout(notificationTimer);
+    clearTimeout(notificationHideTimer);
 
     formNotification.classList.remove("show");
 
     notificationHideTimer = setTimeout(() => {
       formNotification.style.display = "none";
     }, 300);
-
-  }, 5000);
-};
+  };
 
 
-// Fungsi menyembunyikan notifikasi
-const hideNotification = () => {
+  // =========================================================
+  // 5. MENGAMBIL DATA FASILITAS DARI BACKEND
+  // =========================================================
 
-  clearTimeout(notificationTimer);
-  clearTimeout(notificationHideTimer);
-
-  formNotification.classList.remove("show");
-
-  notificationHideTimer = setTimeout(() => {
-    formNotification.style.display = "none";
-  }, 300);
-};
-
+  // Menggunakan GET untuk mengambil pilihan fasilitas.
+  // Respons backend juga digunakan untuk memeriksa
+  // apakah session login pengguna masih valid.
   const loadFasilitas = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/pengaduan.php`, {
-      method: "GET",
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/pengaduan.php`, {
+        method: "GET",
+        credentials: "same-origin",
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
+      // Mengubah respons JSON menjadi objek JavaScript.
+      const result = await response.json();
 
-    
+      // Jika backend mengembalikan 401,
+      // pengguna diarahkan kembali ke halaman Login.
+      if (response.status === 401) {
+        clearUserSession();
+        window.location.replace("login.html");
+        return;
+      }
 
-const result = await response.json();
+      // Jika request gagal atau status aplikasi bukan success,
+      // proses dialihkan ke catch.
+      if (!response.ok || result.status !== "success") {
+        throw new Error(result.message || "Gagal memuat fasilitas.");
+      }
 
-// Jika belum login atau session sudah berakhir
-if (response.status === 401) {
-  clearUserSession();
-  window.location.replace("login.html");
-  return;
-}
+      // Menampilkan halaman hanya setelah pemeriksaan
+      // melalui endpoint backend berhasil.
+      document.documentElement.classList.add("auth-verified");
 
-if (!response.ok || result.status !== "success") {
-  throw new Error(result.message || "Gagal memuat fasilitas.");
-}
+      // Mengambil daftar fasilitas dari respons API.
+      const facilityList = result.data?.fasilitas ?? [];
 
-// Sesi telah diverifikasi oleh backend
-document.documentElement.classList.add("auth-verified");
+      customOptions.innerHTML = "";
+      inputKategori.value = "";
+      selectLabel.textContent = "Pilih Fasilitas";
+      selectLabel.classList.remove("has-value");
 
-    // Kontrak API 1.3: data langsung berupa array
-    
-const facilityList = result.data?.fasilitas ?? [];
+      // Menampilkan informasi jika daftar fasilitas kosong.
+      if (!Array.isArray(facilityList) || facilityList.length === 0) {
+        selectLabel.textContent = "Fasilitas tidak tersedia";
+        return;
+      }
 
+      // Membuat pilihan dropdown berdasarkan fasilitas
+      // yang dikirim dari database melalui backend.
+      facilityList.forEach((fasilitas) => {
+        const option = document.createElement("div");
 
-    customOptions.innerHTML = "";
-    inputKategori.value = "";
-    selectLabel.textContent = "Pilih Fasilitas";
-    selectLabel.classList.remove("has-value");
+        option.className = "custom-option";
+        option.dataset.value = fasilitas.id_fasilitas;
+        option.textContent = fasilitas.nama_fasilitas;
 
-    if (!Array.isArray(facilityList) || facilityList.length === 0) {
-      selectLabel.textContent = "Fasilitas tidak tersedia";
-      return;
-    }
+        customOptions.appendChild(option);
+      });
 
-    facilityList.forEach((fasilitas) => {
-      const option = document.createElement("div");
+    } catch (error) {
+      // Jika pemeriksaan gagal, form tidak digunakan
+      // dan diganti dengan informasi kegagalan verifikasi.
+      console.error("Gagal verifikasi sesi:", error);
 
-      option.className = "custom-option";
-      option.dataset.value = fasilitas.id_fasilitas;
-      option.textContent = fasilitas.nama_fasilitas;
-
-      customOptions.appendChild(option);
-    });
-
-  } catch (error) {
-    console.error("Gagal verifikasi sesi:", error);
-
-    document.body.innerHTML = `
+      document.body.innerHTML = `
         <main style="
-            padding: 40px 20px;
-            text-align: center;
-            font-family: Poppins, sans-serif;
+          padding: 40px 20px;
+          text-align: center;
+          font-family: Poppins, sans-serif;
         ">
-            <h3>Halaman belum dapat dibuka</h3>
-            <p>Gagal memverifikasi sesi login.</p>
-            <a href="login.html">Kembali ke Login</a>
+          <h3>Halaman belum dapat dibuka</h3>
+          <p>Gagal memverifikasi sesi login.</p>
+          <a href="login.html">Kembali ke Login</a>
         </main>
-    `;
+      `;
 
-    document.documentElement.classList.add("auth-verified");
-}
-};
+      document.documentElement.classList.add("auth-verified");
+    }
+  };
 
-  // ==========================================
-  // LOGIKA SAAT TOMBOL SUBMIT DITEKAN
-  // ==========================================
+
+  // =========================================================
+  // 6. PROSES PENGIRIMAN PENGADUAN
+  // =========================================================
+
+  // Event submit dijalankan ketika tombol Kirim ditekan.
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Mencegah pengiriman ulang selama request berlangsung.
     if (isSubmitting) {
       return;
     }
 
-    
-isSubmitting = true;
-
-hideNotification();
-
+    isSubmitting = true;
 
     hideNotification();
 
+    hideNotification();
+
+    // Memeriksa setiap kolom wajib dan menampilkan error
+    // pada input yang belum diisi.
     if (inputJudul.value.trim() === "") showError(errorJudul);
     if (inputKategori.value === "") showError(errorKategori);
     if (inputLokasi.value.trim() === "") showError(errorLokasi);
     if (inputDeskripsi.value.trim() === "") showError(errorDeskripsi);
+
+    // Menunggu hasil validasi file sebelum mengirim request.
     const fotoValid = await validateFile();
 
-    
-if (!isFormValid() || !fotoValid) {
-    btnSubmit.classList.add("is-disabled");
+    // Jika ada input atau foto tidak valid,
+    // proses dihentikan sebelum menghubungi backend.
+    if (!isFormValid() || !fotoValid) {
+      btnSubmit.classList.add("is-disabled");
 
-    // Kembalikan kondisi tombol karena validasi gagal
-    isSubmitting = false;
-    btnSubmit.textContent = "Kirim Pengaduan";
-    btnSubmit.disabled = false;
+      isSubmitting = false;
+      btnSubmit.textContent = "Kirim Pengaduan";
+      btnSubmit.disabled = false;
 
-    const firstErrorInput = document.querySelector(
+      const firstErrorInput = document.querySelector(
         ".form-control.input-error"
-    );
+      );
 
-    if (firstErrorInput) {
+      if (firstErrorInput) {
         firstErrorInput.focus();
+      }
+
+      return;
     }
-
-    return;
-}
-
 
     btnSubmit.classList.remove("is-disabled");
 
-    // --- MULAI PROSES KE BACKEND ---
+    // Menampilkan Loading dan menonaktifkan tombol
+    // selama data sedang dikirim ke backend.
     btnSubmit.textContent = "Loading...";
     btnSubmit.disabled = true;
     btnSubmit.classList.add("is-loading");
 
     try {
+
+      // FormData digunakan untuk mengirim data teks
+      // sekaligus berkas foto dalam satu request.
       const formData = new FormData();
+
       formData.append("id_fasilitas", inputKategori.value);
       formData.append("judul", inputJudul.value.trim());
       formData.append("lokasi", inputLokasi.value.trim());
@@ -404,8 +447,12 @@ if (!isFormValid() || !fotoValid) {
         formData.append("foto", inputFile.files[0]);
       }
 
+      // Menentukan endpoint pengiriman pengaduan.
       const apiUrl = `${API_BASE_URL}/pengaduan.php`;
 
+      // Menggunakan POST untuk mengirim FormData.
+      // Browser mengatur Content-Type multipart/form-data
+      // beserta boundary secara otomatis.
       const response = await fetch(apiUrl, {
         method: "POST",
         credentials: "same-origin",
@@ -415,33 +462,35 @@ if (!isFormValid() || !fotoValid) {
         body: formData,
       });
 
-      // Cek apakah response mengembalikan JSON
+      // Mengolah respons backend dalam format JSON.
+      // Jika backend mengembalikan HTML/error PHP,
+      // tampilkan pesan respons server tidak valid.
       let result;
+
       try {
         result = await response.json();
       } catch (error) {
-        // Jika backend tidak mereturn JSON (misal error PHP Fatal Error)
         throw new Error(
           "Respon server tidak valid (bukan JSON). Cek tab Network.",
         );
       }
 
-      
-if (response.ok && result.status === "success") {
+      // Jika backend mengonfirmasi berhasil,
+      // tampilkan notifikasi dan kosongkan form.
+      if (response.ok && result.status === "success") {
         showNotification(
           "success",
           "PENGADUAN BERHASIL DIKIRIM",
           "Pengaduan Anda berhasil dikirim. Silakan pantau status pengaduan secara berkala.",
         );
 
-        // Reset form setelah berhasil
         form.reset();
 
         inputKategori.value = "";
         selectLabel.textContent = "Pilih Fasilitas";
         selectLabel.classList.remove("has-value");
 
-        fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB"; 
+        fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB";
 
         hideError(errorJudul);
         hideError(errorKategori);
@@ -451,118 +500,130 @@ if (response.ok && result.status === "success") {
 
         btnSubmit.classList.remove("is-disabled");
         customSelectWrapper.classList.remove("open");
+
+      // HTTP 409 menunjukkan konflik, misalnya pengaduan
+      // sedang diproses sesuai aturan dari backend.
       } else if (response.status === 409) {
-  showNotification(
-    "error",
-    "PENGADUAN SEDANG DIPROSES",
-    result.message || "Pengaduan Anda sedang diproses. Tunggu hingga selesai."
-  );
-
-
-} else if (response.status === 401) {
-  clearUserSession();
-  window.location.replace("login.html");
-  return;
-
-
-} else {
-  showNotification(
-    "error",
-    "PENGADUAN GAGAL DIKIRIM",
-    result.message || "Terjadi kesalahan pada sistem. Silakan coba lagi."
-  );
-}
-
-      } catch (error) {
-    console.error("Error Fetch:", error);
-
-    if (!navigator.onLine) {
-
         showNotification(
-            "offline",
-            "KONEKSI INTERNET TERPUTUS",
-            "Periksa koneksi internet Anda. Silakan coba lagi."
+          "error",
+          "PENGADUAN SEDANG DIPROSES",
+          result.message || "Pengaduan Anda sedang diproses. Tunggu hingga selesai."
         );
 
-    } else {
+      // Jika PHP Session tidak valid,
+      // bersihkan data pengguna lokal dan kembali ke Login.
+      } else if (response.status === 401) {
+        clearUserSession();
+        window.location.replace("login.html");
+        return;
 
+      // Menangani kegagalan lain yang dikirim backend.
+      } else {
         showNotification(
-            "error",
-            "PENGADUAN GAGAL DIKIRIM",
-            error.message || "Terjadi kesalahan pada sistem. Silakan coba lagi."
+          "error",
+          "PENGADUAN GAGAL DIKIRIM",
+          result.message || "Terjadi kesalahan pada sistem. Silakan coba lagi."
+        );
+      }
+
+    } catch (error) {
+      console.error("Error Fetch:", error);
+
+      // Menampilkan notifikasi sesuai kondisi koneksi browser.
+      if (!navigator.onLine) {
+        showNotification(
+          "offline",
+          "KONEKSI INTERNET TERPUTUS",
+          "Periksa koneksi internet Anda. Silakan coba lagi."
         );
 
+      } else {
+        showNotification(
+          "error",
+          "PENGADUAN GAGAL DIKIRIM",
+          error.message || "Terjadi kesalahan pada sistem. Silakan coba lagi."
+        );
+      }
+
+    } finally {
+      // Mengembalikan kondisi tombol setelah proses selesai,
+      // baik berhasil maupun gagal.
+      isSubmitting = false;
+
+      btnSubmit.textContent = "Kirim Pengaduan";
+      btnSubmit.disabled = false;
+      btnSubmit.classList.remove("is-loading");
     }
-}
-
-    finally {
-    isSubmitting = false;
-
-    btnSubmit.textContent = "Kirim Pengaduan";
-    btnSubmit.disabled = false;
-    btnSubmit.classList.remove("is-loading");
-}
   });
 
-  // ==========================================
-  // LOGIKA SAAT USER MENGETIK / MENGISI FORM
-  // ==========================================
+
+  // =========================================================
+  // 7. VALIDASI SAAT PENGGUNA MENGETIK
+  // =========================================================
+
+  // Menghapus error secara langsung ketika pengguna
+  // memperbaiki input yang sebelumnya kosong.
   const handleInput = () => {
 
-    // Hilangkan error jika input sudah diisi
     if (inputJudul.value.trim() !== "") {
-        hideError(errorJudul);
+      hideError(errorJudul);
     }
 
     if (inputKategori.value !== "") {
-        hideError(errorKategori);
+      hideError(errorKategori);
     }
 
     if (inputLokasi.value.trim() !== "") {
-        hideError(errorLokasi);
+      hideError(errorLokasi);
     }
 
     if (inputDeskripsi.value.trim() !== "") {
-        hideError(errorDeskripsi);
+      hideError(errorDeskripsi);
     }
 
-    // Validasi foto hanya jika pengguna sudah memilih file
-        if (inputFile.files.length > 0) {
+    // Memeriksa ulang foto ketika file sudah dipilih.
+    if (inputFile.files.length > 0) {
       validateFile();
     }
 
-    // Aktifkan kembali tampilan tombol jika semua input terisi
+    // Menghapus tampilan disabled apabila kolom sudah terisi.
     if (isFormValid()) {
-        btnSubmit.classList.remove("is-disabled");
+      btnSubmit.classList.remove("is-disabled");
     }
-};
+  };
 
+  // Memantau perubahan pada masing-masing input form.
   inputJudul.addEventListener("input", handleInput);
   inputKategori.addEventListener("change", handleInput);
   inputLokasi.addEventListener("input", handleInput);
   inputDeskripsi.addEventListener("input", handleInput);
 
+  // Menampilkan nama foto setelah pengguna memilih file.
   inputFile.addEventListener("change", () => {
     if (inputFile.files.length > 0) {
       fileNameDisplay.textContent = inputFile.files[0].name;
     } else {
       fileNameDisplay.textContent = "Upload Foto, JPG, PNG.";
     }
+
     handleInput();
   });
 
-  // ==========================================
-// DROPDOWN KATEGORI
-// ==========================================
 
-// Buka dan tutup dropdown
-selectTrigger.addEventListener("click", (e) => {
+  // =========================================================
+  // 8. DROPDOWN PILIHAN FASILITAS
+  // =========================================================
+
+  // Membuka atau menutup dropdown ketika diklik.
+  selectTrigger.addEventListener("click", (e) => {
     e.stopPropagation();
     customSelectWrapper.classList.toggle("open");
-});
+  });
 
-// Pilih kategori
-customOptions.addEventListener("click", (e) => {
+  // Menyimpan fasilitas yang dipilih pengguna.
+  // Nilai ID digunakan untuk request ke backend,
+  // sedangkan nama fasilitas ditampilkan pada halaman.
+  customOptions.addEventListener("click", (e) => {
     const option = e.target.closest(".custom-option");
 
     if (!option) return;
@@ -574,18 +635,27 @@ customOptions.addEventListener("click", (e) => {
 
     customSelectWrapper.classList.remove("open");
 
+    // Memberi tahu form bahwa pilihan fasilitas berubah
+    // agar proses validasi ikut diperbarui.
     inputKategori.dispatchEvent(
-        new Event("change", { bubbles: true })
+      new Event("change", { bubbles: true })
     );
-});
+  });
 
-// Tutup dropdown jika klik di luar
-document.addEventListener("click", (e) => {
+  // Menutup dropdown jika pengguna mengklik area di luarnya.
+  document.addEventListener("click", (e) => {
     if (!customSelectWrapper.contains(e.target)) {
-        customSelectWrapper.classList.remove("open");
+      customSelectWrapper.classList.remove("open");
     }
-});
+  });
 
-  // Muat fasilitas dari database
+
+  // =========================================================
+  // 9. INISIALISASI HALAMAN
+  // =========================================================
+
+  // Mengambil daftar fasilitas dari backend
+  // ketika halaman Buat Pengaduan pertama kali dibuka.
   loadFasilitas();
+
 });
