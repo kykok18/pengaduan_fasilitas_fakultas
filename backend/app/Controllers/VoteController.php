@@ -14,7 +14,7 @@ class VoteController
 
     public function prosesVote()
     {
-        // Identitas pengguna wajib berasal dari session.
+        // Identitas pengguna berasal dari session.
         $id_user = (int) $_SESSION['id_user'];
 
         // Validasi ID pengaduan.
@@ -37,46 +37,35 @@ class VoteController
 
         $tipe_vote = trim($tipe_vote);
 
-        $tipeValid = ['upvote', 'downvote', 'remove'];
+        $tipeValid = ['upvote', 'downvote'];
 
         if (!in_array($tipe_vote, $tipeValid, true)) {
             errorResponse('Jenis vote tidak valid', 400);
         }
 
-        // Pastikan pengaduan tersedia.
-        $pengaduanExists = $this->voteModel->pengaduanExists($id_pengaduan);
+        // Proses vote.
+        $aksi = $this->voteModel->setVote(
+            $id_pengaduan,
+            $id_user,
+            $tipe_vote
+        );
 
-        if ($pengaduanExists === false) {
-            errorResponse('Gagal memeriksa data pengaduan', 500);
-        }
-
-        if (!$pengaduanExists) {
-            errorResponse('Pengaduan tidak ditemukan', 404);
-        }
-
-        // Proses penyimpanan atau pembatalan vote.
-        if ($tipe_vote === 'remove') {
-            $berhasil = $this->voteModel->removeVote(
-                $id_pengaduan,
-                $id_user
-            );
-
-            $pesan = 'Vote berhasil dibatalkan';
-        } else {
-            $berhasil = $this->voteModel->setVote(
-                $id_pengaduan,
-                $id_user,
-                $tipe_vote
-            );
-
-            $pesan = 'Vote berhasil disimpan';
-        }
-
-        if (!$berhasil) {
+        if ($aksi === false) {
             errorResponse('Gagal memproses vote', 500);
         }
 
-        // Ambil jumlah vote terbaru dan pilihan pengguna.
+        if ($aksi === 'not_found') {
+            errorResponse('Pengaduan tidak ditemukan', 404);
+        }
+
+        // Tentukan pesan berdasarkan aksi.
+        $pesan = [
+            'added' => 'Vote berhasil disimpan',
+            'changed' => 'Vote berhasil diubah',
+            'removed' => 'Vote berhasil dibatalkan'
+        ];
+
+        // Ambil jumlah vote terbaru.
         $dataVote = $this->voteModel->getVoteData(
             $id_pengaduan,
             $id_user
@@ -86,8 +75,9 @@ class VoteController
             errorResponse('Gagal mengambil data vote terbaru', 500);
         }
 
-        successResponse($pesan, [
+        successResponse($pesan[$aksi], [
             'id_pengaduan' => (int) $id_pengaduan,
+            'aksi' => $aksi,
             'vote' => $dataVote
         ]);
     }
