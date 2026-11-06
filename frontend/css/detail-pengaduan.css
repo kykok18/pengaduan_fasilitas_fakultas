@@ -706,26 +706,36 @@ textarea {
    ========================================== */
 
 .detail-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 520px;
-  padding: 30px 20px;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+
+    padding: 0;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .detail-state-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 105px;
-  height: 105px;
-  margin-bottom: 18px;
-  border: 1px solid var(--detail-green);
-  border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 91px;
+    height: 94px;
+    flex: 0 0 94px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #0B5E3B;
+    border-radius: 50%;
+    box-sizing: border-box;
 }
+
 
 .detail-state-icon.is-error {
   border-color: #E21B12;
@@ -762,12 +772,14 @@ textarea {
 }
 
 .detail-spinner {
-  width: 44px;
-  height: 44px;
-  border: 5px solid #CFD5D3;
-  border-top-color: var(--detail-green);
-  border-radius: 50%;
-  animation: detailSpin 0.9s linear infinite;
+    width: 40px;
+    height: 40px;
+
+    border: 5px solid #D9D9D9;
+    border-right-color: #0B5E3B;
+    border-radius: 50%;
+
+    animation: detailSpin 0.9s linear infinite;
 }
 
 @keyframes detailSpin {
@@ -777,16 +789,30 @@ textarea {
 }
 
 .detail-state h2 {
-  margin: 0 0 10px;
-  font-size: 20px;
-  font-weight: 700;
+    margin: 0 0 5px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 23px;
+
+    color: #000000;
 }
 
 .detail-state p {
-  max-width: 340px;
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.6;
+    width: 100%;
+    max-width: 222px;
+    min-height: 30px;
+
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    text-align: center;
+
+    color: #000000;
 }
 
 .detail-retry-btn {
@@ -1035,4 +1061,45 @@ textarea {
 .detail-vote-btn.active svg path {
     fill: #0B5E3B;
     fill-opacity: 1;
+}
+
+/* ==========================================
+   UKURAN CARD STATE — RESPONSIVE
+   ========================================== */
+
+/* Card putih utama ketika loading/error */
+.detail-card.is-state {
+    height: 557px;
+    min-height: 557px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Card putih kedua sebagai placeholder */
+.detail-comments-card.is-state-placeholder {
+    display: block;
+    height: 212px;
+    min-height: 212px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Sembunyikan isi komentar selama state aktif */
+.detail-comments-card.is-state-placeholder > * {
+    display: none;
+}
+
+/* Hilangkan ukuran state mobile lama */
+@media (max-width: 600px) {
+    .detail-state {
+        min-height: 0;
+    }
+
+    .detail-state h2 {
+        font-size: 15px;
+    }
+
+    .detail-state p {
+        font-size: 10px;
+    }
 }

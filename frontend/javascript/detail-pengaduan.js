@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const detailContent = document.getElementById("detailContent");
   const commentsCard = document.getElementById("detailCommentsCard");
+  const detailCard = document.querySelector(".detail-card");
 
   const detailImage = document.getElementById("detailImage");
   const imageFallback = document.getElementById("detailImageFallback");
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const detailLikes = document.getElementById("detailLikes");
   const detailDislikes = document.getElementById("detailDislikes");
+  
   // ==========================================
 // ELEMEN TOMBOL UPVOTE DAN DOWNVOTE
 // ==========================================
@@ -180,6 +182,12 @@ const showVoteError = () => {
   const showState = (type, title, description) => {
 
     clearDetail();
+    // Aktifkan layout loading/error sesuai Figma
+detailCard.classList.add("is-state");
+
+// Tampilkan card putih kedua tanpa isi komentar
+commentsCard.classList.add("is-state-placeholder");
+commentsCard.hidden = false;
 
     stateBox.hidden = false;
 
@@ -216,7 +224,7 @@ const showVoteError = () => {
     showState(
       "loading",
       "Loading...",
-      "Mohon tunggu sebentar, detail pengaduan sedang dimuat."
+      "Mohon tunggu sebentar, detail pengaduan<br>sedang dimuat."
     );
   };
 
@@ -367,6 +375,10 @@ const showVoteError = () => {
     const pengaduan = data.pengaduan;
     const vote = data.vote || {};
     const komentar = data.komentar || [];
+
+    // Kembalikan layout normal setelah detail berhasil dimuat
+detailCard.classList.remove("is-state");
+commentsCard.classList.remove("is-state-placeholder");
 
     // Sembunyikan Loading.
     stateBox.hidden = true;
