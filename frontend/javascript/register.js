@@ -60,33 +60,39 @@ document.addEventListener('DOMContentLoaded', () => {
        FUNGSI UPDATE STATUS TOMBOL
        ============================================================ */
     
+
 function updateButtonState() {
+    // Cek apakah ada field yang error.
     const hasInvalidInput = document.querySelector('.input-wrapper.invalid');
+
+    // Cek apakah notifikasi error sedang tampil.
     const hasFormError = formMessage &&
         !formMessage.hidden &&
         formMessage.classList.contains('error');
 
+    // Cek apakah registrasi sedang Loading.
     const isLoading = submitBtn.dataset.loading === 'true';
 
+    // Tombol Registrasi nonaktif jika ada error atau Loading.
     const isDisabled = Boolean(
         hasInvalidInput || hasFormError || isLoading
     );
 
-    // Tombol Daftar
     submitBtn.disabled = isDisabled;
 
-    // Link Masuk di sini
+    // Link Masuk di sini HANYA nonaktif saat Loading.
     if (loginLink) {
-    loginLink.classList.toggle('disabled', isDisabled);
-    loginLink.setAttribute('aria-disabled', String(isDisabled));
+        loginLink.classList.toggle('disabled', isLoading);
+        loginLink.setAttribute('aria-disabled', String(isLoading));
 
-    if (isDisabled) {
-        loginLink.setAttribute('tabindex', '-1');
-    } else {
-        loginLink.removeAttribute('tabindex');
+        if (isLoading) {
+            loginLink.setAttribute('tabindex', '-1');
+        } else {
+            loginLink.removeAttribute('tabindex');
+        }
     }
 }
-}
+
 
 
     /* ============================================================
@@ -157,35 +163,49 @@ function hideMessage() {
 /* ============================================================
    VALIDASI NAMA LENGKAP
    ============================================================ */
+
 function validateFullname() {
     const value = fullnameInput.value.trim();
 
+    // Nama wajib diisi
     if (!value) {
         showError(fullnameInput, 'Nama lengkap wajib diisi.');
         return false;
     }
 
+    // Minimal 3 karakter
     if (value.length < 3) {
         showError(fullnameInput, 'Nama lengkap minimal 3 karakter.');
         return false;
     }
 
+    // Maksimal 100 karakter
+    if (value.length > 100) {
+        showError(fullnameInput, 'Nama lengkap maksimal 100 karakter.');
+        return false;
+    }
+
+    // Jika semua validasi berhasil
     clearError(fullnameInput);
     return true;
 }
+
 
 /* ============================================================
    VALIDASI EMAIL
    ============================================================ */
 function validateEmail() {
 
-    const value = emailInput.value.trim();
-    const emailPattern = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    
+const value = emailInput.value.trim();
 
-    if (!value) {
-        showError(emailInput, 'E-mail wajib diisi.');
-        return false;
-    }
+const emailPattern =
+    /^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
+
+if (!emailPattern.test(value)) {
+    showError(emailInput, 'Format E-mail tidak valid.');
+    return false;
+}
 
     if (!emailPattern.test(value)) {
         showError(emailInput, 'Format e-mail tidak valid.');
@@ -219,6 +239,12 @@ function validatePassword() {
         showError(passwordInput, 'Password minimal 8 karakter.');
         return false;
     }
+
+    // D-02 — Batas maksimal password
+if (value.length > 128) {
+    showError(passwordInput, 'Password maksimal 128 karakter.');
+    return false;
+}
 
     if (!/[A-Z]/.test(value) ||
         !/[a-z]/.test(value) ||
@@ -258,10 +284,30 @@ function validateConfirmPassword() {
    FILTER KARAKTER PASSWORD
    ============================================================ */
 
-fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonState(); });
-    emailInput.addEventListener('blur', () => { validateEmail(); updateButtonState(); });
-    passwordInput.addEventListener('blur', () => { validatePassword(); updateButtonState(); });
-    confirmPasswordInput.addEventListener('blur', () => { validateConfirmPassword(); updateButtonState(); });
+
+    // ==========================================
+    // VALIDASI SAAT KELUAR DARI FIELD
+    // ==========================================
+
+    fullnameInput.addEventListener('blur', () => {
+        validateFullname();
+        updateButtonState();
+    });
+
+    emailInput.addEventListener('blur', () => {
+        validateEmail();
+        updateButtonState();
+    });
+
+    passwordInput.addEventListener('blur', () => {
+        validatePassword();
+        updateButtonState();
+    });
+
+    confirmPasswordInput.addEventListener('blur', () => {
+        validateConfirmPassword();
+        updateButtonState();
+    });;
 
     emailInput.addEventListener("input", () => {
     emailInput.value = emailInput.value.replace(
@@ -270,18 +316,113 @@ fullnameInput.addEventListener('blur', () => { validateFullname(); updateButtonS
     );
 });
 
-    passwordInput.addEventListener('input', () => {
-        hideMessage();
-        if (confirmPasswordInput.value) validateConfirmPassword();
-        updateButtonState();
-    });
+    
+passwordInput.addEventListener('input', () => {
+    hideMessage();
 
-    [fullnameInput, emailInput, confirmPasswordInput].forEach((input) => {
-        input.addEventListener('input', () => {
-            hideMessage();
-            updateButtonState();
-        });
-    });
+    // Validasi hanya jika field sudah pernah menampilkan error.
+    if (passwordInput.closest('.input-wrapper')?.classList.contains('invalid')) {
+        validatePassword();
+    }
+
+    // Perbarui konfirmasi kalau sebelumnya sudah error.
+    if (confirmPasswordInput.closest('.input-wrapper')?.classList.contains('invalid')) {
+        validateConfirmPassword();
+    }
+
+    updateButtonState();
+});
+
+// ==========================================
+// VALIDASI REAL-TIME TANPA TERLALU SENSITIF
+// ==========================================
+
+const sudahMulaiValidasi = {
+    nama: false,
+    email: false,
+    password: false,
+    konfirmasi: false
+};
+
+fullnameInput.addEventListener('input', () => {
+    hideMessage();
+
+    if (fullnameInput.value.trim().length >= 3) {
+        sudahMulaiValidasi.nama = true;
+    }
+
+    if (sudahMulaiValidasi.nama) {
+        validateFullname();
+    }
+
+    updateButtonState();
+});
+
+// ==========================================
+// VALIDASI EMAIL DENGAN DEBOUNCE
+// ==========================================
+
+let emailValidationTimeout;
+
+emailInput.addEventListener('input', () => {
+    hideMessage();
+
+    // Pertahankan filter karakter email
+    emailInput.value = emailInput.value.replace(
+        /[^A-Za-z0-9@._-]/g,
+        ''
+    );
+
+    // Batalkan pemeriksaan sebelumnya
+    clearTimeout(emailValidationTimeout);
+
+    // Hilangkan error selama pengguna mengetik
+    clearError(emailInput);
+
+    updateButtonState();
+
+    // Jangan munculkan error jika email masih kosong
+    if (!emailInput.value.trim()) return;
+
+    // Periksa setelah pengguna berhenti mengetik 1 detik
+    emailValidationTimeout = setTimeout(() => {
+        validateEmail();
+        updateButtonState();
+    }, 1000);
+});
+
+passwordInput.addEventListener('input', () => {
+    hideMessage();
+
+    if (passwordInput.value.length >= 4) {
+        sudahMulaiValidasi.password = true;
+    }
+
+    if (sudahMulaiValidasi.password) {
+        validatePassword();
+    }
+
+    if (confirmPasswordInput.value) {
+        validateConfirmPassword();
+    }
+
+    updateButtonState();
+});
+
+confirmPasswordInput.addEventListener('input', () => {
+    hideMessage();
+
+    if (confirmPasswordInput.value.length >= 4) {
+        sudahMulaiValidasi.konfirmasi = true;
+    }
+
+    if (sudahMulaiValidasi.konfirmasi) {
+        validateConfirmPassword();
+    }
+
+    updateButtonState();
+});
+
 
     /* ============================================================
        SUBMIT FORM (FINAL)

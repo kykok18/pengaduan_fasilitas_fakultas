@@ -150,20 +150,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Frontend hanya memeriksa kolom wajib dan format email,
     // bukan menentukan apakah akun benar-benar terdaftar.
     function validateForm() {
-        const email = emailInput.value.trim();
+        const email = emailInput.value;
         const password = passwordInput.value;
         let valid = true;
 
         // Memeriksa email kosong, format tidak sesuai, atau valid.
-        if (!email) {
-            setEmailError('E-mail wajib diisi.');
-            valid = false;
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setEmailError('Format E-mail tidak sesuai.');
-            valid = false;
-        } else {
-            setEmailError('');
-        }
+        
+if (!email) {
+    setEmailError('E-mail wajib diisi.');
+    valid = false;
+
+} else if (/\s/.test(email)) {
+    setEmailError('E-mail tidak boleh mengandung spasi.');
+    valid = false;
+
+} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setEmailError('Format E-mail tidak sesuai.');
+    valid = false;
+
+} else {
+    setEmailError('');
+}
+
 
         // Password wajib diisi. Kecocokannya diperiksa backend.
         if (!password) {
@@ -264,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Artinya tidak ada request login yang dikirim.
         if (!isValid) return;
 
-        const email = emailInput.value.trim();
+        const email = emailInput.value;
         const password = passwordInput.value;
         const originalText = submitBtn.textContent;
         let loginSucceeded = false;
