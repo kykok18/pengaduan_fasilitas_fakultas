@@ -21,6 +21,35 @@
 
 <body>
 
+  
+<!-- ==========================================
+     NOTIFIKASI SUARA GAGAL DIKIRIM
+     ========================================== -->
+<div id="voteErrorAlert"
+     class="vote-error-alert"
+     role="alert"
+     hidden>
+
+    <div class="vote-error-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true">
+            <circle cx="20" cy="20" r="20" fill="#C41B1B"/>
+            <path d="M13 13L27 27M27 13L13 27"
+                  stroke="white"
+                  stroke-width="4"
+                  stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <div class="vote-error-content">
+        <strong>SUARA GAGAL DIKIRIM</strong>
+        <p>Terjadi kesalahan saat mengirim suara. Silakan coba lagi.</p>
+    </div>
+
+</div>
+
+
   <!-- =========================================
        NAVBAR
        ========================================= -->
@@ -28,7 +57,11 @@
     <div class="detail-navbar-inner">
 
       <div class="detail-navbar-brand">
-        <div class="detail-navbar-logo">FITK</div>
+        <img
+    src="img/logo-fitk.png"
+    alt="Logo FITK Siber AHSAN"
+    class="detail-navbar-logo"
+>
 
         <div class="detail-navbar-text">
           <strong>FITK SIBER AHSAN</strong>
@@ -88,9 +121,12 @@
 
         <button
           type="button"
-          id="detailRetryBtn"
-          class="detail-retry-btn"
-          hidden
+          id="detailLikeBtn"
+          class="detail-vote-btn"
+          data-vote="upvote"
+          aria-label="Beri dukungan"
+          aria-pressed="false"
+          disabled
         >
           Coba Lagi
         </button>
@@ -134,31 +170,19 @@
         <div class="detail-meta">
 
           <div class="detail-meta-item">
-            <svg width="20" height="20"
-                 viewBox="0 0 24 24"
-                 fill="none" aria-hidden="true">
-              <path
-                d="M20 10C20 16 12 22 12 22S4 16 4 10A8 8 0 1 1 20 10Z"
-                stroke="currentColor"
-                stroke-width="2"/>
-              <circle cx="12" cy="10" r="2.5"
-                      fill="currentColor"/>
-            </svg>
+            <svg width="13" height="17" viewBox="0 0 13 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.01639 0C2.6999 0 7.07967e-05 3.04998 7.07967e-05 6.7966C-0.0224904 12.2679 5.3546 16.6517 5.58021 16.8386C5.70806 16.9405 5.86599 17 6.01639 17C6.1668 17 6.32473 16.949 6.45258 16.8386C6.67819 16.6517 12.0553 12.2764 12.0327 6.7966C12.0327 3.04998 9.33289 0 6.01639 0ZM6.01639 10.1949C4.35438 10.1949 3.00823 8.67416 3.00823 6.7966C3.00823 4.91904 4.35438 3.3983 6.01639 3.3983C7.6784 3.3983 9.02456 4.91904 9.02456 6.7966C9.02456 8.67416 7.6784 10.1949 6.01639 10.1949Z" fill="#474747"/>
+</svg>
+
 
             <span id="detailLocation"></span>
           </div>
 
           <div class="detail-meta-item">
-            <svg width="20" height="20"
-                 viewBox="0 0 24 24"
-                 fill="none" aria-hidden="true">
-              <rect x="3" y="5" width="18" height="16"
-                    rx="2" stroke="currentColor"
-                    stroke-width="2"/>
-              <path d="M7 3V7M17 3V7M3 10H21"
-                    stroke="currentColor"
-                    stroke-width="2"/>
-            </svg>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 13.5938C0 14.3701 0.719866 15 1.60714 15H13.3929C14.2801 15 15 14.3701 15 13.5938V5.625H0V13.5938ZM10.7143 7.85156C10.7143 7.6582 10.8951 7.5 11.1161 7.5H12.4554C12.6763 7.5 12.8571 7.6582 12.8571 7.85156V9.02344C12.8571 9.2168 12.6763 9.375 12.4554 9.375H11.1161C10.8951 9.375 10.7143 9.2168 10.7143 9.02344V7.85156ZM10.7143 11.6016C10.7143 11.4082 10.8951 11.25 11.1161 11.25H12.4554C12.6763 11.25 12.8571 11.4082 12.8571 11.6016V12.7734C12.8571 12.9668 12.6763 13.125 12.4554 13.125H11.1161C10.8951 13.125 10.7143 12.9668 10.7143 12.7734V11.6016ZM6.42857 7.85156C6.42857 7.6582 6.60938 7.5 6.83036 7.5H8.16964C8.39062 7.5 8.57143 7.6582 8.57143 7.85156V9.02344C8.57143 9.2168 8.39062 9.375 8.16964 9.375H6.83036C6.60938 9.375 6.42857 9.2168 6.42857 9.02344V7.85156ZM6.42857 11.6016C6.42857 11.4082 6.60938 11.25 6.83036 11.25H8.16964C8.39062 11.25 8.57143 11.4082 8.57143 11.6016V12.7734C8.57143 12.9668 8.39062 13.125 8.16964 13.125H6.83036C6.60938 13.125 6.42857 12.9668 6.42857 12.7734V11.6016ZM2.14286 7.85156C2.14286 7.6582 2.32366 7.5 2.54464 7.5H3.88393C4.10491 7.5 4.28571 7.6582 4.28571 7.85156V9.02344C4.28571 9.2168 4.10491 9.375 3.88393 9.375H2.54464C2.32366 9.375 2.14286 9.2168 2.14286 9.02344V7.85156ZM2.14286 11.6016C2.14286 11.4082 2.32366 11.25 2.54464 11.25H3.88393C4.10491 11.25 4.28571 11.4082 4.28571 11.6016V12.7734C4.28571 12.9668 4.10491 13.125 3.88393 13.125H2.54464C2.32366 13.125 2.14286 12.9668 2.14286 12.7734V11.6016ZM13.3929 1.875H11.7857V0.46875C11.7857 0.210938 11.5446 0 11.25 0H10.1786C9.88393 0 9.64286 0.210938 9.64286 0.46875V1.875H5.35714V0.46875C5.35714 0.210938 5.11607 0 4.82143 0H3.75C3.45536 0 3.21429 0.210938 3.21429 0.46875V1.875H1.60714C0.719866 1.875 0 2.50488 0 3.28125V4.6875H15V3.28125C15 2.50488 14.2801 1.875 13.3929 1.875Z" fill="black" fill-opacity="0.72"/>
+</svg>
+
 
             <span id="detailDate"></span>
           </div>
@@ -180,7 +204,7 @@
           <h2>Apakah Anda Mengalami masalah yang sama?</h2>
 
           <p>
-            Berikan dukungan agar laporan ini lebih
+            Berikan dukungan agar laporan ini lebih<br>
             diperhatikan dan segera diperbaiki.
           </p>
 
@@ -193,20 +217,28 @@
               aria-label="Beri dukungan"
               disabled
             >
-              <span aria-hidden="true">👍</span>
+              <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.56953 0.0272743C9.28047 0.178154 9.74258 0.91224 9.60039 1.66664L9.5375 1.99741C9.39258 2.77212 9.12461 3.50911 8.75 4.17936H12.6875C13.4121 4.17936 14 4.80319 14 5.57209C14 6.10887 13.7129 6.57602 13.2918 6.80814C13.5898 7.06348 13.7812 7.45518 13.7812 7.89331C13.7812 8.57227 13.3219 9.13807 12.7176 9.25993C12.8379 9.47174 12.9062 9.71837 12.9062 9.98241C12.9062 10.6004 12.5262 11.1256 12.0012 11.3055C12.0203 11.4013 12.0312 11.5028 12.0312 11.6073C12.0312 12.3762 11.4434 13 10.7188 13H8.05273C7.5332 13 7.02734 12.8375 6.59531 12.5329L5.54258 11.7872C4.8125 11.2707 4.375 10.4002 4.375 9.46884V6.24234C4.375 5.3951 4.73867 4.59718 5.35938 4.0662L5.56172 3.89501C6.28633 3.27989 6.78125 2.41523 6.96172 1.45192L7.02461 1.12115C7.1668 0.366753 7.85859 -0.123605 8.56953 0.0272743ZM0.875 4.6436H2.625C3.10898 4.6436 3.5 5.05852 3.5 5.57209V12.0715C3.5 12.5851 3.10898 13 2.625 13H0.875C0.391016 13 0 12.5851 0 12.0715V5.57209C0 5.05852 0.391016 4.6436 0.875 4.6436Z" fill="black" fill-opacity="0.31"/>
+</svg>
+
               <span id="detailLikes">0</span>
             </button>
 
             <div class="detail-vote-divider"></div>
 
             <button
-              type="button"
-              id="detailDislikeBtn"
-              class="detail-vote-btn"
-              aria-label="Tidak mendukung"
-              disabled
-            >
-              <span aria-hidden="true">👎</span>
+  type="button"
+  id="detailDislikeBtn"
+  class="detail-vote-btn"
+  data-vote="downvote"
+  aria-label="Tidak mendukung"
+  aria-pressed="false"
+  disabled
+>
+              <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.56953 12.9727C9.28047 12.8218 9.74258 12.0878 9.60039 11.3334L9.5375 11.0026C9.39258 10.2279 9.12461 9.49089 8.75 8.82064H12.6875C13.4121 8.82064 14 8.19681 14 7.42791C14 6.89113 13.7129 6.42398 13.2918 6.19186C13.5898 5.93652 13.7812 5.54482 13.7812 5.10669C13.7812 4.42773 13.3219 3.86193 12.7176 3.74007C12.8379 3.52826 12.9062 3.28163 12.9062 3.01759C12.9062 2.39956 12.5262 1.87439 12.0012 1.69449C12.0203 1.59874 12.0312 1.49719 12.0312 1.39273C12.0312 0.623829 11.4434 0 10.7188 0H8.05273C7.5332 0 7.02734 0.162486 6.59531 0.467146L5.54258 1.21284C4.8125 1.72931 4.375 2.59977 4.375 3.53116V6.75766C4.375 7.6049 4.73867 8.40282 5.35938 8.9338L5.56172 9.10499C6.28633 9.72011 6.78125 10.5848 6.96172 11.5481L7.02461 11.8789C7.1668 12.6332 7.85859 13.1236 8.56953 12.9727ZM0.875 8.3564H2.625C3.10898 8.3564 3.5 7.94148 3.5 7.42791V0.928489C3.5 0.414919 3.10898 0 2.625 0H0.875C0.391016 0 0 0.414919 0 0.928489V7.42791C0 7.94148 0.391016 8.3564 0.875 8.3564Z" fill="black" fill-opacity="0.31"/>
+</svg>
+
               <span id="detailDislikes">0</span>
             </button>
 
@@ -217,47 +249,56 @@
     </section>
 
 
-    <!-- =========================================
-         CARD KOMENTAR
-         ========================================= -->
-    <section id="detailCommentsCard"
-             class="detail-comments-card" hidden>
+    
+<!-- =========================================
+     CARD KOMENTAR
+     ========================================= -->
+<section id="detailCommentsCard"
+         class="detail-comments-card"
+         hidden>
 
-      <div id="detailCommentsList"
-           class="detail-comments-list"></div>
+    <!-- Daftar komentar dari backend -->
+    <div id="detailCommentsList"
+         class="detail-comments-list"></div>
 
-      <h2 id="detailCommentsTitle"
-          class="detail-comments-title">
-        Komentar(0)
-      </h2>
+    <!-- Judul dan form komentar -->
+    <div class="detail-comment-compose">
 
-      <form id="detailCommentForm"
-            class="detail-comment-form">
+        <h2 id="detailCommentsTitle"
+            class="detail-comments-title">
+            Komentar(0)
+        </h2>
 
-        <textarea
-          id="detailCommentInput"
-          placeholder="Tulis Komentar..."
-          rows="2"
-          aria-label="Tulis komentar"
-          maxlength="1000"
-          disabled
-        ></textarea>
+        <form id="detailCommentForm"
+              class="detail-comment-form">
 
-        <button
-          type="submit"
-          id="detailCommentSubmit"
-          disabled
-        >
-          Kirim
-        </button>
+            <textarea
+                id="detailCommentInput"
+                placeholder="Tulis Komentar..."
+                rows="2"
+                aria-label="Tulis komentar"
+                maxlength="1000"
+                disabled
+            ></textarea>
 
-      </form>
+            <button
+                type="submit"
+                id="detailCommentSubmit"
+                disabled
+            >
+                Kirim
+            </button>
 
-      <p id="detailCommentInfo"
-         class="detail-comment-info"
-         hidden></p>
+        </form>
 
-    </section>
+    </div>
+
+    <p id="detailCommentInfo"
+       class="detail-comment-info"
+       hidden></p>
+
+</section>
+
 
   </main>
 

@@ -62,17 +62,13 @@ textarea {
 }
 
 .detail-navbar-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 45px;
-  height: 45px;
-  flex-shrink: 0;
-  border: 2px solid var(--detail-green);
-  border-radius: 50%;
-  color: var(--detail-green);
-  font-size: 11px;
-  font-weight: 700;
+    width: 45px;
+    height: 45px;
+    max-width: 45px;
+    max-height: 45px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
 }
 
 .detail-navbar-text {
@@ -145,7 +141,7 @@ textarea {
 }
 
 .detail-card {
-  padding: 20px;
+  padding: 10px;
 }
 
 .detail-content {
@@ -183,32 +179,59 @@ textarea {
   font-size: 14px;
 }
 
+
+/* ==========================================
+   BADGE AC DAN STATUS — SESUAI FIGMA
+   ========================================== */
+
+/* Pengaturan bersama */
 .detail-category,
 .detail-status {
-  position: absolute;
-  top: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 30px;
-  padding: 5px 14px;
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: 600;
+    position: absolute;
+    top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    min-height: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 12px;
+
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
+/* Badge AC */
 .detail-category {
-  left: 20px;
-  background: #FFFFFF;
-  border: 1px solid var(--detail-border);
-  color: var(--detail-green);
+    left: 12px;
+
+    width: 34px;
+    height: 22px;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    color: #0B5E3B;
 }
 
+/* Badge Diajukan */
 .detail-status {
-  right: 20px;
-  background: #FFBF00;
-  color: #111111;
+    right: 12px;
+
+    width: 57px;
+    height: 20px;
+
+    background: #FFC107;
+    border: none;
+    border-radius: 15px;
+    color: #000000;
 }
+
 
 .detail-status[data-status="dalam perbaikan"] {
   background: #DBECFF;
@@ -244,7 +267,7 @@ textarea {
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
-  margin: 0 16px 36px;
+  margin: 0 16px 20px;
 }
 
 .detail-meta-item {
@@ -264,184 +287,404 @@ textarea {
   overflow-wrap: anywhere;
 }
 
+
+/* ==========================================
+   DESKRIPSI PENGADUAN — SESUAI FIGMA
+   ========================================== */
+
 .detail-description-section {
-  margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 18px;
 }
 
+/* Judul Deskripsi Pengaduan */
 .detail-description-section h2 {
-  margin: 0 16px 14px;
-  font-size: 15px;
-  font-weight: 600;
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 32px;
+
+    margin: 0;
+    padding: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 12px;
+
+    color: #000000;
 }
 
+/* Kotak isi deskripsi */
 .detail-description {
-  min-height: 90px;
-  padding: 18px;
-  border: 1px solid var(--detail-border);
-  border-radius: 13px;
-  font-size: 15px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 67px;
+    height: auto;
+
+    padding: 10px;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+
+    color: #000000;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    box-sizing: border-box;
 }
+
 
 
 /* ==========================================
    6. DUKUNGAN PENGADUAN
    ========================================== */
 
+
+/* ==========================================
+   6. DUKUNGAN PENGADUAN — SESUAI FIGMA
+   ========================================== */
+
+/* Card utama */
 .detail-support {
-  padding: 20px;
-  border: 1px solid var(--detail-border);
-  border-radius: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 121px;
+    height: auto;
+
+    padding: 10px;
+    gap: 0;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
+/* Judul */
 .detail-support h2 {
-  margin: 0 0 10px;
-  color: var(--detail-green);
-  font-size: 20px;
-  font-weight: 700;
+    width: 100%;
+
+    margin: 0 0 5px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+
+    color: #0B5E3B;
 }
 
+/* Teks penjelasan */
 .detail-support p {
-  margin: 0 0 28px;
-  color: var(--detail-green);
-  font-size: 15px;
-  line-height: 1.7;
-}
+    width: 100%;
 
-.detail-vote-group {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  border: 1px solid var(--detail-border);
-  border-radius: 25px;
-  overflow: hidden;
-}
+    margin: 0 0 20px;
 
-.detail-vote-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 14px;
-  border: 0;
-  background: transparent;
-  color: #A7A7A7;
-  font-size: 14px;
-  font-weight: 700;
-}
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
 
-.detail-vote-btn:not(:disabled) {
-  cursor: pointer;
-}
-
-.detail-vote-btn:disabled {
-  opacity: 0.75;
-  cursor: not-allowed;
-}
-
-.detail-vote-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--detail-border);
+    color: #0B5E3B;
 }
 
 
 /* ==========================================
-   7. KOMENTAR
+   UPVOTE & DOWNVOTE — SESUAI FIGMA
    ========================================== */
 
+/* Wadah kedua tombol */
+.detail-vote-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 125px;
+    height: 26px;
+    min-height: 26px;
+
+    padding: 2px 0;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Tombol Upvote dan Downvote */
+.detail-vote-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 4px;
+
+    flex: 1;
+    min-width: 0;
+    height: 20px;
+
+    padding: 0 4px;
+    background: transparent;
+    border: none;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 15px;
+    color: rgba(0, 0, 0, 0.25);
+}
+
+/* Ikon jempol */
+.detail-vote-btn svg {
+    display: block;
+    width: 14px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
+/* Garis vertikal di tengah */
+.detail-vote-divider {
+    flex: 0 0 1px;
+    width: 1px;
+    height: 17px;
+    background: #D9D9D9;
+}
+
+/* Kondisi tombol */
+.detail-vote-btn:not(:disabled) {
+    cursor: pointer;
+}
+
+.detail-vote-btn:disabled {
+    cursor: not-allowed;
+}
+
+
+
+/* ==========================================
+   7. KOMENTAR — SESUAI FIGMA
+   ========================================== */
+
+/* Card putih utama komentar */
 .detail-comments-card {
-  margin-top: 18px;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+
+    width: 100%;
+    min-height: 212px;
+    height: auto;
+
+    margin-top: 10px;
+    padding: 10px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
+
+/* Daftar komentar pengguna */
 .detail-comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    width: 100%;
+    margin: 0;
 }
 
+
+
+/* ==========================================
+   KOMENTAR PENGGUNA — SESUAI FIGMA
+   ========================================== */
+
+/* Kotak komentar */
 .detail-comment-item {
-  padding: 14px 18px;
-  border: 1px solid var(--detail-border);
-  border-radius: 13px;
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    min-height: 60px;
+    height: auto;
+
+    padding: 0;
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
+/* Nama dan tanggal */
 .detail-comment-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 23px;
+    gap: 10px;
+    margin: 0;
 }
 
+/* Nama pengguna */
 .detail-comment-author {
-  font-size: 15px;
-  font-weight: 700;
+    padding: 4px 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+    color: #000000;
 }
 
+/* Tanggal komentar */
 .detail-comment-date {
-  font-size: 13px;
-  text-align: right;
+    padding: 4px 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #000000;
+
+    text-align: right;
 }
 
+/* Isi komentar */
 .detail-comment-text {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+    width: 100%;
+    min-height: 35px;
+
+    margin: 0;
+    padding: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #000000;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
+
+/* Judul Komentar(1) */
 .detail-comments-title {
-  margin: 0 16px 24px;
-  color: var(--detail-green);
-  font-size: 17px;
-  font-weight: 600;
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 35px;
+
+    margin: 0;
+    padding: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+    color: #0B5E3B;
+
+    box-sizing: border-box;
 }
 
+
+/* Wadah input dan tombol */
 .detail-comment-form {
-  display: flex;
-  align-items: stretch;
-  gap: 14px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    min-width: 0;
+    margin: 0;
 }
 
+/* Input Tulis Komentar */
 .detail-comment-form textarea {
-  flex: 1;
-  min-width: 0;
-  min-height: 70px;
-  padding: 16px;
-  border: 1px solid var(--detail-border);
-  border-radius: 13px;
-  resize: vertical;
-  outline: none;
-  font-size: 14px;
+    flex: 1;
+    min-width: 0;
+    height: 57px;
+    min-height: 57px;
+
+    padding: 20px 21px 20px;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 15px;
+    color: #000000;
+
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
 }
 
-.detail-comment-form textarea:focus {
-  border-color: var(--detail-green);
+.detail-comment-form textarea::placeholder {
+    color: #A2A2A2;
 }
 
+/* Tombol Kirim */
 .detail-comment-form button {
-  width: 130px;
-  border: 0;
-  border-radius: 13px;
-  background: var(--detail-green);
-  color: white;
-  font-size: 17px;
-  font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 101px;
+    width: 101px;
+    height: 40px;
+
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+
+    background: #0B5E3B;
+    color: #FFFFFF;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+
+    cursor: pointer;
+    box-sizing: border-box;
 }
+
 
 .detail-comment-form button:disabled {
-  cursor: not-allowed;
-  opacity: 0.75;
+    cursor: not-allowed;
 }
 
+
+/* Informasi tambahan */
 .detail-comment-info {
-  margin: 8px 0 0;
-  color: #777777;
-  font-size: 12px;
+    margin: 0;
+    font-size: 10px;
+    color: #777777;
 }
 
 
@@ -562,9 +805,10 @@ textarea {
   }
 
   .detail-navbar-logo {
-    width: 35px;
-    height: 35px;
-    font-size: 9px;
+        width: 35px;
+        height: 35px;
+        max-width: 35px;
+        max-height: 35px;
   }
 
   .detail-navbar-text strong {
@@ -595,32 +839,21 @@ textarea {
     font-size: 17px;
   }
 
-  .detail-card,
-  .detail-comments-card {
+  .detail-card {
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.detail-comments-card {
     padding: 14px;
     border-radius: 12px;
-  }
+}
 
   .detail-image-wrapper {
     aspect-ratio: 1.7 / 1;
     border-radius: 10px;
   }
 
-  .detail-category,
-  .detail-status {
-    top: 14px;
-    min-height: 26px;
-    padding: 4px 11px;
-    font-size: 10px;
-  }
-
-  .detail-category {
-    left: 14px;
-  }
-
-  .detail-status {
-    right: 14px;
-  }
 
   .detail-title {
     margin: 20px 10px 28px;
@@ -628,7 +861,7 @@ textarea {
   }
 
   .detail-meta {
-    margin: 0 10px 28px;
+    margin: 0 10px 20px;
     gap: 12px;
   }
 
@@ -642,66 +875,11 @@ textarea {
     height: 16px;
   }
 
-  .detail-description-section h2 {
-    margin: 0 10px 12px;
-    font-size: 12px;
-  }
-
-  .detail-description {
-    min-height: 75px;
-    padding: 13px;
-    font-size: 12px;
-  }
-
-  .detail-support {
-    padding: 14px;
-  }
-
-  .detail-support h2 {
-    font-size: 15px;
-  }
-
-  .detail-support p {
-    margin-bottom: 22px;
-    font-size: 12px;
-  }
-
-  .detail-vote-btn {
-    gap: 8px;
-    font-size: 12px;
-  }
-
-  .detail-comment-item {
-    padding: 12px;
-  }
-
-  .detail-comment-author {
-    font-size: 12px;
-  }
-
-  .detail-comment-date,
-  .detail-comment-text {
-    font-size: 11px;
-  }
-
-  .detail-comments-title {
-    margin: 0 8px 18px;
-    font-size: 14px;
-  }
 
   .detail-comment-form {
     gap: 10px;
   }
 
-  .detail-comment-form textarea {
-    padding: 12px;
-    font-size: 11px;
-  }
-
-  .detail-comment-form button {
-    width: 95px;
-    font-size: 14px;
-  }
 
   .detail-state {
     min-height: 430px;
@@ -734,4 +912,114 @@ textarea {
   .detail-image-wrapper {
     aspect-ratio: 2 / 1;
   }
+}
+
+.detail-comment-compose {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.detail-comments-title {
+    margin: 0;
+}
+
+@media (max-width: 360px) {
+    .detail-comment-form button {
+        flex-basis: 85px;
+        width: 85px;
+    }
+}
+
+
+/* ==========================================
+   NOTIFIKASI SUARA GAGAL — FIGMA
+   ========================================== */
+
+.vote-error-alert {
+    position: fixed;
+    top: 113px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 352px;
+    max-width: calc(100% - 32px);
+    min-height: 71px;
+    height: auto;
+
+    padding: 0;
+
+    background: #FFFFFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.vote-error-alert[hidden] {
+    display: none !important;
+}
+
+/* Area ikon */
+.vote-error-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 70px;
+    width: 70px;
+    height: 70px;
+}
+
+.vote-error-icon svg {
+    display: block;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+/* Area tulisan */
+.vote-error-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    flex: 1;
+    min-width: 0;
+    padding-right: 8px;
+
+    color: #C41B1B;
+}
+
+.vote-error-content strong {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 22px;
+    color: #C41B1B;
+}
+
+.vote-error-content p {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #C41B1B;
+}
+
+/* Tombol yang dipilih pengguna */
+.detail-vote-btn.active {
+    color: #0B5E3B;
+}
+
+/* Ikon tombol aktif */
+.detail-vote-btn.active svg path {
+    fill: #0B5E3B;
+    fill-opacity: 1;
 }

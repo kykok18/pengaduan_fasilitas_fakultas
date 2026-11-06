@@ -1,5 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+  
 
   // =========================================================
   // 1. MENGAMBIL ELEMEN HTML
@@ -26,11 +27,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const detailLikes = document.getElementById("detailLikes");
   const detailDislikes = document.getElementById("detailDislikes");
+  // ==========================================
+// ELEMEN TOMBOL UPVOTE DAN DOWNVOTE
+// ==========================================
+
+// Mengambil dua tombol voting dari HTML.
+const voteButtons = document.querySelectorAll(
+    ".detail-vote-btn"
+);
+
+// Menandakan apakah request voting sedang berjalan.
+let isVoting = false;
+
+// Menyimpan pilihan vote aktif dari backend.
+let activeVote = null;
+
+// Mengatur tombol selama proses voting.
+
+const setVoteLoading = (loading) => {
+    // Menyimpan apakah pengiriman suara sedang berjalan.
+    isVoting = loading;
+
+    voteButtons.forEach((button) => {
+        // Sementara tetap nonaktif karena API Vote belum tersedia.
+        button.disabled = true;
+
+        // Menandai kondisi loading untuk aksesibilitas.
+        button.setAttribute("aria-busy", String(loading));
+    });
+};
+
+
+// Menandai pilihan suara pengguna.
+const setActiveVote = (voteType) => {
+    activeVote = voteType;
+
+    voteButtons.forEach((button) => {
+        const isActive = button.dataset.vote === voteType;
+
+        button.classList.toggle("active", isActive);
+        button.setAttribute(
+            "aria-pressed",
+            String(isActive)
+        );
+    });
+};
 
   const commentsList = document.getElementById("detailCommentsList");
   const commentsTitle = document.getElementById("detailCommentsTitle");
 
   const avatarLetter = document.getElementById("detailAvatarLetter");
+
+  
+// ==========================================
+// NOTIFIKASI SUARA GAGAL DIKIRIM
+// ==========================================
+
+const voteErrorAlert = document.getElementById("voteErrorAlert");
+let voteErrorTimeout = null;
+
+// Menampilkan notifikasi saat pengiriman suara gagal.
+const showVoteError = () => {
+    if (!voteErrorAlert) return;
+
+    // Batalkan timer lama jika notifikasi muncul lagi.
+    clearTimeout(voteErrorTimeout);
+
+    voteErrorAlert.hidden = false;
+
+    // Hilangkan notifikasi setelah 4 detik.
+    voteErrorTimeout = setTimeout(() => {
+        voteErrorAlert.hidden = true;
+    }, 4000);
+};
+
 
   // =========================================================
   // 2. KONFIGURASI API
@@ -155,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "error",
       "Gagal Memuat Pengaduan",
       message ||
-        "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
+        "Terjadi kesalahan saat memuat<br>detail pengaduan. Periksa koneksi internet Anda<br>dan coba lagi."
     );
   };
 
@@ -526,7 +596,52 @@ document.addEventListener("DOMContentLoaded", () => {
   // 13. MEMUAT DATA SAAT HALAMAN DIBUKA
   // =========================================================
 
-  loadDetail();
+  
+    // ==========================================
+    // PREVIEW DETAIL PENGADUAN (KHUSUS LOCALHOST)
+    // ==========================================
+
+    const isPreview =
+        ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+        new URLSearchParams(window.location.search).get("preview") === "1";
+
+    if (isPreview) {
+        // Data contoh untuk menguji tampilan Figma.
+        // Tidak dikirim dan tidak disimpan ke database.
+        renderDetail({
+            pengaduan: {
+                id_pengaduan: 1,
+                judul: "AC Tidak Dingin",
+                nama_fasilitas: "AC",
+                lokasi: "Ruang 202, Lantai 2",
+                deskripsi:
+                    "AC tidak dingin, saat perkuliahan ruangan kurang nyaman terasa pengap, terutama pada siang hari. Mohon segera dicek dan diperbaiki.",
+                foto: new URL("img/foto-ac.jpeg", window.location.href).href,
+                status: "Diajukan",
+                created_at: "2026-09-03 10:00:00"
+            },
+
+            vote: {
+                upvote: 10,
+                downvote: 1
+            },
+
+            komentar: [
+                {
+                    nama: "Salsa",
+                    isi_komentar: "Saat perkuliahan ruangan sangat panas",
+                    created_at: "2026-09-05 10:00:00"
+                }
+            ],
+
+            penanganan: []
+        });
+
+    } else {
+        // Mode normal tetap menggunakan API backend.
+        loadDetail();
+    }
+
 
   // Memuat ulang detail saat halaman dikembalikan
   // dari Back/Forward Cache browser.

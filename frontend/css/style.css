@@ -461,11 +461,14 @@ ul {
         font-size: 22px;
     }
 
+
     .stat-info p {
-        font-size: 10px;
-        line-height: 14px;
+        font-size: 9px;
+        line-height: 13px;
+        padding: 0 5px;
     }
 }
+
 
 /* ============================================================
    7. SERVICES SECTION
@@ -1268,6 +1271,92 @@ footer {
     }
 }
 
+/* ==========================================
+   D-01 — PERBAIKAN FOOTER MOBILE
+   ========================================== */
+
+@media screen and (max-width: 767px) and (orientation: portrait) {
+
+    .footer-container {
+        width: 100%;
+        max-width: 402px;
+        margin: 0 auto;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
+
+    .footer-address {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .footer-address-text {
+        width: auto;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .footer-address-text p {
+        width: 100%;
+        overflow-wrap: break-word;
+    }
+}
+
+
+/* ==========================================
+   D-02 — RESPONSIVE TEXT LANDING PAGE
+   ========================================== */
+
+@media screen and (max-width: 767px) and (orientation: portrait) {
+
+    /* Teks identitas fakultas */
+    .footer-header-text {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .footer-header-text h3 {
+        font-size: clamp(12px, 3.3vw, 14px);
+        line-height: 1.4;
+        overflow-wrap: break-word;
+    }
+
+    .footer-header-text p {
+        font-size: clamp(11px, 3.2vw, 14px);
+        line-height: 1.4;
+        overflow-wrap: break-word;
+    }
+
+    /* Deskripsi menyesuaikan lebar layar */
+    .footer-desc {
+        width: 100%;
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    /* Navigasi dan Bantuan tetap dua kolom */
+    .footer-links-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        width: 100%;
+    }
+
+    .footer-links {
+        min-width: 0;
+    }
+
+    .footer-links h4 {
+        font-size: clamp(14px, 4vw, 18px);
+    }
+
+    .footer-links ul li a {
+        font-size: clamp(12px, 3.5vw, 16px);
+        overflow-wrap: break-word;
+    }
+}
+
+
 /* Merapatkan jarak dari FAQ ke Footer */
 #faq {
     padding-bottom: 92px !important; /* Mengurangi jarak bawah FAQ */
@@ -1886,3 +1975,28 @@ iconify-icon {
     display: none !important;
 }
 
+
+/* ==========================================
+   D-02 — RESPONSIVE TEKS STATISTIK
+   Tanpa mengubah padding dan margin
+   ========================================== */
+
+/* Jangan memotong kata di tengah */
+.stat-info p {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+}
+
+/* Ukuran font mengikuti lebar layar HP */
+@media screen and (max-width: 767px) {
+    .stat-info p {
+        font-size: clamp(8px, 2.3vw, 10px);
+        line-height: 1.4;
+        letter-spacing: -0.2px;
+
+        overflow-wrap: normal;
+        word-break: normal;
+        hyphens: none;
+    }
+}
