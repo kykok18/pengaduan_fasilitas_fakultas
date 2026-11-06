@@ -472,7 +472,11 @@ textarea {
     font-weight: 600;
 }
 
-/* Notifikasi Logout Berhasil */
+
+/* ==========================================
+   NOTIFIKASI LOGOUT BERHASIL
+   ========================================== */
+
 .toast-success {
     position: fixed;
     top: 50%;
@@ -486,16 +490,35 @@ textarea {
 
     width: 352px;
     max-width: calc(100vw - 32px);
-    min-height: 125px;
+    min-height: 166px;
+    height: auto;
 
-    padding: 14px;
-    gap: 10px;
+    padding: 16px 12px;
+    gap: 8px;
 
     background: #FFFFFF;
     border-radius: 10px;
-    text-align: center;
+    box-sizing: border-box;
 
+    text-align: center;
     transform: translate(-50%, -50%);
+}
+
+/* Ikon berhasil */
+.toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 41px;
+    height: 41px;
+    flex-shrink: 0;
+}
+
+/* Teks notifikasi */
+.toast-content {
+    width: 100%;
+    text-align: center;
 }
 
 .toast-content h4 {
