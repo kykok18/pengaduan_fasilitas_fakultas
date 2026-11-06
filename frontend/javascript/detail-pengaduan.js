@@ -224,7 +224,7 @@ commentsCard.hidden = false;
     showState(
       "loading",
       "Loading...",
-      "Mohon tunggu sebentar, detail pengaduan<br>sedang dimuat."
+      "Mohon tunggu sebentar, detail pengaduan sedang dimuat."
     );
   };
 
