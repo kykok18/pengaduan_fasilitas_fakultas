@@ -392,10 +392,12 @@ commentsCard.classList.remove("is-state-placeholder");
       pengaduan.nama_fasilitas || "-";
 
     // Status berasal dari tabel pengaduan.
-    const status = String(pengaduan.status || "-");
+    const status = String(pengaduan.status || "-").trim();
 
-    detailStatus.textContent = status;
-    detailStatus.dataset.status = status.toLowerCase();
+detailStatus.textContent =
+    status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+
+detailStatus.dataset.status = status.toLowerCase();
 
     // Data utama pengaduan.
     detailTitle.textContent = pengaduan.judul || "-";
