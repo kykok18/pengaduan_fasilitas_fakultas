@@ -33,77 +33,483 @@ textarea {
 }
 
 
+
+
 /* ==========================================
-   2. NAVBAR
+   2. NAVBAR — SAMA DENGAN DASHBOARD
    ========================================== */
 
 .detail-navbar {
-  width: 100%;
-  min-height: 72px;
-  background: var(--detail-white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 42px;
+    min-height: 42px;
+
+    background: #FFFFFF;
+    border-bottom: 1px solid #FFFFFF;
 }
 
 .detail-navbar-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  min-height: 72px;
-  margin: 0 auto;
-  padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 1200px;
+    height: 42px;
+    min-height: 42px;
+
+    margin: 0 auto;
+    padding: 0 16px;
 }
 
+/* Hamburger */
+.detail-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 24px;
+    flex: 0 0 18px;
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+    background: transparent;
+    color: #111111;
+    cursor: pointer;
+}
+
+.detail-menu-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Logo dan identitas FITK */
 .detail-navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    flex: 1;
+    min-width: 0;
+    margin-left: 12px;
 }
 
 .detail-navbar-logo {
-    width: 45px;
-    height: 45px;
-    max-width: 45px;
-    max-height: 45px;
+    display: block;
+
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+
     object-fit: contain;
     flex-shrink: 0;
-    display: block;
 }
 
+/* Tulisan FITK */
 .detail-navbar-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  line-height: 1.35;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    min-width: 0;
+    line-height: 1.2;
 }
 
 .detail-navbar-text strong {
-  font-size: 14px;
-  color: var(--detail-green);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #0B5E3B;
 }
 
 .detail-navbar-text span {
-  font-size: 10px;
-  color: var(--detail-green);
+    font-size: 7px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #0B5E3B;
 }
 
 .detail-navbar-text small {
-  font-size: 9px;
-  color: #D69B28;
+    font-size: 7px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #D69B28;
 }
 
+/* Avatar */
 .detail-avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--detail-background);
-  color: var(--detail-green);
-  font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 27px;
+    flex: 0 0 28px;
+
+    margin-left: auto;
+    border-radius: 50%;
+
+    background: #E6F5EB;
+    color: #0B5E3B;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+
+
+/* ==========================================
+   SIDEBAR — MENGIKUTI DASHBOARD
+   ========================================== */
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 263px;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+
+    background: #FFFFFF;
+    transition: left .3s ease;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 16px 12px 16px 30px;
+}
+
+.sidebar-logo {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.sidebar-header-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.sidebar-header-text h3 {
+    margin: 0 0 2px;
+    color: #0B5E3B;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.sidebar-header-text p {
+    margin: 0 0 1px;
+    color: #0B5E3B;
+    font-size: 7px;
+    font-weight: 500;
+}
+
+.sidebar-header-text p.highlight {
+    color: #D59A29;
+}
+
+.sidebar-divider {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 16px;
+    background: rgba(217, 217, 217, .56);
+}
+
+.sidebar-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+
+    color: #0B5E3B;
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: none;
+    border-radius: 8px;
+
+    transition: background-color .2s ease;
+}
+
+.sidebar-nav ul li a svg {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+}
+
+
+.sidebar-nav ul li.active a {
+    background: #FFFFFF;
+    font-weight: 400;
+}
+
+/* Logout berada di bawah sidebar */
+.sidebar-logout {
+    margin-top: auto;
+    padding: 16px;
+    border-top: 1px solid #E0E0E0;
+    flex-shrink: 0;
+}
+
+.sidebar-logout a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 10px 8px;
+    border-radius: 8px;
+
+    color: #D02316;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+
+
+
+/* ==========================================
+   MODAL LOGOUT — DETAIL PENGADUAN
+   ========================================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.4);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.modal-overlay.active,
+.modal-overlay.logout-success-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Card modal */
+.logout-modal {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    min-height: 166px;
+    height: auto;
+
+    padding: 16px 12px;
+    gap: 8px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+    text-align: center;
+
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .logout-modal {
+    transform: translateY(0);
+}
+
+/* Ikon modal */
+.logout-modal .modal-icon-circle,
+.logout-modal .modal-icon-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.modal-icon-circle {
+    border: 1px solid #D02316;
+    color: #D02316;
+}
+
+.modal-icon-error {
+    background: #D02316;
+    color: #FFFFFF;
+}
+
+/* Judul dan deskripsi */
+.logout-modal h3 {
+    margin: 0;
+    color: #000000;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+}
+
+.logout-modal p {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.72);
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* Tombol */
+.modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-modal-cancel,
+.btn-modal-confirm,
+.btn-modal-retry {
+    height: 30px;
+    border-radius: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-modal-cancel {
+    width: 84px;
+    background: transparent;
+    border: 1px solid #474747;
+    color: #474747;
+}
+
+.btn-modal-confirm {
+    width: 84px;
+    background: #D02316;
+    border: none;
+    color: #FFFFFF;
+}
+
+.btn-modal-retry {
+    width: 82px;
+    background: #0B5E3B;
+    border: none;
+    color: #FFFFFF;
+}
+
+/* Loading logout */
+.modal-loading-text {
+    margin-top: 8px;
+    color: #000000;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Notifikasi Logout Berhasil */
+.toast-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 10001;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 352px;
+    max-width: calc(100vw - 32px);
+    min-height: 125px;
+
+    padding: 14px;
+    gap: 10px;
+
+    background: #FFFFFF;
+    border-radius: 10px;
+    text-align: center;
+
+    transform: translate(-50%, -50%);
+}
+
+.toast-content h4 {
+    margin: 0 0 4px;
+    color: #15A367;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.toast-content p {
+    margin: 0;
+    color: #474747;
+    font-size: 11px;
+    line-height: 1.5;
 }
 
 
@@ -835,109 +1241,81 @@ textarea {
 }
 
 
+
 /* ==========================================
    9. RESPONSIVE MOBILE
    ========================================== */
 
 @media (max-width: 600px) {
 
-  .detail-navbar,
-  .detail-navbar-inner {
-    min-height: 60px;
-  }
 
-  .detail-navbar-inner {
-    padding: 10px 16px;
-  }
+    /* Halaman Detail */
+    .detail-page {
+        padding: 20px 16px 32px;
+    }
 
-  .detail-navbar-logo {
-        width: 35px;
-        height: 35px;
-        max-width: 35px;
-        max-height: 35px;
-  }
+    .detail-back {
+        gap: 8px;
+        margin-bottom: 22px;
+        font-size: 17px;
+    }
 
-  .detail-navbar-text strong {
-    font-size: 11px;
-  }
+    /* Card */
+    .detail-card {
+        padding: 10px;
+        border-radius: 12px;
+    }
 
-  .detail-navbar-text span {
-    font-size: 8px;
-  }
+    .detail-comments-card {
+        padding: 10px;
+        border-radius: 10px;
+    }
 
-  .detail-navbar-text small {
-    font-size: 7px;
-  }
+    /* Foto */
+    .detail-image-wrapper {
+        aspect-ratio: 1.7 / 1;
+        border-radius: 10px;
+    }
 
-  .detail-avatar {
-    width: 31px;
-    height: 31px;
-    font-size: 12px;
-  }
+    /* Judul */
+    .detail-title {
+        margin: 20px 10px 28px;
+        font-size: 20px;
+    }
 
-  .detail-page {
-    padding: 20px 16px 32px;
-  }
+    /* Lokasi dan tanggal */
+    .detail-meta {
+        margin: 0 10px 20px;
+        gap: 12px;
+    }
 
-  .detail-back {
-    gap: 8px;
-    margin-bottom: 22px;
-    font-size: 17px;
-  }
+    .detail-meta-item {
+        font-size: 12px;
+        gap: 7px;
+    }
 
-  .detail-card {
-    padding: 10px;
-    border-radius: 12px;
-}
+    .detail-meta-item svg {
+        width: 16px;
+        height: 16px;
+    }
 
-.detail-comments-card {
-    padding: 10px;
-    border-radius: 10px;
-}
+    /* Form komentar */
+    .detail-comment-form {
+        gap: 10px;
+    }
 
-  .detail-image-wrapper {
-    aspect-ratio: 1.7 / 1;
-    border-radius: 10px;
-  }
+    /* Loading / Error / Not Found */
+    .detail-state {
+        min-height: 0;
+    }
 
+    .detail-state h2 {
+        font-size: 15px;
+    }
 
-  .detail-title {
-    margin: 20px 10px 28px;
-    font-size: 20px;
-  }
-
-  .detail-meta {
-    margin: 0 10px 20px;
-    gap: 12px;
-  }
-
-  .detail-meta-item {
-    font-size: 12px;
-    gap: 7px;
-  }
-
-  .detail-meta-item svg {
-    width: 16px;
-    height: 16px;
-  }
-
-
-  .detail-comment-form {
-    gap: 10px;
-  }
-
-
-  .detail-state {
-    min-height: 430px;
-  }
-
-  .detail-state h2 {
-    font-size: 17px;
-  }
-
-  .detail-state p {
-    font-size: 11px;
-  }
+    .detail-state p {
+        font-size: 10px;
+    }
 }
 
 

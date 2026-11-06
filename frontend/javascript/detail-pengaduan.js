@@ -104,6 +104,42 @@ const showVoteError = () => {
 };
 
 
+ // ==========================================
+ // SIDEBAR DETAIL PENGADUAN
+ // ==========================================
+
+ const menuToggle = document.getElementById("menuToggle");
+ const sidebar = document.getElementById("sidebar");
+ const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+ if (menuToggle && sidebar && sidebarOverlay) {
+
+     const closeSidebar = () => {
+         sidebar.classList.remove("active");
+         sidebarOverlay.classList.remove("active");
+
+         menuToggle.setAttribute("aria-expanded", "false");
+         document.body.style.overflow = "";
+     };
+
+     menuToggle.addEventListener("click", () => {
+         sidebar.classList.add("active");
+         sidebarOverlay.classList.add("active");
+
+         menuToggle.setAttribute("aria-expanded", "true");
+         document.body.style.overflow = "hidden";
+     });
+
+     sidebarOverlay.addEventListener("click", closeSidebar);
+
+     document.addEventListener("keydown", (event) => {
+         if (event.key === "Escape") {
+             closeSidebar();
+         }
+     });
+ }
+
+
   // =========================================================
   // 2. KONFIGURASI API
   // =========================================================
