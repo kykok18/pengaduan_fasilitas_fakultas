@@ -572,9 +572,11 @@ const showVoteError = () => {
   // 11. TOMBOL COBA LAGI
   // =========================================================
 
-  retryBtn.addEventListener("click", () => {
-    loadDetail();
-  });
+  if (retryBtn) {
+    retryBtn.addEventListener("click", () => {
+        loadDetail();
+    });
+}
 
   // =========================================================
   // 12. FORM KOMENTAR

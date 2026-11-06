@@ -119,17 +119,16 @@
           Mohon tunggu sebentar, detail pengaduan sedang dimuat.
         </p>
 
-        <button
-          type="button"
-          id="detailLikeBtn"
-          class="detail-vote-btn"
-          data-vote="upvote"
-          aria-label="Beri dukungan"
-          aria-pressed="false"
-          disabled
-        >
-          Coba Lagi
-        </button>
+        
+<button
+  type="button"
+  id="detailRetryBtn"
+  class="detail-retry-btn"
+  hidden
+>
+  Coba Lagi
+</button>
+
 
       </div>
 
@@ -210,13 +209,17 @@
 
           <div class="detail-vote-group">
 
-            <button
-              type="button"
-              id="detailLikeBtn"
-              class="detail-vote-btn"
-              aria-label="Beri dukungan"
-              disabled
-            >
+            
+<button
+  type="button"
+  id="detailLikeBtn"
+  class="detail-vote-btn"
+  data-vote="upvote"
+  aria-label="Beri dukungan"
+  aria-pressed="false"
+  disabled
+>
+
               <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.56953 0.0272743C9.28047 0.178154 9.74258 0.91224 9.60039 1.66664L9.5375 1.99741C9.39258 2.77212 9.12461 3.50911 8.75 4.17936H12.6875C13.4121 4.17936 14 4.80319 14 5.57209C14 6.10887 13.7129 6.57602 13.2918 6.80814C13.5898 7.06348 13.7812 7.45518 13.7812 7.89331C13.7812 8.57227 13.3219 9.13807 12.7176 9.25993C12.8379 9.47174 12.9062 9.71837 12.9062 9.98241C12.9062 10.6004 12.5262 11.1256 12.0012 11.3055C12.0203 11.4013 12.0312 11.5028 12.0312 11.6073C12.0312 12.3762 11.4434 13 10.7188 13H8.05273C7.5332 13 7.02734 12.8375 6.59531 12.5329L5.54258 11.7872C4.8125 11.2707 4.375 10.4002 4.375 9.46884V6.24234C4.375 5.3951 4.73867 4.59718 5.35938 4.0662L5.56172 3.89501C6.28633 3.27989 6.78125 2.41523 6.96172 1.45192L7.02461 1.12115C7.1668 0.366753 7.85859 -0.123605 8.56953 0.0272743ZM0.875 4.6436H2.625C3.10898 4.6436 3.5 5.05852 3.5 5.57209V12.0715C3.5 12.5851 3.10898 13 2.625 13H0.875C0.391016 13 0 12.5851 0 12.0715V5.57209C0 5.05852 0.391016 4.6436 0.875 4.6436Z" fill="black" fill-opacity="0.31"/>
 </svg>
