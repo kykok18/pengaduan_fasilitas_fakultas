@@ -46,18 +46,16 @@ let activeVote = null;
 
 // Mengatur tombol selama proses voting.
 
+
 const setVoteLoading = (loading) => {
-    // Menyimpan apakah pengiriman suara sedang berjalan.
     isVoting = loading;
 
     voteButtons.forEach((button) => {
-        // Sementara tetap nonaktif karena API Vote belum tersedia.
-        button.disabled = true;
-
-        // Menandai kondisi loading untuk aksesibilitas.
+        button.disabled = loading;
         button.setAttribute("aria-busy", String(loading));
     });
 };
+
 
 
 // Menandai pilihan suara pengguna.
@@ -454,6 +452,25 @@ detailStatus.dataset.status = status.toLowerCase();
     detailDislikes.textContent =
       String(vote.downvote ?? 0);
 
+      // Tampilkan suara aktif berdasarkan data backend.
+setActiveVote(vote.pilihan_user ?? null);
+
+
+// Cek apakah halaman sedang memakai data dummy preview.
+const isDummyPreview =
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+    new URLSearchParams(window.location.search).get("preview") === "1";
+
+// Tombol hanya aktif untuk detail asli dari backend.
+setVoteLoading(false);
+
+if (isDummyPreview) {
+    voteButtons.forEach((button) => {
+        button.disabled = true;
+    });
+}
+
+
     // Foto bukti pengaduan.
     renderFoto(pengaduan.foto);
 
@@ -617,6 +634,117 @@ detailStatus.dataset.status = status.toLowerCase();
 
     }
   };
+
+  
+// =========================================================
+// INTEGRASI UPVOTE / DOWNVOTE
+// =========================================================
+
+const kirimVote = async (tipeVote) => {
+
+    // Mencegah request berulang.
+    if (isVoting) return;
+
+    // Hanya menerima tipe vote yang valid.
+    if (!["upvote", "downvote"].includes(tipeVote)) return;
+
+    if (!idPengaduan || !/^[1-9]\d*$/.test(idPengaduan)) {
+        return;
+    }
+
+    setVoteLoading(true);
+
+    try {
+        // Backend menerima form-urlencoded, bukan JSON.
+        const body = new URLSearchParams({
+            id_pengaduan: idPengaduan,
+            tipe_vote: tipeVote
+        });
+
+        const response = await fetch(
+            `${API_BASE_URL}/vote.php`,
+            {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"
+                },
+                body: body.toString()
+            }
+        );
+
+        // Sesi pengguna sudah tidak valid.
+        if (response.status === 401) {
+            clearUserSession();
+            window.location.replace("login.html");
+            return;
+        }
+
+        const result = await response.json();
+
+        if (
+            !response.ok ||
+            result.status !== "success" ||
+            !result.data?.vote ||
+            String(result.data.id_pengaduan) !== String(idPengaduan)
+        ) {
+            throw new Error(
+                result.message || "Gagal mengirim suara."
+            );
+        }
+
+        
+const vote = result.data.vote;
+
+
+const jumlahUpvote = vote.upvote;
+const jumlahDownvote = vote.downvote;
+
+if (
+    !Number.isSafeInteger(jumlahUpvote) ||
+    !Number.isSafeInteger(jumlahDownvote) ||
+    jumlahUpvote < 0 ||
+    jumlahDownvote < 0 ||
+    !Object.prototype.hasOwnProperty.call(vote, "pilihan_user") ||
+    !(
+        vote.pilihan_user === null ||
+        ["upvote", "downvote"].includes(vote.pilihan_user)
+    )
+) {
+    throw new Error("Data voting dari backend tidak valid.");
+}
+
+
+// Perbarui tampilan hanya setelah respons tervalidasi.
+detailLikes.textContent = String(jumlahUpvote);
+detailDislikes.textContent = String(jumlahDownvote);
+
+// Tandai pilihan suara berdasarkan respons backend.
+setActiveVote(vote.pilihan_user);
+
+
+    } catch (error) {
+        console.error("Gagal mengirim vote:", error);
+
+        // Tidak menambah atau mengurangi angka secara manual.
+        showVoteError();
+
+        // Jika server mungkin sudah menyimpan vote tetapi
+        // respons gagal, sinkronkan kembali melalui Detail API.
+        // Jangan lakukan pengiriman vote ulang otomatis.
+    } finally {
+        setVoteLoading(false);
+    }
+};
+
+// Event klik tombol Upvote dan Downvote.
+voteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        kirimVote(button.dataset.vote);
+    });
+});
+
 
   // =========================================================
   // 11. TOMBOL COBA LAGI
