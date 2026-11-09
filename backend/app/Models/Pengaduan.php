@@ -318,7 +318,14 @@ class Pengaduan
         return $success;
     }
 
-    public function getDetailPengaduan($id_pengaduan)
+    /**
+     * Mengambil detail pengaduan.
+     *
+     * $id_user dipakai untuk menentukan pilihan vote pengguna yang sedang
+     * login (vote.pilihan_user). Nilainya berasal dari session, bukan dari
+     * request client.
+     */
+    public function getDetailPengaduan($id_pengaduan, $id_user)
     {
         // 1. Data utama pengaduan dan nama fasilitas.
         $query = "
@@ -400,11 +407,15 @@ class Pengaduan
         mysqli_free_result($result);
         mysqli_stmt_close($stmt);
 
-        // 3. Jumlah upvote dan downvote.
+        // 3. Jumlah upvote, downvote, dan pilihan vote pengguna yang login.
         $query = "
             SELECT
                 COALESCE(SUM(tipe_vote = 'upvote'), 0) AS upvote,
-                COALESCE(SUM(tipe_vote = 'downvote'), 0) AS downvote
+                COALESCE(SUM(tipe_vote = 'downvote'), 0) AS downvote,
+                MAX(CASE
+                    WHEN id_user = ? THEN tipe_vote
+                    ELSE NULL
+                END) AS pilihan_user
             FROM vote
             WHERE id_pengaduan = ?
         ";
@@ -416,7 +427,7 @@ class Pengaduan
             return false;
         }
 
-        mysqli_stmt_bind_param($stmt, 'i', $id_pengaduan);
+        mysqli_stmt_bind_param($stmt, 'ii', $id_user, $id_pengaduan);
 
         if (!mysqli_stmt_execute($stmt)) {
             error_log('Gagal mengambil jumlah vote: ' . mysqli_stmt_error($stmt));
@@ -432,7 +443,8 @@ class Pengaduan
 
         $vote = [
             'upvote' => (int) $vote['upvote'],
-            'downvote' => (int) $vote['downvote']
+            'downvote' => (int) $vote['downvote'],
+            'pilihan_user' => $vote['pilihan_user']
         ];
 
         // 4. Komentar beserta nama pengguna.

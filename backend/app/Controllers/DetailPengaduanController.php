@@ -24,7 +24,13 @@ class DetailPengaduanController
             errorResponse('ID pengaduan tidak valid', 400);
         }
 
-        $detail = $this->pengaduanModel->getDetailPengaduan($id_pengaduan);
+        // Identitas pengguna berasal dari session.
+        $id_user = (int) $_SESSION['id_user'];
+
+        $detail = $this->pengaduanModel->getDetailPengaduan(
+            $id_pengaduan,
+            $id_user
+        );
 
         if ($detail === false) {
             errorResponse('Gagal mengambil detail pengaduan', 500);
