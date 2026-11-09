@@ -463,29 +463,33 @@ body {
     border-radius: 10px;
 }
 
-/* Badge Kategori */
+
 .badge-category {
     position: absolute;
     top: 9px;
     left: 8px;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    width: max-content;
     min-width: 27px;
-    height: 14px;
-    padding: 0 6px;
+    height: 16px;
+    padding: 0 8px;
 
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 10px;
 
+    color: #0B5E3B;
     font-family: 'Poppins', sans-serif;
     font-size: 6px;
     font-weight: 600;
     line-height: 9px;
-    color: #0B5E3B;
+
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 /* Konten Kanan */
@@ -533,19 +537,20 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Badge Status Pengaduan */
+
 .badge-status {
     position: absolute;
     top: 9px;
     right: 10px;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    width: max-content;
     min-width: 43px;
-    height: 14px;
-    padding: 0 4px;
+    height: 16px;
+    padding: 0 8px;
 
     border-radius: 10px;
 
@@ -553,8 +558,11 @@ body {
     font-size: 8px;
     font-weight: 600;
     line-height: 12px;
+
     white-space: nowrap;
+    box-sizing: border-box;
 }
+
 
 /* Status */
 .status-proses {
@@ -590,10 +598,12 @@ body {
     color: #474747;
 }
 
+
 .report-meta span {
     display: flex;
     align-items: center;
 
+    width: 100%;
     min-width: 0;
     min-height: 20px;
     gap: 10px;
@@ -602,6 +612,19 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+.report-meta .report-location-text {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 
 /* Ikon Lokasi dan Kalender */
 .report-meta span svg {
@@ -1246,6 +1269,14 @@ body {
     height: 30px;
 }
 
+.search-box svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transform: translateX(-4px);
+    margin-right: 6px;
+}
+
 .search-box i {
     color: #666;
     font-size: 14px;
@@ -1257,7 +1288,7 @@ body {
     outline: none;
     width: 100%;
     font-family: var(--font-primary);
-    font-size: 12px;
+    font-size: 10px;
     color: var(--text-dark);
 }
 
@@ -1310,19 +1341,6 @@ body {
     object-fit: cover;
 }
 
-/* Badge Kategori di atas gambar */
-.badge-category {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    padding: 2px 8px;
-    background: var(--white);
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    color: var(--logo-green);
-    font-size: 8px;
-    font-weight: 600;
-}
 
 /* Konten Kanan */
 .report-content {
@@ -1348,17 +1366,6 @@ body {
     font-weight: 600;
     color: #0B5E3B;
 }
-
-.badge-status {
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 8px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-.status-proses    { background: #FFC107; color: #000; }
-.status-perbaikan { background: #17a2b8; color: #fff; }
-.status-selesai   { background: #2e9368; color: #fff; }
 
 
 
