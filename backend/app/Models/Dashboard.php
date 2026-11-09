@@ -49,7 +49,7 @@ class Dashboard
         }
 
         // Filter berdasarkan status pengaduan.
-        $statusValid = ['diajukan', 'diproses', 'selesai', 'ditolak'];
+        $statusValid = ['diajukan', 'dalam perbaikan', 'selesai', 'ditolak'];
 
         if ($status !== '') {
             if (!in_array($status, $statusValid, true)) {

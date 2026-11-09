@@ -63,7 +63,7 @@ CREATE TABLE `komentar` (
 CREATE TABLE `penanganan` (
   `id_penanganan` int UNSIGNED NOT NULL,
   `id_pengaduan` int UNSIGNED NOT NULL,
-  `status` enum('diproses','selesai','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('dalam perbaikan','selesai','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL,
   `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keterangan` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
@@ -83,7 +83,7 @@ CREATE TABLE `pengaduan` (
   `lokasi` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `deskripsi` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` enum('diajukan','diproses','selesai','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'diajukan',
+  `status` enum('diajukan','dalam perbaikan','selesai','ditolak') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'diajukan',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

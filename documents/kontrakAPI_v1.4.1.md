@@ -380,7 +380,7 @@ Status valid:
 
 ```text
 diajukan
-diproses
+dalam perbaikan
 selesai
 ditolak
 ```

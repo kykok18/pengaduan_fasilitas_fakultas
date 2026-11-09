@@ -50,7 +50,7 @@ class DashboardController
         // Validasi status pengaduan.
         $statusValid = [
             'diajukan',
-            'diproses',
+            'dalam perbaikan',
             'selesai',
             'ditolak'
         ];
