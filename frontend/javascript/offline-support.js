@@ -30,13 +30,16 @@
     if (detailRetry && document.getElementById('detailState')) {
       detailRetry.click();
     }
-    // Form Buat Pengaduan: tidak memicu submit otomatis.
+    // Halaman lain: kirim sinyal tanpa memicu POST atau merusak form.
+    // Riwayat yang nanti dibuat dapat mendengarkan event fitk:offline.
+    window.dispatchEvent(new CustomEvent('fitk:offline'));
   }
 
   function onOnline() {
     document.documentElement.dataset.network = 'online';
     // Sengaja tidak auto-submit ulang form atau POST voting.
-    // Pengguna menekan Coba Lagi untuk meminta data terbaru.
+    window.dispatchEvent(new CustomEvent('fitk:online'));
+    // Tidak auto-submit POST. Pengguna menekan Coba Lagi untuk GET terbaru.
   }
 
   window.addEventListener('offline', onOffline);

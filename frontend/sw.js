@@ -2,7 +2,7 @@
  * Simpan file ini di frontend/sw.js.
  * Jika mengubah HTML/CSS/JS dan versi lama masih muncul, naikkan CACHE_VERSION.
  */
-const CACHE_VERSION = 'fitk-static-v1-20261109';
+const CACHE_VERSION = 'fitk-static-v2-20261109';
 const SCOPE = new URL(self.registration.scope);
 
 // Hanya tampilan statis. Tidak ada endpoint backend di daftar ini.
@@ -11,6 +11,7 @@ const STATIC_FILES = [
   'dashboard.html',
   'detail-pengaduan.html',
   'buat-pengaduan.html',
+  'riwayat-pengaduan.html',
   'login.html',
   'register.html',
   'css/style.css',
@@ -18,12 +19,14 @@ const STATIC_FILES = [
   'css/dashboard.css',
   'css/detail-pengaduan.css',
   'css/buat-pengaduan.css',
+  'css/riwayat-pengaduan.css',
   'css/login.css',
   'css/register.css',
   'javascript/api.js',
   'javascript/dashboard.js',
   'javascript/detail-pengaduan.js',
   'javascript/buat-pengaduan.js',
+  'javascript/riwayat-pengaduan.js',
   'javascript/logout.js',
   'javascript/login.js',
   'javascript/register.js',
@@ -33,7 +36,6 @@ const STATIC_FILES = [
 ];
 
 const assetURLs = new Set(STATIC_FILES.map(path => new URL(path, SCOPE).pathname));
-const allowedPagePaths = new Set(STATIC_FILES.filter(path => path.endsWith('.html')).map(path => new URL(path, SCOPE).pathname));
 
 function isAllowed(request) {
   const url = new URL(request.url);

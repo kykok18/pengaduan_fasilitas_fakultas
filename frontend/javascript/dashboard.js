@@ -103,33 +103,46 @@
         };
 
         // Mengubah status database menjadi label tampilan
-        const getStatusInfo = (status) => {
-            const statusMap = {
-                diajukan: {
-                    label: 'Diajukan',
-                    className: 'status-proses'
-                },
-                
-diproses: {
-    label: 'Dalam Perbaikan',
-    className: 'status-perbaikan'
-},
+       
+const getStatusInfo = (status) => {
+    const statusMap = {
+        diajukan: {
+            label: 'Diajukan',
+            className: 'status-proses'
+        },
 
-                selesai: {
-                    label: 'Selesai',
-                    className: 'status-selesai'
-                },
-                ditolak: {
-                    label: 'Ditolak',
-                    className: 'status-ditolak'
-                }
-            };
+        diproses: {
+            label: 'Dalam Perbaikan',
+            className: 'status-perbaikan'
+        },
 
-            return statusMap[String(status || '').toLowerCase()] || {
-                label: status || 'Tidak diketahui',
-                className: 'status-proses'
-            };
-        };
+        'dalam perbaikan': {
+            label: 'Dalam Perbaikan',
+            className: 'status-perbaikan'
+        },
+
+        selesai: {
+            label: 'Selesai',
+            className: 'status-selesai'
+        },
+
+        ditolak: {
+            label: 'Ditolak',
+            className: 'status-ditolak'
+        }
+    };
+
+    const normalizedStatus = String(status || '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+
+    return statusMap[normalizedStatus] || {
+        label: status || 'Tidak diketahui',
+        className: 'status-proses'
+    };
+};
+
 
         // Mengatur tampilan dashboard sesuai kondisi pengambilan data.
         // Loading tampil saat menunggu API, sedangkan Error tampil
@@ -332,7 +345,7 @@ reportsContainer.style.display = 'flex';
     <path d="M4.5 0C2.0194 0 5.29528e-05 1.97351 5.29528e-05 4.3978C-0.0168219 7.93803 4.00501 10.7746 4.17375 10.8956C4.26938 10.9615 4.3875 11 4.5 11C4.6125 11 4.73062 10.967 4.82625 10.8956C4.995 10.7746 9.01682 7.94353 8.99995 4.3978C8.99995 1.97351 6.9806 0 4.5 0ZM4.5 6.5967C3.25689 6.5967 2.25003 5.61269 2.25003 4.3978C2.25003 3.18291 3.25689 2.1989 4.5 2.1989C5.74311 2.1989 6.74997 3.18291 6.74997 4.3978C6.74997 5.61269 5.74311 6.5967 4.5 6.5967Z" fill="#474747"/>
     </svg>
 
-                                ${lokasi}
+                               <span class="report-location-text">${lokasi}</span>
                             </span>
 
                             <span>

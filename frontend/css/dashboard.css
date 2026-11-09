@@ -598,10 +598,12 @@ body {
     color: #474747;
 }
 
+
 .report-meta span {
     display: flex;
     align-items: center;
 
+    width: 100%;
     min-width: 0;
     min-height: 20px;
     gap: 10px;
@@ -610,6 +612,19 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+.report-meta .report-location-text {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 
 /* Ikon Lokasi dan Kalender */
 .report-meta span svg {
