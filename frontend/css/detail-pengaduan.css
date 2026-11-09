@@ -840,74 +840,39 @@ textarea {
 }
 
 
+
 /* ==========================================
-   UPVOTE & DOWNVOTE — SESUAI FIGMA
+   WARNA VOTE — SESUAI FIGMA
    ========================================== */
 
-/* Wadah kedua tombol */
-.detail-vote-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    width: 125px;
-    height: 26px;
-    min-height: 26px;
-
-    padding: 2px 0;
-
-    background: #FFFFFF;
-    border: 1px solid #D9D9D9;
-    border-radius: 20px;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-/* Tombol Upvote dan Downvote */
-.detail-vote-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 4px;
-
-    flex: 1;
-    min-width: 0;
-    height: 20px;
-
-    padding: 0 4px;
-    background: transparent;
-    border: none;
-
-    font-family: 'Poppins', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 15px;
+/* Kondisi default: abu-abu */
+.detail-vote-btn span {
     color: rgba(0, 0, 0, 0.25);
 }
 
-/* Ikon jempol */
-.detail-vote-btn svg {
-    display: block;
-    width: 14px;
-    height: 13px;
-    flex-shrink: 0;
+.detail-vote-btn svg path {
+    fill: rgba(0, 0, 0, 0.31);
+    fill-opacity: 1;
 }
 
-/* Garis vertikal di tengah */
-.detail-vote-divider {
-    flex: 0 0 1px;
-    width: 1px;
-    height: 17px;
-    background: #D9D9D9;
+/* Upvote dipilih: hijau */
+.detail-vote-btn[data-vote="upvote"].active span {
+    color: #0B5E3B;
 }
 
-/* Kondisi tombol */
-.detail-vote-btn:not(:disabled) {
-    cursor: pointer;
+.detail-vote-btn[data-vote="upvote"].active svg path {
+    fill: #0B5E3B;
+    fill-opacity: 1;
 }
 
-.detail-vote-btn:disabled {
-    cursor: not-allowed;
+/* Downvote dipilih: merah */
+.detail-vote-btn[data-vote="downvote"].active span {
+    color: #C41B1B;
+}
+
+.detail-vote-btn[data-vote="downvote"].active svg path {
+    fill: #C41B1B;
+    fill-opacity: 1;
 }
 
 
@@ -1460,16 +1425,33 @@ textarea {
     color: #C41B1B;
 }
 
-/* Tombol yang dipilih pengguna */
-.detail-vote-btn.active {
+
+/* ==========================================
+   WARNA VOTING AKTIF
+   ========================================== */
+
+/* UPVOTE AKTIF — HIJAU */
+.detail-vote-btn[data-vote="upvote"].active,
+.detail-vote-btn[data-vote="upvote"].active span {
     color: #0B5E3B;
 }
 
-/* Ikon tombol aktif */
-.detail-vote-btn.active svg path {
+.detail-vote-btn[data-vote="upvote"].active svg path {
     fill: #0B5E3B;
     fill-opacity: 1;
 }
+
+/* DOWNVOTE AKTIF — MERAH */
+.detail-vote-btn[data-vote="downvote"].active,
+.detail-vote-btn[data-vote="downvote"].active span {
+    color: #C41B1B;
+}
+
+.detail-vote-btn[data-vote="downvote"].active svg path {
+    fill: #C41B1B;
+    fill-opacity: 1;
+}
+
 
 /* ==========================================
    UKURAN CARD STATE — RESPONSIVE
