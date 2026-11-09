@@ -712,7 +712,7 @@ textarea {
   gap: 10px;
   min-width: 0;
   color: #444444;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 500;
 }
 
@@ -1343,7 +1343,7 @@ textarea {
     }
 
     .detail-meta-item {
-        font-size: 12px;
+        font-size: 10px;
         gap: 7px;
     }
 
