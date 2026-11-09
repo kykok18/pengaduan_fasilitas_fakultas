@@ -463,29 +463,33 @@ body {
     border-radius: 10px;
 }
 
-/* Badge Kategori */
+
 .badge-category {
     position: absolute;
     top: 9px;
     left: 8px;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    width: max-content;
     min-width: 27px;
-    height: 14px;
-    padding: 0 6px;
+    height: 16px;
+    padding: 0 8px;
 
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 10px;
 
+    color: #0B5E3B;
     font-family: 'Poppins', sans-serif;
     font-size: 6px;
     font-weight: 600;
     line-height: 9px;
-    color: #0B5E3B;
+
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 /* Konten Kanan */
@@ -533,19 +537,20 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Badge Status Pengaduan */
+
 .badge-status {
     position: absolute;
     top: 9px;
     right: 10px;
 
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    width: max-content;
     min-width: 43px;
-    height: 14px;
-    padding: 0 4px;
+    height: 16px;
+    padding: 0 8px;
 
     border-radius: 10px;
 
@@ -553,8 +558,11 @@ body {
     font-size: 8px;
     font-weight: 600;
     line-height: 12px;
+
     white-space: nowrap;
+    box-sizing: border-box;
 }
+
 
 /* Status */
 .status-proses {
@@ -1318,34 +1326,6 @@ body {
     object-fit: cover;
 }
 
-/* Badge Kategori di atas gambar */
-/* Badge kategori fasilitas */
-.badge-category {
-    position: absolute;
-    top: 9px;
-    left: 8px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: max-content;
-    min-height: 14px;
-    padding: 2px 8px;
-
-    background: #FFFFFF;
-    border: 1px solid #D9D9D9;
-    border-radius: 10px;
-
-    color: #0B5E3B;
-    font-family: 'Poppins', sans-serif;
-    font-size: 6px;
-    font-weight: 600;
-    line-height: 9px;
-
-    white-space: nowrap;
-    box-sizing: border-box;
-}
 
 /* Konten Kanan */
 .report-content {
@@ -1371,31 +1351,6 @@ body {
     font-weight: 600;
     color: #0B5E3B;
 }
-
-/* Badge status pengaduan */
-.badge-status {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: max-content;
-    min-height: 14px;
-    padding: 2px 8px;
-
-    border-radius: 10px;
-
-    color: #000000;
-    font-family: 'Poppins', sans-serif;
-    font-size: 8px;
-    font-weight: 600;
-    line-height: 12px;
-
-    white-space: nowrap;
-    box-sizing: border-box;
-}
-.status-proses    { background: #FFC107; color: #000; }
-.status-perbaikan { background: #17a2b8; color: #fff; }
-.status-selesai   { background: #2e9368; color: #fff; }
 
 
 
