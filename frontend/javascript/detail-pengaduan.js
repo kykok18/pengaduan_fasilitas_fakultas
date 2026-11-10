@@ -321,8 +321,11 @@ commentsCard.hidden = false;
     imageFallback.hidden = false;
 
     if (!fotoUrl || typeof fotoUrl !== "string") {
-      return;
-    }
+    detailImage.src = "https://via.placeholder.com/600x335";
+    detailImage.hidden = false;
+    imageFallback.hidden = true;
+    return;
+}
 
     try {
       const url = new URL(fotoUrl);
@@ -338,9 +341,11 @@ commentsCard.hidden = false;
       };
 
       detailImage.onerror = () => {
-        detailImage.hidden = true;
-        imageFallback.hidden = false;
-      };
+    detailImage.onerror = null; // Mencegah error berulang
+    detailImage.src = "https://via.placeholder.com/600x335";
+    detailImage.hidden = false;
+    imageFallback.hidden = true;
+};
 
       detailImage.src = url.href;
 

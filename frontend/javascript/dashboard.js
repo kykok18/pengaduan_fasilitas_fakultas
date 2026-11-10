@@ -313,22 +313,28 @@ reportsContainer.style.display = 'flex';
                 const fasilitas = escapeHTML(item.nama_fasilitas || 'Fasilitas');
                 const statusLabel = escapeHTML(statusInfo.label);
 
-                const foto = item.foto
-                ? escapeHTML(getFotoURL(item.foto))
-                : '';
+                const fotoPlaceholder = "https://via.placeholder.com/600x335";
+
+const foto = item.foto
+    ? escapeHTML(getFotoURL(item.foto))
+    : fotoPlaceholder;
 
                 const card = document.createElement('div');
                 card.className = 'report-card-dash';
 
                 card.innerHTML = `
-                    <div class="report-image">
-                        ${
-                            foto
-                                ? `<img src="${foto}" alt="${judul}" loading="lazy">`
-                                : ''
-                        }
-                        <span class="badge-category">${fasilitas}</span>
-                    </div>
+                    
+<div class="report-image">
+    <img
+        src="${foto}"
+        alt="${judul}"
+        loading="lazy"
+        onerror="this.onerror=null; this.src='https://via.placeholder.com/600x335';"
+    >
+
+    <span class="badge-category">${fasilitas}</span>
+</div>
+
 
                     <div class="report-content">
                         <div class="report-content-header">
