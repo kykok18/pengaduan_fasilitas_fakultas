@@ -466,7 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectLabel.classList.remove("has-value");
 
         fileNameDisplay.textContent =
-    "Format: JPEG/JPG, PNG, WebP, HEIC/HEIF. Maks. 10 MB";
+    "JPEG/JPG, PNG, WebP, HEIC/HEIF. Maks. 10 MB";
 
         hideError(errorJudul);
         hideError(errorKategori);
@@ -576,7 +576,7 @@ inputFile.addEventListener("change", async () => {
         fileNameDisplay.textContent = inputFile.files[0].name;
     } else {
         fileNameDisplay.textContent =
-            "Format: JPEG/JPG, PNG, WebP, HEIC/HEIF. Maks. 10 MB";
+            "JPEG/JPG, PNG, WebP, HEIC/HEIF. Maks. 10 MB";
     }
 
     // Validasi foto hanya saat pengguna memilih file.
