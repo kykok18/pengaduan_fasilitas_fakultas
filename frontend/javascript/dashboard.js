@@ -361,17 +361,17 @@ reportsContainer.style.display = 'flex';
                             <div class="report-actions">
                                 <span>
                                     <i class="fas fa-thumbs-up"></i>
-                                    ${Number(item.upvote_count) || 0}
+                                    ${formatJumlah(item.upvote_count)}
                                 </span>
 
                                 <span>
                                     <i class="fas fa-thumbs-down"></i>
-                                    ${Number(item.downvote_count) || 0}
+                                    ${formatJumlah(item.downvote_count)}
                                 </span>
 
                                 <span>
                                     <i class="fas fa-comment"></i>
-                                    ${Number(item.comment_count) || 0}
+                                    ${formatJumlah(item.comment_count)}
                                 </span>
                             </div>
                         </div>

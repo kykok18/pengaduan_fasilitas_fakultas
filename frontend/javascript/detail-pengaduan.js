@@ -362,7 +362,7 @@ commentsCard.hidden = false;
       : [];
 
     commentsTitle.textContent =
-      `Komentar(${daftarKomentar.length})`;
+    `Komentar(${formatJumlah(daftarKomentar.length)})`;
 
     daftarKomentar.forEach((item) => {
 
@@ -445,12 +445,8 @@ detailStatus.dataset.status = status.toLowerCase();
     detailDescription.textContent =
       pengaduan.deskripsi || "-";
 
-    // Jumlah dukungan dari objek vote backend.
-    detailLikes.textContent =
-      String(vote.upvote ?? 0);
-
-    detailDislikes.textContent =
-      String(vote.downvote ?? 0);
+detailLikes.textContent = formatJumlah(vote.upvote ?? 0);
+detailDislikes.textContent = formatJumlah(vote.downvote ?? 0);
 
       // Tampilkan suara aktif berdasarkan data backend.
 setActiveVote(vote.pilihan_user ?? null);
@@ -717,8 +713,8 @@ if (
 
 
 // Perbarui tampilan hanya setelah respons tervalidasi.
-detailLikes.textContent = String(jumlahUpvote);
-detailDislikes.textContent = String(jumlahDownvote);
+detailLikes.textContent = formatJumlah(jumlahUpvote);
+detailDislikes.textContent = formatJumlah(jumlahDownvote);
 
 // Tandai pilihan suara berdasarkan respons backend.
 setActiveVote(vote.pilihan_user);

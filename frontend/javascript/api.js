@@ -252,3 +252,26 @@ async function apiGetProfile() {
     // Meminta data profil melalui User.php menggunakan GET.
     return apiRequest("User.php", null, "GET");
 }
+
+
+/* ==========================================
+   FORMAT JUMLAH UPVOTE / DOWNVOTE / KOMENTAR
+   ========================================== */
+
+function formatJumlah(value) {
+    const jumlah = Number(value);
+
+    if (!Number.isFinite(jumlah) || jumlah < 0) {
+        return "0";
+    }
+
+    if (jumlah < 1000) {
+        return String(Math.floor(jumlah));
+    }
+
+    const ribuan = jumlah / 1000;
+
+    const hasil = ribuan.toFixed(1).replace(/\.0$/, "");
+
+    return hasil + "K";
+}
