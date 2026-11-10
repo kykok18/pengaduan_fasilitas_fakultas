@@ -64,18 +64,7 @@ class PengaduanController
             );
         }
 
-        // Daftarkan pelepasan lock segera setelah lock berhasil didapat.
-        $model = $this->pengaduanModel;
-
-        register_shutdown_function(
-            function () use ($model, $id_user) {
-                $model->releasePengaduanLock($id_user);
-            }
-        );
-
         // 3. Daftarkan pelepasan lock saat request berakhir.
-        // Tetap dijalankan meskipun successResponse/errorResponse
-        // memanggil exit().
         $model = $this->pengaduanModel;
 
         register_shutdown_function(
@@ -325,97 +314,30 @@ class PengaduanController
         finfo_close($finfo);
 
         $tipeFotoDiizinkan = [
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/webp' => 'webp',
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+            'image/heic',
+            'image/heif',
         ];
 
         if (
             $mimeType === false ||
-            !isset($tipeFotoDiizinkan[$mimeType])
+            !in_array($mimeType, $tipeFotoDiizinkan, true)
         ) {
             errorResponse(
-                'Format foto harus JPEG, PNG, atau WebP',
+                'Format foto harus JPEG, PNG, WebP, HEIC, atau HEIF',
                 400
             );
         }
 
-        // 11. Pastikan file benar-benar gambar yang valid.
-        $infoGambar = @getimagesize($foto['tmp_name']);
-
-        if ($infoGambar === false) {
-            errorResponse(
-                'File yang diunggah bukan gambar yang valid',
-                400
-            );
-        }
-
-        $tipeGambarDiizinkan = [
-            IMAGETYPE_JPEG => 'image/jpeg',
-            IMAGETYPE_PNG => 'image/png',
-            IMAGETYPE_WEBP => 'image/webp',
-        ];
-
-        if (
-            !isset($tipeGambarDiizinkan[$infoGambar[2]]) ||
-            $tipeGambarDiizinkan[$infoGambar[2]] !== $mimeType
-        ) {
-            errorResponse(
-                'Isi file tidak sesuai dengan format foto yang diizinkan',
-                400
-            );
-        }
-
-        // 11.1 Validasi dimensi gambar.
-        $lebarGambar = $infoGambar[0];
-        $tinggiGambar = $infoGambar[1];
-
-        $maksimalDimensi = 6000;
-        $maksimalPixel = 20000000;
-
-        if (
-            $lebarGambar <= 0 ||
-            $tinggiGambar <= 0 ||
-            $lebarGambar > $maksimalDimensi ||
-            $tinggiGambar > $maksimalDimensi ||
-            ($lebarGambar * $tinggiGambar) > $maksimalPixel
-        ) {
-            errorResponse(
-                'Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel.',
-                400
-            );
-        }
-
-        // 13.1 Decode gambar berdasarkan MIME.
-        $gambar = false;
-
-        switch ($mimeType) {
-            case 'image/jpeg':
-                $gambar = @imagecreatefromjpeg($foto['tmp_name']);
-                break;
-
-            case 'image/png':
-                $gambar = @imagecreatefrompng($foto['tmp_name']);
-                break;
-
-            case 'image/webp':
-                $gambar = @imagecreatefromwebp($foto['tmp_name']);
-                break;
-        }
-
-        if ($gambar === false) {
-            errorResponse(
-                'Gambar gagal diproses oleh server',
-                400
-            );
-        }
-
-        // 13.2 Encode ulang gambar ke file sementara.
-        $fileSementara = tempnam(sys_get_temp_dir(), 'img_');
+        // 11. Siapkan file sementara.
+        $fileSementara = tempnam(
+            sys_get_temp_dir(),
+            'img_'
+        );
 
         if ($fileSementara === false) {
-            imagedestroy($gambar);
-
             errorResponse(
                 'Gagal menyiapkan file sementara',
                 500
@@ -424,45 +346,127 @@ class PengaduanController
 
         $berhasilEncode = false;
 
-        switch ($mimeType) {
-            case 'image/jpeg':
-                $berhasilEncode = imagejpeg(
-                    $gambar,
-                    $fileSementara,
-                    85
-                );
-                break;
+        // 12. Decode dan encode ulang berdasarkan MIME.
+        if (
+            $mimeType === 'image/heic' ||
+            $mimeType === 'image/heif'
+        ) {
+            // HEIC/HEIF menggunakan Imagick.
+            if (!extension_loaded('imagick')) {
+                @unlink($fileSementara);
 
-            case 'image/png':
-                $berhasilEncode = imagepng(
-                    $gambar,
-                    $fileSementara,
-                    6
+                errorResponse(
+                    'Server belum mendukung pemrosesan foto HEIC/HEIF',
+                    500
                 );
-                break;
+            }
 
-            case 'image/webp':
-                $berhasilEncode = imagewebp(
-                    $gambar,
-                    $fileSementara,
-                    85
+            $gambar = null;
+
+            try {
+                $gambar = new Imagick();
+
+                $gambar->readImage($foto['tmp_name']);
+
+                // Ambil gambar pertama jika file memiliki beberapa frame.
+                $gambar->setIteratorIndex(0);
+
+                // Sesuaikan orientasi foto.
+                $gambar->autoOrientImage();
+
+                // Konversi menjadi JPEG.
+                $gambar->setImageFormat('jpeg');
+                $gambar->setImageCompressionQuality(85);
+                $gambar->stripImage();
+
+                $berhasilEncode = $gambar->writeImage(
+                    $fileSementara
                 );
-                break;
+
+                $gambar->clear();
+                $gambar->destroy();
+
+            } catch (Throwable $e) {
+                if ($gambar instanceof Imagick) {
+                    $gambar->clear();
+                    $gambar->destroy();
+                }
+
+                $berhasilEncode = false;
+            }
+
+        } else {
+            // JPEG, PNG, dan WebP menggunakan GD.
+            switch ($mimeType) {
+                case 'image/jpeg':
+                    $gambar = @imagecreatefromjpeg(
+                        $foto['tmp_name']
+                    );
+                    break;
+
+                case 'image/png':
+                    $gambar = @imagecreatefrompng(
+                        $foto['tmp_name']
+                    );
+                    break;
+
+                case 'image/webp':
+                    $gambar = @imagecreatefromwebp(
+                        $foto['tmp_name']
+                    );
+                    break;
+
+                default:
+                    $gambar = false;
+                    break;
+            }
+
+            if ($gambar !== false) {
+                switch ($mimeType) {
+                    case 'image/jpeg':
+                        $berhasilEncode = imagejpeg(
+                            $gambar,
+                            $fileSementara,
+                            85
+                        );
+                        break;
+
+                    case 'image/png':
+                        $berhasilEncode = imagepng(
+                            $gambar,
+                            $fileSementara,
+                            6
+                        );
+                        break;
+
+                    case 'image/webp':
+                        $berhasilEncode = imagewebp(
+                            $gambar,
+                            $fileSementara,
+                            85
+                        );
+                        break;
+                }
+
+                imagedestroy($gambar);
+            }
         }
-
-        imagedestroy($gambar);
 
         if (!$berhasilEncode) {
             @unlink($fileSementara);
 
             errorResponse(
-                'Gambar gagal disimpan ulang',
-                500
+                'File foto tidak valid atau gagal diproses oleh server',
+                400
             );
         }
 
-        // 13.3 Upload hasil encode ke Cloudinary (storage permanen).
-        $pathFoto = uploadToStorage($fileSementara, 'pengaduan');
+        // 13. Upload hasil encode ke Cloudinary.
+        $pathFoto = uploadToStorage(
+            $fileSementara,
+            'pengaduan'
+        );
+
         @unlink($fileSementara);
 
         if ($pathFoto === false) {
@@ -482,7 +486,6 @@ class PengaduanController
             $pathFoto
         );
 
-        // Hapus file jika penyimpanan database gagal.
         if ($id_pengaduan === false) {
             errorResponse('Gagal membuat pengaduan', 500);
         }
