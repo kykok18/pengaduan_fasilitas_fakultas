@@ -1982,3 +1982,46 @@ body {
 
     text-align: center;
 }
+
+
+/* ==========================================
+   FIX JUDUL DAN STATUS CARD DASHBOARD
+   ========================================== */
+
+/* Judul dan status sejajar */
+.report-card-dash .report-content-header {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 5px;
+
+    width: 100%;
+    min-width: 0;
+}
+
+/* Judul otomatis titik tiga */
+.report-card-dash .report-content-header h4 {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Badge status tidak menimpa judul */
+.report-card-dash .report-content-header .badge-status {
+    position: static;
+
+    flex: 0 0 auto;
+    width: max-content;
+    max-width: 100%;
+
+    height: 16px;
+    padding: 0 8px;
+
+    white-space: nowrap;
+}
