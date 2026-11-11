@@ -327,10 +327,10 @@ const foto = item.foto
 
 <div class="report-image">
     <img
-        src="${foto}"
-        alt="Bukti foto pengaduan"
-        loading="lazy"
-    >
+    alt="Bukti foto pengaduan"
+    loading="lazy"
+>
+
 
 
     <span class="badge-category">${fasilitas}</span>
@@ -425,6 +425,7 @@ const foto = item.foto
 
 
 
+
 const gambarCard = card.querySelector(".report-image img");
 
 if (gambarCard) {
@@ -434,16 +435,18 @@ if (gambarCard) {
     ).href;
 
     gambarCard.addEventListener("error", () => {
-        // Jika placeholder juga gagal, jangan ulangi.
-        if (gambarCard.dataset.fallback === "true") {
+        if (gambarCard.src === placeholderURL) {
             gambarCard.alt = "";
             return;
         }
 
-        gambarCard.dataset.fallback = "true";
         gambarCard.src = placeholderURL;
     });
+
+    // Pasang src setelah event error siap.
+    gambarCard.src = foto;
 }
+
 
 
 
