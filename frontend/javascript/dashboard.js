@@ -596,12 +596,33 @@ const foto = item.foto
                 loadingState?.classList.remove('active');
                 errorState?.classList.remove('active');
 
-            } catch (error) {
-                console.error('Gagal memuat dashboard:', error);
+            
+} catch (error) {
+    // Catat kesalahan untuk debugging.
+    console.error('Request dashboard gagal:', error);
 
-                loadingState?.classList.remove('active');
-                showError();
-            }
+    // Hentikan tampilan loading.
+    loadingState?.classList.remove('active');
+
+    // Nonaktifkan sementara tampilan gagal memuat.
+    errorState?.classList.remove('active');
+
+    // Jangan menampilkan empty state atau not found,
+    // karena kegagalan API bukan berarti data kosong.
+    emptyState?.classList.remove('active');
+    notFoundState?.classList.remove('show');
+
+    // Sembunyikan daftar pengaduan dan pagination
+    // sampai request berikutnya berhasil.
+    if (reportsContainer) {
+        reportsContainer.style.display = 'none';
+    }
+
+    if (pagination) {
+        pagination.style.display = 'none';
+    }
+}
+
         };
 
         // =========================================================
