@@ -1281,17 +1281,34 @@ textarea {
     color: #000000;
 }
 
+
 .detail-retry-btn {
-  min-width: 155px;
-  margin-top: 24px;
-  padding: 12px 24px;
-  border: 0;
-  border-radius: 10px;
-  background: var(--detail-green);
-  color: #FFFFFF;
-  font-weight: 600;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 130px;
+    min-width: 130px;
+    height: 30px;
+    min-height: 30px;
+    padding: 0 10px;
+
+    margin: 24px auto 0;
+
+    background: #0B5E3B;
+    border: none;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 15px;
+    color: #FFFFFF;
+
+    cursor: pointer;
+    box-sizing: border-box;
 }
+
 
 
 
