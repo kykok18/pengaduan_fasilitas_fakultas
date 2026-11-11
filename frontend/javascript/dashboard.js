@@ -324,13 +324,14 @@ const foto = item.foto
 
                 card.innerHTML = `
                     
+
 <div class="report-image">
     <img
         src="${foto}"
-        alt="${judul}"
+        alt="Bukti foto pengaduan"
         loading="lazy"
-        onerror="this.onerror=null; this.src='https://via.placeholder.com/600x335';"
     >
+
 
     <span class="badge-category">${fasilitas}</span>
 </div>
@@ -423,22 +424,27 @@ const foto = item.foto
                 }
 
 
+
 const gambarCard = card.querySelector(".report-image img");
 
 if (gambarCard) {
-    gambarCard.addEventListener("error", () => {
-        const placeholder = "img/foto-placeholder.png";
+    const placeholderURL = new URL(
+        "img/foto-placeholder.png",
+        document.baseURI
+    ).href;
 
-        // Jangan mencoba URL yang sama berulang kali.
+    gambarCard.addEventListener("error", () => {
+        // Jika placeholder juga gagal, jangan ulangi.
         if (gambarCard.dataset.fallback === "true") {
             gambarCard.alt = "";
             return;
         }
 
         gambarCard.dataset.fallback = "true";
-        gambarCard.src = placeholder;
+        gambarCard.src = placeholderURL;
     });
 }
+
 
 
                 // Memasukkan kartu ke Dashboard.
