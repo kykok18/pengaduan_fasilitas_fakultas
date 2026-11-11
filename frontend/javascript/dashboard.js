@@ -313,7 +313,7 @@ reportsContainer.style.display = 'flex';
                 const fasilitas = escapeHTML(item.nama_fasilitas || 'Fasilitas');
                 const statusLabel = escapeHTML(statusInfo.label);
 
-                const fotoPlaceholder = "https://via.placeholder.com/600x335";
+                const fotoPlaceholder = "img/foto-placeholder.png";
 
 const foto = item.foto
     ? escapeHTML(getFotoURL(item.foto))
