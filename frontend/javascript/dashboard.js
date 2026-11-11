@@ -422,6 +422,25 @@ const foto = item.foto
                     });
                 }
 
+
+const gambarCard = card.querySelector(".report-image img");
+
+if (gambarCard) {
+    gambarCard.addEventListener("error", () => {
+        const placeholder = "https://via.placeholder.com/600x400";
+
+        // Jangan mencoba URL yang sama berulang kali.
+        if (gambarCard.dataset.fallback === "true") {
+            gambarCard.alt = "";
+            return;
+        }
+
+        gambarCard.dataset.fallback = "true";
+        gambarCard.src = placeholder;
+    });
+}
+
+
                 // Memasukkan kartu ke Dashboard.
                 reportsContainer.appendChild(card);
 
