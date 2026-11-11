@@ -39,22 +39,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = registerForm.querySelector('.btn-register');
     const loginLink = document.querySelector('.login-text a');
 
-    /* ============================================================
-       TOGGLE PASSWORD
-       ============================================================ */
-    document.querySelectorAll('.toggle-password').forEach((button) => {
-        button.addEventListener('click', () => {
-            const targetId = button.dataset.target;
-            const input = document.getElementById(targetId);
-            const icon = button.querySelector('iconify-icon');
 
-            const isPassword = input.type === 'password';
-            input.type = isPassword ? 'text' : 'password';
+    // ==========================================
+    // TOGGLE PASSWORD & KONFIRMASI PASSWORD
+    // ==========================================
 
-            icon.setAttribute('icon', isPassword ? 'akar-icons:eye-closed' : 'akar-icons:eye');
-            button.setAttribute('aria-label', isPassword ? 'Sembunyikan password' : 'Tampilkan password');
-        });
+    document.addEventListener('click', (event) => {
+        const button = event.target.closest('.toggle-password');
+
+        if (!button) return;
+
+        event.preventDefault();
+
+        const targetId = button.dataset.target;
+        const input = document.getElementById(targetId);
+
+        if (!input) return;
+
+        const isHidden = input.type === 'password';
+
+        input.type = isHidden ? 'text' : 'password';
+
+        const icon = button.querySelector('iconify-icon');
+
+        if (icon) {
+            icon.setAttribute(
+                'icon',
+                isHidden ? 'akar-icons:eye-closed' : 'akar-icons:eye'
+            );
+        }
+
+        button.setAttribute(
+            'aria-label',
+            isHidden ? 'Sembunyikan password' : 'Tampilkan password'
+        );
+
+        button.setAttribute('aria-pressed', String(isHidden));
     });
+
 
     /* ============================================================
        FUNGSI UPDATE STATUS TOMBOL
@@ -435,7 +457,7 @@ confirmPasswordInput.addEventListener('input', () => {
         if (!navigator.onLine) {
             showMessage(`
                 <div class="msg-title">KONEKSI INTERNET TERPUTUS</div>
-                <div class="msg-desc">Periksa koneksi internet Anda. Silakan coba lagi.</div>
+                <div class="msg-desc">Periksa koneksi internet Anda. Silakan coba<br>lagi.</div>
             `, 'offline'); // Panggil dengan tipe 'offline'
             updateButtonState();
             return;
@@ -533,4 +555,42 @@ confirmPasswordInput.addEventListener('input', () => {
         // Jangan panggil updateButtonState() di sini jika sukses, 
         // agar notifikasi hijau tidak hilang sebelum redirect.
     });
+
+
+    // ==========================================
+    // DETEKSI KONEKSI INTERNET
+    // ==========================================
+
+    const tampilkanOffline = () => {
+        showMessage(`
+            <div class="msg-title">
+                KONEKSI INTERNET TERPUTUS
+            </div>
+            <div class="msg-desc">
+                Periksa koneksi internet Anda. Silakan coba lagi.
+            </div>
+        `, 'offline');
+    };
+
+    // Ketika internet terputus tanpa refresh.
+    window.addEventListener('offline', tampilkanOffline);
+
+    // Mendukung sinyal dari offline-support.js.
+    window.addEventListener('fitk:offline', tampilkanOffline);
+
+    // Ketika internet kembali.
+    window.addEventListener('online', () => {
+        if (
+            formMessage &&
+            formMessage.classList.contains('offline')
+        ) {
+            hideMessage();
+        }
+    });
+
+    // Ketika halaman dibuka/refresh dalam keadaan offline.
+    if (!navigator.onLine) {
+        tampilkanOffline();
+    }
+
 });
