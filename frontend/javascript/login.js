@@ -221,7 +221,7 @@ if (!email) {
         },
         offline: {
             title: 'KONEKSI INTERNET TERPUTUS',
-            desc: 'Periksa koneksi internet Anda. Silakan coba lagi.'
+            desc: 'Periksa koneksi internet Anda. Silakan coba <br>lagi.'
         }
     };
 

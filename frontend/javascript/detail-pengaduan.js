@@ -621,7 +621,7 @@ if (isDummyPreview) {
 
       if (!navigator.onLine) {
         showError(
-          "Koneksi internet terputus. Periksa jaringan Anda dan coba lagi."
+          "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
         );
       } else {
         showError(error.message);

@@ -264,6 +264,31 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
+
+  // =========================================================
+  // NOTIFIKASI KETIKA KONEKSI INTERNET TERPUTUS
+  // =========================================================
+
+  const tampilkanNotifikasiOffline = () => {
+    showNotification(
+      "offline",
+      "KONEKSI INTERNET TERPUTUS",
+      "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
+    );
+  };
+
+  // Ketika koneksi terputus saat halaman masih terbuka.
+  window.addEventListener(
+    "offline",
+    tampilkanNotifikasiOffline
+  );
+
+  // Ketika halaman dibuka ulang dalam keadaan offline.
+  if (!navigator.onLine) {
+    tampilkanNotifikasiOffline();
+  }
+
+
   // =========================================================
   // 5. MENGAMBIL DATA FASILITAS DARI BACKEND
   // =========================================================
@@ -332,6 +357,22 @@ document.addEventListener("DOMContentLoaded", () => {
       // Jika pemeriksaan gagal, form tidak digunakan
       // dan diganti dengan informasi kegagalan verifikasi.
       console.error("Gagal verifikasi sesi:", error);
+
+
+      // Jika gagal karena offline, jangan hapus halaman.
+      if (!navigator.onLine) {
+        document.documentElement.classList.add("auth-verified");
+
+        inputKategori.value = "";
+        selectLabel.textContent = "Tidak tersedia saat offline";
+        customOptions.replaceChildren();
+
+        btnSubmit.disabled = true;
+
+        tampilkanNotifikasiOffline();
+        return;
+      }
+
 
       document.body.innerHTML = `
         <main style="
@@ -510,7 +551,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification(
           "offline",
           "KONEKSI INTERNET TERPUTUS",
-          "Periksa koneksi internet Anda. Silakan coba lagi."
+          "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
         );
 
       } else {
