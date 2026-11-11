@@ -18,6 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const customOptions = document.getElementById("customOptions");
   const inputLokasi = document.getElementById("lokasi");
   const inputDeskripsi = document.getElementById("deskripsi");
+
+const aturPosisiDeskripsi = () => {
+    // Mulai dari posisi tengah.
+    inputDeskripsi.style.paddingTop = "18px";
+    inputDeskripsi.style.paddingBottom = "18px";
+
+    // Jika teks sudah tidak muat, beri ruang untuk dua baris.
+    if (inputDeskripsi.scrollHeight > inputDeskripsi.clientHeight) {
+        inputDeskripsi.style.paddingTop = "9px";
+        inputDeskripsi.style.paddingBottom = "9px";
+    }
+};
+
+inputDeskripsi.addEventListener("input", aturPosisiDeskripsi);
+
   const inputFile = document.getElementById("file-upload");
 
   // Elemen pesan validasi di bawah input.
