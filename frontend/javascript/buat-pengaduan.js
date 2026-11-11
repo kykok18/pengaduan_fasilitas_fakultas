@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showNotification(
       "offline",
       "KONEKSI INTERNET TERPUTUS",
-      "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
+      "Periksa koneksi internet Anda. Silakan coba<br>lagi."
     );
   };
 
@@ -551,7 +551,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification(
           "offline",
           "KONEKSI INTERNET TERPUTUS",
-          "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
+          "Periksa koneksi internet Anda. Silakan coba<br>lagi."
         );
 
       } else {
