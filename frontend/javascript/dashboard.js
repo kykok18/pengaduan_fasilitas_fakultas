@@ -427,7 +427,7 @@ const gambarCard = card.querySelector(".report-image img");
 
 if (gambarCard) {
     gambarCard.addEventListener("error", () => {
-        const placeholder = "https://via.placeholder.com/600x400";
+        const placeholder = "img/foto-placeholder.png";
 
         // Jangan mencoba URL yang sama berulang kali.
         if (gambarCard.dataset.fallback === "true") {
