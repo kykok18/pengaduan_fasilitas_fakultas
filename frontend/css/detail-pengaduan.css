@@ -261,7 +261,7 @@ textarea {
 .sidebar-nav ul {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -271,7 +271,7 @@ textarea {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 10px;
+    padding: 5px 10px;
 
     color: #0B5E3B;
     font-size: 13px;
