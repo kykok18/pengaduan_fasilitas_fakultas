@@ -313,22 +313,29 @@ reportsContainer.style.display = 'flex';
                 const fasilitas = escapeHTML(item.nama_fasilitas || 'Fasilitas');
                 const statusLabel = escapeHTML(statusInfo.label);
 
-                const foto = item.foto
-                ? escapeHTML(getFotoURL(item.foto))
-                : '';
+                const fotoPlaceholder = "img/foto-placeholder.png";
+
+const foto = item.foto
+    ? escapeHTML(getFotoURL(item.foto))
+    : fotoPlaceholder;
 
                 const card = document.createElement('div');
                 card.className = 'report-card-dash';
 
                 card.innerHTML = `
-                    <div class="report-image">
-                        ${
-                            foto
-                                ? `<img src="${foto}" alt="${judul}" loading="lazy">`
-                                : ''
-                        }
-                        <span class="badge-category">${fasilitas}</span>
-                    </div>
+                    
+
+<div class="report-image">
+    <img
+    alt="Bukti foto pengaduan"
+    loading="lazy"
+>
+
+
+
+    <span class="badge-category">${fasilitas}</span>
+</div>
+
 
                     <div class="report-content">
                         <div class="report-content-header">
@@ -361,17 +368,17 @@ reportsContainer.style.display = 'flex';
                             <div class="report-actions">
                                 <span>
                                     <i class="fas fa-thumbs-up"></i>
-                                    ${Number(item.upvote_count) || 0}
+                                    ${formatJumlah(item.upvote_count)}
                                 </span>
 
                                 <span>
                                     <i class="fas fa-thumbs-down"></i>
-                                    ${Number(item.downvote_count) || 0}
+                                    ${formatJumlah(item.downvote_count)}
                                 </span>
 
                                 <span>
                                     <i class="fas fa-comment"></i>
-                                    ${Number(item.comment_count) || 0}
+                                    ${formatJumlah(item.comment_count)}
                                 </span>
                             </div>
                         </div>
@@ -415,6 +422,33 @@ reportsContainer.style.display = 'flex';
                         }
                     });
                 }
+
+
+
+
+const gambarCard = card.querySelector(".report-image img");
+
+if (gambarCard) {
+    const placeholderURL = new URL(
+        "img/foto-placeholder.png",
+        document.baseURI
+    ).href;
+
+    gambarCard.addEventListener("error", () => {
+        if (gambarCard.src === placeholderURL) {
+            gambarCard.alt = "";
+            return;
+        }
+
+        gambarCard.src = placeholderURL;
+    });
+
+    // Pasang src setelah event error siap.
+    gambarCard.src = foto;
+}
+
+
+
 
                 // Memasukkan kartu ke Dashboard.
                 reportsContainer.appendChild(card);
@@ -590,12 +624,17 @@ reportsContainer.style.display = 'flex';
                 loadingState?.classList.remove('active');
                 errorState?.classList.remove('active');
 
-            } catch (error) {
-                console.error('Gagal memuat dashboard:', error);
+            
 
-                loadingState?.classList.remove('active');
-                showError();
-            }
+} catch (error) {
+    // Catat kesalahan untuk debugging.
+    console.error('Gagal memuat dashboard:', error);
+
+    // Tampilkan kembali state Gagal Memuat Pengaduan.
+    showError();
+}
+
+
         };
 
         // =========================================================

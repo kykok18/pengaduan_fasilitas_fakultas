@@ -321,8 +321,11 @@ commentsCard.hidden = false;
     imageFallback.hidden = false;
 
     if (!fotoUrl || typeof fotoUrl !== "string") {
-      return;
-    }
+    detailImage.src = "https://via.placeholder.com/600x335";
+    detailImage.hidden = false;
+    imageFallback.hidden = true;
+    return;
+}
 
     try {
       const url = new URL(fotoUrl);
@@ -338,9 +341,11 @@ commentsCard.hidden = false;
       };
 
       detailImage.onerror = () => {
-        detailImage.hidden = true;
-        imageFallback.hidden = false;
-      };
+    detailImage.onerror = null; // Mencegah error berulang
+    detailImage.src = "https://via.placeholder.com/600x335";
+    detailImage.hidden = false;
+    imageFallback.hidden = true;
+};
 
       detailImage.src = url.href;
 
@@ -362,7 +367,7 @@ commentsCard.hidden = false;
       : [];
 
     commentsTitle.textContent =
-      `Komentar(${daftarKomentar.length})`;
+    `Komentar(${formatJumlah(daftarKomentar.length)})`;
 
     daftarKomentar.forEach((item) => {
 
@@ -445,12 +450,8 @@ detailStatus.dataset.status = status.toLowerCase();
     detailDescription.textContent =
       pengaduan.deskripsi || "-";
 
-    // Jumlah dukungan dari objek vote backend.
-    detailLikes.textContent =
-      String(vote.upvote ?? 0);
-
-    detailDislikes.textContent =
-      String(vote.downvote ?? 0);
+detailLikes.textContent = formatJumlah(vote.upvote ?? 0);
+detailDislikes.textContent = formatJumlah(vote.downvote ?? 0);
 
       // Tampilkan suara aktif berdasarkan data backend.
 setActiveVote(vote.pilihan_user ?? null);
@@ -620,7 +621,7 @@ if (isDummyPreview) {
 
       if (!navigator.onLine) {
         showError(
-          "Koneksi internet terputus. Periksa jaringan Anda dan coba lagi."
+          "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
         );
       } else {
         showError(error.message);
@@ -717,8 +718,8 @@ if (
 
 
 // Perbarui tampilan hanya setelah respons tervalidasi.
-detailLikes.textContent = String(jumlahUpvote);
-detailDislikes.textContent = String(jumlahDownvote);
+detailLikes.textContent = formatJumlah(jumlahUpvote);
+detailDislikes.textContent = formatJumlah(jumlahDownvote);
 
 // Tandai pilihan suara berdasarkan respons backend.
 setActiveVote(vote.pilihan_user);

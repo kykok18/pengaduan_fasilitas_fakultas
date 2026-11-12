@@ -326,7 +326,7 @@ class PengaduanController
             !in_array($mimeType, $tipeFotoDiizinkan, true)
         ) {
             errorResponse(
-                'Format foto harus JPEG, PNG, WebP, HEIC, atau HEIF',
+                'Format foto harus JPEG/JPG, PNG, WebP, HEIC/HEIF',
                 400
             );
         }

@@ -18,6 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const customOptions = document.getElementById("customOptions");
   const inputLokasi = document.getElementById("lokasi");
   const inputDeskripsi = document.getElementById("deskripsi");
+
+const aturPosisiDeskripsi = () => {
+    // Mulai dari posisi tengah.
+    inputDeskripsi.style.paddingTop = "18px";
+    inputDeskripsi.style.paddingBottom = "18px";
+
+    // Jika teks sudah tidak muat, beri ruang untuk dua baris.
+    if (inputDeskripsi.scrollHeight > inputDeskripsi.clientHeight) {
+        inputDeskripsi.style.paddingTop = "9px";
+        inputDeskripsi.style.paddingBottom = "9px";
+    }
+};
+
+inputDeskripsi.addEventListener("input", aturPosisiDeskripsi);
+
   const inputFile = document.getElementById("file-upload");
 
   // Elemen pesan validasi di bawah input.
@@ -45,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2. VALIDASI FORM DAN FOTO
   // =========================================================
 
-  // Memastikan semua kolom wajib sudah diisi sebelum submit.
+  // Memastikan semua kolom wajib sudah diisi.
   const isFormValid = () => {
     return (
       inputJudul.value.trim() !== "" &&
@@ -56,84 +71,59 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   };
 
-
-  // Memeriksa format, ukuran, dan dimensi gambar yang diunggah.
-  // Fungsi async digunakan karena proses membaca gambar
-  // memerlukan waktu sebelum hasil validasinya tersedia.
+  // Validasi jenis dan ukuran foto.
   const validateFile = async () => {
     const file = inputFile.files[0];
 
-    // Foto wajib dipilih sebelum pengaduan dikirim.
     if (!file) {
       setFotoError("Bukti foto wajib diisi.");
       return false;
     }
 
-    // Hanya menerima gambar JPEG, PNG, atau WebP.
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-    ];
+    // Format foto yang diperbolehkan.
+    const allowedFormats = {
+      jpg: ["image/jpeg"],
+      jpeg: ["image/jpeg"],
+      png: ["image/png"],
+      webp: ["image/webp"],
+      heic: ["image/heic", "image/heif"],
+      heif: ["image/heif", "image/heic"]
+    };
 
-    if (!allowedTypes.includes(file.type)) {
+    const extension = file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+    // MIME kosong diperbolehkan untuk format HEIC/HEIF
+    // karena sebagian browser tidak mengenalinya.
+    const mimeValid =
+      allowedFormats[extension]?.includes(file.type) ||
+      (
+        ["heic", "heif"].includes(extension) &&
+        file.type === ""
+      );
+
+    if (!mimeValid) {
       setFotoError(
-        "Format file tidak didukung. Gunakan JPG, PNG, WebP."
+        "Format foto tidak didukung. Gunakan JPG, PNG, WebP, atau HEIC."
       );
       return false;
     }
 
-    // Batas ukuran file maksimal 10 MB.
-    if (file.size === 0 || file.size > 10 * 1024 * 1024) {
+    // Ukuran foto maksimal 10 MB.
+    const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    if (file.size === 0 || file.size > MAX_FILE_SIZE) {
       setFotoError(
         file.size === 0
           ? "File foto tidak boleh kosong."
-          : "Ukuran file terlalu besar. Maksimal 10 MB."
+          : "Ukuran foto terlalu besar. Maksimal 10 MB."
       );
       return false;
     }
 
-    // Membaca gambar untuk memastikan file dapat dibuka
-    // dan memiliki dimensi yang sesuai ketentuan.
-    const image = new Image();
-    const imageUrl = URL.createObjectURL(file);
-
-    try {
-      await new Promise((resolve, reject) => {
-        image.onload = resolve;
-        image.onerror = reject;
-        image.src = imageUrl;
-      });
-
-      const width = image.naturalWidth;
-      const height = image.naturalHeight;
-      const megapixels = (width * height) / 1_000_000;
-
-      // Menolak gambar jika melebihi batas dimensi
-      // atau jumlah megapiksel yang diperbolehkan.
-      if (
-        width > 6000 ||
-        height > 6000 ||
-        megapixels > 20
-      ) {
-        setFotoError(
-          "Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel."
-        );
-        return false;
-      }
-
-    } catch {
-      // Menangani file yang tidak dapat dibaca sebagai gambar.
-      setFotoError(
-        "File yang diunggah bukan gambar yang valid."
-      );
-      return false;
-
-    } finally {
-      // Menghapus URL sementara setelah pemeriksaan selesai.
-      URL.revokeObjectURL(imageUrl);
-    }
-
+    // Foto memenuhi ketentuan.
     hideError(errorFoto, uploadWrapper);
     return true;
   };
@@ -159,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // Menghilangkan pesan error ketika input sudah diperbaiki.
-  const hideError = (element, wrapper = null) => {
+  const hideError = (element, wrapper = null) => {  
     element.classList.remove("active");
 
     if (wrapper) {
@@ -289,6 +279,31 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 
+
+  // =========================================================
+  // NOTIFIKASI KETIKA KONEKSI INTERNET TERPUTUS
+  // =========================================================
+
+  const tampilkanNotifikasiOffline = () => {
+    showNotification(
+      "offline",
+      "KONEKSI INTERNET TERPUTUS",
+      "Periksa koneksi internet Anda. Silakan coba<br>lagi."
+    );
+  };
+
+  // Ketika koneksi terputus saat halaman masih terbuka.
+  window.addEventListener(
+    "offline",
+    tampilkanNotifikasiOffline
+  );
+
+  // Ketika halaman dibuka ulang dalam keadaan offline.
+  if (!navigator.onLine) {
+    tampilkanNotifikasiOffline();
+  }
+
+
   // =========================================================
   // 5. MENGAMBIL DATA FASILITAS DARI BACKEND
   // =========================================================
@@ -357,6 +372,22 @@ document.addEventListener("DOMContentLoaded", () => {
       // Jika pemeriksaan gagal, form tidak digunakan
       // dan diganti dengan informasi kegagalan verifikasi.
       console.error("Gagal verifikasi sesi:", error);
+
+
+      // Jika gagal karena offline, jangan hapus halaman.
+      if (!navigator.onLine) {
+        document.documentElement.classList.add("auth-verified");
+
+        inputKategori.value = "";
+        selectLabel.textContent = "Tidak tersedia saat offline";
+        customOptions.replaceChildren();
+
+        btnSubmit.disabled = true;
+
+        tampilkanNotifikasiOffline();
+        return;
+      }
+
 
       document.body.innerHTML = `
         <main style="
@@ -490,7 +521,8 @@ document.addEventListener("DOMContentLoaded", () => {
         selectLabel.textContent = "Pilih Fasilitas";
         selectLabel.classList.remove("has-value");
 
-        fileNameDisplay.textContent = "Upload Foto, JPG, PNG. Maksimal 10 MB";
+        fileNameDisplay.textContent =
+    "JPEG/JPG, PNG, WebP, HEIC/HEIF. Maks 10MB";
 
         hideError(errorJudul);
         hideError(errorKategori);
@@ -534,7 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification(
           "offline",
           "KONEKSI INTERNET TERPUTUS",
-          "Periksa koneksi internet Anda. Silakan coba lagi."
+          "Periksa koneksi internet Anda. Silakan coba<br>lagi."
         );
 
       } else {
@@ -581,11 +613,6 @@ document.addEventListener("DOMContentLoaded", () => {
       hideError(errorDeskripsi);
     }
 
-    // Memeriksa ulang foto ketika file sudah dipilih.
-    if (inputFile.files.length > 0) {
-      validateFile();
-    }
-
     // Menghapus tampilan disabled apabila kolom sudah terisi.
     if (isFormValid()) {
       btnSubmit.classList.remove("is-disabled");
@@ -599,15 +626,22 @@ document.addEventListener("DOMContentLoaded", () => {
   inputDeskripsi.addEventListener("input", handleInput);
 
   // Menampilkan nama foto setelah pengguna memilih file.
-  inputFile.addEventListener("change", () => {
+
+inputFile.addEventListener("change", async () => {
     if (inputFile.files.length > 0) {
-      fileNameDisplay.textContent = inputFile.files[0].name;
+        fileNameDisplay.textContent = inputFile.files[0].name;
     } else {
-      fileNameDisplay.textContent = "Upload Foto, JPG, PNG.";
+        fileNameDisplay.textContent =
+            "JPEG/JPG, PNG, WebP, HEIC/HEIF. Maks 10MB";
     }
 
+    // Validasi foto hanya saat pengguna memilih file.
+    await validateFile();
+
+    // Perbarui kondisi tampilan tombol.
     handleInput();
-  });
+});
+
 
 
   // =========================================================
