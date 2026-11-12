@@ -288,7 +288,7 @@ inputDeskripsi.addEventListener("input", aturPosisiDeskripsi);
     showNotification(
       "offline",
       "KONEKSI INTERNET TERPUTUS",
-      "Periksa koneksi internet Anda. Silakan coba<br>lagi."
+      "Periksa koneksi internet Anda. Silakan coba lagi."
     );
   };
 
@@ -566,7 +566,7 @@ inputDeskripsi.addEventListener("input", aturPosisiDeskripsi);
         showNotification(
           "offline",
           "KONEKSI INTERNET TERPUTUS",
-          "Periksa koneksi internet Anda. Silakan coba<br>lagi."
+          "Periksa koneksi internet Anda. Silakan coba lagi."
         );
 
       } else {
