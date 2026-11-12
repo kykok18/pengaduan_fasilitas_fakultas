@@ -842,3 +842,18 @@
         gap: 12px;
     }
 }
+
+
+/* Tombol Registrasi nonaktif saat Login berlangsung */
+#registerBtn.is-disabled {
+    background-color: #D9D9D9;
+    color: #FFFFFF;
+    opacity: 1;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+#registerBtn.is-disabled:hover {
+    background-color: #D9D9D9;
+    color: #FFFFFF;
+}

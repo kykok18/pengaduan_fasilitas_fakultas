@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const submitBtn = document.getElementById('submitBtn');
+    const registerBtn = document.getElementById('registerBtn');
     const togglePassword = document.getElementById('togglePassword');
     const formMessage = document.getElementById('formMessage');
 
@@ -283,6 +284,12 @@ if (!email) {
         updateButtonState();
         submitBtn.textContent = 'Loading...';
 
+        if (registerBtn) {
+    registerBtn.classList.add('is-disabled');
+    registerBtn.setAttribute('aria-disabled', 'true');
+    registerBtn.setAttribute('tabindex', '-1');
+}
+
         // try digunakan untuk menjalankan proses request.
         // catch menangani error, sedangkan finally mengatur
         // kondisi tombol setelah proses selesai.
@@ -348,21 +355,30 @@ if (!email) {
             console.error('Login error:', error);
             showMessage(navigator.onLine ? 'server' : 'offline');
 
-        } finally {
+        
+} finally {
 
-            // Jika login gagal, hentikan loading dan
-            // kembalikan tombol agar dapat digunakan lagi.
-            if (!loginSucceeded) {
-                // Hentikan status loading
-                submitBtn.dataset.loading = 'false';
+    // Jika login gagal, kembalikan tombol seperti semula.
+    if (!loginSucceeded) {
 
-                // Kembalikan tulisan tombol
-                submitBtn.textContent = originalText;
+        // Hentikan loading tombol Login.
+        submitBtn.dataset.loading = 'false';
 
-                // Perbarui kondisi tombol
-                updateButtonState();
-            }
+        // Kembalikan tulisan tombol Login.
+        submitBtn.textContent = originalText;
+
+        // Perbarui kondisi tombol Login.
+        updateButtonState();
+
+        // Aktifkan kembali tombol Registrasi.
+        if (registerBtn) {
+            registerBtn.classList.remove('is-disabled');
+            registerBtn.removeAttribute('aria-disabled');
+            registerBtn.removeAttribute('tabindex');
         }
+    }
+}
+
     });
 
     // =========================
