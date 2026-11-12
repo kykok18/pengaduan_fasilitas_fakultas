@@ -4,14 +4,14 @@
 
 ### Dokumentasi Sprint 3
 
-**Versi:** 1.4.5  
+**Versi:** 1.5.0  
 **Backend:** PHP Native  
 **Database:** MySQL  
 **Autentikasi:** PHP Session  
 **Format response:** JSON  
 **Format upload:** multipart/form-data
 
-**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, dan vote (upvote/downvote). Endpoint riwayat pengaduan belum tersedia dan tidak dinyatakan aktif.
+**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), dan komentar. Endpoint riwayat pengaduan belum tersedia dan tidak dinyatakan aktif.
 
 ---
 
@@ -39,9 +39,11 @@ Base URL production harus disesuaikan dengan konfigurasi deployment aktual.
 | 6   | POST   | `/pengaduan.php`        | Membuat pengaduan                                      | Ya                      | 9   |
 | 7   | GET    | `/detail_pengaduan.php` | Mengambil detail pengaduan berdasarkan ID              | Ya                      | 7   |
 | 8   | POST   | `/vote.php`             | Menambahkan, mengubah, atau membatalkan vote pengaduan | Ya                      | 11  |
-| 9   | GET    | `/riwayat.php`          | Riwayat pengaduan pengguna                             | Belum tersedia di arsip | 12  |
+| 9   | GET    | `/komentar.php`         | Mengambil daftar komentar berdasarkan pengaduan        | Ya                      | 12  |
+| 10  | POST   | `/komentar.php`         | Menyimpan komentar baru pada pengaduan                 | Ya                      | 12  |
+| 11  | GET    | `/riwayat.php`          | Riwayat pengaduan pengguna                             | Belum tersedia di arsip | 13  |
 
-Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut. Endpoint no. 9 belum tersedia dan tidak dinyatakan sebagai endpoint aktif.
+Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut. Endpoint no. 11 belum tersedia dan tidak dinyatakan sebagai endpoint aktif.
 
 ---
 
@@ -380,7 +382,7 @@ Status valid:
 
 ```text
 diajukan
-dalam perbaikan
+diproses
 selesai
 ditolak
 ```
@@ -732,11 +734,13 @@ foto: komputer.jpg
 - File harus merupakan gambar valid.
 - MIME file diperiksa.
 - Konten gambar diperiksa.
-- Dimensi maksimum 6000 x 6000 piksel.
-- Maksimum 20 megapiksel.
+- Dimensi maksimum 6000 x 6000 piksel. Batas ini berlaku terpisah pada lebar dan tinggi.
+- Maksimum 20 megapiksel (lebar x tinggi).
+- Orientasi foto (portrait atau landscape) tidak dibatasi. Foto portrait diterima selama ukuran file, format, dan dimensinya memenuhi batas di atas. Contoh: 1200 x 1600 diterima; 1 x 6001 ditolak (tinggi melebihi 6000); 4001 x 5001 ditolak (20,009 megapiksel).
+- Tidak ada batas dimensi minimum.
 - Gambar diproses ulang sebelum disimpan.
 - Foto disimpan di Cloudinary dan `foto` pada response berisi URL https.
-- Server lokal yang dijalankan dengan `php -S` memakai konfigurasi PHP bawaan (pada Ubuntu: `post_max_size` 8M dan `upload_max_filesize` 5M), bukan konfigurasi Docker. Akibatnya foto di atas 5 MB ditolak dengan HTTP 413, dan request di atas 8 MB menghasilkan HTTP 400 `Data kosong. Gunakan multipart/form-data dan sertakan foto.` sehingga skenario 14.7 nomor 7 tidak menghasilkan pesan `maksimal 10 MB`. Atur `upload_max_filesize=10M` dan `post_max_size=12M` pada server lokal, misalnya melalui `/etc/php/<versi>/cli/conf.d/99-uploads.ini` atau opsi `php -d upload_max_filesize=10M -d post_max_size=12M -S localhost:8000`.
+- Server lokal yang dijalankan dengan `php -S` memakai konfigurasi PHP bawaan (pada Ubuntu: `post_max_size` 8M dan `upload_max_filesize` 5M), bukan konfigurasi Docker. Akibatnya foto di atas 5 MB ditolak dengan HTTP 413, dan request di atas 8 MB menghasilkan HTTP 400 `Data kosong. Gunakan multipart/form-data dan sertakan foto.` sehingga skenario 15.7 nomor 7 tidak menghasilkan pesan `maksimal 10 MB`. Atur `upload_max_filesize=10M` dan `post_max_size=12M` pada server lokal, misalnya melalui `/etc/php/<versi>/cli/conf.d/99-uploads.ini` atau opsi `php -d upload_max_filesize=10M -d post_max_size=12M -S localhost:8000`.
 
 ## 9.6 Response Berhasil
 
@@ -1101,7 +1105,7 @@ Daftar status code umum ada pada subbab 2.3.
 - Identitas pengguna diambil dari `$_SESSION['id_user']`, bukan dari request.
 - Client tidak boleh mengirim atau menentukan `id_user`.
 - Konfigurasi cookie session mengikuti subbab 2.4.
-- Setelah logout, session lama tidak dapat dipakai untuk vote (lihat skenario 12 dan 13 pada subbab 14.8).
+- Setelah logout, session lama tidak dapat dipakai untuk vote (lihat skenario 12 dan 13 pada subbab 15.8).
 
 ## 11.12 Konsistensi Database
 
@@ -1138,18 +1142,236 @@ Proses vote berjalan dalam satu transaksi database dengan dua penguncian baris (
 
 | No  | Item                         | Keterangan                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | --- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Format request Vote          | Kontrak mengikuti implementasi backend dan Postman: `application/x-www-form-urlencoded` (atau `multipart/form-data`), bukan JSON. Frontend belum terhubung ke endpoint ini (tombol vote pada `detail-pengaduan.js` masih dinonaktifkan). Saat integrasi, client harus mengirim `URLSearchParams` atau `FormData`, bukan `JSON.stringify`. Jika tim memilih mengubah backend agar membaca JSON, perbarui subbab 11.1, 11.3, 11.4, 11.10, 14.8, dan seluruh request Vote di Postman                                                                                                            |
+| 1   | Format request Vote          | Kontrak mengikuti implementasi backend dan Postman: `application/x-www-form-urlencoded` (atau `multipart/form-data`), bukan JSON. Frontend belum terhubung ke endpoint ini (tombol vote pada `detail-pengaduan.js` masih dinonaktifkan). Saat integrasi, client harus mengirim `URLSearchParams` atau `FormData`, bukan `JSON.stringify`. Jika tim memilih mengubah backend agar membaca JSON, perbarui subbab 11.1, 11.3, 11.4, 11.10, 15.8, dan seluruh request Vote di Postman                                                                                                            |
 | 2   | Constraint unik tabel `vote` | **Terkonfirmasi.** Skema `database/pengaduan_fasilitas_fakultasDB.sql` memuat `UNIQUE KEY uq_vote_user_pengaduan (id_pengaduan, id_user)`, foreign key ke `pengaduan` (`ON DELETE CASCADE`) dan ke `users` (`ON DELETE RESTRICT`)                                                                                                                                                                                                                                                                                                                                                            |
 | 3   | Hasil pengujian aktual       | Seluruh 15 request pada folder **07 Vote** memiliki contoh response tersimpan (6 November 2026 untuk request Vote). Pesan, status, dan struktur `data` pada contoh tersebut cocok dengan subbab 11.7 dan 11.8. Contoh **V07** (Detail Pengaduan) menunjukkan `vote` = 1 upvote, 2 downvote, `pilihan_user` = `downvote`, sama dengan response V06. Test `DTL-01` (10 dari 10) dan `DTL-05` lulus setelah penambahan `pilihan_user` Perbandingan jumlah vote terhadap isi tabel `vote`, Detail Pengaduan, dan Dashboard belum terdokumentasi sebagai bukti tersendiri                         |
 | 4   | Prasyarat data uji Postman   | Variabel environment `fixture_vote_id` bernilai kosong pada file environment dan **tidak diisi oleh script**. Isi manual dengan ID pengaduan uji yang ada di database sebelum menjalankan folder 07 Vote. Pengaduan uji sebaiknya sudah memiliki vote dari pengguna lain (contoh response Postman memakai kondisi awal 1 upvote dan 1 downvote). Variabel `fixture_upvote` dan `fixture_downvote` (dipakai `DTL-03`) harus sama dengan jumlah vote di database. Jika vote akun uji dari folder 07 Vote belum dibersihkan, jumlah downvote bertambah satu dan `DTL-03` gagal dengan selisih 1 |
-| 5   | Penamaan request Postman     | Nama request pada folder 07 Vote tidak seragam (`01.`, `V01.` sampai `V06.`, `07.` sampai `11.`, `LOG-01`, `LGN-01`) dan nomor pada nama tidak sama dengan nomor langkah. Kontrak memakai nama persis seperti di Postman (subbab 14.8). Penyeragaman nama bersifat opsional; jika dilakukan, perbarui subbab 14.8                                                                                                                                                                                                                                                                            |
+| 5   | Penamaan request Postman     | Nama request pada folder 07 Vote tidak seragam (`01.`, `V01.` sampai `V06.`, `07.` sampai `11.`, `LOG-01`, `LGN-01`) dan nomor pada nama tidak sama dengan nomor langkah. Kontrak memakai nama persis seperti di Postman (subbab 15.8). Penyeragaman nama bersifat opsional; jika dilakukan, perbarui subbab 15.8                                                                                                                                                                                                                                                                            |
 | 6   | `pilihan_user` pada Detail   | **Diputuskan (opsi A).** `GET /detail_pengaduan.php` mengembalikan `vote.pilihan_user`. Alasan: pengguna yang membuka detail pengaduan perlu tahu apakah ia sudah vote dan jenis vote-nya sebelum menekan tombol. Test Postman `DTL-01`, `DTL-05`, dan `V07` disesuaikan                                                                                                                                                                                                                                                                                                                     |
 
 ---
 
-# 12. API Riwayat Pengaduan
+# 12. API Komentar
 
-## 12.1 Status Endpoint
+Endpoint komentar digunakan untuk mengambil daftar komentar suatu pengaduan dan menyimpan komentar baru dari mahasiswa atau pegawai yang sudah login. Komentar ditampilkan pada halaman Detail Pengaduan, dan jumlahnya ditampilkan pada Dashboard.
+
+## 12.1 Informasi Endpoint
+
+| Item            | Nilai                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------- |
+| Endpoint        | `/komentar.php`                                                                             |
+| Method          | `GET` (daftar komentar) dan `POST` (simpan komentar)                                        |
+| Authentication  | Wajib login (PHP Session)                                                                   |
+| Format request  | `GET`: query string. `POST`: `application/x-www-form-urlencoded` atau `multipart/form-data` |
+| Format response | JSON                                                                                        |
+
+Method selain `GET` dan `POST` ditolak dengan HTTP 405 dan header `Allow: GET, POST`. Endpoint untuk mengubah atau menghapus komentar tidak tersedia karena belum termasuk cakupan fitur.
+
+## 12.2 Authentication
+
+- Kedua method memerlukan session PHP yang valid. Cookie `PHPSESSID` dikirim otomatis oleh browser (`credentials: "same-origin"`).
+- Tanpa session, backend membalas HTTP 401 `Silakan login terlebih dahulu`. Pada `POST`, komentar tidak disimpan.
+- Identitas penulis diambil dari session. Client tidak mengirim `id_user`, dan field `id_user` yang tetap dikirim client diabaikan.
+
+## 12.3 Request
+
+### Mengambil daftar komentar
+
+```http
+GET /komentar.php?id_pengaduan=33
+Cookie: PHPSESSID=<session_id>
+```
+
+### Menyimpan komentar
+
+```http
+POST /komentar.php
+Content-Type: application/x-www-form-urlencoded
+Cookie: PHPSESSID=<session_id>
+```
+
+Body (x-www-form-urlencoded):
+
+```text
+id_pengaduan=33
+isi_komentar=Ruangan ini memang sering panas saat siang hari
+```
+
+Pada JavaScript, kirim body dengan `URLSearchParams` atau `FormData`, bukan `JSON.stringify`:
+
+```javascript
+const body = new URLSearchParams({
+  id_pengaduan: String(idPengaduan),
+  isi_komentar: teksKomentar,
+});
+
+const response = await fetch("/backend/api/komentar.php", {
+  method: "POST",
+  credentials: "same-origin",
+  body,
+});
+```
+
+## 12.4 Parameter Request
+
+| Parameter      | Method | Lokasi       | Tipe    | Wajib | Aturan                                                                       |
+| -------------- | ------ | ------------ | ------- | ----- | ---------------------------------------------------------------------------- |
+| `id_pengaduan` | GET    | query string | integer | Ya    | Bilangan bulat minimal 1                                                     |
+| `id_pengaduan` | POST   | body         | integer | Ya    | Bilangan bulat minimal 1                                                     |
+| `isi_komentar` | POST   | body         | string  | Ya    | Tidak kosong setelah spasi di awal dan akhir dibuang, maksimal 1000 karakter |
+
+Aturan isi komentar:
+
+- Spasi, tab, dan baris kosong di awal dan akhir dibuang sebelum divalidasi dan disimpan.
+- Komentar yang kosong atau hanya berisi spasi ditolak.
+- Panjang dihitung dalam karakter (bukan byte), sehingga emoji dan huruf non-Latin dihitung sebagai karakter.
+- Isi komentar disimpan apa adanya (tanpa menghapus tag HTML). Frontend wajib menampilkannya sebagai teks, misalnya dengan `textContent`, bukan `innerHTML`.
+
+## 12.5 Aturan Bisnis
+
+- Satu pengguna boleh mengirim lebih dari satu komentar pada pengaduan yang sama.
+- Komentar tidak dapat diubah atau dihapus melalui API.
+- Daftar komentar diurutkan dari yang paling lama ke yang paling baru (`created_at` naik, lalu `id_komentar` naik). Urutan ini sama dengan `data.komentar` pada Detail Pengaduan.
+- Daftar komentar tidak dipaginasi; seluruh komentar pengaduan dikembalikan.
+- Jumlah komentar selalu dihitung dari tabel `komentar` di database.
+- Komentar ikut terhapus jika pengaduannya dihapus (`ON DELETE CASCADE`).
+
+## 12.6 Response Berhasil
+
+### Daftar komentar: HTTP 200
+
+```json
+{
+  "status": "success",
+  "message": "Daftar komentar berhasil diambil",
+  "data": {
+    "id_pengaduan": 33,
+    "total_komentar": 2,
+    "komentar": [
+      {
+        "id_komentar": 10,
+        "nama": "Salsa",
+        "isi_komentar": "Saat perkuliahan ruangan sangat panas",
+        "created_at": "2026-11-08 10:00:00"
+      },
+      {
+        "id_komentar": 11,
+        "nama": "Budi",
+        "isi_komentar": "Sudah seminggu AC tidak dingin",
+        "created_at": "2026-11-08 11:30:00"
+      }
+    ]
+  }
+}
+```
+
+Jika pengaduan ada tetapi belum memiliki komentar, backend tetap membalas HTTP 200 dengan hasil kosong:
+
+```json
+{
+  "status": "success",
+  "message": "Daftar komentar berhasil diambil",
+  "data": {
+    "id_pengaduan": 33,
+    "total_komentar": 0,
+    "komentar": []
+  }
+}
+```
+
+### Simpan komentar: HTTP 201
+
+```json
+{
+  "status": "success",
+  "message": "Komentar berhasil disimpan",
+  "data": {
+    "id_pengaduan": 33,
+    "komentar": {
+      "id_komentar": 12,
+      "nama": "Salsa",
+      "isi_komentar": "Ruangan ini memang sering panas saat siang hari",
+      "created_at": "2026-11-10 14:05:00"
+    },
+    "total_komentar": 3
+  }
+}
+```
+
+| Field            | Tipe    | Keterangan                                                             |
+| ---------------- | ------- | ---------------------------------------------------------------------- |
+| `id_pengaduan`   | integer | ID pengaduan yang dikomentari                                          |
+| `total_komentar` | integer | Jumlah komentar pengaduan setelah penyimpanan (dihitung dari database) |
+| `komentar`       | object  | Komentar yang baru tersimpan                                           |
+| `id_komentar`    | integer | ID komentar                                                            |
+| `nama`           | string  | Nama penulis, dari akun yang login                                     |
+| `isi_komentar`   | string  | Isi komentar setelah spasi di awal dan akhir dibuang                   |
+| `created_at`     | string  | Waktu komentar dibuat, format `YYYY-MM-DD HH:MM:SS`                    |
+
+`id_user` penulis tidak dikembalikan. Struktur satu komentar sama dengan item `data.komentar` pada Detail Pengaduan (subbab 7.4), sehingga frontend dapat memakai fungsi tampilan yang sama. Data hanya dikembalikan setelah komentar benar-benar tersimpan.
+
+## 12.7 Response Error
+
+```json
+{
+  "status": "error",
+  "message": "Komentar wajib diisi"
+}
+```
+
+| HTTP | Pesan                             | Kondisi                                                                                          |
+| ---- | --------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 400  | `ID pengaduan tidak valid`        | `id_pengaduan` kosong, bukan bilangan bulat, nol, atau negatif (GET dan POST)                    |
+| 400  | `Komentar wajib diisi`            | `isi_komentar` tidak dikirim, kosong, atau hanya berisi spasi                                    |
+| 400  | `Komentar tidak valid`            | `isi_komentar` bukan teks (misalnya dikirim sebagai array) atau berisi karakter yang tidak valid |
+| 400  | `Komentar maksimal 1000 karakter` | Isi komentar lebih dari 1000 karakter                                                            |
+| 401  | `Silakan login terlebih dahulu`   | Tidak ada session yang valid                                                                     |
+| 404  | `Pengaduan tidak ditemukan`       | Pengaduan dengan ID tersebut tidak ada (GET dan POST)                                            |
+| 405  | `Method tidak diizinkan`          | Method selain GET dan POST; header `Allow: GET, POST`                                            |
+| 500  | `Gagal memulai session`           | Session gagal dimulai                                                                            |
+| 500  | `Gagal mengambil daftar komentar` | Query daftar komentar atau pemeriksaan pengaduan gagal (GET)                                     |
+| 500  | `Gagal menyimpan komentar`        | Pemeriksaan pengaduan atau penyimpanan gagal (POST)                                              |
+| 500  | `Gagal mengambil data komentar`   | Komentar tersimpan tetapi gagal dibaca kembali (POST)                                            |
+| 500  | `Gagal mengambil jumlah komentar` | Komentar tersimpan tetapi gagal menghitung total (POST)                                          |
+
+Semua response error tidak memiliki field `data`. Pada kegagalan 400, 401, 404, dan 405, tidak ada komentar yang tersimpan. Pada dua kegagalan 500 terakhir, komentar sudah tersimpan; frontend sebaiknya memuat ulang daftar komentar.
+
+## 12.8 Urutan Validasi pada POST
+
+1. Method dan session (405, 401).
+2. `id_pengaduan` (400).
+3. `isi_komentar`: ada, bertipe teks, tidak kosong, maksimal 1000 karakter (400).
+4. Pengaduan tersedia (404).
+5. Penyimpanan (500 jika gagal).
+
+Jika `id_pengaduan` valid tetapi tidak ada di database dan komentar juga tidak valid, response adalah 400 (validasi input didahulukan dari pemeriksaan database).
+
+## 12.9 Hubungan dengan Dashboard dan Detail Pengaduan
+
+| Endpoint                    | Field                                  | Fungsi                                                         |
+| --------------------------- | -------------------------------------- | -------------------------------------------------------------- |
+| `GET /dashboard.php`        | `comment_count` (per pengaduan)        | Jumlah komentar setiap pengaduan pada daftar dashboard         |
+| `GET /detail_pengaduan.php` | `data.komentar`                        | Daftar komentar pada halaman detail                            |
+| `GET /komentar.php`         | `data.komentar`, `data.total_komentar` | Memuat ulang daftar komentar tanpa memuat ulang seluruh detail |
+| `POST /komentar.php`        | `data.komentar`, `data.total_komentar` | Menyimpan komentar dan mengembalikan data terbaru              |
+
+Ketiga sumber membaca tabel `komentar` yang sama, sehingga jumlah dan isinya konsisten. Alur frontend yang disarankan: saat halaman detail dimuat, tampilkan `data.komentar` dari Detail Pengaduan. Setelah pengguna mengirim komentar, tambahkan `data.komentar` dari response `POST /komentar.php` ke daftar dan perbarui jumlah dari `data.total_komentar`. Dashboard mengambil jumlah terbaru saat dimuat.
+
+## 12.10 Catatan Keputusan dan Konfirmasi
+
+| No  | Item                        | Keterangan                                                                                                                                                                           |
+| --- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Format request POST         | Mengikuti endpoint Vote dan Pengaduan: form data (`$_POST`), bukan JSON. Frontend harus memakai `URLSearchParams` atau `FormData`                                                    |
+| 2   | Batas panjang komentar      | 1000 karakter. Kolom `isi_komentar` bertipe `text`, sehingga batas ini ditetapkan di backend. Perlu dikonfirmasi dengan tim dan FE (misalnya agar `maxlength` pada kolom input sama) |
+| 3   | Daftar komentar wajib login | `GET /komentar.php` mengikuti `GET /detail_pengaduan.php` yang juga wajib login. Jika komentar akan dibuka untuk publik, ini harus diubah di backend dan kontrak                     |
+| 4   | Status code simpan komentar | HTTP 201 (resource baru dibuat), sama seperti pembuatan pengaduan                                                                                                                    |
+| 5   | Endpoint daftar komentar    | Detail Pengaduan sudah memuat komentar. Endpoint `GET /komentar.php` disediakan untuk memuat ulang daftar komentar saja, sesuai kebutuhan card                                       |
+
+---
+
+# 13. API Riwayat Pengaduan
+
+## 13.1 Status Endpoint
 
 | Atribut  | Nilai                      |
 | -------- | -------------------------- |
@@ -1160,7 +1382,7 @@ Proses vote berjalan dalam satu transaksi database dengan dua penguncian baris (
 
 Endpoint ini belum dinyatakan sebagai endpoint aktif.
 
-## 12.2 Kebutuhan Fungsional
+## 13.2 Kebutuhan Fungsional
 
 Riwayat pengaduan seharusnya menampilkan pengaduan milik pengguna yang sedang login.
 
@@ -1170,7 +1392,7 @@ Endpoint ini perlu didokumentasikan setelah route dan controller tersedia.
 
 ---
 
-# 13. Keamanan API
+# 14. Keamanan API
 
 Ketentuan keamanan:
 
@@ -1190,12 +1412,14 @@ Ketentuan keamanan:
 14. Endpoint Vote hanya menerima `upvote` dan `downvote` sebagai jenis vote.
 15. Proses vote menggunakan transaksi database dan penguncian data pengaduan untuk menjaga konsistensi.
 16. `vote.pilihan_user` pada Detail Pengaduan dihitung dari `id_user` session dan tidak menampilkan vote pengguna lain.
+17. Identitas penulis komentar diambil dari session. Field `id_user` dari request client diabaikan dan `id_user` tidak dikembalikan pada response komentar.
+18. Isi komentar disimpan apa adanya dan tidak dibersihkan dari HTML di backend; frontend harus menampilkannya sebagai teks.
 
 ---
 
-# 14. Skenario Pengujian API
+# 15. Skenario Pengujian API
 
-## 14.1 Registrasi
+## 15.1 Registrasi
 
 | No  | Skenario                          | Hasil yang Diharapkan |
 | --- | --------------------------------- | --------------------- |
@@ -1208,7 +1432,7 @@ Ketentuan keamanan:
 | 7   | Konfirmasi password berbeda       | Request ditolak       |
 | 8   | Email sudah terdaftar             | HTTP 409              |
 
-## 14.2 Login
+## 15.2 Login
 
 | No  | Skenario                 | Hasil yang Diharapkan |
 | --- | ------------------------ | --------------------- |
@@ -1218,7 +1442,7 @@ Ketentuan keamanan:
 | 4   | Email kosong             | Request ditolak       |
 | 5   | Password kosong          | Request ditolak       |
 
-## 14.3 Logout
+## 15.3 Logout
 
 | No  | Skenario                    | Hasil yang Diharapkan |
 | --- | --------------------------- | --------------------- |
@@ -1226,7 +1450,7 @@ Ketentuan keamanan:
 | 2   | Logout tanpa session        | HTTP 401              |
 | 3   | Session tidak valid         | HTTP 401              |
 
-## 14.4 Dashboard
+## 15.4 Dashboard
 
 | No  | Skenario                       | Hasil yang Diharapkan           |
 | --- | ------------------------------ | ------------------------------- |
@@ -1239,7 +1463,7 @@ Ketentuan keamanan:
 | 7   | Filter status tidak valid      | HTTP 400                        |
 | 8   | Request tanpa login            | HTTP 401                        |
 
-## 14.5 Detail Pengaduan
+## 15.5 Detail Pengaduan
 
 | No  | Skenario                                    | Hasil yang Diharapkan                                                                            |
 | --- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -1249,36 +1473,39 @@ Ketentuan keamanan:
 | 4   | ID pengaduan tidak ditemukan                | HTTP 404                                                                                         |
 | 5   | Query detail gagal                          | HTTP 500                                                                                         |
 | 6   | Pengaduan yang belum di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `null`                                                           |
-| 7   | Pengaduan yang sudah di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `upvote` atau `downvote` sesuai vote aktif (lihat V07 pada 14.8) |
+| 7   | Pengaduan yang sudah di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `upvote` atau `downvote` sesuai vote aktif (lihat V07 pada 15.8) |
 | 8   | Struktur `vote`                             | Berisi tepat `upvote`, `downvote`, `pilihan_user`                                                |
 
-## 14.6 Daftar Fasilitas
+## 15.6 Daftar Fasilitas
 
 | No  | Skenario                     | Hasil yang Diharapkan        |
 | --- | ---------------------------- | ---------------------------- |
 | 1   | Request dengan session aktif | Daftar fasilitas ditampilkan |
 | 2   | Request tanpa login          | HTTP 401                     |
 
-## 14.7 Membuat Pengaduan
+## 15.7 Membuat Pengaduan
 
-| No  | Skenario                                                                | Hasil yang Diharapkan                                   |
-| --- | ----------------------------------------------------------------------- | ------------------------------------------------------- |
-| 1   | Data valid dan foto valid                                               | HTTP 201, pengaduan berhasil dibuat                     |
-| 2   | Judul kosong                                                            | HTTP 400                                                |
-| 3   | Lokasi kosong                                                           | HTTP 400                                                |
-| 4   | Deskripsi kosong                                                        | HTTP 400                                                |
-| 5   | Foto tidak dikirim                                                      | HTTP 400                                                |
-| 6   | Format foto tidak valid                                                 | HTTP 400                                                |
-| 7   | Foto melebihi batas ukuran (10 MB)                                      | HTTP 413 atau HTTP 400                                  |
-| 8   | ID fasilitas tidak valid                                                | HTTP 400                                                |
-| 9   | Request tanpa login                                                     | HTTP 401                                                |
-| 10  | Request kedua dari user yang sama ketika request pertama masih diproses | HTTP 409                                                |
-| 11  | Request baru dari user yang sama setelah proses sebelumnya selesai      | HTTP 201                                                |
-| 12  | Request bersamaan dari user berbeda                                     | Dapat diproses secara bersamaan                         |
-| 13  | Terjadi kegagalan saat memeriksa lock                                   | HTTP 500                                                |
-| 14  | Request bersamaan ditolak                                               | Tidak ada data pengaduan baru dari request yang ditolak |
+| No  | Skenario                                                                                    | Hasil yang Diharapkan                                                                  |
+| --- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1   | Data valid dan foto valid                                                                   | HTTP 201, pengaduan berhasil dibuat                                                    |
+| 2   | Judul kosong                                                                                | HTTP 400                                                                               |
+| 3   | Lokasi kosong                                                                               | HTTP 400                                                                               |
+| 4   | Deskripsi kosong                                                                            | HTTP 400                                                                               |
+| 5   | Foto tidak dikirim                                                                          | HTTP 400                                                                               |
+| 6   | Format foto tidak valid                                                                     | HTTP 400                                                                               |
+| 7   | Foto melebihi batas ukuran (10 MB)                                                          | HTTP 413 atau HTTP 400                                                                 |
+| 8   | ID fasilitas tidak valid                                                                    | HTTP 400                                                                               |
+| 8a  | Foto portrait dalam batas ukuran (contoh 1200 x 1600)                                       | HTTP 201, foto diterima                                                                |
+| 8b  | Foto dimensi melebihi batas (lebar atau tinggi di atas 6000, contoh 6001 x 1 atau 1 x 6001) | HTTP 400, `Dimensi foto terlalu besar. Maksimal 6000 x 6000 piksel dan 20 megapiksel.` |
+| 8c  | Foto portrait melebihi 20 megapiksel dengan kedua sisi di bawah 6000 (contoh 4001 x 5001)   | HTTP 400, pesan sama dengan 8b                                                         |
+| 9   | Request tanpa login                                                                         | HTTP 401                                                                               |
+| 10  | Request kedua dari user yang sama ketika request pertama masih diproses                     | HTTP 409                                                                               |
+| 11  | Request baru dari user yang sama setelah proses sebelumnya selesai                          | HTTP 201                                                                               |
+| 12  | Request bersamaan dari user berbeda                                                         | Dapat diproses secara bersamaan                                                        |
+| 13  | Terjadi kegagalan saat memeriksa lock                                                       | HTTP 500                                                                               |
+| 14  | Request bersamaan ditolak                                                                   | Tidak ada data pengaduan baru dari request yang ditolak                                |
 
-## 14.8 Vote
+## 15.8 Vote
 
 Pengujian dilakukan dengan Postman pada collection Sprint 3, folder **07 Vote**, menggunakan satu session (cookie jar) yang sama dari langkah 1 sampai 12. Request ke `/vote.php` memakai body **x-www-form-urlencoded** (bukan raw JSON). Folder dijalankan berurutan (Collection Runner).
 
@@ -1472,27 +1699,77 @@ GET /vote.php
 
 Request Postman menyertakan body form yang sama seperti langkah 13, tetapi body tidak berpengaruh karena method ditolak lebih dahulu. Tidak memerlukan session.
 
-# 15. Catatan Audit Sprint 3
+### Pembersihan data vote
+
+Setelah langkah 7, vote akun uji pada pengaduan uji masih aktif sebagai downvote. Karena menjalankan seluruh collection mendaftarkan akun uji baru pada setiap run (email `uji.<angka>@example.com`), setiap run meninggalkan satu vote baru dari akun yang berbeda. Hapus vote tersebut secara manual melalui database (misalnya phpMyAdmin atau MySQL client), bukan melalui Postman. Periksa dahulu baris yang akan dihapus, lalu hapus (sesuaikan ID pengaduan dengan `fixture_vote_id`):
+
+```sql
+SELECT v.id_vote, v.id_user, u.email, v.tipe_vote
+FROM vote v JOIN users u ON u.id_user = v.id_user
+WHERE v.id_pengaduan = <fixture_vote_id> AND u.email LIKE 'uji.%@example.com';
+
+DELETE v FROM vote v JOIN users u ON u.id_user = v.id_user
+WHERE v.id_pengaduan = <fixture_vote_id> AND u.email LIKE 'uji.%@example.com';
+```
+
+Jika `login_email` pada environment diisi dengan akun tetap, hapus vote akun tersebut saja dengan `DELETE FROM vote WHERE id_pengaduan = <fixture_vote_id> AND id_user = <id_user_penguji>;`.
+
+Jika tidak dibersihkan, menjalankan ulang folder dengan akun yang sama menghasilkan `changed` pada langkah 2 (vote aktif sebelumnya adalah downvote), sehingga pengujian gagal. Test `DTL-03` di folder 05 juga gagal karena jumlah downvote di database lebih besar dari `fixture_downvote`.
+
+## 15.9 Komentar
+
+Pengujian dilakukan dengan Postman pada folder **08 Komentar**, setelah folder 04 Pengaduan pada Collection Runner penuh. Folder ini memakai pengaduan baru dari `created_pengaduan_id` (dibuat oleh `PGD-03`) sehingga tidak mengubah jumlah komentar pada pengaduan fixture (`fixture_komentar_id`) yang dibandingkan oleh test Detail Pengaduan. Komentar tidak dapat dihapus melalui API, jadi setiap run menambah komentar pada pengaduan uji. Jumlah komentar pada test dihitung relatif terhadap jumlah awal (`komentar_total_awal`, disimpan oleh `KMT-02`), sehingga folder dapat dijalankan ulang tanpa pembersihan. Hasil kosong (`[]`) hanya terjadi pada pengaduan yang belum pernah dikomentari, yaitu pada run penuh setelah folder 04.
+
+| No  | Skenario                                             | Hasil yang diharapkan                                                                                                                      |
+| --- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Login                                                | HTTP 200                                                                                                                                   |
+| 2   | Daftar komentar pengaduan uji (jumlah awal disimpan) | HTTP 200, `total_komentar` sama dengan jumlah elemen; pengaduan yang belum pernah dikomentari menghasilkan 0 dan `[]`                      |
+| 3   | Simpan komentar valid                                | HTTP 201, `komentar` berisi `id_komentar`, `nama`, `isi_komentar`, `created_at`, `total_komentar` = jumlah awal + 1, tanpa field `id_user` |
+| 4   | Daftar komentar setelah menyimpan                    | HTTP 200, `total_komentar` = jumlah awal + 1, elemen terakhir (komentar terbaru) sama dengan yang disimpan                                 |
+| 5   | Detail Pengaduan memuat komentar yang sama           | HTTP 200, `data.komentar` memuat `id_komentar` yang sama dan jumlahnya = jumlah awal + 1                                                   |
+| 6   | Simpan komentar dengan `id_user` palsu pada body     | HTTP 201, `nama` penulis tetap nama akun login, `total_komentar` = jumlah awal + 2                                                         |
+| 7   | Komentar kosong                                      | HTTP 400, `Komentar wajib diisi`                                                                                                           |
+| 8   | Komentar hanya berisi spasi                          | HTTP 400, `Komentar wajib diisi`                                                                                                           |
+| 9   | Komentar lebih dari 1000 karakter                    | HTTP 400, `Komentar maksimal 1000 karakter`                                                                                                |
+| 10  | Field `isi_komentar` tidak dikirim                   | HTTP 400, `Komentar wajib diisi`                                                                                                           |
+| 11  | ID pengaduan tidak valid (POST)                      | HTTP 400, `ID pengaduan tidak valid`                                                                                                       |
+| 12  | Pengaduan tidak ditemukan (POST)                     | HTTP 404, `Pengaduan tidak ditemukan`                                                                                                      |
+| 13  | ID pengaduan tidak valid (GET)                       | HTTP 400, `ID pengaduan tidak valid`                                                                                                       |
+| 14  | Pengaduan tidak ditemukan (GET)                      | HTTP 404, `Pengaduan tidak ditemukan`                                                                                                      |
+| 15  | Komentar yang ditolak tidak tersimpan                | HTTP 200, `total_komentar` tetap jumlah awal + 2                                                                                           |
+| 16  | Logout                                               | HTTP 200                                                                                                                                   |
+| 17  | Simpan komentar tanpa login                          | HTTP 401, `Silakan login terlebih dahulu`                                                                                                  |
+| 18  | Daftar komentar tanpa login                          | HTTP 401, `Silakan login terlebih dahulu`                                                                                                  |
+| 19  | Method tidak diizinkan (PUT)                         | HTTP 405, header `Allow: GET, POST`                                                                                                        |
+| 20  | Login kembali                                        | HTTP 200                                                                                                                                   |
+| 21  | Komentar dari request tanpa login tidak tersimpan    | HTTP 200, `total_komentar` tetap jumlah awal + 2                                                                                           |
+
+Skenario kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
+
+---
+
+# 16. Catatan Audit Sprint 3
 
 Dokumentasi ini digunakan sebagai kontrak antara frontend dan backend.
 
 Sebelum kontrak dinyatakan final, lakukan pemeriksaan berikut.
 
-## 15.1 Checklist Audit Umum
+## 16.1 Checklist Audit Umum
 
-- [x] Nama endpoint sesuai dengan file API aktual.
-- [x] Method HTTP sesuai implementasi.
-- [x] Nama field request sesuai implementasi.
-- [x] Nama field response sesuai implementasi.
-- [x] HTTP status code sesuai implementasi.
-- [x] Pesan error sesuai implementasi.
-- [x] Semua endpoint privat membutuhkan session.
-- [x] Request upload menggunakan multipart/form-data.
-- [x] Dokumentasi Postman memiliki request dan response aktual.
-- [x] Semua skenario pengujian memiliki bukti hasil.
-- [x] Endpoint yang belum dibuat tidak dinyatakan sebagai endpoint aktif.
+- [ ] Nama endpoint sesuai dengan file API aktual.
+- [ ] Method HTTP sesuai implementasi.
+- [ ] Nama field request sesuai implementasi.
+- [ ] Nama field response sesuai implementasi.
+- [ ] HTTP status code sesuai implementasi.
+- [ ] Pesan error sesuai implementasi.
+- [ ] Semua endpoint privat membutuhkan session.
+- [ ] Request upload menggunakan multipart/form-data.
+- [ ] Idempotency-Key diuji pada request baru dan retry. (Tidak berlaku untuk endpoint Pengaduan: lihat subbab 9.2 dan 10.4 yang menyatakan `Idempotency-Key` tidak digunakan.)
+- [ ] Dokumentasi Postman memiliki request dan response aktual.
+- [ ] Semua skenario pengujian memiliki bukti hasil.
+- [ ] Endpoint yang belum dibuat tidak dinyatakan sebagai endpoint aktif.
 
-## 15.2 Checklist Audit Fitur Vote
+## 16.2 Checklist Audit Fitur Vote
 
 Status `[x]` berarti terbukti dari kode backend, skema database, atau contoh response Postman pada arsip proyek. Status `[ ]` berarti belum ada bukti atau perlu keputusan tim.
 
@@ -1514,7 +1791,34 @@ Status `[x]` berarti terbukti dari kode backend, skema database, atau contoh res
 - [x] Penanganan kesalahan server (ada di kode; belum diuji lewat Postman).
 - [x] Detail Pengaduan memuat `vote.pilihan_user` dari session (kode backend, v1.4.3).
 - [x] `vote.pilihan_user` pada Detail Pengaduan terbukti lewat Postman (`DTL-01` 10 dari 10, `DTL-05` lulus, contoh response V07 tersimpan).
-- [x] Pengujian Postman disiapkan (subbab 14.8, folder 07 Vote).
-- [x] Dokumentasi kontrak API diserahkan kepada frontend.
+- [x] Pengujian Postman disiapkan (subbab 15.8, folder 07 Vote).
+- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
 - [ ] Frontend dihubungkan ke endpoint Vote dengan format form data (subbab 11.15 nomor 1).
 - [x] Constraint unik (`id_pengaduan`, `id_user`) pada tabel `vote` dikonfirmasi terhadap skema database.
+- [x] Folder 07 Vote dijalankan penuh (15 langkah) dengan hasil lulus (Collection Runner: tidak ada test gagal pada folder 07).
+- [x] Vote akun uji dibersihkan dan `DTL-03` lulus (jumlah vote di database sama dengan `fixture_upvote` dan `fixture_downvote`).
+
+## 16.3 Checklist Audit Fitur Komentar
+
+Status `[x]` berarti terbukti dari kode backend atau skema database. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
+
+- [x] Struktur penyimpanan komentar tersedia (tabel `komentar` dengan relasi ke `pengaduan` dan `users`).
+- [x] Endpoint daftar komentar tersedia (`GET /komentar.php`).
+- [x] Endpoint simpan komentar tersedia (`POST /komentar.php`).
+- [x] Method selain GET dan POST ditolak (HTTP 405, header `Allow: GET, POST`).
+- [x] PHP Session diperiksa (`AuthMiddleware`) pada kedua method.
+- [x] Identitas penulis berasal dari session.
+- [x] ID pengaduan divalidasi dan ketersediaan pengaduan diperiksa.
+- [x] Isi komentar divalidasi (tidak kosong, bukan hanya spasi, maksimal 1000 karakter).
+- [x] Komentar valid disimpan ke database dengan prepared statement.
+- [x] Response menyertakan komentar yang tersimpan dan `total_komentar` dari database.
+- [x] Jumlah komentar pada Dashboard (`comment_count`) dihitung dari tabel `komentar`.
+- [x] Penanganan sesi tidak valid, pengaduan tidak ditemukan, input tidak valid, dan kegagalan database ada di kode.
+- [x] Endpoint edit dan hapus komentar tidak dibuat.
+- [ ] Folder 08 Komentar dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
+- [ ] Contoh response tersimpan di Postman untuk setiap request komentar.
+- [ ] Batas 1000 karakter dikonfirmasi dengan tim dan FE.
+- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
+- [ ] Frontend dihubungkan ke endpoint komentar (form komentar pada `detail-pengaduan.js` masih dinonaktifkan).
+
+**Penting:** Kontrak API harus mencerminkan kode yang benar-benar berjalan. Jika dokumentasi menyatakan suatu response, tetapi backend mengirim response berbeda, maka kontrak tersebut belum sinkron dan perlu diperbaiki.
