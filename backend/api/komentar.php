@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $controller = new KomentarController($conn);
     $controller->daftarKomentar();
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
