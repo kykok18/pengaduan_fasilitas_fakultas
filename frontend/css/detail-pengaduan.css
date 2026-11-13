@@ -1288,32 +1288,36 @@ padding: 11px 10px;
 }
 
 
+
 .detail-retry-btn {
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
 
-    width: 130px;
-    min-width: 130px;
+    width: 100px;
+    min-width: 0;
     height: 30px;
-    min-height: 30px;
-    padding: 0 10px;
 
-    margin: 24px auto 0;
+    margin-top: 24px;
+    padding: 0;
+    gap: 10px;
 
     background: #0B5E3B;
     border: none;
     border-radius: 10px;
 
+    color: #FFFFFF;
     font-family: 'Poppins', sans-serif;
     font-size: 10px;
     font-weight: 600;
     line-height: 15px;
-    color: #FFFFFF;
+    text-align: center;
 
     cursor: pointer;
-    box-sizing: border-box;
+    flex: none;
 }
+
 
 
 
