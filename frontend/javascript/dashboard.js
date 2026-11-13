@@ -508,42 +508,48 @@ if (gambarCard) {
                 };
 
                 // Jika halaman maksimal 5, tampilkan semuanya.
-                if (totalPages <= 5) {
-                    for (let page = 1; page <= totalPages; page++) {
-                        addPageButton(page);
-                    }
-                } else {
-                    // Selalu tampilkan halaman pertama.
-                    addPageButton(1);
+                
+/* Maksimal 4 tombol angka pagination */
 
-                    let startPage = Math.max(2, currentPage - 1);
-                    let endPage = Math.min(totalPages - 1, currentPage + 1);
+const MAX_VISIBLE = 4;
 
-                    if (currentPage <= 3) {
-                        startPage = 2;
-                        endPage = 4;
-                    }
+if (totalPages <= MAX_VISIBLE) {
+    // Jika jumlah halaman 4 atau kurang.
+    for (let page = 1; page <= totalPages; page++) {
+        addPageButton(page);
+    }
+} else {
+    // Nomor awal mengikuti halaman aktif.
+    const startPage = Math.min(
+        currentPage,
+        totalPages - (MAX_VISIBLE - 1)
+    );
 
-                    if (currentPage >= totalPages - 2) {
-                        startPage = totalPages - 3;
-                        endPage = totalPages - 1;
-                    }
+    const endPage = Math.min(
+        startPage + MAX_VISIBLE - 1,
+        totalPages
+    );
 
-                    if (startPage > 2) {
-                        addDots();
-                    }
+    // Jika masih jauh dari halaman terakhir,
+    // tampilkan 3 nomor + ... + halaman terakhir.
+    if (endPage < totalPages) {
+        for (let page = startPage; page < endPage; page++) {
+            addPageButton(page);
+        }
 
-                    for (let page = startPage; page <= endPage; page++) {
-                        addPageButton(page);
-                    }
+        if (endPage < totalPages - 1) {
+            addDots();
+        }
 
-                    if (endPage < totalPages - 1) {
-                        addDots();
-                    }
+        addPageButton(totalPages);
+    } else {
+        // Jika sudah mendekati halaman terakhir.
+        for (let page = startPage; page <= totalPages; page++) {
+            addPageButton(page);
+        }
+    }
+}
 
-                    // Selalu tampilkan halaman terakhir.
-                    addPageButton(totalPages);
-                }
 
                 // Sembunyikan pagination jika hanya ada satu halaman.
                 pagination.style.display = totalPages <= 1 ? 'none' : 'flex';
