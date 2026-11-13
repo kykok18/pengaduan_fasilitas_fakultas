@@ -1103,10 +1103,11 @@ textarea {
 .detail-comment-form textarea {
     flex: 1;
     min-width: 0;
-    height: 57px;
-    min-height: 57px;
+    
+height: 40px;
+min-height: 40px;
+padding: 11px 10px;
 
-    padding: 20px 21px 20px;
 
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
@@ -1221,10 +1222,7 @@ textarea {
 }
 
 .detail-state-icon.is-not-found::before {
-  content: "?";
-  color: var(--detail-green);
-  font-size: 48px;
-  font-weight: 600;
+    content: none;
 }
 
 .detail-state-icon.is-forbidden::before {
