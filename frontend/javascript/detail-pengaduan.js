@@ -191,6 +191,61 @@ let isSendingComment = false;
 
 
 
+  // ==========================================
+  // NOTIFIKASI KOMENTAR BERHASIL DIKIRIM
+  // ==========================================
+
+  let commentSuccessTimeout = null;
+
+  const showCommentSuccess = () => {
+      let alert = document.getElementById("commentSuccessAlert");
+
+      if (!alert) {
+          alert = document.createElement("div");
+
+          alert.id = "commentSuccessAlert";
+          alert.className = "vote-error-alert comment-success-alert";
+          alert.setAttribute("role", "status");
+          alert.setAttribute("aria-live", "polite");
+          alert.hidden = true;
+
+          alert.innerHTML = `
+              <div class="vote-error-icon">
+                  <svg width="40" height="40"
+                       viewBox="0 0 40 40"
+                       xmlns="http://www.w3.org/2000/svg"
+                       aria-hidden="true">
+
+                      <circle cx="20" cy="20" r="20"
+                              fill="#15A367"/>
+
+                      <path d="M11.5 20.5L17 26L28.5 14"
+                            stroke="#FFFFFF"
+                            stroke-width="4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                  </svg>
+              </div>
+
+              <div class="vote-error-content">
+                  <strong>KOMENTAR BERHASIL DIKIRIM</strong>
+                  <p>Komentar Anda berhasil ditambahkan.</p>
+              </div>
+          `;
+
+          document.body.appendChild(alert);
+      }
+
+      clearTimeout(commentSuccessTimeout);
+
+      alert.hidden = false;
+
+      commentSuccessTimeout = setTimeout(() => {
+          alert.hidden = true;
+      }, 4000);
+  };
+
+
  // ==========================================
  // SIDEBAR DETAIL PENGADUAN
  // ==========================================
@@ -387,6 +442,25 @@ const showNotFound = () => {
       "Akses Ditolak",
       "Anda tidak memiliki izin untuk melihat pengaduan ini."
     );
+  };
+
+
+  // ==========================================
+  // FORMAT JUMLAH UPVOTE, DOWNVOTE, KOMENTAR
+  // ==========================================
+
+  const formatJumlah = (jumlah) => {
+      const angka = Number(jumlah) || 0;
+
+      if (angka >= 10000) {
+          return `${Math.floor(angka / 1000)}K`;
+      }
+
+      if (angka >= 1000) {
+          return `${Math.floor(angka / 100) / 10}K`;
+      }
+
+      return String(angka);
   };
 
   // =========================================================
@@ -936,12 +1010,22 @@ commentForm.addEventListener("submit", async (event) => {
     // Bersihkan spasi di awal dan akhir.
     const isiKomentar = commentInput.value.trim();
 
-    // Validasi komentar kosong.
-    if (!isiKomentar) {
-        commentInput.setCustomValidity("Komentar wajib diisi.");
-        commentInput.reportValidity();
-        return;
+    
+// Validasi komentar kosong atau hanya spasi.
+if (!isiKomentar) {
+    const commentError = document.getElementById("detailCommentError");
+
+    if (commentError) {
+        commentError.querySelector("span").textContent =
+            "Komentar wajib diisi.";
+
+        commentError.hidden = false;
     }
+
+    commentBtn.classList.add("is-empty");
+    return;
+}
+
 
     // Sesuai batas maksimal backend.
     if ([...isiKomentar].length > 1000) {
@@ -1018,6 +1102,16 @@ commentForm.addEventListener("submit", async (event) => {
 
         // Kosongkan input setelah berhasil.
         commentInput.value = "";
+        commentBtn.classList.remove("is-empty");
+
+if (commentError) {
+    commentError.hidden = true;
+}
+
+        // Tampilkan notifikasi setelah backend
+        // mengonfirmasi komentar berhasil disimpan.
+        showCommentSuccess();
+
 
     } catch (error) {
         console.error("Gagal mengirim komentar:", error);
@@ -1032,12 +1126,41 @@ commentForm.addEventListener("submit", async (event) => {
     }
 });
 
-// Hapus validasi ketika pengguna memperbaiki input.
-const commentInput = commentForm.querySelector("textarea");
 
-commentInput?.addEventListener("input", () => {
+// ==========================================
+// UPDATE TAMPILAN VALIDASI KOMENTAR
+// ==========================================
+
+const commentInput = commentForm.querySelector("textarea");
+const commentBtn = commentForm.querySelector('button[type="submit"]');
+const commentError = document.getElementById("detailCommentError");
+
+
+const updateCommentState = () => {
+    if (!commentInput || !commentBtn) return;
+
+    const adaIsi = commentInput.value.trim() !== "";
+
+    // Saat pengguna mengetik komentar valid,
+    // tombol kembali hijau dan error menghilang.
+    if (adaIsi) {
+        commentBtn.classList.remove("is-empty");
+
+        if (commentError) {
+            commentError.hidden = true;
+        }
+    }
+
     commentInput.setCustomValidity("");
-});
+};
+
+
+// Menyesuaikan tombol saat pengguna mengetik.
+commentInput?.addEventListener("input", updateCommentState);
+
+// Kondisi awal: tombol tetap hijau.
+commentBtn.classList.remove("is-empty");
+
 
 
   // =========================================================
