@@ -564,6 +564,9 @@ if (gambarCard) {
                     throw new Error('Fungsi apiGetDashboard tidak ditemukan.');
                 }
 
+                document.querySelector(".pagination")
+                ?.classList.remove("is-visible");
+
                 // Memanggil apiGetDashboard() dari api.js menggunakan GET.
                 // Parameter halaman, limit, pencarian, dan filter dikirim ke backend.
                 // await menunggu respons API sebelum data pengaduan ditampilkan.

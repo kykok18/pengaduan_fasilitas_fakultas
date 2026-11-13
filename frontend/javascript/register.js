@@ -186,8 +186,22 @@ function hideMessage() {
    VALIDASI NAMA LENGKAP
    ============================================================ */
 
+
+const hapusEmoji = (teks) => {
+    return teks.replace(
+        /[\p{Extended_Pictographic}\p{Regional_Indicator}\p{Emoji_Modifier}\uFE0F\u20E3\u200D]/gu,
+        ''
+    );
+};
+
+
 function validateFullname() {
     const value = fullnameInput.value.trim();
+
+    if (hapusEmoji(value) !== value) {
+    showError(fullnameInput, 'Nama lengkap tidak boleh menggunakan emoji.');
+    return false;
+}
 
     // Nama wajib diisi
     if (!value) {
@@ -368,6 +382,9 @@ const sudahMulaiValidasi = {
 
 fullnameInput.addEventListener('input', () => {
     hideMessage();
+
+    // Hapus emoji yang diketik atau ditempel.
+    fullnameInput.value = hapusEmoji(fullnameInput.value);
 
     if (fullnameInput.value.trim().length >= 3) {
         sudahMulaiValidasi.nama = true;
