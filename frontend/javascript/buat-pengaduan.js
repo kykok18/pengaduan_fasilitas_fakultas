@@ -19,6 +19,46 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputLokasi = document.getElementById("lokasi");
   const inputDeskripsi = document.getElementById("deskripsi");
 
+
+  // =========================================================
+  // VALIDASI LOKASI - BLOKIR EMOJI
+  // =========================================================
+
+  // Mendeteksi emoji tanpa memblokir tanda baca biasa.
+  const regexEmoji =
+    /[\p{Extended_Pictographic}\p{Regional_Indicator}\u20E3\uFE0F]/gu;
+
+  // Mencegah emoji diketik atau ditempel secara langsung.
+  inputLokasi.addEventListener("beforeinput", (event) => {
+    if (event.isComposing || event.data === null) return;
+
+    if (regexEmoji.test(event.data)) {
+      // Untuk input teks biasa, cegah emoji masuk.
+      if (event.data.replace(regexEmoji, "") === "") {
+        event.preventDefault();
+      }
+    }
+
+    regexEmoji.lastIndex = 0;
+  });
+
+  // Pengamanan tambahan untuk paste, autofill,
+  // keyboard HP, serta input yang tidak melalui beforeinput.
+  inputLokasi.addEventListener("input", () => {
+    const nilaiAwal = inputLokasi.value;
+    const nilaiBersih = nilaiAwal.replace(regexEmoji, "");
+
+    if (nilaiAwal !== nilaiBersih) {
+      const posisiKursor = inputLokasi.selectionStart;
+      const teksSebelumKursor = nilaiAwal.slice(0, posisiKursor);
+      const posisiBaru = teksSebelumKursor.replace(regexEmoji, "").length;
+
+      inputLokasi.value = nilaiBersih;
+      inputLokasi.setSelectionRange(posisiBaru, posisiBaru);
+    }
+  });
+
+
 const aturPosisiDeskripsi = () => {
     // Mulai dari posisi tengah.
     inputDeskripsi.style.paddingTop = "18px";
