@@ -401,6 +401,41 @@ commentsCard.hidden = false;
     commentsTitle.textContent =
     `Komentar(${formatJumlah(daftarKomentar.length)})`;
 
+
+    // ==========================================
+    // KONDISI BELUM ADA KOMENTAR
+    // ==========================================
+
+    const tidakAdaKomentar = daftarKomentar.length === 0;
+
+    commentsCard.classList.toggle(
+        "is-empty-comments",
+        tidakAdaKomentar
+    );
+
+    if (tidakAdaKomentar) {
+        const emptyState = document.createElement("div");
+        emptyState.className = "detail-empty-comments";
+
+        emptyState.innerHTML = `
+            <svg width="31" height="25"
+                 viewBox="0 0 31 25"
+                 xmlns="http://www.w3.org/2000/svg"
+                 aria-hidden="true">
+                <path
+                    d="M15.5 1C7.5 1 1 6.1 1 12.4c0 3.2 1.7 6.1 4.5 8.2L3 24l6.5-2.3c1.9.7 3.9 1.1 6 1.1 8 0 14.5-5.1 14.5-11.4S23.5 1 15.5 1Z"
+                    fill="#B0B0B0"
+                />
+            </svg>
+
+            <p>Belum ada komentar pada pengaduan ini.</p>
+        `;
+
+        commentsList.appendChild(emptyState);
+        return;
+    }
+
+
     daftarKomentar.forEach((item) => {
 
       const card = document.createElement("div");

@@ -20,42 +20,64 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputDeskripsi = document.getElementById("deskripsi");
 
 
+
   // =========================================================
   // VALIDASI LOKASI - BLOKIR EMOJI
   // =========================================================
 
-  // Mendeteksi emoji tanpa memblokir tanda baca biasa.
+  // Mendeteksi emoji termasuk:
+  // - Emoji wajah
+  // - Emoji tangan
+  // - Emoji orang
+  // - Variasi warna kulit
+  // - Emoji gabungan dan bendera
   const regexEmoji =
-    /[\p{Extended_Pictographic}\p{Regional_Indicator}\u20E3\uFE0F]/gu;
+    /(?:\p{Regional_Indicator}{2}|[0-9#*]\uFE0F?\u20E3|\p{Extended_Pictographic}(?:[\uFE0E\uFE0F]|\p{Emoji_Modifier})*(?:\u200D\p{Extended_Pictographic}(?:[\uFE0E\uFE0F]|\p{Emoji_Modifier})*)*|[\p{Emoji_Modifier}\p{Regional_Indicator}\uFE0F\u20E3\u200D])/gu;
 
-  // Mencegah emoji diketik atau ditempel secara langsung.
+  // Membersihkan emoji tanpa menghapus teks biasa.
+  const hapusEmojiLokasi = (teks) => {
+    return teks.replace(regexEmoji, "");
+  };
+
+  // Mencegah emoji masuk saat diketik.
   inputLokasi.addEventListener("beforeinput", (event) => {
     if (event.isComposing || event.data === null) return;
 
-    if (regexEmoji.test(event.data)) {
-      // Untuk input teks biasa, cegah emoji masuk.
-      if (event.data.replace(regexEmoji, "") === "") {
-        event.preventDefault();
-      }
+    // Jika seluruh input berupa emoji, batalkan.
+    if (
+      event.cancelable &&
+      event.data !== "" &&
+      hapusEmojiLokasi(event.data) === "" &&
+      hapusEmojiLokasi(event.data) !== event.data
+    ) {
+      event.preventDefault();
     }
-
-    regexEmoji.lastIndex = 0;
   });
 
-  // Pengamanan tambahan untuk paste, autofill,
-  // keyboard HP, serta input yang tidak melalui beforeinput.
+  // Menangani paste, keyboard HP, autofill,
+  // dan kombinasi teks biasa dengan emoji.
   inputLokasi.addEventListener("input", () => {
+    if (inputLokasi.isComposing) return;
+
     const nilaiAwal = inputLokasi.value;
-    const nilaiBersih = nilaiAwal.replace(regexEmoji, "");
+    const nilaiBersih = hapusEmojiLokasi(nilaiAwal);
 
-    if (nilaiAwal !== nilaiBersih) {
-      const posisiKursor = inputLokasi.selectionStart;
-      const teksSebelumKursor = nilaiAwal.slice(0, posisiKursor);
-      const posisiBaru = teksSebelumKursor.replace(regexEmoji, "").length;
+    if (nilaiAwal === nilaiBersih) return;
 
-      inputLokasi.value = nilaiBersih;
-      inputLokasi.setSelectionRange(posisiBaru, posisiBaru);
-    }
+    const posisiKursor = inputLokasi.selectionStart;
+    const posisiBaru = hapusEmojiLokasi(
+      nilaiAwal.slice(0, posisiKursor)
+    ).length;
+
+    inputLokasi.value = nilaiBersih;
+    inputLokasi.setSelectionRange(posisiBaru, posisiBaru);
+  });
+
+  // Menangani input dari keyboard dengan metode komposisi.
+  inputLokasi.addEventListener("compositionend", () => {
+    inputLokasi.dispatchEvent(
+      new Event("input", { bubbles: true })
+    );
   });
 
 
