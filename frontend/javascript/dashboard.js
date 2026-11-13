@@ -537,9 +537,9 @@ if (totalPages <= MAX_VISIBLE) {
             addPageButton(page);
         }
 
-        if (endPage < totalPages - 1) {
-            addDots();
-        }
+        if (endPage < totalPages) {
+    addDots();
+}
 
         addPageButton(totalPages);
     } else {
