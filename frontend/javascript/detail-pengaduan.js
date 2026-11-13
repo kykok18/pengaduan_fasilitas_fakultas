@@ -76,6 +76,10 @@ const setActiveVote = (voteType) => {
   const commentsList = document.getElementById("detailCommentsList");
   const commentsTitle = document.getElementById("detailCommentsTitle");
 
+  // Menyimpan daftar komentar yang sudah dikonfirmasi backend.
+let komentarSaatIni = [];
+let isSendingComment = false;
+
   const avatarLetter = document.getElementById("detailAvatarLetter");
 
   
@@ -128,6 +132,59 @@ const setActiveVote = (voteType) => {
       alert.hidden = false;
 
       voteErrorTimeout = setTimeout(() => {
+          alert.hidden = true;
+      }, 4000);
+  };
+
+
+  // ==========================================
+  // NOTIFIKASI KOMENTAR GAGAL DIKIRIM
+  // ==========================================
+
+  let commentErrorTimeout = null;
+
+  const showCommentError = () => {
+      let alert = document.getElementById("commentErrorAlert");
+
+      if (!alert) {
+          alert = document.createElement("div");
+          alert.id = "commentErrorAlert";
+          alert.className = "vote-error-alert";
+          alert.setAttribute("role", "alert");
+          alert.hidden = true;
+
+          alert.innerHTML = `
+              <div class="vote-error-icon">
+                  <svg width="40" height="40"
+                       viewBox="0 0 40 40"
+                       xmlns="http://www.w3.org/2000/svg"
+                       aria-hidden="true">
+                      <circle cx="20" cy="20" r="20"
+                              fill="#C41B1B"/>
+                      <path d="M13 13L27 27M27 13L13 27"
+                            stroke="#FFFFFF"
+                            stroke-width="4"
+                            stroke-linecap="round"/>
+                  </svg>
+              </div>
+
+              <div class="vote-error-content">
+                  <strong>KOMENTAR GAGAL DIKIRIM</strong>
+                  <p>
+                      Terjadi kesalahan saat mengirim komentar.
+                      Silakan coba lagi
+                  </p>
+              </div>
+          `;
+
+          document.body.appendChild(alert);
+      }
+
+      clearTimeout(commentErrorTimeout);
+
+      alert.hidden = false;
+
+      commentErrorTimeout = setTimeout(() => {
           alert.hidden = true;
       }, 4000);
   };
@@ -347,44 +404,46 @@ commentsCard.hidden = false;
   // 7. MENAMPILKAN FOTO PENGADUAN
   // =========================================================
 
-  const renderFoto = (fotoUrl) => {
+
+
+const renderFoto = (fotoUrl) => {
+    detailImage.onload = null;
+    detailImage.onerror = null;
+    detailImage.removeAttribute("src");
 
     detailImage.hidden = true;
     imageFallback.hidden = false;
 
+    // Jika foto tidak tersedia.
     if (!fotoUrl || typeof fotoUrl !== "string") {
-    detailImage.src = "https://via.placeholder.com/600x335";
-    detailImage.hidden = false;
-    imageFallback.hidden = true;
-    return;
-}
+        return;
+    }
 
     try {
-      const url = new URL(fotoUrl);
+        const url = new URL(fotoUrl, window.location.href);
 
-      // Hanya mengizinkan URL gambar HTTP/HTTPS.
-      if (!["http:", "https:"].includes(url.protocol)) {
-        return;
-      }
+        if (!["http:", "https:"].includes(url.protocol)) {
+            return;
+        }
 
-      detailImage.onload = () => {
-        detailImage.hidden = false;
-        imageFallback.hidden = true;
-      };
+        detailImage.onload = () => {
+            detailImage.hidden = false;
+            imageFallback.hidden = true;
+        };
 
-      detailImage.onerror = () => {
-    detailImage.onerror = null; // Mencegah error berulang
-    detailImage.src = "https://via.placeholder.com/600x335";
-    detailImage.hidden = false;
-    imageFallback.hidden = true;
-};
+        // Jika gambar gagal dimuat, tampilkan teks fallback.
+        detailImage.onerror = () => {
+            detailImage.hidden = true;
+            imageFallback.hidden = false;
+        };
 
-      detailImage.src = url.href;
+        detailImage.src = url.href;
 
     } catch (error) {
-      console.error("URL foto tidak valid:", error);
+        console.error("URL foto tidak valid:", error);
     }
-  };
+};
+
 
   // =========================================================
   // 8. MENAMPILKAN KOMENTAR DARI BACKEND
@@ -397,6 +456,8 @@ commentsCard.hidden = false;
     const daftarKomentar = Array.isArray(komentar)
       ? komentar
       : [];
+
+      komentarSaatIni = [...daftarKomentar];
 
     commentsTitle.textContent =
     `Komentar(${formatJumlah(daftarKomentar.length)})`;
@@ -544,6 +605,17 @@ if (isDummyPreview) {
 
     // Daftar komentar.
     renderKomentar(komentar);
+
+
+    // Aktifkan form komentar setelah detail berhasil dimuat.
+    const commentInput = document.getElementById("detailCommentInput");
+    const commentSubmit = document.getElementById("detailCommentSubmit");
+
+    if (commentInput && commentSubmit) {
+        commentInput.disabled = false;
+        commentSubmit.disabled = false;
+    }
+
   };
 
   // =========================================================
@@ -836,9 +908,124 @@ voteButtons.forEach((button) => {
     "detailCommentForm"
   );
 
-  commentForm.addEventListener("submit", (event) => {
+  
+commentForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-  });
+
+    // Mencegah request komentar berulang.
+    if (isSendingComment) return;
+
+    const commentInput = commentForm.querySelector("textarea");
+    const commentBtn = commentForm.querySelector('button[type="submit"]');
+
+    if (!commentInput || !commentBtn) return;
+
+    // Bersihkan spasi di awal dan akhir.
+    const isiKomentar = commentInput.value.trim();
+
+    // Validasi komentar kosong.
+    if (!isiKomentar) {
+        commentInput.setCustomValidity("Komentar wajib diisi.");
+        commentInput.reportValidity();
+        return;
+    }
+
+    // Sesuai batas maksimal backend.
+    if ([...isiKomentar].length > 1000) {
+        commentInput.setCustomValidity(
+            "Komentar maksimal 1000 karakter."
+        );
+        commentInput.reportValidity();
+        return;
+    }
+
+    commentInput.setCustomValidity("");
+
+    if (!idPengaduan || !/^[1-9]\d*$/.test(idPengaduan)) {
+        showCommentError();
+        return;
+    }
+
+    isSendingComment = true;
+    commentBtn.disabled = true;
+    commentBtn.textContent = "Loading...";
+
+    try {
+        const body = new URLSearchParams({
+            id_pengaduan: idPengaduan,
+            isi_komentar: isiKomentar
+        });
+
+        const response = await fetch(
+            `${API_BASE_URL}/komentar.php`,
+            {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"
+                },
+                body: body.toString()
+            }
+        );
+
+        // Session sudah tidak valid.
+        if (response.status === 401) {
+            clearUserSession();
+            window.location.replace("login.html");
+            return;
+        }
+
+        const result = await response.json();
+
+        // Periksa konfirmasi dari backend.
+        if (
+            !response.ok ||
+            result.status !== "success" ||
+            !result.data?.komentar ||
+            String(result.data.id_pengaduan) !== String(idPengaduan)
+        ) {
+            throw new Error(
+                result.message || "Gagal mengirim komentar."
+            );
+        }
+
+        // Komentar hanya ditampilkan setelah backend
+        // mengonfirmasi penyimpanan berhasil.
+        const komentarBaru = result.data.komentar;
+
+        renderKomentar([
+            ...komentarSaatIni,
+            komentarBaru
+        ]);
+
+        // Jumlah komentar mengikuti respons backend.
+        commentsTitle.textContent =
+            `Komentar(${formatJumlah(result.data.total_komentar)})`;
+
+        // Kosongkan input setelah berhasil.
+        commentInput.value = "";
+
+    } catch (error) {
+        console.error("Gagal mengirim komentar:", error);
+
+        // Jangan menampilkan komentar sebagai tersimpan.
+        showCommentError();
+
+    } finally {
+        isSendingComment = false;
+        commentBtn.disabled = false;
+        commentBtn.textContent = "Kirim";
+    }
+});
+
+// Hapus validasi ketika pengguna memperbaiki input.
+const commentInput = commentForm.querySelector("textarea");
+
+commentInput?.addEventListener("input", () => {
+    commentInput.setCustomValidity("");
+});
+
 
   // =========================================================
   // 13. MEMUAT DATA SAAT HALAMAN DIBUKA

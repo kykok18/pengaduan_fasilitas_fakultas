@@ -281,7 +281,7 @@
           <div id="detailImageFallback"
                class="detail-image-fallback"
                hidden>
-            Foto tidak tersedia
+            Foto tidak ditemukan
           </div>
 
           <span id="detailCategory"
@@ -404,27 +404,24 @@
             Komentar(0)
         </h2>
 
-        <form id="detailCommentForm"
-              class="detail-comment-form">
+        
+<form id="detailCommentForm" class="detail-comment-form">
+    <textarea
+        id="detailCommentInput"
+        placeholder="Tulis Komentar..."
+        rows="2"
+        aria-label="Tulis komentar"
+        maxlength="1000"
+    ></textarea>
 
-            <textarea
-                id="detailCommentInput"
-                placeholder="Tulis Komentar..."
-                rows="2"
-                aria-label="Tulis komentar"
-                maxlength="1000"
-                disabled
-            ></textarea>
+    <button
+        type="submit"
+        id="detailCommentSubmit"
+    >
+        Kirim
+    </button>
+</form>
 
-            <button
-                type="submit"
-                id="detailCommentSubmit"
-                disabled
-            >
-                Kirim
-            </button>
-
-        </form>
 
     </div>
 
