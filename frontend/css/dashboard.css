@@ -429,14 +429,14 @@ body {
     gap: 10px;
 }
 
-/* Kartu Pengaduan */
+
 .report-card-dash {
     position: relative;
     display: flex;
     align-items: stretch;
 
     width: 100%;
-    height: 120px;
+    height: 99px;
     padding: 0;
     gap: 0;
 
@@ -445,6 +445,7 @@ body {
     overflow: hidden;
     box-shadow: none;
 }
+
 
 /* Gambar Kiri */
 .report-image {
@@ -492,20 +493,25 @@ body {
     box-sizing: border-box;
 }
 
-/* Konten Kanan */
+
 .report-content {
     display: flex;
     flex: 1;
-    min-width: 0;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 5px;
 
+    min-width: 0;
     height: 99px;
-    padding: 5px 10px 4px 12px;
+
     margin: 0;
+    padding: 5px 10px 4px 12px;
+    box-sizing: border-box;
 }
 
+
 /* Header Judul */
+
 .report-content-header {
     display: flex;
     align-items: flex-start;
@@ -513,10 +519,12 @@ body {
     width: 100%;
     min-width: 0;
     min-height: 18px;
+    height: 18px;
 
     margin: 0;
     padding: 0;
 }
+
 
 /* Judul Pengaduan */
 .report-content-header h4 {
@@ -581,10 +589,11 @@ body {
 }
 
 /* Lokasi dan Tanggal */
+
 .report-meta {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 
     width: 100%;
     gap: 1px;
@@ -594,23 +603,39 @@ body {
     font-size: 8px;
     font-weight: 500;
     line-height: 12px;
-
     color: #474747;
 }
 
 
-.report-meta span {
+
+.report-meta > span {
     display: flex;
     align-items: center;
-
-    width: 100%;
-    min-width: 0;
-    min-height: 20px;
     gap: 10px;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 100%;
+    min-height: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+
+/* Sejajarkan teks lokasi dan tanggal dengan ikon */
+.report-meta > span > svg {
+    align-self: center;
+}
+
+.report-meta .report-location-text {
+    align-self: center;
+    line-height: 12px;
+}
+
+/* Jika teks dibungkus span tambahan */
+.report-meta > span > span {
+    height: auto;
+    min-height: 0;
+    align-self: center;
+    line-height: 12px;
 }
 
 
@@ -658,27 +683,36 @@ body {
 }
 
 /* Upvote, Downvote, Komentar */
+
 .report-actions {
     display: flex;
+    flex-direction: row;
     align-items: center;
-
     gap: 4px;
+
+    width: max-content;
+    height: 20px;
     margin: 0;
-    padding: 0;
+    padding: 0px;
 
     font-family: 'Poppins', sans-serif;
     font-size: 8px;
     font-weight: 700;
     line-height: 12px;
-
     color: rgba(0, 0, 0, 0.25);
 }
 
 .report-actions span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 20px;
     gap: 4px;
+    white-space: nowrap;
 }
+
 
 /* Ikon Interaksi */
 .report-actions i {
@@ -1307,93 +1341,6 @@ body {
     white-space: nowrap;
 }
 
-
-
-/* List Report Item (Menggunakan Flexbox Horizontal) */
-.reports-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.report-card-dash {
-    display: flex;
-    align-items: stretch;
-    gap: 0;
-    width: 100%;
-    padding: 0;
-    overflow: hidden;
-    background-color: var(--white);
-    border-radius: 12px;
-    height: 99px; /* Tinggi fix agar seragam */
-}
-
-.report-image {
-    position: relative;
-    flex: 0 0 129px;
-    height: 100%;
-    overflow: hidden;
-}
-
-.report-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-
-/* Konten Kanan */
-.report-content {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 7px;
-}
-
-.report-content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 1px;
-}
-
-.report-content-header h4 {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-    color: #0B5E3B;
-}
-
-
-
-.report-meta span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* Actions (Like, Dislike, Comment) */
-.report-footer {
-    margin-top: auto;
-}
-
-.report-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    color: #0000004F;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.report-actions span {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
 
 
 /* ============================================================
