@@ -48,11 +48,12 @@ class DashboardController
         $status = trim($_GET['status'] ?? '');
 
         // Validasi status pengaduan.
+        // Pengaduan berstatus ditolak tidak ditampilkan di dashboard,
+        // sehingga tidak dapat difilter.
         $statusValid = [
             'diajukan',
             'dalam perbaikan',
-            'selesai',
-            'ditolak'
+            'selesai'
         ];
 
         if ($status !== '' && !in_array($status, $statusValid, true)) {
