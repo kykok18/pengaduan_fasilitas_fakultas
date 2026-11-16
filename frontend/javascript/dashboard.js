@@ -60,9 +60,23 @@
         // LIMIT menentukan maksimal 5 pengaduan per halaman.
         const LIMIT = 5;
 
-        let currentPage = 1;
-        let currentFilter = 'semua';
-        let currentSearch = '';
+        
+const savedPage = reportsContainer
+    ? Number(sessionStorage.getItem('dashboardReturnPage'))
+    : 0;
+
+let currentPage =
+    Number.isSafeInteger(savedPage) && savedPage > 0
+        ? savedPage
+        : 1;
+
+let currentFilter = 'semua';
+let currentSearch = '';
+
+if (reportsContainer) {
+    sessionStorage.removeItem('dashboardReturnPage');
+}
+
 
         let totalPages = 1;
         let allReports = [];
@@ -407,10 +421,19 @@ const foto = item.foto
                     card.setAttribute('tabindex', '0');
 
                     // Fungsi untuk membuka halaman detail.
-                    const bukaDetail = () => {
-                        window.location.href =
-                            `detail-pengaduan.html?id_pengaduan=${encodeURIComponent(idPengaduan)}`;
-                    };
+                    
+const bukaDetail = () => {
+    // Simpan halaman Dashboard yang sedang aktif.
+    sessionStorage.setItem(
+        'dashboardReturnPage',
+        String(currentPage)
+    );
+
+    // Buka Detail Pengaduan.
+    window.location.href =
+        `detail-pengaduan.html?id_pengaduan=${encodeURIComponent(idPengaduan)}`;
+};
+
 
                     // Ketika kartu diklik.
                     card.addEventListener('click', bukaDetail);
@@ -508,42 +531,48 @@ if (gambarCard) {
                 };
 
                 // Jika halaman maksimal 5, tampilkan semuanya.
-                if (totalPages <= 5) {
-                    for (let page = 1; page <= totalPages; page++) {
-                        addPageButton(page);
-                    }
-                } else {
-                    // Selalu tampilkan halaman pertama.
-                    addPageButton(1);
+                
+/* Maksimal 4 tombol angka pagination */
 
-                    let startPage = Math.max(2, currentPage - 1);
-                    let endPage = Math.min(totalPages - 1, currentPage + 1);
+const MAX_VISIBLE = 4;
 
-                    if (currentPage <= 3) {
-                        startPage = 2;
-                        endPage = 4;
-                    }
+if (totalPages <= MAX_VISIBLE) {
+    // Jika jumlah halaman 4 atau kurang.
+    for (let page = 1; page <= totalPages; page++) {
+        addPageButton(page);
+    }
+} else {
+    // Nomor awal mengikuti halaman aktif.
+    const startPage = Math.min(
+        currentPage,
+        totalPages - (MAX_VISIBLE - 1)
+    );
 
-                    if (currentPage >= totalPages - 2) {
-                        startPage = totalPages - 3;
-                        endPage = totalPages - 1;
-                    }
+    const endPage = Math.min(
+        startPage + MAX_VISIBLE - 1,
+        totalPages
+    );
 
-                    if (startPage > 2) {
-                        addDots();
-                    }
+    // Jika masih jauh dari halaman terakhir,
+    // tampilkan 3 nomor + ... + halaman terakhir.
+    if (endPage < totalPages) {
+        for (let page = startPage; page < endPage; page++) {
+            addPageButton(page);
+        }
 
-                    for (let page = startPage; page <= endPage; page++) {
-                        addPageButton(page);
-                    }
+        if (endPage < totalPages) {
+    addDots();
+}
 
-                    if (endPage < totalPages - 1) {
-                        addDots();
-                    }
+        addPageButton(totalPages);
+    } else {
+        // Jika sudah mendekati halaman terakhir.
+        for (let page = startPage; page <= totalPages; page++) {
+            addPageButton(page);
+        }
+    }
+}
 
-                    // Selalu tampilkan halaman terakhir.
-                    addPageButton(totalPages);
-                }
 
                 // Sembunyikan pagination jika hanya ada satu halaman.
                 pagination.style.display = totalPages <= 1 ? 'none' : 'flex';
@@ -563,6 +592,9 @@ if (gambarCard) {
                 if (typeof apiGetDashboard !== 'function') {
                     throw new Error('Fungsi apiGetDashboard tidak ditemukan.');
                 }
+
+                document.querySelector(".pagination")
+                ?.classList.remove("is-visible");
 
                 // Memanggil apiGetDashboard() dari api.js menggunakan GET.
                 // Parameter halaman, limit, pencarian, dan filter dikirim ke backend.

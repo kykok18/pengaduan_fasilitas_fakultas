@@ -76,6 +76,10 @@ const setActiveVote = (voteType) => {
   const commentsList = document.getElementById("detailCommentsList");
   const commentsTitle = document.getElementById("detailCommentsTitle");
 
+  // Menyimpan daftar komentar yang sudah dikonfirmasi backend.
+let komentarSaatIni = [];
+let isSendingComment = false;
+
   const avatarLetter = document.getElementById("detailAvatarLetter");
 
   
@@ -133,6 +137,114 @@ const setActiveVote = (voteType) => {
   };
 
 
+  // ==========================================
+  // NOTIFIKASI KOMENTAR GAGAL DIKIRIM
+  // ==========================================
+
+  let commentErrorTimeout = null;
+
+  const showCommentError = () => {
+      let alert = document.getElementById("commentErrorAlert");
+
+      if (!alert) {
+          alert = document.createElement("div");
+          alert.id = "commentErrorAlert";
+          alert.className = "vote-error-alert";
+          alert.setAttribute("role", "alert");
+          alert.hidden = true;
+
+          alert.innerHTML = `
+              <div class="vote-error-icon">
+                  <svg width="40" height="40"
+                       viewBox="0 0 40 40"
+                       xmlns="http://www.w3.org/2000/svg"
+                       aria-hidden="true">
+                      <circle cx="20" cy="20" r="20"
+                              fill="#C41B1B"/>
+                      <path d="M13 13L27 27M27 13L13 27"
+                            stroke="#FFFFFF"
+                            stroke-width="4"
+                            stroke-linecap="round"/>
+                  </svg>
+              </div>
+
+              <div class="vote-error-content">
+                  <strong>KOMENTAR GAGAL DIKIRIM</strong>
+                  <p>
+                      Terjadi kesalahan saat mengirim komentar.
+                      Silakan coba lagi
+                  </p>
+              </div>
+          `;
+
+          document.body.appendChild(alert);
+      }
+
+      clearTimeout(commentErrorTimeout);
+
+      alert.hidden = false;
+
+      commentErrorTimeout = setTimeout(() => {
+          alert.hidden = true;
+      }, 4000);
+  };
+
+
+
+  // ==========================================
+  // NOTIFIKASI KOMENTAR BERHASIL DIKIRIM
+  // ==========================================
+
+  let commentSuccessTimeout = null;
+
+  const showCommentSuccess = () => {
+      let alert = document.getElementById("commentSuccessAlert");
+
+      if (!alert) {
+          alert = document.createElement("div");
+
+          alert.id = "commentSuccessAlert";
+          alert.className = "vote-error-alert comment-success-alert";
+          alert.setAttribute("role", "status");
+          alert.setAttribute("aria-live", "polite");
+          alert.hidden = true;
+
+          alert.innerHTML = `
+              <div class="vote-error-icon">
+                  <svg width="40" height="40"
+                       viewBox="0 0 40 40"
+                       xmlns="http://www.w3.org/2000/svg"
+                       aria-hidden="true">
+
+                      <circle cx="20" cy="20" r="20"
+                              fill="#15A367"/>
+
+                      <path d="M11.5 20.5L17 26L28.5 14"
+                            stroke="#FFFFFF"
+                            stroke-width="4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                  </svg>
+              </div>
+
+              <div class="vote-error-content">
+                  <strong>KOMENTAR BERHASIL DIKIRIM</strong>
+                  <p>Komentar Anda berhasil ditambahkan.</p>
+              </div>
+          `;
+
+          document.body.appendChild(alert);
+      }
+
+      clearTimeout(commentSuccessTimeout);
+
+      alert.hidden = false;
+
+      commentSuccessTimeout = setTimeout(() => {
+          alert.hidden = true;
+      }, 4000);
+  };
+
 
  // ==========================================
  // SIDEBAR DETAIL PENGADUAN
@@ -179,6 +291,7 @@ const setActiveVote = (voteType) => {
 
   // Nama parameter yang digunakan backend.
   const DETAIL_ID_PARAM = "id_pengaduan";
+
 
   // Mengambil ID pengaduan dari URL.
   // Contoh: detail-pengaduan.html?id_pengaduan=12
@@ -303,13 +416,26 @@ commentsCard.hidden = false;
     );
   };
 
-  const showNotFound = () => {
+  
+const showNotFound = () => {
     showState(
-      "not-found",
-      "Pengaduan Tidak Ditemukan",
-      "Pengaduan tidak tersedia atau tautan yang Anda buka tidak valid."
+        "not-found",
+        "Pengaduan Tidak Ditemukan",
+        "Pengaduan yang Anda akses tidak ditemukan atau sudah tidak tersedia dalam sistem."
     );
-  };
+
+    stateIcon.innerHTML = `
+        <svg width="91" height="94" viewBox="0 0 91 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="stroke0_3235_4218" fill="white">
+<path d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"/>
+</mask>
+<ellipse cx="45.5" cy="47" rx="45.5" ry="47" stroke-width="2" stroke="#0B5E3B" mask="url(#stroke0_3235_4218)"/>
+<path d="M62.6311 60.6089L52.3106 51.4654C54.3734 49.2824 55.5016 46.5253 55.4969 43.6785C55.4969 36.9619 49.3276 31.5 41.7485 31.5C34.1693 31.5 28 36.9619 28 43.6785C28 50.3951 34.1693 55.857 41.7485 55.857C44.9631 55.8589 48.076 54.8593 50.5425 53.0331L60.8647 62.1766C61.0998 62.3837 61.4179 62.5 61.7496 62.5C62.0812 62.5 62.3993 62.3837 62.6345 62.1766C62.8685 61.969 63 61.6876 63 61.3942C63 61.1008 62.8685 60.8194 62.6345 60.6118L62.6311 60.6089ZM41.7485 53.6428C38.7665 53.6388 35.9079 52.5878 33.7993 50.72C31.6907 48.8522 30.5041 46.32 30.4997 43.6785C30.5041 41.037 31.6907 38.5049 33.7993 36.637C35.9079 34.7692 38.7665 33.7182 41.7485 33.7143C44.7305 33.7182 47.5891 34.7692 49.6977 36.637C51.8063 38.5049 52.9928 41.037 52.9972 43.6785C52.9928 46.32 51.8063 48.8522 49.6977 50.72C47.5891 52.5878 44.7305 53.6388 41.7485 53.6428Z" fill="#0B5E3B"/>
+</svg>
+
+    `;
+};
+
 
   const showForbidden = () => {
     showState(
@@ -317,6 +443,25 @@ commentsCard.hidden = false;
       "Akses Ditolak",
       "Anda tidak memiliki izin untuk melihat pengaduan ini."
     );
+  };
+
+
+  // ==========================================
+  // FORMAT JUMLAH UPVOTE, DOWNVOTE, KOMENTAR
+  // ==========================================
+
+  const formatJumlah = (jumlah) => {
+      const angka = Number(jumlah) || 0;
+
+      if (angka >= 10000) {
+          return `${Math.floor(angka / 1000)}K`;
+      }
+
+      if (angka >= 1000) {
+          return `${Math.floor(angka / 100) / 10}K`;
+      }
+
+      return String(angka);
   };
 
   // =========================================================
@@ -347,44 +492,46 @@ commentsCard.hidden = false;
   // 7. MENAMPILKAN FOTO PENGADUAN
   // =========================================================
 
-  const renderFoto = (fotoUrl) => {
+
+
+const renderFoto = (fotoUrl) => {
+    detailImage.onload = null;
+    detailImage.onerror = null;
+    detailImage.removeAttribute("src");
 
     detailImage.hidden = true;
     imageFallback.hidden = false;
 
+    // Jika foto tidak tersedia.
     if (!fotoUrl || typeof fotoUrl !== "string") {
-    detailImage.src = "https://via.placeholder.com/600x335";
-    detailImage.hidden = false;
-    imageFallback.hidden = true;
-    return;
-}
+        return;
+    }
 
     try {
-      const url = new URL(fotoUrl);
+        const url = new URL(fotoUrl, window.location.href);
 
-      // Hanya mengizinkan URL gambar HTTP/HTTPS.
-      if (!["http:", "https:"].includes(url.protocol)) {
-        return;
-      }
+        if (!["http:", "https:"].includes(url.protocol)) {
+            return;
+        }
 
-      detailImage.onload = () => {
-        detailImage.hidden = false;
-        imageFallback.hidden = true;
-      };
+        detailImage.onload = () => {
+            detailImage.hidden = false;
+            imageFallback.hidden = true;
+        };
 
-      detailImage.onerror = () => {
-    detailImage.onerror = null; // Mencegah error berulang
-    detailImage.src = "https://via.placeholder.com/600x335";
-    detailImage.hidden = false;
-    imageFallback.hidden = true;
-};
+        // Jika gambar gagal dimuat, tampilkan teks fallback.
+        detailImage.onerror = () => {
+            detailImage.hidden = true;
+            imageFallback.hidden = false;
+        };
 
-      detailImage.src = url.href;
+        detailImage.src = url.href;
 
     } catch (error) {
-      console.error("URL foto tidak valid:", error);
+        console.error("URL foto tidak valid:", error);
     }
-  };
+};
+
 
   // =========================================================
   // 8. MENAMPILKAN KOMENTAR DARI BACKEND
@@ -398,8 +545,45 @@ commentsCard.hidden = false;
       ? komentar
       : [];
 
+      komentarSaatIni = [...daftarKomentar];
+
     commentsTitle.textContent =
     `Komentar(${formatJumlah(daftarKomentar.length)})`;
+
+
+    // ==========================================
+    // KONDISI BELUM ADA KOMENTAR
+    // ==========================================
+
+    const tidakAdaKomentar = daftarKomentar.length === 0;
+
+    commentsCard.classList.toggle(
+        "is-empty-comments",
+        tidakAdaKomentar
+    );
+
+    if (tidakAdaKomentar) {
+        const emptyState = document.createElement("div");
+        emptyState.className = "detail-empty-comments";
+
+        emptyState.innerHTML = `
+            <svg width="31" height="25"
+                 viewBox="0 0 31 25"
+                 xmlns="http://www.w3.org/2000/svg"
+                 aria-hidden="true">
+                <path
+                    d="M15.5 1C7.5 1 1 6.1 1 12.4c0 3.2 1.7 6.1 4.5 8.2L3 24l6.5-2.3c1.9.7 3.9 1.1 6 1.1 8 0 14.5-5.1 14.5-11.4S23.5 1 15.5 1Z"
+                    fill="#B0B0B0"
+                />
+            </svg>
+
+            <p>Belum ada komentar pada pengaduan ini.</p>
+        `;
+
+        commentsList.appendChild(emptyState);
+        return;
+    }
+
 
     daftarKomentar.forEach((item) => {
 
@@ -509,6 +693,17 @@ if (isDummyPreview) {
 
     // Daftar komentar.
     renderKomentar(komentar);
+
+
+    // Aktifkan form komentar setelah detail berhasil dimuat.
+    const commentInput = document.getElementById("detailCommentInput");
+    const commentSubmit = document.getElementById("detailCommentSubmit");
+
+    if (commentInput && commentSubmit) {
+        commentInput.disabled = false;
+        commentSubmit.disabled = false;
+    }
+
   };
 
   // =========================================================
@@ -801,9 +996,173 @@ voteButtons.forEach((button) => {
     "detailCommentForm"
   );
 
-  commentForm.addEventListener("submit", (event) => {
+  
+commentForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-  });
+
+    // Mencegah request komentar berulang.
+    if (isSendingComment) return;
+
+    const commentInput = commentForm.querySelector("textarea");
+    const commentBtn = commentForm.querySelector('button[type="submit"]');
+
+    if (!commentInput || !commentBtn) return;
+
+    // Bersihkan spasi di awal dan akhir.
+    const isiKomentar = commentInput.value.trim();
+
+    
+// Validasi komentar kosong atau hanya spasi.
+if (!isiKomentar) {
+    const commentError = document.getElementById("detailCommentError");
+
+    if (commentError) {
+        commentError.querySelector("span").textContent =
+            "Komentar wajib diisi.";
+
+        commentError.hidden = false;
+    }
+
+    commentBtn.classList.add("is-empty");
+    return;
+}
+
+
+    // Sesuai batas maksimal backend.
+    if ([...isiKomentar].length > 1000) {
+        commentInput.setCustomValidity(
+            "Komentar maksimal 1000 karakter."
+        );
+        commentInput.reportValidity();
+        return;
+    }
+
+    commentInput.setCustomValidity("");
+
+    if (!idPengaduan || !/^[1-9]\d*$/.test(idPengaduan)) {
+        showCommentError();
+        return;
+    }
+
+    isSendingComment = true;
+    commentBtn.disabled = true;
+    commentBtn.textContent = "Loading...";
+
+    try {
+        const body = new URLSearchParams({
+            id_pengaduan: idPengaduan,
+            isi_komentar: isiKomentar
+        });
+
+        const response = await fetch(
+            `${API_BASE_URL}/komentar.php`,
+            {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Accept": "application/json"
+                },
+                body: body.toString()
+            }
+        );
+
+        // Session sudah tidak valid.
+        if (response.status === 401) {
+            clearUserSession();
+            window.location.replace("login.html");
+            return;
+        }
+
+        const result = await response.json();
+
+        // Periksa konfirmasi dari backend.
+        if (
+            !response.ok ||
+            result.status !== "success" ||
+            !result.data?.komentar ||
+            String(result.data.id_pengaduan) !== String(idPengaduan)
+        ) {
+            throw new Error(
+                result.message || "Gagal mengirim komentar."
+            );
+        }
+
+        // Komentar hanya ditampilkan setelah backend
+        // mengonfirmasi penyimpanan berhasil.
+        const komentarBaru = result.data.komentar;
+
+        renderKomentar([
+            ...komentarSaatIni,
+            komentarBaru
+        ]);
+
+        // Jumlah komentar mengikuti respons backend.
+        commentsTitle.textContent =
+            `Komentar(${formatJumlah(result.data.total_komentar)})`;
+
+        // Kosongkan input setelah berhasil.
+        commentInput.value = "";
+        commentBtn.classList.remove("is-empty");
+
+if (commentError) {
+    commentError.hidden = true;
+}
+
+        // Tampilkan notifikasi setelah backend
+        // mengonfirmasi komentar berhasil disimpan.
+        showCommentSuccess();
+
+
+    } catch (error) {
+        console.error("Gagal mengirim komentar:", error);
+
+        // Jangan menampilkan komentar sebagai tersimpan.
+        showCommentError();
+
+    } finally {
+        isSendingComment = false;
+        commentBtn.disabled = false;
+        commentBtn.textContent = "Kirim";
+    }
+});
+
+
+// ==========================================
+// UPDATE TAMPILAN VALIDASI KOMENTAR
+// ==========================================
+
+const commentInput = commentForm.querySelector("textarea");
+const commentBtn = commentForm.querySelector('button[type="submit"]');
+const commentError = document.getElementById("detailCommentError");
+
+
+const updateCommentState = () => {
+    if (!commentInput || !commentBtn) return;
+
+    const adaIsi = commentInput.value.trim() !== "";
+
+    // Saat pengguna mengetik komentar valid,
+    // tombol kembali hijau dan error menghilang.
+    if (adaIsi) {
+        commentBtn.classList.remove("is-empty");
+
+        if (commentError) {
+            commentError.hidden = true;
+        }
+    }
+
+    commentInput.setCustomValidity("");
+};
+
+
+// Menyesuaikan tombol saat pengguna mengetik.
+commentInput?.addEventListener("input", updateCommentState);
+
+// Kondisi awal: tombol tetap hijau.
+commentBtn.classList.remove("is-empty");
+
+
 
   // =========================================================
   // 13. MEMUAT DATA SAAT HALAMAN DIBUKA

@@ -19,6 +19,68 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputLokasi = document.getElementById("lokasi");
   const inputDeskripsi = document.getElementById("deskripsi");
 
+
+
+  // =========================================================
+  // VALIDASI LOKASI - BLOKIR EMOJI
+  // =========================================================
+
+  // Mendeteksi emoji termasuk:
+  // - Emoji wajah
+  // - Emoji tangan
+  // - Emoji orang
+  // - Variasi warna kulit
+  // - Emoji gabungan dan bendera
+  const regexEmoji =
+    /(?:\p{Regional_Indicator}{2}|[0-9#*]\uFE0F?\u20E3|\p{Extended_Pictographic}(?:[\uFE0E\uFE0F]|\p{Emoji_Modifier})*(?:\u200D\p{Extended_Pictographic}(?:[\uFE0E\uFE0F]|\p{Emoji_Modifier})*)*|[\p{Emoji_Modifier}\p{Regional_Indicator}\uFE0F\u20E3\u200D])/gu;
+
+  // Membersihkan emoji tanpa menghapus teks biasa.
+  const hapusEmojiLokasi = (teks) => {
+    return teks.replace(regexEmoji, "");
+  };
+
+  // Mencegah emoji masuk saat diketik.
+  inputLokasi.addEventListener("beforeinput", (event) => {
+    if (event.isComposing || event.data === null) return;
+
+    // Jika seluruh input berupa emoji, batalkan.
+    if (
+      event.cancelable &&
+      event.data !== "" &&
+      hapusEmojiLokasi(event.data) === "" &&
+      hapusEmojiLokasi(event.data) !== event.data
+    ) {
+      event.preventDefault();
+    }
+  });
+
+  // Menangani paste, keyboard HP, autofill,
+  // dan kombinasi teks biasa dengan emoji.
+  inputLokasi.addEventListener("input", () => {
+    if (inputLokasi.isComposing) return;
+
+    const nilaiAwal = inputLokasi.value;
+    const nilaiBersih = hapusEmojiLokasi(nilaiAwal);
+
+    if (nilaiAwal === nilaiBersih) return;
+
+    const posisiKursor = inputLokasi.selectionStart;
+    const posisiBaru = hapusEmojiLokasi(
+      nilaiAwal.slice(0, posisiKursor)
+    ).length;
+
+    inputLokasi.value = nilaiBersih;
+    inputLokasi.setSelectionRange(posisiBaru, posisiBaru);
+  });
+
+  // Menangani input dari keyboard dengan metode komposisi.
+  inputLokasi.addEventListener("compositionend", () => {
+    inputLokasi.dispatchEvent(
+      new Event("input", { bubbles: true })
+    );
+  });
+
+
 const aturPosisiDeskripsi = () => {
     // Mulai dari posisi tengah.
     inputDeskripsi.style.paddingTop = "18px";
