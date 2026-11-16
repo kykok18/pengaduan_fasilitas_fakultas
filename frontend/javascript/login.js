@@ -324,6 +324,9 @@ if (!email) {
                 loginSucceeded = true;
                 showMessage('success');
 
+                // Hapus halaman dashboard terakhir dari akun sebelumnya
+                sessionStorage.removeItem('dashboardReturnPage');
+
                 // Redirect ke Dashboard setelah notifikasi sukses
                 setTimeout(() => {
                     window.location.replace('dashboard.html');

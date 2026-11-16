@@ -869,21 +869,51 @@ if (isDummyPreview) {
 // =========================================================
 
 const kirimVote = async (tipeVote) => {
-
-    // Mencegah request berulang.
     if (isVoting) return;
 
-    // Hanya menerima tipe vote yang valid.
     if (!["upvote", "downvote"].includes(tipeVote)) return;
 
     if (!idPengaduan || !/^[1-9]\d*$/.test(idPengaduan)) {
         return;
     }
 
+    // Simpan kondisi tampilan sebelum perubahan.
+    const voteSebelumnya = activeVote;
+
+    const upvoteSebelumnya =
+        Number(detailLikes.textContent.replace("K", "")) || 0;
+
+    const downvoteSebelumnya =
+        Number(detailDislikes.textContent.replace("K", "")) || 0;
+
+    // Tentukan pilihan baru.
+    const voteBaru =
+        voteSebelumnya === tipeVote ? null : tipeVote;
+
+    // Perbarui tampilan secara langsung.
+    let jumlahUpvote = upvoteSebelumnya;
+    let jumlahDownvote = downvoteSebelumnya;
+
+    if (voteSebelumnya === "upvote") {
+        jumlahUpvote--;
+    } else if (voteSebelumnya === "downvote") {
+        jumlahDownvote--;
+    }
+
+    if (voteBaru === "upvote") {
+        jumlahUpvote++;
+    } else if (voteBaru === "downvote") {
+        jumlahDownvote++;
+    }
+
+    // UI langsung berubah tanpa menunggu backend.
+    detailLikes.textContent = formatJumlah(jumlahUpvote);
+    detailDislikes.textContent = formatJumlah(jumlahDownvote);
+    setActiveVote(voteBaru);
+
     setVoteLoading(true);
 
     try {
-        // Backend menerima form-urlencoded, bukan JSON.
         const body = new URLSearchParams({
             id_pengaduan: idPengaduan,
             tipe_vote: tipeVote
@@ -902,7 +932,6 @@ const kirimVote = async (tipeVote) => {
             }
         );
 
-        // Sesi pengguna sudah tidak valid.
         if (response.status === 401) {
             clearUserSession();
             window.location.replace("login.html");
@@ -922,49 +951,41 @@ const kirimVote = async (tipeVote) => {
             );
         }
 
-        
-const vote = result.data.vote;
+        const vote = result.data.vote;
 
+        if (
+            !Number.isSafeInteger(vote.upvote) ||
+            !Number.isSafeInteger(vote.downvote) ||
+            vote.upvote < 0 ||
+            vote.downvote < 0 ||
+            !(
+                vote.pilihan_user === null ||
+                ["upvote", "downvote"].includes(vote.pilihan_user)
+            )
+        ) {
+            throw new Error("Data voting dari backend tidak valid.");
+        }
 
-const jumlahUpvote = vote.upvote;
-const jumlahDownvote = vote.downvote;
-
-if (
-    !Number.isSafeInteger(jumlahUpvote) ||
-    !Number.isSafeInteger(jumlahDownvote) ||
-    jumlahUpvote < 0 ||
-    jumlahDownvote < 0 ||
-    !Object.prototype.hasOwnProperty.call(vote, "pilihan_user") ||
-    !(
-        vote.pilihan_user === null ||
-        ["upvote", "downvote"].includes(vote.pilihan_user)
-    )
-) {
-    throw new Error("Data voting dari backend tidak valid.");
-}
-
-
-// Perbarui tampilan hanya setelah respons tervalidasi.
-detailLikes.textContent = formatJumlah(jumlahUpvote);
-detailDislikes.textContent = formatJumlah(jumlahDownvote);
-
-// Tandai pilihan suara berdasarkan respons backend.
-setActiveVote(vote.pilihan_user);
-
+        // Sinkronkan dengan data resmi dari backend.
+        detailLikes.textContent = formatJumlah(vote.upvote);
+        detailDislikes.textContent = formatJumlah(vote.downvote);
+        setActiveVote(vote.pilihan_user);
 
     } catch (error) {
         console.error("Gagal mengirim vote:", error);
 
-        // Tidak menambah atau mengurangi angka secara manual.
+        // Kembalikan tampilan jika request gagal.
+        detailLikes.textContent = formatJumlah(upvoteSebelumnya);
+        detailDislikes.textContent = formatJumlah(downvoteSebelumnya);
+        setActiveVote(voteSebelumnya);
+
         showVoteError();
 
-        // Jika server mungkin sudah menyimpan vote tetapi
-        // respons gagal, sinkronkan kembali melalui Detail API.
-        // Jangan lakukan pengiriman vote ulang otomatis.
     } finally {
         setVoteLoading(false);
     }
 };
+
 
 // Event klik tombol Upvote dan Downvote.
 voteButtons.forEach((button) => {

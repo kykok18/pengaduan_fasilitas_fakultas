@@ -149,6 +149,16 @@ logoutOverlay.addEventListener('click', (event) => {
                 localStorage.removeItem('user');
             }
 
+            if (typeof clearUserSession === 'function') {
+    clearUserSession();
+} else {
+    localStorage.removeItem('user');
+}
+
+// Reset pagination setelah logout.
+// Agar akun berikutnya selalu mulai dari halaman 1.
+sessionStorage.removeItem('dashboardReturnPage');
+
             // Menyembunyikan modal sebelumnya.
             showLogoutState('');
 
