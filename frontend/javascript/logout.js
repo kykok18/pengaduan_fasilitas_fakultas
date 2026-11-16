@@ -75,6 +75,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+/* Menutup modal dengan klik area gelap di luar modal */
+logoutOverlay.addEventListener('click', (event) => {
+
+    // Hanya berlaku jika area overlay yang diklik.
+    if (event.target !== logoutOverlay) return;
+
+    // Jangan tutup saat loading atau logout berhasil.
+    if (loggingOut ||
+        logoutOverlay.classList.contains('logout-success-active')) {
+        return;
+    }
+
+    // Hanya modal Konfirmasi dan Logout Gagal.
+    const isConfirmVisible =
+        logoutConfirmState?.style.display === 'flex';
+
+    const isErrorVisible =
+        logoutErrorState?.style.display === 'flex';
+
+    if (isConfirmVisible || isErrorVisible) {
+        closeLogoutModal();
+    }
+});
+
+
     // =========================================================
     // 5. PROSES LOGOUT KE BACKEND
     // =========================================================
