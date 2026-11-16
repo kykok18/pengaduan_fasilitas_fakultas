@@ -4,14 +4,14 @@
 
 ### Dokumentasi Sprint 3
 
-**Versi:** 1.5.0  
+**Versi:** 1.5.3  
 **Backend:** PHP Native  
 **Database:** MySQL  
 **Autentikasi:** PHP Session  
 **Format response:** JSON  
 **Format upload:** multipart/form-data
 
-**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), dan komentar. Endpoint riwayat pengaduan belum tersedia dan tidak dinyatakan aktif.
+**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), komentar, dan riwayat pengaduan (daftar dan detail).
 
 ---
 
@@ -29,23 +29,21 @@ Base URL production harus disesuaikan dengan konfigurasi deployment aktual.
 
 ## 1.2 Daftar Endpoint
 
-| No  | Method | Endpoint                | Fungsi                                                 | Auth                    | Bab |
-| --- | ------ | ----------------------- | ------------------------------------------------------ | ----------------------- | --- |
-| 1   | POST   | `/registrasi.php`       | Registrasi pengguna                                    | Tidak                   | 3   |
-| 2   | POST   | `/login.php`            | Login pengguna                                         | Tidak                   | 4   |
-| 3   | POST   | `/logout.php`           | Logout pengguna                                        | Ya                      | 5   |
-| 4   | GET    | `/dashboard.php`        | Mengambil data dashboard                               | Ya                      | 6   |
-| 5   | GET    | `/pengaduan.php`        | Mengambil daftar fasilitas                             | Ya                      | 8   |
-| 6   | POST   | `/pengaduan.php`        | Membuat pengaduan                                      | Ya                      | 9   |
-| 7   | GET    | `/detail_pengaduan.php` | Mengambil detail pengaduan berdasarkan ID              | Ya                      | 7   |
-| 8   | POST   | `/vote.php`             | Menambahkan, mengubah, atau membatalkan vote pengaduan | Ya                      | 11  |
-| 9   | GET    | `/komentar.php`         | Mengambil daftar komentar berdasarkan pengaduan        | Ya                      | 12  |
-| 10  | POST   | `/komentar.php`         | Menyimpan komentar baru pada pengaduan                 | Ya                      | 12  |
-| 11  | GET    | `/riwayat.php`          | Riwayat pengaduan pengguna                             | Belum tersedia di arsip | 13  |
+| No  | Method | Endpoint                | Fungsi                                                 | Auth  | Bab |
+| --- | ------ | ----------------------- | ------------------------------------------------------ | ----- | --- |
+| 1   | POST   | `/registrasi.php`       | Registrasi pengguna                                    | Tidak | 3   |
+| 2   | POST   | `/login.php`            | Login pengguna                                         | Tidak | 4   |
+| 3   | POST   | `/logout.php`           | Logout pengguna                                        | Ya    | 5   |
+| 4   | GET    | `/dashboard.php`        | Mengambil data dashboard                               | Ya    | 6   |
+| 5   | GET    | `/pengaduan.php`        | Mengambil daftar fasilitas                             | Ya    | 8   |
+| 6   | POST   | `/pengaduan.php`        | Membuat pengaduan                                      | Ya    | 9   |
+| 7   | GET    | `/detail_pengaduan.php` | Mengambil detail pengaduan berdasarkan ID              | Ya    | 7   |
+| 8   | POST   | `/vote.php`             | Menambahkan, mengubah, atau membatalkan vote pengaduan | Ya    | 11  |
+| 9   | GET    | `/komentar.php`         | Mengambil daftar komentar berdasarkan pengaduan        | Ya    | 12  |
+| 10  | POST   | `/komentar.php`         | Menyimpan komentar baru pada pengaduan                 | Ya    | 12  |
+| 11  | GET    | `/riwayat.php`          | Riwayat pengaduan milik pengguna (daftar dan detail)   | Ya    | 13  |
 
-Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut. Endpoint no. 11 belum tersedia dan tidak dinyatakan sebagai endpoint aktif.
-
----
+Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut. ---
 
 # 2. Standar Request dan Response
 
@@ -358,7 +356,7 @@ Logout mengakhiri session pengguna dan menghapus cookie session.
 | Endpoint       | `/dashboard.php` |
 | Authentication | Wajib            |
 
-Dashboard menampilkan pengaduan terbaru dari seluruh pengguna.
+Dashboard menampilkan pengaduan terbaru dari seluruh pengguna, **kecuali pengaduan berstatus `ditolak`**. Pengaduan yang ditolak admin hanya ditampilkan pada riwayat pembuatnya, bukan pada dashboard.
 
 Dashboard bukan halaman riwayat pribadi.
 
@@ -378,14 +376,17 @@ Ketentuan pagination:
 - Limit maksimum adalah 100.
 - Search dilakukan pada judul atau lokasi.
 
-Status valid:
+Status valid untuk filter:
 
 ```text
 diajukan
-diproses
+dalam perbaikan
 selesai
-ditolak
 ```
+
+- Status `dalam perbaikan` menggantikan status lama `diproses`. Nilai `diproses` bukan filter yang valid dan dijawab HTTP 400 `Status pengaduan tidak valid`.
+- `ditolak` bukan filter yang valid pada dashboard. Request `?status=ditolak` dijawab HTTP 400 `Status pengaduan tidak valid`.
+- Jumlah data pada `pagination.total_data` tidak menghitung pengaduan berstatus `ditolak`.
 
 ## 6.3 Contoh Request
 
@@ -1371,24 +1372,200 @@ Ketiga sumber membaca tabel `komentar` yang sama, sehingga jumlah dan isinya kon
 
 # 13. API Riwayat Pengaduan
 
-## 13.1 Status Endpoint
+Endpoint riwayat menampilkan pengaduan yang **dibuat oleh pengguna yang sedang login**, beserta statistik jumlah pengaduan per status. Endpoint yang sama juga menampilkan detail satu pengaduan milik pengguna tersebut (detail riwayat).
 
-| Atribut  | Nilai                      |
-| -------- | -------------------------- |
-| Method   | GET                        |
-| Endpoint | `/riwayat.php`             |
-| Fungsi   | Riwayat pengaduan pengguna |
-| Status   | Belum tersedia di arsip    |
+## 13.1 Informasi Endpoint
 
-Endpoint ini belum dinyatakan sebagai endpoint aktif.
+| Item            | Nilai                                             |
+| --------------- | ------------------------------------------------- |
+| Endpoint        | `/riwayat.php`                                    |
+| Method          | `GET`                                             |
+| Authentication  | Wajib login (PHP Session)                         |
+| Daftar riwayat  | `GET /riwayat.php` tanpa parameter `id_pengaduan` |
+| Detail riwayat  | `GET /riwayat.php?id_pengaduan=<ID>`              |
+| Format response | JSON                                              |
 
-## 13.2 Kebutuhan Fungsional
+Method selain `GET` ditolak dengan HTTP 405 dan header `Allow: GET`. Endpoint untuk membuat, mengubah, atau menghapus pengaduan tidak termasuk dalam endpoint ini.
 
-Riwayat pengaduan seharusnya menampilkan pengaduan milik pengguna yang sedang login.
+## 13.2 Perbedaan dengan Dashboard dan Detail Pengaduan
 
-Berbeda dengan Dashboard, Riwayat tidak boleh menampilkan pengaduan milik pengguna lain.
+| Aspek                         | Dashboard         | Detail Pengaduan                  | Riwayat dan Detail Riwayat             |
+| ----------------------------- | ----------------- | --------------------------------- | -------------------------------------- |
+| Pengaduan siapa               | Seluruh pengguna  | Seluruh pengguna                  | **Hanya milik pengguna yang login**    |
+| Pengaduan berstatus `ditolak` | Tidak ditampilkan | Dapat dibuka (lihat catatan 13.9) | **Ditampilkan** untuk pembuatnya       |
+| Statistik per status          | Tidak ada         | Tidak ada                         | Ada                                    |
+| Pengaduan pengguna lain       | Ditampilkan       | Ditampilkan                       | Tidak ditampilkan (detail dijawab 404) |
 
-Endpoint ini perlu didokumentasikan setelah route dan controller tersedia.
+## 13.3 Authentication
+
+- Memerlukan session PHP yang valid. Cookie `PHPSESSID` dikirim otomatis oleh browser (`credentials: "same-origin"`).
+- Tanpa session, backend membalas HTTP 401 `Silakan login terlebih dahulu` dan tidak mengembalikan data riwayat.
+- Identitas pengguna diambil dari session. Client tidak mengirim `id_user`, dan parameter `id_user` yang tetap dikirim client diabaikan.
+
+## 13.4 Request
+
+### Daftar riwayat
+
+```http
+GET /riwayat.php?page=1&limit=5
+Cookie: PHPSESSID=<session_id>
+```
+
+| Parameter | Tipe    | Default | Keterangan                                                                                   |
+| --------- | ------- | ------- | -------------------------------------------------------------------------------------------- |
+| `page`    | integer | 1       | Nomor halaman. Nilai kurang dari 1 atau tidak valid memakai default.                         |
+| `limit`   | integer | 5       | Jumlah item per halaman, maksimum 100. Nilai kurang dari 1 atau tidak valid memakai default. |
+| `search`  | string  | kosong  | Pencarian pada judul atau lokasi.                                                            |
+| `status`  | string  | kosong  | Filter status. Nilai valid: `diajukan`, `dalam perbaikan`, `selesai`, `ditolak`.             |
+
+Status `dalam perbaikan` menggantikan status lama `diproses`. Nilai `diproses` dan nilai status lain yang tidak dikenal dijawab HTTP 400.
+
+### Detail riwayat
+
+```http
+GET /riwayat.php?id_pengaduan=52
+Cookie: PHPSESSID=<session_id>
+```
+
+| Parameter      | Tipe    | Wajib | Keterangan               |
+| -------------- | ------- | ----- | ------------------------ |
+| `id_pengaduan` | integer | Ya    | Bilangan bulat minimal 1 |
+
+Jika `id_pengaduan` dikirim, parameter `page`, `limit`, `search`, dan `status` diabaikan.
+
+## 13.5 Aturan Bisnis
+
+- Semua data dibatasi pada pengaduan dengan pembuat sama dengan pengguna yang login. Pembatasan dilakukan pada query database.
+- Pengaduan berstatus `ditolak` tetap ditampilkan pada riwayat pembuatnya.
+- Urutan daftar: `created_at` terbaru lebih dulu, lalu `id_pengaduan` terbesar.
+- `statistik` dihitung dari seluruh pengaduan milik pengguna dan **tidak dipengaruhi** `search`, `status`, `page`, maupun `limit`.
+- `statistik.dalam_perbaikan` menghitung pengaduan berstatus `dalam perbaikan`.
+- Status pada response berasal dari data terbaru di database pada saat request.
+- Jumlah vote dan komentar dihitung dari tabel `vote` dan `komentar`.
+- `id_user` tidak dikembalikan pada item daftar maupun pada detail.
+- Endpoint hanya membaca data dan tidak mengubah data pengaduan.
+
+## 13.6 Response Daftar Riwayat (HTTP 200)
+
+```json
+{
+  "status": "success",
+  "message": "Riwayat pengaduan berhasil diambil",
+  "data": {
+    "user": {
+      "id_user": 52,
+      "nama": "Postman Tester",
+      "email": "uji.1793959796562988@example.com",
+      "role": "user"
+    },
+    "statistik": {
+      "total_pengaduan": 5,
+      "diajukan": 1,
+      "dalam_perbaikan": 2,
+      "selesai": 1,
+      "ditolak": 1
+    },
+    "pengaduan": [
+      {
+        "id_pengaduan": 52,
+        "judul": "Lampu Mati",
+        "lokasi": "Ruang 405, Lantai 4",
+        "status": "dalam perbaikan",
+        "foto": "https://res.cloudinary.com/.../foto.jpg",
+        "created_at": "2026-09-01 10:00:00",
+        "nama_fasilitas": "Lampu",
+        "upvote_count": 4,
+        "downvote_count": 0,
+        "comment_count": 2,
+        "penanganan_terakhir": {
+          "status": "dalam perbaikan",
+          "keterangan": "Teknisi dijadwalkan memeriksa instalasi lampu.",
+          "created_at": "2026-09-02 09:30:00"
+        }
+      }
+    ],
+    "pagination": {
+      "current_page": 1,
+      "per_page": 5,
+      "total_data": 5,
+      "total_pages": 1
+    }
+  }
+}
+```
+
+| Bagian                                                        | Keterangan                                                                                                 |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `user`                                                        | Profil pengguna yang login (`id_user`, `nama`, `email`, `role`), sama seperti Dashboard                    |
+| `statistik`                                                   | `total_pengaduan`, `diajukan`, `dalam_perbaikan`, `selesai`, `ditolak`. Semua bertipe integer              |
+| `pengaduan[]`                                                 | Daftar item riwayat pada halaman yang diminta                                                              |
+| `pengaduan[].id_pengaduan`                                    | integer                                                                                                    |
+| `pengaduan[].judul`, `lokasi`                                 | string                                                                                                     |
+| `pengaduan[].status`                                          | Nilai apa adanya dari database (`diajukan`, `dalam perbaikan`, `selesai`, `ditolak`)                       |
+| `pengaduan[].foto`                                            | URL https (data baru) atau path relatif `uploads/...` (data lama)                                          |
+| `pengaduan[].created_at`                                      | `YYYY-MM-DD HH:MM:SS`                                                                                      |
+| `pengaduan[].nama_fasilitas`                                  | string                                                                                                     |
+| `pengaduan[].upvote_count`, `downvote_count`, `comment_count` | integer                                                                                                    |
+| `pengaduan[].penanganan_terakhir`                             | Penanganan admin paling baru (`status`, `keterangan`, `created_at`), atau `null` jika belum ditangani      |
+| `pagination`                                                  | `current_page`, `per_page`, `total_data`, `total_pages`. Dihitung setelah `search` dan `status` diterapkan |
+
+**Riwayat kosong:** pengguna yang belum pernah membuat pengaduan, atau hasil filter dan pencarian yang tidak menemukan data, mendapat HTTP 200 dengan `pengaduan` bernilai `[]`, `total_data` 0, dan `total_pages` 0. `statistik` pengguna tanpa pengaduan bernilai 0 semua.
+
+**Halaman melebihi total:** HTTP 200 dengan `pengaduan` bernilai `[]`. `current_page` sama dengan nilai yang diminta.
+
+## 13.7 Response Detail Riwayat (HTTP 200)
+
+```json
+{
+  "status": "success",
+  "message": "Detail riwayat pengaduan berhasil diambil",
+  "data": {
+    "pengaduan": { "...": "sama dengan Detail Pengaduan (subbab 7.4)" },
+    "penanganan": ["..."],
+    "komentar": ["..."],
+    "vote": { "upvote": 4, "downvote": 0, "pilihan_user": "upvote" }
+  }
+}
+```
+
+Struktur `data` **sama persis** dengan Detail Pengaduan (subbab 7.4): `pengaduan`, `penanganan` (riwayat penanganan admin, terbaru di atas, lengkap dengan `foto` dan `keterangan`), `komentar`, dan `vote` (termasuk `pilihan_user`). Perbedaannya hanya pada pembatasan: detail riwayat hanya dapat dibuka untuk pengaduan milik pengguna yang login.
+
+## 13.8 Response Error
+
+```json
+{
+  "status": "error",
+  "message": "Pengaduan tidak ditemukan"
+}
+```
+
+| HTTP | Pesan                            | Kondisi                                                                 |
+| ---- | -------------------------------- | ----------------------------------------------------------------------- |
+| 400  | `Status pengaduan tidak valid`   | Nilai `status` bukan salah satu nilai valid (daftar)                    |
+| 400  | `ID pengaduan tidak valid`       | `id_pengaduan` kosong, bukan bilangan bulat, nol, atau negatif (detail) |
+| 401  | `Silakan login terlebih dahulu`  | Tidak ada session yang valid                                            |
+| 404  | `Pengguna tidak ditemukan`       | Data pengguna dari session tidak ditemukan (daftar)                     |
+| 404  | `Pengaduan tidak ditemukan`      | Pengaduan tidak ada, **atau dibuat oleh pengguna lain** (detail)        |
+| 405  | `Method tidak diizinkan`         | Method selain GET. Header `Allow: GET`                                  |
+| 500  | `Gagal memulai session`          | Session gagal dimulai                                                   |
+| 500  | `Gagal mengambil data pengguna`  | Query profil pengguna gagal (daftar)                                    |
+| 500  | `Gagal mengambil data riwayat`   | Query statistik atau daftar gagal (daftar)                              |
+| 500  | `Gagal mengambil detail riwayat` | Pemeriksaan pemilik atau pengambilan detail gagal (detail)              |
+
+Semua response error tidak memiliki field `data`. Backend tidak pernah mengembalikan response sukses dengan data tidak lengkap saat query gagal.
+
+Pengaduan milik pengguna lain dijawab 404, bukan 403, supaya ID pengaduan yang ada tidak dapat ditebak.
+
+## 13.9 Catatan Keputusan dan Konfirmasi
+
+| No  | Item                              | Keterangan                                                                                                                                                                                                                |
+| --- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Detail riwayat digabung           | Daftar dan detail berada pada satu endpoint `/riwayat.php`, dibedakan oleh parameter `id_pengaduan`. Tidak ada `detail_riwayat.php`                                                                                       |
+| 2   | Status `dalam perbaikan`          | **Ditetapkan.** `dalam perbaikan` menggantikan `diproses` sebagai nilai resmi pada Dashboard dan Riwayat. Enum `pengaduan.status` dan `penanganan.status` harus berisi nilai ini. FE menyesuaikan filter dan label status |
+| 3   | Pengaduan ditolak                 | Tampil di riwayat pembuatnya. Dashboard sudah menyembunyikannya. Detail Pengaduan, Vote, dan Komentar belum menyembunyikan pengaduan ditolak milik pengguna lain (perlu card terpisah)                                    |
+| 4   | `id_user` pada item               | Tidak dikembalikan, berbeda dari item Dashboard. FE tidak memerlukannya                                                                                                                                                   |
+| 5   | Pencarian dan filter pada riwayat | Disediakan mengikuti Dashboard dan mockup halaman riwayat                                                                                                                                                                 |
+| 6   | Halaman FE                        | `riwayat-pengaduan.html` belum tersedia; tautan pada menu FE saat ini menuju halaman yang belum ada                                                                                                                       |
 
 ---
 
@@ -1406,7 +1583,7 @@ Ketentuan keamanan:
 8. File upload dibatasi berdasarkan ukuran dan format.
 9. File gambar diperiksa sebelum disimpan.
 10. Error response tidak boleh membocorkan informasi sensitif.
-11. Riwayat pengaduan harus dibatasi berdasarkan user session.
+11. Riwayat pengaduan dan detail riwayat dibatasi berdasarkan `id_user` pada session. Parameter `id_user` dari client diabaikan, dan pengaduan milik pengguna lain dijawab 404.
 12. Query database menggunakan prepared statements.
 13. Identitas pengguna pada endpoint Vote diambil dari session dan bukan dari request client.
 14. Endpoint Vote hanya menerima `upvote` dan `downvote` sebagai jenis vote.
@@ -1452,16 +1629,20 @@ Ketentuan keamanan:
 
 ## 15.4 Dashboard
 
-| No  | Skenario                       | Hasil yang Diharapkan           |
-| --- | ------------------------------ | ------------------------------- |
-| 1   | Mengambil dashboard default    | Data berhasil ditampilkan       |
-| 2   | Mengambil halaman kedua        | Data halaman kedua ditampilkan  |
-| 3   | Mengambil halaman di luar data | Response mengikuti implementasi |
-| 4   | Search berdasarkan judul       | Data sesuai pencarian           |
-| 5   | Search berdasarkan lokasi      | Data sesuai pencarian           |
-| 6   | Filter status valid            | Data sesuai status              |
-| 7   | Filter status tidak valid      | HTTP 400                        |
-| 8   | Request tanpa login            | HTTP 401                        |
+| No  | Skenario                            | Hasil yang Diharapkan           |
+| --- | ----------------------------------- | ------------------------------- |
+| 1   | Mengambil dashboard default         | Data berhasil ditampilkan       |
+| 2   | Mengambil halaman kedua             | Data halaman kedua ditampilkan  |
+| 3   | Mengambil halaman di luar data      | Response mengikuti implementasi |
+| 4   | Search berdasarkan judul            | Data sesuai pencarian           |
+| 5   | Search berdasarkan lokasi           | Data sesuai pencarian           |
+| 6   | Filter status valid                 | Data sesuai status              |
+| 7   | Filter status tidak valid           | HTTP 400                        |
+| 8   | Request tanpa login                 | HTTP 401                        |
+| 9   | Pengaduan berstatus ditolak         | Tidak tampil pada dashboard     |
+| 10  | Filter status ditolak               | HTTP 400                        |
+| 11  | Filter status dalam perbaikan       | Hanya pengaduan dalam perbaikan |
+| 12  | Filter status diproses (nilai lama) | HTTP 400                        |
 
 ## 15.5 Detail Pengaduan
 
@@ -1746,6 +1927,30 @@ Pengujian dilakukan dengan Postman pada folder **08 Komentar**, setelah folder 0
 
 Skenario kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
 
+## 15.10 Riwayat
+
+Pengujian dilakukan dengan Postman pada folder **09 Riwayat**, setelah folder 04 Pengaduan pada Collection Runner penuh.
+
+| No  | Skenario                                                  | Hasil yang diharapkan                                                                          |
+| --- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 1   | Daftar riwayat pengguna yang login                        | HTTP 200, memuat pengaduan milik sendiri, tidak memuat pengaduan pengguna lain, urutan terbaru |
+| 2   | Statistik                                                 | Jumlah per status sama dengan isi daftar, total sama dengan `pagination.total_data`            |
+| 3   | Detail riwayat pengaduan milik sendiri                    | HTTP 200, struktur sama dengan Detail Pengaduan, tanpa `id_user`                               |
+| 4   | Detail riwayat dibandingkan dengan Detail Pengaduan       | Data identik                                                                                   |
+| 5   | Detail riwayat pengaduan milik pengguna lain              | HTTP 404 `Pengaduan tidak ditemukan`                                                           |
+| 6   | Detail Pengaduan untuk pengaduan pengguna lain            | HTTP 200 (pembeda dengan riwayat)                                                              |
+| 7   | Parameter `id_user` palsu                                 | Diabaikan, hasil sama dengan tanpa parameter                                                   |
+| 8   | Pagination `limit=1` dan halaman melebihi total           | Satu item, `total_pages` sesuai; halaman berlebih menghasilkan `[]`                            |
+| 9   | Filter status `diajukan`, `dalam perbaikan`, `ditolak`    | Item sesuai status, jumlah sama dengan statistik; pengaduan ditolak tampil                     |
+| 10  | Filter status tidak valid, termasuk nilai lama `diproses` | HTTP 400 `Status pengaduan tidak valid`                                                        |
+| 11  | Pencarian judul atau lokasi                               | Semua item cocok dengan kata kunci                                                             |
+| 12  | Detail ID tidak valid dan tidak ditemukan                 | HTTP 400 dan HTTP 404                                                                          |
+| 13  | Method POST                                               | HTTP 405, header `Allow: GET`                                                                  |
+| 14  | Akun baru tanpa pengaduan                                 | HTTP 200, `pengaduan` = `[]`, statistik 0, `total_pages` 0                                     |
+| 15  | Daftar dan detail tanpa login                             | HTTP 401, tanpa data                                                                           |
+
+Kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode. Status pengaduan yang berubah diverifikasi dengan membandingkan status pada daftar riwayat dan Detail Pengaduan, yang keduanya membaca database saat request.
+
 ---
 
 # 16. Catatan Audit Sprint 3
@@ -1821,4 +2026,23 @@ Status `[x]` berarti terbukti dari kode backend atau skema database. Status `[ ]
 - [ ] Dokumentasi kontrak API diserahkan kepada frontend.
 - [ ] Frontend dihubungkan ke endpoint komentar (form komentar pada `detail-pengaduan.js` masih dinonaktifkan).
 
-**Penting:** Kontrak API harus mencerminkan kode yang benar-benar berjalan. Jika dokumentasi menyatakan suatu response, tetapi backend mengirim response berbeda, maka kontrak tersebut belum sinkron dan perlu diperbaiki.
+## 16.4 Checklist Audit Fitur Riwayat
+
+Status `[x]` berarti terbukti dari kode backend atau pengujian logika query. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
+
+- [x] Endpoint pengambilan riwayat pengaduan tersedia (`GET /riwayat.php`).
+- [x] Pemeriksaan session PHP diterapkan (`AuthMiddleware`).
+- [x] Identitas pengguna diambil dari session, parameter `id_user` dari client diabaikan.
+- [x] Hasil dibatasi pada pengaduan milik pengguna yang login (query `WHERE id_user = ?`).
+- [x] Data utama, status, statistik, dan penanganan terakhir dikembalikan sesuai kontrak.
+- [x] Status berasal dari database pada saat request.
+- [x] Riwayat kosong ditangani (HTTP 200, daftar kosong, statistik nol).
+- [x] Session tidak valid (401) dan kegagalan server (500) ditangani.
+- [x] Detail riwayat hanya untuk pengaduan milik sendiri; milik pengguna lain dijawab 404.
+- [x] Endpoint tidak mengubah data pengaduan.
+- [ ] Folder 09 Riwayat dijalankan penuh (25 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
+- [ ] Contoh response tersimpan di Postman untuk setiap request riwayat.
+- [x] Nilai status resmi ditetapkan: `dalam perbaikan` menggantikan `diproses`.
+- [ ] FE menyesuaikan filter dan label status (`dashboard.html`, `dashboard.js`) ke nilai `dalam perbaikan`.
+- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
+- [ ] Halaman FE riwayat dibuat dan dihubungkan ke endpoint.

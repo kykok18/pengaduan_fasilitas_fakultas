@@ -16,6 +16,7 @@ class Dashboard
         /**
      * Mengambil pengaduan terbaru dari seluruh pengguna.
      * Mendukung pagination, pencarian, dan filter status.
+     * Pengaduan berstatus ditolak tidak ikut ditampilkan.
      */
     public function getPengaduanTerbaru($limit = 5, $page = 1, $search = '', $status = '')
     {
@@ -34,7 +35,9 @@ class Dashboard
         $search = trim($search);
         $status = trim($status);
 
-        $where = [];
+        // Pengaduan yang ditolak admin tidak ditampilkan di dashboard.
+        // Pengaduan tersebut hanya tampil di riwayat pembuatnya.
+        $where = ["p.status <> 'ditolak'"];
         $params = [];
         $types = '';
 
@@ -49,16 +52,21 @@ class Dashboard
         }
 
         // Filter berdasarkan status pengaduan.
-        $statusValid = ['diajukan', 'dalam perbaikan', 'selesai', 'ditolak'];
+        // 'diproses' dan 'dalam perbaikan' dianggap status yang sama.
+        $statusValid = ['diajukan', 'diproses', 'dalam perbaikan', 'selesai'];
 
         if ($status !== '') {
             if (!in_array($status, $statusValid, true)) {
                 return false;
             }
 
-            $where[] = 'p.status = ?';
-            $params[] = $status;
-            $types .= 's';
+            if ($status === 'diproses' || $status === 'dalam perbaikan') {
+                $where[] = "p.status IN ('diproses', 'dalam perbaikan')";
+            } else {
+                $where[] = 'p.status = ?';
+                $params[] = $status;
+                $types .= 's';
+            }
         }
 
         $whereSQL = count($where) > 0

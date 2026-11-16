@@ -16,6 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 // Pastikan pengguna memiliki session yang valid.
 AuthMiddleware::handle();
 
-// Jalankan controller riwayat.
 $controller = new RiwayatController($conn);
-$controller->index();
+
+// Jika parameter id_pengaduan ada (termasuk yang tidak valid seperti "abc"),
+// tampilkan detail riwayat. Jika tidak ada, tampilkan daftar riwayat.
+if (array_key_exists('id_pengaduan', $_GET)) {
+    $controller->detail();
+} else {
+    $controller->index();
+}
