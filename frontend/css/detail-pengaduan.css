@@ -670,13 +670,13 @@ textarea {
 
 
 .detail-status[data-status="dalam perbaikan"] {
-  background: #DBECFF;
-  color: #13519B;
+  background: #17A2B8;
+  color: #FFFFFF;
 }
 
 .detail-status[data-status="selesai"] {
-  background: #DCF5E6;
-  color: #116D3F;
+  background: #2E9368;
+  color: #FFFFFF;
 }
 
 .detail-status[data-status="ditolak"] {
