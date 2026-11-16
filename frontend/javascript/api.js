@@ -183,6 +183,21 @@ async function apiGetDashboard(params = {}) {
 }
 
 
+/* ============================================================
+   MENGAMBIL RIWAYAT PENGADUAN
+   ============================================================ */
+
+/**
+ * Mengambil seluruh riwayat pengaduan milik
+ * pengguna yang sedang login.
+ *
+ * Identitas pengguna ditentukan oleh PHP Session
+ * pada backend, bukan localStorage.
+ */
+async function apiGetRiwayat() {
+    return apiRequest("riwayat.php", null, "GET");
+}
+
 // ============================================================
 // PENYIMPANAN DATA PENGGUNA DI BROWSER
 // ============================================================
