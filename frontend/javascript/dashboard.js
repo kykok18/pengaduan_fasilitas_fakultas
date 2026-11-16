@@ -60,9 +60,23 @@
         // LIMIT menentukan maksimal 5 pengaduan per halaman.
         const LIMIT = 5;
 
-        let currentPage = 1;
-        let currentFilter = 'semua';
-        let currentSearch = '';
+        
+const savedPage = reportsContainer
+    ? Number(sessionStorage.getItem('dashboardReturnPage'))
+    : 0;
+
+let currentPage =
+    Number.isSafeInteger(savedPage) && savedPage > 0
+        ? savedPage
+        : 1;
+
+let currentFilter = 'semua';
+let currentSearch = '';
+
+if (reportsContainer) {
+    sessionStorage.removeItem('dashboardReturnPage');
+}
+
 
         let totalPages = 1;
         let allReports = [];
@@ -407,10 +421,19 @@ const foto = item.foto
                     card.setAttribute('tabindex', '0');
 
                     // Fungsi untuk membuka halaman detail.
-                    const bukaDetail = () => {
-                        window.location.href =
-                            `detail-pengaduan.html?id_pengaduan=${encodeURIComponent(idPengaduan)}`;
-                    };
+                    
+const bukaDetail = () => {
+    // Simpan halaman Dashboard yang sedang aktif.
+    sessionStorage.setItem(
+        'dashboardReturnPage',
+        String(currentPage)
+    );
+
+    // Buka Detail Pengaduan.
+    window.location.href =
+        `detail-pengaduan.html?id_pengaduan=${encodeURIComponent(idPengaduan)}`;
+};
+
 
                     // Ketika kartu diklik.
                     card.addEventListener('click', bukaDetail);

@@ -292,6 +292,7 @@ let isSendingComment = false;
   // Nama parameter yang digunakan backend.
   const DETAIL_ID_PARAM = "id_pengaduan";
 
+
   // Mengambil ID pengaduan dari URL.
   // Contoh: detail-pengaduan.html?id_pengaduan=12
   const params = new URLSearchParams(window.location.search);
