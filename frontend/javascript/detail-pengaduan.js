@@ -38,18 +38,12 @@ const voteButtons = document.querySelectorAll(
     ".detail-vote-btn"
 );
 
-let isVoting = false;
 let activeVote = null;
-
-// Jumlah vote asli dari backend.
 let totalUpvote = 0;
 let totalDownvote = 0;
 
-// Antrean request voting.
-let voteQueue = Promise.resolve();
-
-// Pilihan terakhir yang diklik pengguna.
 let latestVote = null;
+let voteQueue = Promise.resolve();
 let voteVersion = 0;
 
 // Mengatur tombol selama proses voting.
@@ -684,16 +678,21 @@ detailStatus.dataset.status = status.toLowerCase();
 totalUpvote = Number(vote.upvote) || 0;
 totalDownvote = Number(vote.downvote) || 0;
 
+// Khusus preview localhost untuk pengujian tampilan 1.000 upvote.
+const paramsPreview = new URLSearchParams(window.location.search);
+const isDummyPreview =
+    ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+    paramsPreview.get("preview") === "1";
+
+if (isDummyPreview) {
+    totalUpvote = 1000;
+}
+
 latestVote = vote.pilihan_user ?? null;
 activeVote = latestVote;
 
 renderVoteUI();
 
-
-// Cek apakah halaman sedang memakai data dummy preview.
-const isDummyPreview =
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
-    new URLSearchParams(window.location.search).get("preview") === "1";
 
 // Tombol hanya aktif untuk detail asli dari backend.
 setVoteLoading(false);
@@ -885,7 +884,6 @@ if (isDummyPreview) {
 // INTEGRASI UPVOTE / DOWNVOTE
 // =========================================================
 
-
 const kirimVote = (tipeVote) => {
     if (!["upvote", "downvote"].includes(tipeVote)) return;
 
@@ -893,30 +891,38 @@ const kirimVote = (tipeVote) => {
         return;
     }
 
-    // Simpan pilihan sebelum klik terbaru.
     const pilihanSebelumnya = latestVote;
 
-    // Toggle: klik pilihan yang sama berarti membatalkan.
+    // Klik pilihan yang sama = membatalkan vote.
     const pilihanBaru =
-        latestVote === tipeVote ? null : tipeVote;
+        pilihanSebelumnya === tipeVote ? null : tipeVote;
 
     latestVote = pilihanBaru;
 
-    // Penanda agar hanya respons terbaru yang memperbarui UI.
     const versiSekarang = ++voteVersion;
 
-    // Hitung perubahan tampilan berdasarkan pilihan sebelumnya.
-    if (pilihanSebelumnya === "upvote") totalUpvote--;
-    if (pilihanSebelumnya === "downvote") totalDownvote--;
+    // Perbarui jumlah secara langsung.
+    if (pilihanSebelumnya === "upvote") {
+        totalUpvote = Math.max(0, totalUpvote - 1);
+    }
 
-    if (pilihanBaru === "upvote") totalUpvote++;
-    if (pilihanBaru === "downvote") totalDownvote++;
+    if (pilihanSebelumnya === "downvote") {
+        totalDownvote = Math.max(0, totalDownvote - 1);
+    }
+
+    if (pilihanBaru === "upvote") {
+        totalUpvote++;
+    }
+
+    if (pilihanBaru === "downvote") {
+        totalDownvote++;
+    }
 
     renderVoteUI();
 
-    // Masukkan request ke antrean.
-    voteQueue = voteQueue.then(async () => {
-        try {
+    // Kirim request secara berurutan.
+    voteQueue = voteQueue
+        .then(async () => {
             const body = new URLSearchParams({
                 id_pengaduan: idPengaduan,
                 tipe_vote: tipeVote
@@ -950,48 +956,42 @@ const kirimVote = (tipeVote) => {
                 !result.data?.vote
             ) {
                 throw new Error(
-                    result.message || "Gagal mengirim suara."
+                    result.message || "Gagal mengirim vote."
                 );
             }
 
             const vote = result.data.vote;
 
+            const upvote = Number(vote.upvote);
+            const downvote = Number(vote.downvote);
+
             if (
-                !Number.isSafeInteger(vote.upvote) ||
-                !Number.isSafeInteger(vote.downvote) ||
-                vote.upvote < 0 ||
-                vote.downvote < 0
+                !Number.isSafeInteger(upvote) ||
+                !Number.isSafeInteger(downvote) ||
+                upvote < 0 ||
+                downvote < 0
             ) {
-                throw new Error("Data voting dari backend tidak valid.");
+                throw new Error("Jumlah vote tidak valid.");
             }
 
-            // Simpan jumlah resmi dari backend.
-            totalUpvote = vote.upvote;
-            totalDownvote = vote.downvote;
+            totalUpvote = upvote;
+            totalDownvote = downvote;
 
-            // Jangan timpa pilihan jika pengguna sudah klik lagi.
+            // Jangan timpa tampilan jika sudah ada klik terbaru.
             if (versiSekarang === voteVersion) {
-                latestVote = vote.pilihan_user;
+                latestVote = vote.pilihan_user ?? null;
                 renderVoteUI();
             }
-
-        } catch (error) {
+        })
+        .catch((error) => {
             console.error("Gagal mengirim vote:", error);
 
-            // Jika request terakhir gagal, sinkronkan ulang
-            // data dari backend sebelum menentukan tampilan akhir.
+            // Sinkronisasi ulang jika request gagal.
             if (versiSekarang === voteVersion) {
-                try {
-                    await loadDetail();
-                } catch (syncError) {
-                    console.error("Gagal sinkronisasi vote:", syncError);
-                }
-
                 showVoteError();
+                loadDetail();
             }
-        }
-    });
-
+        });
 };
 
 // ==========================================
