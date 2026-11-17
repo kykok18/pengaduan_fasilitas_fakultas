@@ -1,11 +1,21 @@
+    // =========================================================
+    // 1. SINKRONISASI LOGOUT ANTAR TAB
+    // =========================================================
 
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'logout-event' && event.newValue) {
+            localStorage.removeItem('user');
+            window.location.replace('login.html');
+        }
+    });
+
+    
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================
-    // 1. ELEMEN LOGOUT
+    // 2. ELEMEN LOGOUT
     // =========================================================
 
-    // Mengambil tombol Logout dan elemen modal dari HTML.
     const logoutBtn = document.getElementById('logoutBtn');
     const logoutOverlay = document.getElementById('logoutModalOverlay');
 
@@ -18,20 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmLogout = document.getElementById('btnConfirmLogout');
     const retryLogout = document.getElementById('btnRetryLogout');
 
-    // Mencegah proses dijalankan pada halaman tanpa fitur Logout.
     if (!logoutBtn || !logoutOverlay) return;
 
-    // Menandai apakah request Logout masih berlangsung.
-    // Jika true, pengguna tidak dapat menjalankan logout berulang.
     let loggingOut = false;
 
-
     // =========================================================
-    // 2. MENGATUR TAMPILAN MODAL
+    // 3. MENGATUR TAMPILAN MODAL
     // =========================================================
 
-    // Mengatur modal berdasarkan kondisi:
-    // confirm = konfirmasi, loading = proses, error = gagal.
     function showLogoutState(state) {
         logoutConfirmState.style.display =
             state === 'confirm' ? 'flex' : 'none';
@@ -43,12 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
             state === 'error' ? 'flex' : 'none';
     }
 
-
     // =========================================================
-    // 3. MEMBUKA MODAL LOGOUT
+    // 4. MEMBUKA DAN MENUTUP MODAL
     // =========================================================
 
-    // Saat tombol Logout diklik, tampilkan modal konfirmasi.
     logoutBtn.addEventListener('click', (event) => {
         event.preventDefault();
 
@@ -58,15 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutOverlay.classList.add('active');
     });
 
-
-    // =========================================================
-    // 4. MENUTUP MODAL
-    // =========================================================
-
-    // Modal hanya bisa ditutup saat tidak ada request berlangsung.
     function closeLogoutModal() {
         if (loggingOut) return;
-
         logoutOverlay.classList.remove('active');
     }
 
@@ -74,156 +69,105 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelLogout.addEventListener('click', closeLogoutModal);
     }
 
+    logoutOverlay.addEventListener('click', (event) => {
+        if (event.target !== logoutOverlay) return;
 
-/* Menutup modal dengan klik area gelap di luar modal */
-logoutOverlay.addEventListener('click', (event) => {
+        if (
+            loggingOut ||
+            logoutOverlay.classList.contains('logout-success-active')
+        ) {
+            return;
+        }
 
-    // Hanya berlaku jika area overlay yang diklik.
-    if (event.target !== logoutOverlay) return;
+        const isConfirmVisible =
+            logoutConfirmState?.style.display === 'flex';
 
-    // Jangan tutup saat loading atau logout berhasil.
-    if (loggingOut ||
-        logoutOverlay.classList.contains('logout-success-active')) {
-        return;
-    }
+        const isErrorVisible =
+            logoutErrorState?.style.display === 'flex';
 
-    // Hanya modal Konfirmasi dan Logout Gagal.
-    const isConfirmVisible =
-        logoutConfirmState?.style.display === 'flex';
-
-    const isErrorVisible =
-        logoutErrorState?.style.display === 'flex';
-
-    if (isConfirmVisible || isErrorVisible) {
-        closeLogoutModal();
-    }
-});
-
+        if (isConfirmVisible || isErrorVisible) {
+            closeLogoutModal();
+        }
+    });
 
     // =========================================================
-    // 5. PROSES LOGOUT KE BACKEND
+    // 5. PROSES LOGOUT
     // =========================================================
 
     async function performLogout() {
-
-        // Mencegah request Logout dikirim berkali-kali.
         if (loggingOut) return;
 
         loggingOut = true;
-
-        // Menampilkan modal Loading selama proses Logout.
         showLogoutState('loading');
 
-        // Mencatat waktu mulai untuk mengatur durasi Loading.
         const loadingStartTime = Date.now();
 
         try {
-
-            // Memanggil apiLogout() dari api.js.
-            // Fungsi tersebut mengirim request POST ke logout.php.
-            // Backend bertugas mengakhiri PHP Session pengguna.
             const result = await apiLogout();
 
-            // Menghitung waktu yang sudah berlalu sejak Loading.
             const elapsedTime = Date.now() - loadingStartTime;
 
-            // Loading ditampilkan minimal 1,5 detik,
-            // meskipun respons backend diterima lebih cepat.
             if (elapsedTime < 1500) {
                 await new Promise(resolve => {
                     setTimeout(resolve, 1500 - elapsedTime);
                 });
             }
 
-            // Memeriksa apakah backend berhasil memproses Logout.
-            // Jika gagal, proses dialihkan ke catch.
             if (!result.ok) {
                 throw new Error(result.message || 'Logout gagal');
             }
 
-            // Menghapus data pengguna dari localStorage.
-            // Penghapusan ini berbeda dengan PHP Session di backend.
+            // Hapus data pengguna di browser
             if (typeof clearUserSession === 'function') {
                 clearUserSession();
             } else {
                 localStorage.removeItem('user');
             }
 
-            // Beri tahu tab lain bahwa pengguna sudah logout.
-            localStorage.setItem('logout-event', Date.now().toString());
+            // Kirim sinyal logout ke tab lain
+            localStorage.setItem(
+                'logout-event',
+                `${Date.now()}-${Math.random()}`
+            );
 
-            if (typeof clearUserSession === 'function') {
-    clearUserSession();
-} else {
-    localStorage.removeItem('user');
-}
+            sessionStorage.removeItem('dashboardReturnPage');
 
-// Reset pagination setelah logout.
-// Agar akun berikutnya selalu mulai dari halaman 1.
-sessionStorage.removeItem('dashboardReturnPage');
-
-            // Menyembunyikan modal sebelumnya.
             showLogoutState('');
 
-            // Mengaktifkan tampilan notifikasi Logout berhasil.
             logoutOverlay.classList.add('active');
             logoutOverlay.classList.add('logout-success-active');
 
-            logoutSuccessToast.style.display = 'flex';
+            if (logoutSuccessToast) {
+                logoutSuccessToast.style.display = 'flex';
+            }
 
-            // Setelah 2 detik, arahkan pengguna ke halaman Login.
             setTimeout(() => {
-                logoutSuccessToast.style.display = 'none';
-
-                logoutOverlay.classList.remove('active');
-                logoutOverlay.classList.remove('logout-success-active');
+                if (logoutSuccessToast) {
+                    logoutSuccessToast.style.display = 'none';
+                }
 
                 window.location.replace('login.html');
             }, 2000);
 
         } catch (error) {
-
-            // Jika request gagal atau backend menolak Logout,
-            // tampilkan modal error agar pengguna dapat mencoba lagi.
             console.error('Logout error:', error);
             showLogoutState('error');
 
         } finally {
-
-            // Mengembalikan status agar percobaan berikutnya
-            // dapat dijalankan jika dibutuhkan.
             loggingOut = false;
         }
     }
 
-
     // =========================================================
-    // 6. EVENT TOMBOL LOGOUT
+    // 6. EVENT TOMBOL
     // =========================================================
 
-    // Tombol konfirmasi menjalankan request Logout.
     if (confirmLogout) {
         confirmLogout.addEventListener('click', performLogout);
     }
 
-    // Tombol Coba Lagi menjalankan ulang request jika gagal.
     if (retryLogout) {
         retryLogout.addEventListener('click', performLogout);
-    }
-
-});
-
-// =========================================================
-// SINKRONISASI LOGOUT ANTAR TAB
-// =========================================================
-
-window.addEventListener('storage', (event) => {
-
-    if (event.key === 'logout-event' && event.newValue) {
-
-        // Arahkan tab lain ke halaman login.
-        window.location.replace('login.html');
-
     }
 
 });
