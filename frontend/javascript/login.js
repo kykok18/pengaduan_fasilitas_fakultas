@@ -162,7 +162,7 @@ if (!email) {
     valid = false;
 
 } else if (/\s/.test(email)) {
-    setEmailError('E-mail tidak boleh mengandung spasi.');
+    setEmailError('Format E-mail tidak sesuai.');
     valid = false;
 
 } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
