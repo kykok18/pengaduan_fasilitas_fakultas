@@ -149,6 +149,9 @@ logoutOverlay.addEventListener('click', (event) => {
                 localStorage.removeItem('user');
             }
 
+            // Beri tahu tab lain bahwa pengguna sudah logout.
+            localStorage.setItem('logout-event', Date.now().toString());
+
             if (typeof clearUserSession === 'function') {
     clearUserSession();
 } else {
@@ -206,6 +209,21 @@ sessionStorage.removeItem('dashboardReturnPage');
     // Tombol Coba Lagi menjalankan ulang request jika gagal.
     if (retryLogout) {
         retryLogout.addEventListener('click', performLogout);
+    }
+
+});
+
+// =========================================================
+// SINKRONISASI LOGOUT ANTAR TAB
+// =========================================================
+
+window.addEventListener('storage', (event) => {
+
+    if (event.key === 'logout-event' && event.newValue) {
+
+        // Arahkan tab lain ke halaman login.
+        window.location.replace('login.html');
+
     }
 
 });
