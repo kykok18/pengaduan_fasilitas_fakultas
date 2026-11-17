@@ -974,14 +974,13 @@ const kirimVote = (tipeVote) => {
                 throw new Error("Jumlah vote tidak valid.");
             }
 
-            totalUpvote = upvote;
-            totalDownvote = downvote;
-
-            // Jangan timpa tampilan jika sudah ada klik terbaru.
             if (versiSekarang === voteVersion) {
-                latestVote = vote.pilihan_user ?? null;
-                renderVoteUI();
-            }
+    totalUpvote = upvote;
+    totalDownvote = downvote;
+
+    latestVote = vote.pilihan_user ?? null;
+    renderVoteUI();
+}
         })
         .catch((error) => {
             console.error("Gagal mengirim vote:", error);
