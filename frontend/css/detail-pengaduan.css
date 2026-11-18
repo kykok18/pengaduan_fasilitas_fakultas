@@ -1051,6 +1051,7 @@ textarea {
     white-space: nowrap;
 }
 
+
 /* Isi komentar */
 .detail-comment-text {
     margin: 0;
@@ -1062,8 +1063,10 @@ textarea {
     line-height: 15px;
     color: #000000;
 
+    white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
 
 
 /* Judul Komentar(1) */
