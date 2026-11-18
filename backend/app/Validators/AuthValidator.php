@@ -86,4 +86,44 @@ class AuthValidator
 
         return true;
     }
+
+    public static function validateLoginAdmin($data)
+    {
+        $email = $data['email'] ?? '';
+        $password = $data['password'] ?? '';
+
+        // Validasi tipe data
+        if (!is_string($email) || !is_string($password)) {
+            return 'Email dan password harus berupa teks';
+        }
+
+        $email = trim($email);
+
+        // Validasi field wajib
+        if ($email === '' || $password === '') {
+            return 'Email dan password harus diisi';
+        }
+
+        // Validasi panjang email
+        if (strlen($email) > 254) {
+            return 'Email maksimal 254 karakter';
+        }
+
+        // Validasi format email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return 'Format email tidak valid';
+        }
+
+        // Validasi panjang maksimum password
+        if (strlen($password) > 100) {
+            return 'Password maksimal 100 karakter';
+        }
+
+        // Validasi karakter kontrol pada password
+        if (preg_match('/[\x00-\x1F\x7F]/', $password)) {
+            return 'Password mengandung karakter yang tidak valid';
+        }
+
+        return true;
+    }
 }

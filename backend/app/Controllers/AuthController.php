@@ -165,4 +165,105 @@ class AuthController
             "role" => $user['role']
         ]);
     }
+
+    /**
+     * Login khusus akun dengan role admin.
+     *
+     * Urutan pemeriksaan:
+     * 1. Format dan isi request
+     * 2. Email dan password
+     * 3. Role akun
+     * 4. Pembuatan session
+     *
+     * Session hanya dibuat setelah seluruh pemeriksaan berhasil.
+     */
+    public function loginAdmin()
+    {
+        // Batasi ukuran request agar tidak membebani server
+        $rawBody = file_get_contents("php://input");
+
+        if ($rawBody === false) {
+            errorResponse("Gagal membaca data request", 400);
+        }
+
+        if (strlen($rawBody) > 4096) {
+            errorResponse("Data request terlalu besar", 413);
+        }
+
+        // Ambil data JSON dari request
+        $data = json_decode($rawBody, true);
+
+        // Validasi format JSON
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            errorResponse("Format JSON tidak valid", 400);
+        }
+
+        // Validasi data request (harus berupa objek JSON)
+        if (!is_array($data) || ($data !== [] && array_is_list($data))) {
+            errorResponse("Data request tidak valid", 400);
+        }
+
+        // Validasi input login admin
+        $validation = AuthValidator::validateLoginAdmin($data);
+
+        if ($validation !== true) {
+            errorResponse($validation, 400);
+        }
+
+        // Ambil email dan password
+        $email = trim($data['email']);
+        $password = $data['password'];
+
+        // Cari akun berdasarkan email
+        $user = $this->userModel->findByEmail($email);
+
+        if ($user === false) {
+            errorResponse("Terjadi kesalahan pada server", 500);
+        }
+
+        if ($user === null) {
+            // Samakan waktu proses agar email yang terdaftar
+            // tidak mudah diketahui dari lama respons.
+            hashPassword($password);
+
+            errorResponse("Email atau password salah", 401);
+        }
+
+        // Verifikasi password
+        if (!verifyPassword($password, $user['password'])) {
+            errorResponse("Email atau password salah", 401);
+        }
+
+        // Pastikan akun memiliki role admin
+        if ($user['role'] !== 'admin') {
+            errorResponse("Akun ini tidak memiliki akses admin", 403);
+        }
+
+        // Mulai session dengan konfigurasi keamanan.
+        if (!startSecureSession()) {
+            errorResponse("Gagal memulai session", 500);
+        }
+
+        // Perbarui ID session setelah login berhasil.
+        if (!session_regenerate_id(true)) {
+            errorResponse("Gagal memperbarui session", 500);
+        }
+
+        // Hapus data session lama, misalnya session pengguna biasa.
+        $_SESSION = [];
+
+        // Simpan data admin ke session
+        $_SESSION['id_user'] = $user['id_user'];
+        $_SESSION['nama'] = $user['nama'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['role'] = $user['role'];
+
+        // Response berhasil
+        successResponse("Login admin berhasil", [
+            "id_user" => $user['id_user'],
+            "nama" => $user['nama'],
+            "email" => $user['email'],
+            "role" => $user['role']
+        ]);
+    }
 }
