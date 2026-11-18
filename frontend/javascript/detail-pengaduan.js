@@ -550,11 +550,23 @@ const renderFoto = (fotoUrl) => {
 
     commentsList.replaceChildren();
 
-    const daftarKomentar = Array.isArray(komentar)
-      ? komentar
-      : [];
+    // Urutkan komentar dari yang paling baru ke paling lama.
+const parseWaktuKomentar = (tanggal) => {
+    const waktu = new Date(
+        String(tanggal || "").replace(" ", "T")
+    ).getTime();
 
-      komentarSaatIni = [...daftarKomentar];
+    return Number.isNaN(waktu) ? 0 : waktu;
+};
+
+const daftarKomentar = Array.isArray(komentar)
+    ? [...komentar].sort((a, b) =>
+        parseWaktuKomentar(b.created_at) -
+        parseWaktuKomentar(a.created_at)
+      )
+    : [];
+
+komentarSaatIni = [...daftarKomentar];
 
     commentsTitle.textContent =
     `Komentar(${formatJumlah(daftarKomentar.length)})`;
@@ -1124,8 +1136,8 @@ if (!isiKomentar) {
         const komentarBaru = result.data.komentar;
 
         renderKomentar([
-            ...komentarSaatIni,
-            komentarBaru
+            komentarBaru,
+            ...komentarSaatIni
         ]);
 
         // Jumlah komentar mengikuti respons backend.
