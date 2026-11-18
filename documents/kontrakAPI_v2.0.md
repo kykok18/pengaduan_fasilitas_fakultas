@@ -2,16 +2,16 @@
 
 ## Sistem Pengaduan Fasilitas Fakultas
 
-### Dokumentasi Sprint 3
+### Dokumentasi Sprint 4
 
-**Versi:** 1.5.3  
+**Versi:** 1.6.0  
 **Backend:** PHP Native  
 **Database:** MySQL  
 **Autentikasi:** PHP Session  
 **Format response:** JSON  
 **Format upload:** multipart/form-data
 
-**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), komentar, dan riwayat pengaduan (daftar dan detail).
+**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), komentar, riwayat pengaduan (daftar dan detail), dan login admin.
 
 ---
 
@@ -42,8 +42,11 @@ Base URL production harus disesuaikan dengan konfigurasi deployment aktual.
 | 9   | GET    | `/komentar.php`         | Mengambil daftar komentar berdasarkan pengaduan        | Ya    | 12  |
 | 10  | POST   | `/komentar.php`         | Menyimpan komentar baru pada pengaduan                 | Ya    | 12  |
 | 11  | GET    | `/riwayat.php`          | Riwayat pengaduan milik pengguna (daftar dan detail)   | Ya    | 13  |
+| 12  | POST   | `/login_admin.php`      | Login admin                                            | Tidak | 14  |
 
-Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut. ---
+Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut.
+
+---
 
 # 2. Standar Request dan Response
 
@@ -88,6 +91,7 @@ Response error tidak menyertakan properti `data`.
 | 201    | Data berhasil dibuat                       |
 | 400    | Request tidak valid                        |
 | 401    | Pengguna belum login atau kredensial salah |
+| 403    | Akun tidak memiliki hak akses admin        |
 | 404    | Resource tidak ditemukan                   |
 | 405    | Method tidak diizinkan                     |
 | 409    | Konflik data                               |
@@ -1106,7 +1110,7 @@ Daftar status code umum ada pada subbab 2.3.
 - Identitas pengguna diambil dari `$_SESSION['id_user']`, bukan dari request.
 - Client tidak boleh mengirim atau menentukan `id_user`.
 - Konfigurasi cookie session mengikuti subbab 2.4.
-- Setelah logout, session lama tidak dapat dipakai untuk vote (lihat skenario 12 dan 13 pada subbab 15.8).
+- Setelah logout, session lama tidak dapat dipakai untuk vote (lihat skenario 12 dan 13 pada subbab 16.8).
 
 ## 11.12 Konsistensi Database
 
@@ -1147,7 +1151,7 @@ Proses vote berjalan dalam satu transaksi database dengan dua penguncian baris (
 | 2   | Constraint unik tabel `vote` | **Terkonfirmasi.** Skema `database/pengaduan_fasilitas_fakultasDB.sql` memuat `UNIQUE KEY uq_vote_user_pengaduan (id_pengaduan, id_user)`, foreign key ke `pengaduan` (`ON DELETE CASCADE`) dan ke `users` (`ON DELETE RESTRICT`)                                                                                                                                                                                                                                                                                                                                                            |
 | 3   | Hasil pengujian aktual       | Seluruh 15 request pada folder **07 Vote** memiliki contoh response tersimpan (6 November 2026 untuk request Vote). Pesan, status, dan struktur `data` pada contoh tersebut cocok dengan subbab 11.7 dan 11.8. Contoh **V07** (Detail Pengaduan) menunjukkan `vote` = 1 upvote, 2 downvote, `pilihan_user` = `downvote`, sama dengan response V06. Test `DTL-01` (10 dari 10) dan `DTL-05` lulus setelah penambahan `pilihan_user` Perbandingan jumlah vote terhadap isi tabel `vote`, Detail Pengaduan, dan Dashboard belum terdokumentasi sebagai bukti tersendiri                         |
 | 4   | Prasyarat data uji Postman   | Variabel environment `fixture_vote_id` bernilai kosong pada file environment dan **tidak diisi oleh script**. Isi manual dengan ID pengaduan uji yang ada di database sebelum menjalankan folder 07 Vote. Pengaduan uji sebaiknya sudah memiliki vote dari pengguna lain (contoh response Postman memakai kondisi awal 1 upvote dan 1 downvote). Variabel `fixture_upvote` dan `fixture_downvote` (dipakai `DTL-03`) harus sama dengan jumlah vote di database. Jika vote akun uji dari folder 07 Vote belum dibersihkan, jumlah downvote bertambah satu dan `DTL-03` gagal dengan selisih 1 |
-| 5   | Penamaan request Postman     | Nama request pada folder 07 Vote tidak seragam (`01.`, `V01.` sampai `V06.`, `07.` sampai `11.`, `LOG-01`, `LGN-01`) dan nomor pada nama tidak sama dengan nomor langkah. Kontrak memakai nama persis seperti di Postman (subbab 15.8). Penyeragaman nama bersifat opsional; jika dilakukan, perbarui subbab 15.8                                                                                                                                                                                                                                                                            |
+| 5   | Penamaan request Postman     | Nama request pada folder 07 Vote tidak seragam (`01.`, `V01.` sampai `V06.`, `07.` sampai `11.`, `LOG-01`, `LGN-01`) dan nomor pada nama tidak sama dengan nomor langkah. Kontrak memakai nama persis seperti di Postman (subbab 16.8). Penyeragaman nama bersifat opsional; jika dilakukan, perbarui subbab 16.8                                                                                                                                                                                                                                                                            |
 | 6   | `pilihan_user` pada Detail   | **Diputuskan (opsi A).** `GET /detail_pengaduan.php` mengembalikan `vote.pilihan_user`. Alasan: pengguna yang membuka detail pengaduan perlu tahu apakah ia sudah vote dan jenis vote-nya sebelum menekan tombol. Test Postman `DTL-01`, `DTL-05`, dan `V07` disesuaikan                                                                                                                                                                                                                                                                                                                     |
 
 ---
@@ -1569,7 +1573,144 @@ Pengaduan milik pengguna lain dijawab 404, bukan 403, supaya ID pengaduan yang a
 
 ---
 
-# 14. Keamanan API
+# 14. API Login Admin
+
+Endpoint login admin digunakan untuk mengautentikasi akun dengan role `admin` dan membuat session PHP setelah autentikasi berhasil. Akun pengguna biasa tidak dapat memperoleh akses admin melalui endpoint ini.
+
+## 14.1 Informasi Endpoint
+
+| Atribut        | Nilai                    |
+| -------------- | ------------------------ |
+| Method         | POST                     |
+| Endpoint       | `/login_admin.php`       |
+| Authentication | Tidak diperlukan         |
+| Content-Type   | application/json         |
+| Cache-Control  | no-store (pada response) |
+
+Method selain POST ditolak dengan HTTP 405 dan header `Allow: POST`.
+
+## 14.2 Request Body
+
+```json
+{
+  "email": "adminpengaduan@uinssc.ac.id",
+  "password": "PasswordAdmin1!"
+}
+```
+
+## 14.3 Parameter dan Aturan Validasi
+
+| Field    | Tipe   | Wajib | Aturan                                                                                   |
+| -------- | ------ | ----- | ---------------------------------------------------------------------------------------- |
+| email    | string | Ya    | Spasi di awal dan akhir dibuang, tidak kosong, maksimal 254 karakter, format email valid |
+| password | string | Ya    | Tidak kosong, maksimal 100 karakter, tidak mengandung karakter kontrol                   |
+
+Aturan tambahan pada request:
+
+- Body maksimal 4096 byte.
+- Body harus berupa objek JSON. Array dan nilai tunggal ditolak.
+- `email` dan `password` harus bertipe teks. Nilai bertipe lain (angka, array, objek) ditolak.
+- Field yang tidak dikenal diabaikan.
+
+## 14.4 Urutan Pemeriksaan
+
+1. Method harus POST (405).
+2. Ukuran body (413).
+3. Format JSON dan bentuk objek (400).
+4. Validasi `email` dan `password` (400).
+5. Pencarian akun dan verifikasi password (401).
+6. Role akun harus `admin` (403).
+7. Pembuatan session (500 jika gagal).
+
+Session hanya dibuat setelah seluruh pemeriksaan berhasil.
+
+## 14.5 Response Berhasil
+
+HTTP Status: `200 OK`
+
+```json
+{
+  "status": "success",
+  "message": "Login admin berhasil",
+  "data": {
+    "id_user": 12,
+    "nama": "Admin Pengaduan",
+    "email": "adminpengaduan@uinssc.ac.id",
+    "role": "admin"
+  }
+}
+```
+
+Setelah login berhasil:
+
+- Server mengirim cookie session melalui header `Set-Cookie`, dan client harus menyimpannya.
+- ID session diperbarui (`session_regenerate_id`).
+- Data session lama dihapus. Jika client sebelumnya login sebagai pengguna biasa, session tersebut digantikan oleh session admin.
+- Session menyimpan `id_user`, `nama`, `email`, dan `role` (`admin`), sesuai pola login pengguna.
+- `password` tidak pernah dikembalikan.
+
+Login yang gagal tidak membuat session yang valid dan tidak mengubah session yang sudah ada.
+
+## 14.6 Response Error
+
+```json
+{
+  "status": "error",
+  "message": "Email atau password salah"
+}
+```
+
+| HTTP | Message                                       | Kondisi                                                       |
+| ---- | --------------------------------------------- | ------------------------------------------------------------- |
+| 405  | Method tidak diizinkan                        | Method selain POST                                            |
+| 413  | Data request terlalu besar                    | Body lebih dari 4096 byte                                     |
+| 400  | Gagal membaca data request                    | Body request tidak dapat dibaca                               |
+| 400  | Format JSON tidak valid                       | Body bukan JSON yang valid                                    |
+| 400  | Data request tidak valid                      | Body bukan objek JSON                                         |
+| 400  | Email dan password harus berupa teks          | `email` atau `password` bukan string                          |
+| 400  | Email dan password harus diisi                | `email` atau `password` kosong, tidak dikirim, atau body `{}` |
+| 400  | Email maksimal 254 karakter                   | Email lebih dari 254 karakter                                 |
+| 400  | Format email tidak valid                      | Format email tidak sesuai                                     |
+| 400  | Password maksimal 100 karakter                | Password lebih dari 100 karakter                              |
+| 400  | Password mengandung karakter yang tidak valid | Password memuat karakter kontrol                              |
+| 401  | Email atau password salah                     | Email tidak terdaftar atau password salah                     |
+| 403  | Akun ini tidak memiliki akses admin           | Kredensial benar, tetapi role akun bukan `admin`              |
+| 500  | Terjadi kesalahan pada server                 | Koneksi atau query database gagal                             |
+| 500  | Gagal memulai session                         | Session gagal dimulai                                         |
+| 500  | Gagal memperbarui session                     | ID session gagal diperbarui                                   |
+
+Semua response error tidak memiliki field `data`.
+
+Catatan:
+
+- Email tidak terdaftar dan password salah menghasilkan pesan dan status yang sama (401), dan waktu prosesnya disamakan, sehingga email yang terdaftar tidak mudah diketahui.
+- HTTP 403 hanya diberikan setelah email dan password terbukti benar. Dengan demikian response ini tidak membuka informasi tentang akun bagi pihak yang tidak memiliki kredensial.
+
+## 14.7 Penggunaan Session Admin
+
+- Endpoint privat memeriksa session melalui `AuthMiddleware` (berdasarkan `id_user`). Session admin dapat mengakses endpoint privat yang sama dengan pengguna biasa, misalnya `GET /dashboard.php`, dan `data.user.role` bernilai `admin`.
+- `AuthMiddleware` belum memeriksa role. Pembatasan endpoint khusus admin berdasarkan `$_SESSION['role']` belum tersedia dan di luar cakupan US-11C-BE.
+- Logout admin memakai `POST /logout.php` yang sama dengan logout pengguna (bab 5).
+
+## 14.8 Akun Admin
+
+- Tidak ada endpoint registrasi admin. Registrasi (bab 3) selalu membuat akun dengan role `user`.
+- Akun admin dibuat melalui SQL (`database/tambah_admin.sql`) dengan role `admin` dan password yang disimpan sebagai hash bcrypt dari `password_hash()`.
+- Kolom `users.role` bertipe `enum('user','admin')`.
+
+## 14.9 Catatan Keputusan dan Konfirmasi
+
+| No  | Item                             | Keterangan                                                                                                                                                                |
+| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Endpoint terpisah                | Login admin memakai `/login_admin.php`. Endpoint `/login.php` tidak diubah                                                                                                |
+| 2   | Akun bukan admin                 | Dijawab HTTP 403 setelah password benar. Alternatifnya HTTP 401 dengan pesan umum yang sama dengan kredensial salah; perlu dikonfirmasi dengan FE                         |
+| 3   | Batas password 100 karakter      | Mengikuti batas yang berlaku pada registrasi (bab 3)                                                                                                                      |
+| 4   | `/login.php` tidak dibatasi role | Akun admin masih dapat login melalui `/login.php` dan memperoleh session dengan role `admin`. Belum diubah karena di luar cakupan card                                    |
+| 5   | Pembatasan percobaan login       | Belum ada pembatasan jumlah percobaan (rate limiting atau penguncian akun). Disarankan sebagai card terpisah, karena memerlukan penyimpanan percobaan login pada database |
+
+---
+
+# 15. Keamanan API
 
 Ketentuan keamanan:
 
@@ -1591,12 +1732,17 @@ Ketentuan keamanan:
 16. `vote.pilihan_user` pada Detail Pengaduan dihitung dari `id_user` session dan tidak menampilkan vote pengguna lain.
 17. Identitas penulis komentar diambil dari session. Field `id_user` dari request client diabaikan dan `id_user` tidak dikembalikan pada response komentar.
 18. Isi komentar disimpan apa adanya dan tidak dibersihkan dari HTML di backend; frontend harus menampilkannya sebagai teks.
+19. Login admin hanya berhasil jika email dan password benar dan role akun adalah `admin`. Session tidak dibuat jika salah satu pemeriksaan gagal.
+20. Email tidak terdaftar dan password salah pada login admin menghasilkan response yang sama, dan waktu prosesnya disamakan.
+21. Session lama diganti saat login admin berhasil (ID session diperbarui dan data session sebelumnya dihapus).
+22. Request login admin dibatasi ukurannya (4096 byte), harus berupa objek JSON, dan tipe data setiap field diperiksa sebelum diproses.
+23. Response login admin memakai `Cache-Control: no-store`.
 
 ---
 
-# 15. Skenario Pengujian API
+# 16. Skenario Pengujian API
 
-## 15.1 Registrasi
+## 16.1 Registrasi
 
 | No  | Skenario                          | Hasil yang Diharapkan |
 | --- | --------------------------------- | --------------------- |
@@ -1609,7 +1755,7 @@ Ketentuan keamanan:
 | 7   | Konfirmasi password berbeda       | Request ditolak       |
 | 8   | Email sudah terdaftar             | HTTP 409              |
 
-## 15.2 Login
+## 16.2 Login
 
 | No  | Skenario                 | Hasil yang Diharapkan |
 | --- | ------------------------ | --------------------- |
@@ -1619,7 +1765,7 @@ Ketentuan keamanan:
 | 4   | Email kosong             | Request ditolak       |
 | 5   | Password kosong          | Request ditolak       |
 
-## 15.3 Logout
+## 16.3 Logout
 
 | No  | Skenario                    | Hasil yang Diharapkan |
 | --- | --------------------------- | --------------------- |
@@ -1627,7 +1773,7 @@ Ketentuan keamanan:
 | 2   | Logout tanpa session        | HTTP 401              |
 | 3   | Session tidak valid         | HTTP 401              |
 
-## 15.4 Dashboard
+## 16.4 Dashboard
 
 | No  | Skenario                            | Hasil yang Diharapkan           |
 | --- | ----------------------------------- | ------------------------------- |
@@ -1644,7 +1790,7 @@ Ketentuan keamanan:
 | 11  | Filter status dalam perbaikan       | Hanya pengaduan dalam perbaikan |
 | 12  | Filter status diproses (nilai lama) | HTTP 400                        |
 
-## 15.5 Detail Pengaduan
+## 16.5 Detail Pengaduan
 
 | No  | Skenario                                    | Hasil yang Diharapkan                                                                            |
 | --- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -1654,17 +1800,17 @@ Ketentuan keamanan:
 | 4   | ID pengaduan tidak ditemukan                | HTTP 404                                                                                         |
 | 5   | Query detail gagal                          | HTTP 500                                                                                         |
 | 6   | Pengaduan yang belum di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `null`                                                           |
-| 7   | Pengaduan yang sudah di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `upvote` atau `downvote` sesuai vote aktif (lihat V07 pada 15.8) |
+| 7   | Pengaduan yang sudah di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `upvote` atau `downvote` sesuai vote aktif (lihat V07 pada 16.8) |
 | 8   | Struktur `vote`                             | Berisi tepat `upvote`, `downvote`, `pilihan_user`                                                |
 
-## 15.6 Daftar Fasilitas
+## 16.6 Daftar Fasilitas
 
 | No  | Skenario                     | Hasil yang Diharapkan        |
 | --- | ---------------------------- | ---------------------------- |
 | 1   | Request dengan session aktif | Daftar fasilitas ditampilkan |
 | 2   | Request tanpa login          | HTTP 401                     |
 
-## 15.7 Membuat Pengaduan
+## 16.7 Membuat Pengaduan
 
 | No  | Skenario                                                                                    | Hasil yang Diharapkan                                                                  |
 | --- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -1686,7 +1832,7 @@ Ketentuan keamanan:
 | 13  | Terjadi kegagalan saat memeriksa lock                                                       | HTTP 500                                                                               |
 | 14  | Request bersamaan ditolak                                                                   | Tidak ada data pengaduan baru dari request yang ditolak                                |
 
-## 15.8 Vote
+## 16.8 Vote
 
 Pengujian dilakukan dengan Postman pada collection Sprint 3, folder **07 Vote**, menggunakan satu session (cookie jar) yang sama dari langkah 1 sampai 12. Request ke `/vote.php` memakai body **x-www-form-urlencoded** (bukan raw JSON). Folder dijalankan berurutan (Collection Runner).
 
@@ -1897,7 +2043,7 @@ Jika `login_email` pada environment diisi dengan akun tetap, hapus vote akun ter
 
 Jika tidak dibersihkan, menjalankan ulang folder dengan akun yang sama menghasilkan `changed` pada langkah 2 (vote aktif sebelumnya adalah downvote), sehingga pengujian gagal. Test `DTL-03` di folder 05 juga gagal karena jumlah downvote di database lebih besar dari `fixture_downvote`.
 
-## 15.9 Komentar
+## 16.9 Komentar
 
 Pengujian dilakukan dengan Postman pada folder **08 Komentar**, setelah folder 04 Pengaduan pada Collection Runner penuh. Folder ini memakai pengaduan baru dari `created_pengaduan_id` (dibuat oleh `PGD-03`) sehingga tidak mengubah jumlah komentar pada pengaduan fixture (`fixture_komentar_id`) yang dibandingkan oleh test Detail Pengaduan. Komentar tidak dapat dihapus melalui API, jadi setiap run menambah komentar pada pengaduan uji. Jumlah komentar pada test dihitung relatif terhadap jumlah awal (`komentar_total_awal`, disimpan oleh `KMT-02`), sehingga folder dapat dijalankan ulang tanpa pembersihan. Hasil kosong (`[]`) hanya terjadi pada pengaduan yang belum pernah dikomentari, yaitu pada run penuh setelah folder 04.
 
@@ -1927,7 +2073,7 @@ Pengujian dilakukan dengan Postman pada folder **08 Komentar**, setelah folder 0
 
 Skenario kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
 
-## 15.10 Riwayat
+## 16.10 Riwayat
 
 Pengujian dilakukan dengan Postman pada folder **09 Riwayat**, setelah folder 04 Pengaduan pada Collection Runner penuh.
 
@@ -1951,15 +2097,43 @@ Pengujian dilakukan dengan Postman pada folder **09 Riwayat**, setelah folder 04
 
 Kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode. Status pengaduan yang berubah diverifikasi dengan membandingkan status pada daftar riwayat dan Detail Pengaduan, yang keduanya membaca database saat request.
 
+## 16.11 Login Admin
+
+Pengujian dilakukan dengan Postman pada folder **10 Login Admin**. Variabel environment `admin_email` dan `admin_password` harus berisi akun admin dari `database/tambah_admin.sql`.
+
+| No  | Skenario                                                | Hasil yang diharapkan                                                                    |
+| --- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 1   | Login admin dengan kredensial valid                     | HTTP 200, `role` = `admin`, tanpa `password`, cookie session dikirim, ID session berubah |
+| 2   | Session admin mengakses endpoint terautentikasi         | HTTP 200, `data.user.role` = `admin`, identitas sama dengan akun yang login              |
+| 3   | Logout, lalu akses endpoint terautentikasi              | Logout berhasil, kemudian HTTP 401                                                       |
+| 4   | Email tidak terdaftar                                   | HTTP 401 `Email atau password salah`                                                     |
+| 5   | Password salah                                          | HTTP 401, pesan sama dengan email tidak terdaftar                                        |
+| 6   | Akun pengguna biasa dengan kredensial benar             | HTTP 403 `Akun ini tidak memiliki akses admin`                                           |
+| 7   | Akses endpoint terautentikasi setelah login gagal       | HTTP 401 (tidak ada session valid)                                                       |
+| 8   | Email kosong atau password kosong                       | HTTP 400 `Email dan password harus diisi`                                                |
+| 9   | Body objek kosong `{}`                                  | HTTP 400 `Email dan password harus diisi`                                                |
+| 10  | Format email tidak valid                                | HTTP 400 `Format email tidak valid`                                                      |
+| 11  | Email lebih dari 254 karakter                           | HTTP 400 `Email maksimal 254 karakter`                                                   |
+| 12  | Password lebih dari 100 karakter                        | HTTP 400 `Password maksimal 100 karakter`                                                |
+| 13  | Password bertipe array                                  | HTTP 400 `Email dan password harus berupa teks`                                          |
+| 14  | JSON tidak valid                                        | HTTP 400 `Format JSON tidak valid`                                                       |
+| 15  | Body berupa array JSON                                  | HTTP 400 `Data request tidak valid`                                                      |
+| 16  | Body lebih dari 4096 byte                               | HTTP 413 `Data request terlalu besar`                                                    |
+| 17  | Method GET                                              | HTTP 405, header `Allow: POST`                                                           |
+| 18  | Akses endpoint terautentikasi setelah seluruh kegagalan | HTTP 401                                                                                 |
+| 19  | Login kembali sebagai akun uji utama                    | HTTP 200 (mengembalikan session untuk folder berikutnya)                                 |
+
+Kegagalan database atau jaringan (HTTP 500 `Terjadi kesalahan pada server`) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
+
 ---
 
-# 16. Catatan Audit Sprint 3
+# 17. Catatan Audit Sprint 3
 
 Dokumentasi ini digunakan sebagai kontrak antara frontend dan backend.
 
 Sebelum kontrak dinyatakan final, lakukan pemeriksaan berikut.
 
-## 16.1 Checklist Audit Umum
+## 17.1 Checklist Audit Umum
 
 - [ ] Nama endpoint sesuai dengan file API aktual.
 - [ ] Method HTTP sesuai implementasi.
@@ -1974,7 +2148,7 @@ Sebelum kontrak dinyatakan final, lakukan pemeriksaan berikut.
 - [ ] Semua skenario pengujian memiliki bukti hasil.
 - [ ] Endpoint yang belum dibuat tidak dinyatakan sebagai endpoint aktif.
 
-## 16.2 Checklist Audit Fitur Vote
+## 17.2 Checklist Audit Fitur Vote
 
 Status `[x]` berarti terbukti dari kode backend, skema database, atau contoh response Postman pada arsip proyek. Status `[ ]` berarti belum ada bukti atau perlu keputusan tim.
 
@@ -1996,14 +2170,14 @@ Status `[x]` berarti terbukti dari kode backend, skema database, atau contoh res
 - [x] Penanganan kesalahan server (ada di kode; belum diuji lewat Postman).
 - [x] Detail Pengaduan memuat `vote.pilihan_user` dari session (kode backend, v1.4.3).
 - [x] `vote.pilihan_user` pada Detail Pengaduan terbukti lewat Postman (`DTL-01` 10 dari 10, `DTL-05` lulus, contoh response V07 tersimpan).
-- [x] Pengujian Postman disiapkan (subbab 15.8, folder 07 Vote).
+- [x] Pengujian Postman disiapkan (subbab 16.8, folder 07 Vote).
 - [ ] Dokumentasi kontrak API diserahkan kepada frontend.
 - [ ] Frontend dihubungkan ke endpoint Vote dengan format form data (subbab 11.15 nomor 1).
 - [x] Constraint unik (`id_pengaduan`, `id_user`) pada tabel `vote` dikonfirmasi terhadap skema database.
 - [x] Folder 07 Vote dijalankan penuh (15 langkah) dengan hasil lulus (Collection Runner: tidak ada test gagal pada folder 07).
 - [x] Vote akun uji dibersihkan dan `DTL-03` lulus (jumlah vote di database sama dengan `fixture_upvote` dan `fixture_downvote`).
 
-## 16.3 Checklist Audit Fitur Komentar
+## 17.3 Checklist Audit Fitur Komentar
 
 Status `[x]` berarti terbukti dari kode backend atau skema database. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
 
@@ -2020,13 +2194,13 @@ Status `[x]` berarti terbukti dari kode backend atau skema database. Status `[ ]
 - [x] Jumlah komentar pada Dashboard (`comment_count`) dihitung dari tabel `komentar`.
 - [x] Penanganan sesi tidak valid, pengaduan tidak ditemukan, input tidak valid, dan kegagalan database ada di kode.
 - [x] Endpoint edit dan hapus komentar tidak dibuat.
-- [ ] Folder 08 Komentar dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
-- [ ] Contoh response tersimpan di Postman untuk setiap request komentar.
-- [ ] Batas 1000 karakter dikonfirmasi dengan tim dan FE.
-- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
-- [ ] Frontend dihubungkan ke endpoint komentar (form komentar pada `detail-pengaduan.js` masih dinonaktifkan).
+- [x] Folder 08 Komentar dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
+- [x] Contoh response tersimpan di Postman untuk setiap request komentar.
+- [x] Batas 1000 karakter dikonfirmasi dengan tim dan FE.
+- [x] Dokumentasi kontrak API diserahkan kepada frontend.
+- [x] Frontend dihubungkan ke endpoint komentar (form komentar pada `detail-pengaduan.js` masih dinonaktifkan).
 
-## 16.4 Checklist Audit Fitur Riwayat
+## 17.4 Checklist Audit Fitur Riwayat
 
 Status `[x]` berarti terbukti dari kode backend atau pengujian logika query. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
 
@@ -2046,3 +2220,22 @@ Status `[x]` berarti terbukti dari kode backend atau pengujian logika query. Sta
 - [ ] FE menyesuaikan filter dan label status (`dashboard.html`, `dashboard.js`) ke nilai `dalam perbaikan`.
 - [ ] Dokumentasi kontrak API diserahkan kepada frontend.
 - [ ] Halaman FE riwayat dibuat dan dihubungkan ke endpoint.
+
+## 17.5 Checklist Audit Fitur Login Admin
+
+Status `[x]` berarti terbukti dari kode backend atau simulasi logika validasi. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
+
+- [x] Endpoint login admin tersedia (`POST /login_admin.php`).
+- [x] Validasi email dan kata sandi diterapkan (wajib, tipe, panjang, format).
+- [x] Kredensial diverifikasi menggunakan data akun di database (`password_verify`).
+- [x] Role akun diperiksa agar hanya admin yang dapat login melalui endpoint ini.
+- [x] Session PHP dibuat setelah autentikasi berhasil, dengan ID session diperbarui.
+- [x] Login gagal tidak menghasilkan session admin yang valid.
+- [x] Response berhasil dan gagal mengikuti kontrak API.
+- [x] Kegagalan database ditangani (HTTP 500 tanpa membuat session).
+- [x] Query SQL untuk menambah akun admin tersedia (`database/tambah_admin.sql`).
+- [ ] Akun admin ditambahkan ke database dan variabel environment `admin_email` dan `admin_password` terisi.
+- [ ] Folder 10 Login Admin dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
+- [ ] Contoh response tersimpan di Postman untuk setiap request login admin.
+- [ ] Respons akun bukan admin (403 atau 401 umum) disepakati dengan FE.
+- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
