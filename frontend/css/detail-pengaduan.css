@@ -1755,3 +1755,45 @@ padding: 11px 10px;
     filter: none !important;
     opacity: 1 !important;
 }
+
+
+/* ==========================================
+   NAVIGASI DETAIL PENGADUAN — US-10B-FE
+   ========================================== */
+
+.detail-back {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+
+    max-width: 100%;
+    gap: 10px;
+
+    color: #0B5E3B;
+    text-decoration: none;
+}
+
+.detail-back svg {
+    flex-shrink: 0;
+}
+
+.detail-back span {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 600px) {
+
+    .detail-back {
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 22px;
+        gap: 10px;
+    }
+
+    .detail-back svg {
+        width: 15px;
+        height: 15px;
+    }
+}
