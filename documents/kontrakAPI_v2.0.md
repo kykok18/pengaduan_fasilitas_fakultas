@@ -1594,7 +1594,7 @@ Method selain POST ditolak dengan HTTP 405 dan header `Allow: POST`.
 ```json
 {
   "email": "adminpengaduan@uinssc.ac.id",
-  "password": "PasswordAdmin1!"
+  "password": "AdminPengaduan12."
 }
 ```
 
