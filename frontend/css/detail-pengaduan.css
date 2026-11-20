@@ -1051,6 +1051,7 @@ textarea {
     white-space: nowrap;
 }
 
+
 /* Isi komentar */
 .detail-comment-text {
     margin: 0;
@@ -1062,8 +1063,10 @@ textarea {
     line-height: 15px;
     color: #000000;
 
+    white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
 
 
 /* Judul Komentar(1) */
@@ -1734,4 +1737,21 @@ padding: 11px 10px;
 }
 
 
+.comment-success-alert .vote-error-icon svg {
+    display: block;
+    filter: none !important;
+    box-shadow: none !important;
+}
 
+.comment-success-alert .vote-error-icon circle {
+    fill: #15A367 !important;
+    stroke: none !important;
+    filter: none !important;
+}
+
+.comment-success-alert .vote-error-icon path {
+    fill: none !important;
+    stroke: #FFFFFF !important;
+    filter: none !important;
+    opacity: 1 !important;
+}

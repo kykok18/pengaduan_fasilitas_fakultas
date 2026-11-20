@@ -220,20 +220,35 @@ let isSendingComment = false;
 
           alert.innerHTML = `
               <div class="vote-error-icon">
-                  <svg width="40" height="40"
-                       viewBox="0 0 40 40"
-                       xmlns="http://www.w3.org/2000/svg"
-                       aria-hidden="true">
+                  <svg
+    width="41"
+    height="41"
+    viewBox="0 0 41 41"
+    xmlns="http://www.w3.org/2000/svg"
+    style="display: block; filter: none; box-shadow: none;"
+>
+    <circle
+        cx="20.5"
+        cy="20.5"
+        r="20"
+        fill="#15A367"
+        stroke="none"
+    />
 
-                      <circle cx="20" cy="20" r="20"
-                              fill="#15A367"/>
-
-                      <path d="M11.5 20.5L17 26L28.5 14"
-                            stroke="#FFFFFF"
-                            stroke-width="4"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                  </svg>
+    <path
+        d="M11.5 20.5L17 26L29 14"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        style="
+            fill: none !important;
+            stroke: #FFFFFF !important;
+            filter: none !important;
+        "
+    />
+</svg>
               </div>
 
               <div class="vote-error-content">
