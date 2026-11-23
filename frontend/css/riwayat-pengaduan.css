@@ -2475,3 +2475,35 @@
     }
 }
 
+
+/* ==========================================
+   FIX LEBAR SUMMARY & CARD RIWAYAT
+   ========================================== */
+
+@media screen and (max-width: 767px) {
+
+    /* Ringkasan Total Pengaduan */
+    .riwayat-main .riwayat-summary {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* Wadah daftar pengaduan */
+    .riwayat-main .riwayat-list {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+        align-items: stretch;
+    }
+
+    /* Setiap kartu pengaduan */
+    .riwayat-main .riwayat-list .report-card-dash {
+        display: flex;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+}
