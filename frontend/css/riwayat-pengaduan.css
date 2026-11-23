@@ -428,6 +428,15 @@
 }
 
 
+/* Sembunyikan tombol silang bawaan input search */
+.riwayat-main input[type="search"]::-webkit-search-cancel-button,
+.riwayat-main input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+
 /* ==========================================
    FILTER CHIPS — SESUAI FIGMA
    ========================================== */

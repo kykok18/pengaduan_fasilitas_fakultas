@@ -591,5 +591,33 @@
 <script src="javascript/offline-support.js"></script>
 <script src="javascript/logout.js"></script>
 
+
+<script>
+(function () {
+    const titles = {
+        "dashboard.html": "Dashboard — Pengaduan Fasilitas FITK",
+        "buat-pengaduan.html": "Buat Pengaduan — FITK",
+        "riwayat-pengaduan.html": "Riwayat Pengaduan — FITK",
+        "detail-pengaduan.html": "Detail Pengaduan — FITK"
+    };
+
+    function updatePageTitle() {
+        const currentPage = window.location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
+
+        if (titles[currentPage]) {
+            document.title = titles[currentPage];
+        }
+    }
+
+    updatePageTitle();
+
+    window.addEventListener("pageshow", updatePageTitle);
+})();
+</script>
+
+
 </body>
 </html>
