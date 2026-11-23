@@ -603,44 +603,76 @@
     font-weight: 400;
 }
 
-/* Tombol Prev dan Next */
+
+/* ==========================================
+   PAGINATION PREV & NEXT — SESUAI FIGMA
+   ========================================== */
+
 .riwayat-pagination .page-btn.prev,
 .riwayat-pagination .page-btn.next {
+    box-sizing: border-box;
+
     display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
     flex: 0 0 68px;
-
     width: 68px;
     height: 32px;
 
-    gap: 5px;
     padding: 0;
+    gap: 4px;
 
     background: #FFFFFF;
     border: 1px solid transparent;
     border-radius: 7px;
 
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
-    line-height: 100%;
+    font-weight: 400;
+    line-height: 16px;
+
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
-/* Ikon panah */
+/* Teks Prev dan Next */
+.riwayat-pagination .page-btn.prev span,
+.riwayat-pagination .page-btn.next span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 16px;
+    padding: 0;
+    margin: 0;
+
+    font: inherit;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+/* Chevron */
 .riwayat-pagination .page-btn.prev i,
 .riwayat-pagination .page-btn.next i {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    flex: 0 0 13px;
+    width: 13px;
+    height: 16px;
+
+    padding: 0;
+    margin: 0;
+
     font-size: 13px;
     line-height: 1;
 
     color: currentColor;
 }
+
 
 /* Tombol tidak aktif */
 .riwayat-pagination .page-btn:disabled {
@@ -2358,18 +2390,18 @@
     /* Tombol Prev dan Next */
     .riwayat-pagination .page-btn.prev,
     .riwayat-pagination .page-btn.next {
-        width: 54px;
-        min-width: 54px;
-        max-width: 54px;
-        height: 30px;
+        width: 68px;
+        min-width: 68px;
+        max-width: 68px;
+        height: 32px;
+        flex: 0 0 68px;
 
-        flex: 0 0 54px;
-        gap: 3px;
-        padding: 0 3px;
+        padding: 0;
+        gap: 4px;
 
-        font-size: 10px;
-        white-space: nowrap;
+        font-size: 16px;
     }
+
 
     /* Ikon navigasi */
     .riwayat-pagination .page-btn i {
