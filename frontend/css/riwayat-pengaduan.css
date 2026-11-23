@@ -74,26 +74,28 @@
    FIGMA: 367 x 84px
    ========================================== */
 
+
 .riwayat-main .riwayat-summary {
     box-sizing: border-box;
+
     display: grid;
     grid-template-columns: 150px 1px 114px;
-    justify-content: space-evenly;
     align-items: center;
+    justify-content: start;
 
     width: 100%;
     max-width: 367px;
     height: 84px;
-    min-height: 84px;
 
     margin: 0 auto 20px;
-    padding: 10px;
+    padding: 10px 21.5px;
+
+    column-gap: 18px;
 
     background: #FFFFFF;
-    border: none;
     border-radius: 10px;
-    box-shadow: none;
 }
+
 
 
 /* ==========================================
@@ -1678,6 +1680,206 @@
 /* Hidden */
 .riwayat-main .riwayat-not-found[hidden] {
     display: none !important;
+}
+
+
+/* ==========================================
+   ERROR STATE — US-10B-FE
+   SESUAI FIGMA
+   ========================================== */
+
+.riwayat-main #riwayatError {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+    height: 232px;
+    min-height: 0;
+
+    margin: 145px auto 0;
+    padding: 0;
+
+    text-align: center;
+}
+
+/* Jangan tampilkan state jika hidden */
+.riwayat-main #riwayatError[hidden] {
+    display: none !important;
+}
+
+/* Frame 783 — 242 × 232 */
+.riwayat-main .riwayat-error-content {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 242px;
+    max-width: 100%;
+    height: 232px;
+
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+}
+
+/* Frame 782 — ikon dan teks */
+.riwayat-main .riwayat-error-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 242px;
+    max-width: 100%;
+    height: 182px;
+
+    margin: 0;
+    padding: 0;
+    gap: 15px;
+}
+
+/* ICON FIGMA — 91 × 94 */
+.riwayat-main .riwayat-error-icon {
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 91px;
+    height: 94px;
+    flex: 0 0 94px;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+/* SVG tidak boleh diperbesar oleh CSS umum */
+.riwayat-main .riwayat-error-icon svg {
+    display: block;
+
+    width: 91px;
+    height: 94px;
+    min-width: 91px;
+    min-height: 94px;
+
+    flex-shrink: 0;
+}
+
+/* FRAME TEKS — 242 × 73 */
+.riwayat-main .riwayat-error-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 242px;
+    max-width: 100%;
+    height: 73px;
+
+    margin: 0;
+    padding: 0;
+    gap: 5px;
+}
+
+/* JUDUL */
+.riwayat-main .riwayat-error-text h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 23px;
+
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px;
+
+    color: #000000;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* DESKRIPSI */
+.riwayat-main .riwayat-error-text p {
+    box-sizing: border-box;
+
+    width: 222px;
+    max-width: 100%;
+    height: 45px;
+
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px;
+
+    color: #000000;
+    text-align: center;
+}
+
+/* TOMBOL COBA LAGI — 100 × 30 */
+.riwayat-main #riwayatRetry {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    flex: 0 0 30px;
+
+    width: 100px;
+    height: 30px;
+    min-height: 30px;
+
+    margin: 0;
+    padding: 0 10px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #0B5E3B;
+    color: #FFFFFF;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 15px;
+
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.riwayat-main #riwayatRetry:focus-visible {
+    outline: 2px solid #0B5E3B;
+    outline-offset: 3px;
+}
+
+/* Layar pendek: cegah area error terlalu jauh */
+@media (max-height: 700px) {
+    .riwayat-main #riwayatError {
+        margin-top: 70px;
+    }
 }
 
 

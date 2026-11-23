@@ -327,7 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (element) {
                 element.textContent =
                     value == null
-                        ? "-"
+                        ? "0"
                         : formatJumlah(value);
             }
         });
@@ -979,6 +979,49 @@ if (menuToggle && sidebar && sidebarOverlay) {
     window.addEventListener("pagehide", () => {
         requestController?.abort();
     });
+
+
+// ==========================================
+// OFFLINE SUPPORT — US-10B-FE
+// ==========================================
+
+window.addEventListener("fitk:offline", () => {
+
+    // Batalkan request API yang sedang berlangsung.
+    if (requestController) {
+        requestController.abort();
+        requestController = null;
+    }
+
+    // Cegah response request lama tampil
+    // setelah halaman beralih ke offline.
+    requestSequence++;
+
+    // Jangan tampilkan data pengaduan lama.
+    clearProtectedDisplay();
+
+    // Sesuaikan pesan error dengan kondisi offline.
+    const description = errorState?.querySelector("p");
+
+    if (description) {
+        description.textContent =
+            "Terjadi kesalahan saat memuat riwayat  " +
+            "pengaduan. Periksa koneksi internet Anda " +
+            "dan coba lagi.";
+    }
+
+    // Gunakan state error yang sudah ada.
+    showState("error");
+});
+
+window.addEventListener("fitk:online", () => {
+
+    // Jangan memuat data secara otomatis.
+    // Pengguna tetap menekan tombol Coba Lagi.
+    // Ini mempertahankan mekanisme US-10B-FE.
+
+});
+
 
     // ==========================================
     // 18. KONDISI AWAL

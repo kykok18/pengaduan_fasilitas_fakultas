@@ -15,25 +15,53 @@
 
   // `offline` membantu UI berubah TANPA refresh. Saat refresh offline,
   // Service Worker yang memberikan shell HTML/CSS/JS dari cache.
-  function onOffline() {
+
+function onOffline() {
     document.documentElement.dataset.network = 'offline';
 
-    // Dashboard: gunakan handler dan UI Figma yang sudah dibuat di dashboard.js.
-    const dashboardRetry = document.getElementById('btnRetry');
-    if (dashboardRetry && document.getElementById('errorState')) {
-      dashboardRetry.click(); // GET dashboard gagal lalu showError() bawaan dipanggil.
-      return;
+    // Dashboard: gunakan mekanisme yang sudah ada.
+    const dashboardRetry =
+        document.getElementById('btnRetry');
+
+    if (
+        dashboardRetry &&
+        document.getElementById('errorState')
+    ) {
+        dashboardRetry.click();
+        return;
     }
 
-    // Detail: gunakan showError() bawaan melalui handler Retry milik detail-pengaduan.js.
-    const detailRetry = document.getElementById('detailRetryBtn');
-    if (detailRetry && document.getElementById('detailState')) {
-      detailRetry.click();
+    // Detail Pengaduan: mekanisme existing.
+    const detailRetry =
+        document.getElementById('detailRetryBtn');
+
+    if (
+        detailRetry &&
+        document.getElementById('detailState')
+    ) {
+        detailRetry.click();
+        return;
     }
-    // Halaman lain: kirim sinyal tanpa memicu POST atau merusak form.
-    // Riwayat yang nanti dibuat dapat mendengarkan event fitk:offline.
-    window.dispatchEvent(new CustomEvent('fitk:offline'));
-  }
+
+    // Riwayat Pengaduan — US-10B-FE.
+    // JS riwayat menerima sinyal ini untuk
+    // menampilkan state error tanpa request tambahan.
+    if (
+        document.getElementById('riwayatList') &&
+        document.getElementById('riwayatError')
+    ) {
+        window.dispatchEvent(
+            new CustomEvent('fitk:offline')
+        );
+        return;
+    }
+
+    // Halaman lain: hanya kirim sinyal.
+    window.dispatchEvent(
+        new CustomEvent('fitk:offline')
+    );
+}
+
 
   function onOnline() {
     document.documentElement.dataset.network = 'online';
