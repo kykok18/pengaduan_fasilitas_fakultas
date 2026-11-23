@@ -2,16 +2,16 @@
 
 ## Sistem Pengaduan Fasilitas Fakultas
 
-### Dokumentasi Sprint 4
+### Dokumentasi Sprint 5
 
-**Versi:** 1.6.0  
+**Versi:** 1.7.1  
 **Backend:** PHP Native  
 **Database:** MySQL  
 **Autentikasi:** PHP Session  
 **Format response:** JSON  
 **Format upload:** multipart/form-data
 
-**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), komentar, riwayat pengaduan (daftar dan detail), dan login admin.
+**Deskripsi:** Dokumen ini adalah kontrak antara frontend dan backend Sistem Pengaduan Fasilitas Fakultas. Isinya mendefinisikan endpoint API, format request dan response, aturan validasi, kode status HTTP, pesan error, mekanisme autentikasi session, serta skenario pengujian. Endpoint yang tercakup: registrasi, login, logout, dashboard, detail pengaduan, daftar fasilitas, pembuatan pengaduan, vote (upvote/downvote), komentar, riwayat pengaduan (daftar dan detail), login admin, dan dashboard admin (ringkasan, daftar pengaduan per status, dan pencarian).
 
 ---
 
@@ -43,8 +43,9 @@ Base URL production harus disesuaikan dengan konfigurasi deployment aktual.
 | 10  | POST   | `/komentar.php`         | Menyimpan komentar baru pada pengaduan                 | Ya    | 12  |
 | 11  | GET    | `/riwayat.php`          | Riwayat pengaduan milik pengguna (daftar dan detail)   | Ya    | 13  |
 | 12  | POST   | `/login_admin.php`      | Login admin                                            | Tidak | 14  |
+| 13  | GET    | `/dashboard_admin.php`  | Data dashboard admin (ringkasan, daftar, pencarian)    | Admin | 15  |
 
-Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut.
+Kolom **Bab** menunjukkan bab yang menjelaskan endpoint tersebut. Nilai `Admin` pada kolom **Auth** berarti wajib login dengan akun ber-role `admin`.
 
 ---
 
@@ -1110,7 +1111,7 @@ Daftar status code umum ada pada subbab 2.3.
 - Identitas pengguna diambil dari `$_SESSION['id_user']`, bukan dari request.
 - Client tidak boleh mengirim atau menentukan `id_user`.
 - Konfigurasi cookie session mengikuti subbab 2.4.
-- Setelah logout, session lama tidak dapat dipakai untuk vote (lihat skenario 12 dan 13 pada subbab 16.8).
+- Setelah logout, session lama tidak dapat dipakai untuk vote (lihat skenario 12 dan 13 pada subbab 17.8).
 
 ## 11.12 Konsistensi Database
 
@@ -1151,7 +1152,7 @@ Proses vote berjalan dalam satu transaksi database dengan dua penguncian baris (
 | 2   | Constraint unik tabel `vote` | **Terkonfirmasi.** Skema `database/pengaduan_fasilitas_fakultasDB.sql` memuat `UNIQUE KEY uq_vote_user_pengaduan (id_pengaduan, id_user)`, foreign key ke `pengaduan` (`ON DELETE CASCADE`) dan ke `users` (`ON DELETE RESTRICT`)                                                                                                                                                                                                                                                                                                                                                            |
 | 3   | Hasil pengujian aktual       | Seluruh 15 request pada folder **07 Vote** memiliki contoh response tersimpan (6 November 2026 untuk request Vote). Pesan, status, dan struktur `data` pada contoh tersebut cocok dengan subbab 11.7 dan 11.8. Contoh **V07** (Detail Pengaduan) menunjukkan `vote` = 1 upvote, 2 downvote, `pilihan_user` = `downvote`, sama dengan response V06. Test `DTL-01` (10 dari 10) dan `DTL-05` lulus setelah penambahan `pilihan_user` Perbandingan jumlah vote terhadap isi tabel `vote`, Detail Pengaduan, dan Dashboard belum terdokumentasi sebagai bukti tersendiri                         |
 | 4   | Prasyarat data uji Postman   | Variabel environment `fixture_vote_id` bernilai kosong pada file environment dan **tidak diisi oleh script**. Isi manual dengan ID pengaduan uji yang ada di database sebelum menjalankan folder 07 Vote. Pengaduan uji sebaiknya sudah memiliki vote dari pengguna lain (contoh response Postman memakai kondisi awal 1 upvote dan 1 downvote). Variabel `fixture_upvote` dan `fixture_downvote` (dipakai `DTL-03`) harus sama dengan jumlah vote di database. Jika vote akun uji dari folder 07 Vote belum dibersihkan, jumlah downvote bertambah satu dan `DTL-03` gagal dengan selisih 1 |
-| 5   | Penamaan request Postman     | Nama request pada folder 07 Vote tidak seragam (`01.`, `V01.` sampai `V06.`, `07.` sampai `11.`, `LOG-01`, `LGN-01`) dan nomor pada nama tidak sama dengan nomor langkah. Kontrak memakai nama persis seperti di Postman (subbab 16.8). Penyeragaman nama bersifat opsional; jika dilakukan, perbarui subbab 16.8                                                                                                                                                                                                                                                                            |
+| 5   | Penamaan request Postman     | Nama request pada folder 07 Vote tidak seragam (`01.`, `V01.` sampai `V06.`, `07.` sampai `11.`, `LOG-01`, `LGN-01`) dan nomor pada nama tidak sama dengan nomor langkah. Kontrak memakai nama persis seperti di Postman (subbab 17.8). Penyeragaman nama bersifat opsional; jika dilakukan, perbarui subbab 17.8                                                                                                                                                                                                                                                                            |
 | 6   | `pilihan_user` pada Detail   | **Diputuskan (opsi A).** `GET /detail_pengaduan.php` mengembalikan `vote.pilihan_user`. Alasan: pengguna yang membuka detail pengaduan perlu tahu apakah ia sudah vote dan jenis vote-nya sebelum menekan tombol. Test Postman `DTL-01`, `DTL-05`, dan `V07` disesuaikan                                                                                                                                                                                                                                                                                                                     |
 
 ---
@@ -1689,7 +1690,7 @@ Catatan:
 ## 14.7 Penggunaan Session Admin
 
 - Endpoint privat memeriksa session melalui `AuthMiddleware` (berdasarkan `id_user`). Session admin dapat mengakses endpoint privat yang sama dengan pengguna biasa, misalnya `GET /dashboard.php`, dan `data.user.role` bernilai `admin`.
-- `AuthMiddleware` belum memeriksa role. Pembatasan endpoint khusus admin berdasarkan `$_SESSION['role']` belum tersedia dan di luar cakupan US-11C-BE.
+- `AuthMiddleware` hanya memeriksa session. Pemeriksaan role admin pada endpoint khusus admin dilakukan oleh `AdminMiddleware` (bab 15), yang juga memeriksa ulang role pada database.
 - Logout admin memakai `POST /logout.php` yang sama dengan logout pengguna (bab 5).
 
 ## 14.8 Akun Admin
@@ -1708,9 +1709,183 @@ Catatan:
 | 4   | `/login.php` tidak dibatasi role | Akun admin masih dapat login melalui `/login.php` dan memperoleh session dengan role `admin`. Belum diubah karena di luar cakupan card                                    |
 | 5   | Pembatasan percobaan login       | Belum ada pembatasan jumlah percobaan (rate limiting atau penguncian akun). Disarankan sebagai card terpisah, karena memerlukan penyimpanan percobaan login pada database |
 
+
 ---
 
-# 15. Keamanan API
+# 15. API Dashboard Admin
+
+Dashboard Admin menyediakan ringkasan jumlah pengaduan berdasarkan status, daftar pengaduan sesuai status (tab) yang dipilih, dan pencarian pengaduan, sehingga admin dapat memantau dan menemukan pengaduan. Seluruh data diambil melalui satu endpoint, dan endpoint ini hanya membaca data.
+
+## 15.1 Informasi Endpoint
+
+| Atribut        | Nilai                                  |
+| -------------- | -------------------------------------- |
+| Method         | GET                                    |
+| Endpoint       | `/dashboard_admin.php`                 |
+| Authentication | Wajib login sebagai admin              |
+| Response       | JSON, dengan `Cache-Control: no-store` |
+
+Method selain GET ditolak dengan HTTP 405 dan header `Allow: GET`.
+
+## 15.2 Hak Akses
+
+- Request harus membawa session PHP yang valid dari login admin (bab 14). Tanpa session, backend membalas HTTP 401 `Silakan login terlebih dahulu`.
+- Akun dengan session valid tetapi role bukan `admin` ditolak dengan HTTP 403 `Akun ini tidak memiliki akses admin`.
+- Role diperiksa dari session dan **diperiksa ulang pada database** di setiap request. Admin yang role-nya diubah menjadi bukan admin kehilangan akses pada request berikutnya, tanpa menunggu session berakhir.
+- Pemeriksaan akses dilakukan sebelum parameter diproses. Request tanpa hak akses tidak menerima informasi apa pun tentang data.
+
+## 15.3 Request
+
+```http
+GET /dashboard_admin.php?status=dalam%20perbaikan&search=toilet&sort=terbaru&page=1&limit=10
+Cookie: PHPSESSID=<session_id>
+```
+
+| Parameter | Tipe    | Wajib | Default         | Aturan                                                               |
+| --------- | ------- | ----- | --------------- | -------------------------------------------------------------------- |
+| `status`  | string  | Tidak | dalam perbaikan | `dalam perbaikan`, `selesai`, atau `ditolak` (tab yang dipilih)      |
+| `search`  | string  | Tidak | kosong          | Maksimal 100 karakter. Mencari pada judul, lokasi, atau nama pelapor |
+| `sort`    | string  | Tidak | terbaru         | `terbaru` (tanggal terbaru lebih dulu) atau `terlama`                |
+| `page`    | integer | Tidak | 1               | Bilangan bulat 1 sampai 1.000.000                                    |
+| `limit`   | integer | Tidak | 10              | Bilangan bulat 1 sampai 100                                          |
+
+Aturan parameter:
+
+- Tanpa `status`, daftar yang dikembalikan adalah tab **Dalam Perbaikan** (tab pertama pada tampilan).
+- Penulisan `dalam_perbaikan` (garis bawah) diterima sebagai `dalam perbaikan`. Nilai `diproses` dan `diajukan` bukan status yang valid untuk daftar ini. Jumlah pengaduan `diajukan` tetap tampil pada `ringkasan`.
+- Parameter bernilai kosong (misalnya `status=` atau `page=`) dianggap tidak dikirim.
+- Nilai yang bukan teks (misalnya `status[]=selesai`) ditolak.
+- Parameter yang tidak dikenal diabaikan.
+- Berbeda dengan Dashboard (bab 6) dan Riwayat (bab 13) yang memakai nilai bawaan untuk parameter tidak valid, endpoint ini menolak parameter tidak valid dengan HTTP 400.
+- Pencarian tidak membedakan huruf besar dan kecil, dan hanya dilakukan pada pengaduan dengan status yang diminta. Karakter `%` dan `_` dicari sebagai teks biasa, bukan sebagai wildcard.
+
+## 15.4 Response Berhasil
+
+HTTP Status: `200 OK`
+
+```json
+{
+  "status": "success",
+  "message": "Data dashboard admin berhasil diambil",
+  "data": {
+    "user": {
+      "id_user": 12,
+      "nama": "Admin Pengaduan",
+      "email": "adminpengaduan@uinssc.ac.id",
+      "role": "admin"
+    },
+    "ringkasan": {
+      "total_pengaduan": 8,
+      "diajukan": 1,
+      "dalam_perbaikan": 3,
+      "selesai": 3,
+      "ditolak": 1
+    },
+    "pengaduan": [
+      {
+        "id_pengaduan": 52,
+        "judul": "Pintu Toilet Rusak",
+        "lokasi": "Lantai 1",
+        "status": "dalam perbaikan",
+        "foto": "https://res.cloudinary.com/.../foto.jpg",
+        "created_at": "2026-09-20 10:00:00",
+        "nama_fasilitas": "Toilet",
+        "nama_pelapor": "Budi"
+      }
+    ],
+    "pagination": {
+      "current_page": 1,
+      "per_page": 10,
+      "total_data": 3,
+      "total_pages": 1
+    }
+  }
+}
+```
+
+| Bagian                        | Keterangan                                                                                                 |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `user`                        | Profil admin yang login (`id_user`, `nama`, `email`, `role`)                                               |
+| `ringkasan.total_pengaduan`   | integer, jumlah seluruh pengaduan                                                                          |
+| `ringkasan.diajukan`          | integer, jumlah pengaduan berstatus `diajukan`                                                             |
+| `ringkasan.dalam_perbaikan`   | integer, jumlah pengaduan berstatus `dalam perbaikan`                                                      |
+| `ringkasan.selesai`           | integer, jumlah pengaduan berstatus `selesai`                                                              |
+| `ringkasan.ditolak`           | integer, jumlah pengaduan berstatus `ditolak`                                                              |
+| `pengaduan[].id_pengaduan`    | integer                                                                                                    |
+| `pengaduan[].judul`, `lokasi` | string                                                                                                     |
+| `pengaduan[].status`          | Selalu sama dengan status yang diminta                                                                     |
+| `pengaduan[].foto`            | URL https (data baru) atau path relatif `uploads/...` (data lama)                                          |
+| `pengaduan[].created_at`      | `YYYY-MM-DD HH:MM:SS`                                                                                      |
+| `pengaduan[].nama_fasilitas`  | Nama fasilitas yang diadukan                                                                               |
+| `pengaduan[].nama_pelapor`    | Nama pengguna yang membuat pengaduan. `id_user` pelapor tidak dikembalikan                                 |
+| `pagination`                  | `current_page`, `per_page`, `total_data`, `total_pages`, dihitung setelah `status` dan `search` diterapkan |
+
+Cara `ringkasan` dihitung:
+
+- Dihitung dari seluruh pengaduan pada tabel `pengaduan` pada saat request (`COUNT` per status).
+- **Tidak dipengaruhi** `status` tab, `search`, `page`, maupun `limit`.
+- Status yang tidak memiliki pengaduan bernilai `0`. Jika belum ada pengaduan sama sekali, seluruh nilai `0`.
+- `total_pengaduan` sama dengan jumlah keempat status.
+
+Data kosong:
+
+- Status tanpa pengaduan, pencarian tanpa hasil, atau halaman melebihi total dijawab HTTP 200 dengan `pengaduan` bernilai `[]`. Pada status atau pencarian tanpa hasil, `total_data` dan `total_pages` bernilai 0. `ringkasan` tetap berisi jumlah yang benar.
+- Daftar tidak pernah memuat pengaduan berstatus lain.
+
+Urutan: `terbaru` memakai `created_at` menurun lalu `id_pengaduan` menurun. `terlama` memakai `created_at` menaik lalu `id_pengaduan` menaik.
+
+## 15.5 Aturan Bisnis
+
+- Admin dapat melihat pengaduan dari seluruh pengguna, termasuk yang berstatus `ditolak`. Pengaduan `ditolak` tidak ditampilkan pada dashboard pengguna (bab 6).
+- Untuk status yang sama, `pagination.total_data` tanpa pencarian selalu sama dengan angka pada `ringkasan`, karena keduanya membaca tabel `pengaduan` yang sama.
+- Endpoint hanya menjalankan query `SELECT`. Tidak ada perubahan status maupun data pengaduan.
+- Jika pengambilan data gagal, backend membalas HTTP 500 tanpa `data`. Backend tidak pernah mengirim data parsial seolah-olah berhasil.
+
+## 15.6 Response Error
+
+```json
+{
+  "status": "error",
+  "message": "Status pengaduan tidak valid"
+}
+```
+
+| HTTP | Message                                    | Kondisi                                                                      |
+| ---- | ------------------------------------------ | ---------------------------------------------------------------------------- |
+| 401  | Silakan login terlebih dahulu              | Tidak ada session yang valid                                                 |
+| 403  | Akun ini tidak memiliki akses admin        | Session valid, tetapi role akun bukan `admin`                                |
+| 405  | Method tidak diizinkan                     | Method selain GET. Header `Allow: GET`                                       |
+| 400  | Status pengaduan tidak valid               | `status` bukan `dalam perbaikan`, `selesai`, atau `ditolak`, atau bukan teks |
+| 400  | Parameter page tidak valid                 | `page` bukan bilangan bulat 1 sampai 1.000.000                               |
+| 400  | Parameter limit tidak valid                | `limit` bukan bilangan bulat 1 sampai 100                                    |
+| 400  | Parameter sort tidak valid                 | `sort` bukan `terbaru` atau `terlama`                                        |
+| 400  | Kata kunci pencarian tidak valid           | `search` bukan teks                                                          |
+| 400  | Kata kunci pencarian maksimal 100 karakter | `search` lebih dari 100 karakter                                             |
+| 500  | Gagal memulai session                      | Session gagal dimulai                                                        |
+| 500  | Terjadi kesalahan pada server              | Pemeriksaan role pada database gagal                                         |
+| 500  | Gagal mengambil data dashboard admin       | Query ringkasan atau daftar gagal                                            |
+
+Semua response error tidak memiliki field `data`.
+
+## 15.7 Catatan Keputusan dan Konfirmasi
+
+| No  | Item                             | Keterangan                                                                                                                                                                                |
+| --- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Satu endpoint                    | Ringkasan, daftar per status, dan pencarian diambil melalui `/dashboard_admin.php`, sama seperti pola `/dashboard.php`. Setiap pergantian tab memuat ulang ringkasan dan daftar sekaligus |
+| 2   | Tab bawaan                       | Tanpa `status`, tab Dalam Perbaikan dipakai, sesuai tab pertama pada tampilan                                                                                                             |
+| 3   | Status `diajukan` bukan tab      | Sesuai card dan tampilan, daftar hanya untuk Dalam Perbaikan, Selesai, dan Ditolak. Pengaduan diajukan ditangani menu Verifikasi Pengaduan (di luar card ini)                             |
+| 4   | Kriteria pencarian               | Judul, lokasi, dan nama pelapor, dalam status yang diminta. **Perlu disepakati dengan FE**, sesuai ketergantungan pada card                                                               |
+| 5   | Validasi parameter ketat         | Parameter tidak valid dijawab 400, tidak diganti nilai bawaan seperti pada Dashboard dan Riwayat, supaya kesalahan frontend cepat terlihat. Perlu dikonfirmasi dengan FE                  |
+| 6   | `limit` bawaan 10                | Lebih besar daripada Dashboard (5) karena tampilan admin berbentuk tabel                                                                                                                  |
+| 7   | `nama_pelapor`                   | Admin perlu mengetahui pelapor, sehingga nama pelapor ditampilkan. Mockup saat ini belum menampilkannya                                                                                   |
+| 8   | Role diperiksa ulang ke database | Menambah satu query ringan per request, sebagai imbalan perubahan role langsung berlaku                                                                                                   |
+| 9   | Detail pengaduan untuk admin     | Tombol panah pada daftar belum dicakup card ini. `GET /detail_pengaduan.php` dapat dibuka oleh pengguna yang login, termasuk untuk pengaduan ditolak milik pengguna lain (lihat 13.9)     |
+| 10  | Nilai status                     | Memakai `dalam perbaikan` sebagai nilai resmi, sesuai keputusan pada bab 13                                                                                                               |
+
+
+---
+
+# 16. Keamanan API
 
 Ketentuan keamanan:
 
@@ -1737,12 +1912,16 @@ Ketentuan keamanan:
 21. Session lama diganti saat login admin berhasil (ID session diperbarui dan data session sebelumnya dihapus).
 22. Request login admin dibatasi ukurannya (4096 byte), harus berupa objek JSON, dan tipe data setiap field diperiksa sebelum diproses.
 23. Response login admin memakai `Cache-Control: no-store`.
+24. Endpoint dashboard admin hanya dapat diakses oleh akun ber-role `admin`. Role diperiksa dari session dan diperiksa ulang pada database di setiap request.
+25. Request tanpa hak akses dijawab 401 atau 403 sebelum parameter diproses, tanpa informasi tentang data.
+26. Endpoint dashboard admin hanya membaca data. Urutan data berasal dari daftar nilai tetap, dan pencarian memakai prepared statement dengan karakter khusus LIKE yang di-escape.
+27. Response dashboard admin memakai `Cache-Control: no-store`.
 
 ---
 
-# 16. Skenario Pengujian API
+# 17. Skenario Pengujian API
 
-## 16.1 Registrasi
+## 17.1 Registrasi
 
 | No  | Skenario                          | Hasil yang Diharapkan |
 | --- | --------------------------------- | --------------------- |
@@ -1755,7 +1934,7 @@ Ketentuan keamanan:
 | 7   | Konfirmasi password berbeda       | Request ditolak       |
 | 8   | Email sudah terdaftar             | HTTP 409              |
 
-## 16.2 Login
+## 17.2 Login
 
 | No  | Skenario                 | Hasil yang Diharapkan |
 | --- | ------------------------ | --------------------- |
@@ -1765,7 +1944,7 @@ Ketentuan keamanan:
 | 4   | Email kosong             | Request ditolak       |
 | 5   | Password kosong          | Request ditolak       |
 
-## 16.3 Logout
+## 17.3 Logout
 
 | No  | Skenario                    | Hasil yang Diharapkan |
 | --- | --------------------------- | --------------------- |
@@ -1773,7 +1952,7 @@ Ketentuan keamanan:
 | 2   | Logout tanpa session        | HTTP 401              |
 | 3   | Session tidak valid         | HTTP 401              |
 
-## 16.4 Dashboard
+## 17.4 Dashboard
 
 | No  | Skenario                            | Hasil yang Diharapkan           |
 | --- | ----------------------------------- | ------------------------------- |
@@ -1790,7 +1969,7 @@ Ketentuan keamanan:
 | 11  | Filter status dalam perbaikan       | Hanya pengaduan dalam perbaikan |
 | 12  | Filter status diproses (nilai lama) | HTTP 400                        |
 
-## 16.5 Detail Pengaduan
+## 17.5 Detail Pengaduan
 
 | No  | Skenario                                    | Hasil yang Diharapkan                                                                            |
 | --- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -1800,17 +1979,17 @@ Ketentuan keamanan:
 | 4   | ID pengaduan tidak ditemukan                | HTTP 404                                                                                         |
 | 5   | Query detail gagal                          | HTTP 500                                                                                         |
 | 6   | Pengaduan yang belum di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `null`                                                           |
-| 7   | Pengaduan yang sudah di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `upvote` atau `downvote` sesuai vote aktif (lihat V07 pada 16.8) |
+| 7   | Pengaduan yang sudah di-vote pengguna       | HTTP 200, `vote.pilihan_user` = `upvote` atau `downvote` sesuai vote aktif (lihat V07 pada 17.8) |
 | 8   | Struktur `vote`                             | Berisi tepat `upvote`, `downvote`, `pilihan_user`                                                |
 
-## 16.6 Daftar Fasilitas
+## 17.6 Daftar Fasilitas
 
 | No  | Skenario                     | Hasil yang Diharapkan        |
 | --- | ---------------------------- | ---------------------------- |
 | 1   | Request dengan session aktif | Daftar fasilitas ditampilkan |
 | 2   | Request tanpa login          | HTTP 401                     |
 
-## 16.7 Membuat Pengaduan
+## 17.7 Membuat Pengaduan
 
 | No  | Skenario                                                                                    | Hasil yang Diharapkan                                                                  |
 | --- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -1832,9 +2011,9 @@ Ketentuan keamanan:
 | 13  | Terjadi kegagalan saat memeriksa lock                                                       | HTTP 500                                                                               |
 | 14  | Request bersamaan ditolak                                                                   | Tidak ada data pengaduan baru dari request yang ditolak                                |
 
-## 16.8 Vote
+## 17.8 Vote
 
-Pengujian dilakukan dengan Postman pada collection Sprint 3, folder **07 Vote**, menggunakan satu session (cookie jar) yang sama dari langkah 1 sampai 12. Request ke `/vote.php` memakai body **x-www-form-urlencoded** (bukan raw JSON). Folder dijalankan berurutan (Collection Runner).
+Pengujian dilakukan dengan Postman pada collection Sprint 5, folder **07 Vote**, menggunakan satu session (cookie jar) yang sama dari langkah 1 sampai 12. Request ke `/vote.php` memakai body **x-www-form-urlencoded** (bukan raw JSON). Folder dijalankan berurutan (Collection Runner).
 
 ### Prasyarat
 
@@ -2043,7 +2222,7 @@ Jika `login_email` pada environment diisi dengan akun tetap, hapus vote akun ter
 
 Jika tidak dibersihkan, menjalankan ulang folder dengan akun yang sama menghasilkan `changed` pada langkah 2 (vote aktif sebelumnya adalah downvote), sehingga pengujian gagal. Test `DTL-03` di folder 05 juga gagal karena jumlah downvote di database lebih besar dari `fixture_downvote`.
 
-## 16.9 Komentar
+## 17.9 Komentar
 
 Pengujian dilakukan dengan Postman pada folder **08 Komentar**, setelah folder 04 Pengaduan pada Collection Runner penuh. Folder ini memakai pengaduan baru dari `created_pengaduan_id` (dibuat oleh `PGD-03`) sehingga tidak mengubah jumlah komentar pada pengaduan fixture (`fixture_komentar_id`) yang dibandingkan oleh test Detail Pengaduan. Komentar tidak dapat dihapus melalui API, jadi setiap run menambah komentar pada pengaduan uji. Jumlah komentar pada test dihitung relatif terhadap jumlah awal (`komentar_total_awal`, disimpan oleh `KMT-02`), sehingga folder dapat dijalankan ulang tanpa pembersihan. Hasil kosong (`[]`) hanya terjadi pada pengaduan yang belum pernah dikomentari, yaitu pada run penuh setelah folder 04.
 
@@ -2073,7 +2252,7 @@ Pengujian dilakukan dengan Postman pada folder **08 Komentar**, setelah folder 0
 
 Skenario kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
 
-## 16.10 Riwayat
+## 17.10 Riwayat
 
 Pengujian dilakukan dengan Postman pada folder **09 Riwayat**, setelah folder 04 Pengaduan pada Collection Runner penuh.
 
@@ -2097,7 +2276,7 @@ Pengujian dilakukan dengan Postman pada folder **09 Riwayat**, setelah folder 04
 
 Kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode. Status pengaduan yang berubah diverifikasi dengan membandingkan status pada daftar riwayat dan Detail Pengaduan, yang keduanya membaca database saat request.
 
-## 16.11 Login Admin
+## 17.11 Login Admin
 
 Pengujian dilakukan dengan Postman pada folder **10 Login Admin**. Variabel environment `admin_email` dan `admin_password` harus berisi akun admin dari `database/tambah_admin.sql`.
 
@@ -2125,15 +2304,47 @@ Pengujian dilakukan dengan Postman pada folder **10 Login Admin**. Variabel envi
 
 Kegagalan database atau jaringan (HTTP 500 `Terjadi kesalahan pada server`) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
 
+## 17.12 Dashboard Admin
+
+Pengujian dilakukan dengan Postman pada folder **11 Dashboard Admin**. Variabel environment `admin_email` dan `admin_password` harus berisi akun admin dari `database/tambah_admin.sql`.
+
+| No  | Skenario                                                          | Hasil yang diharapkan                                                                         |
+| --- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 1   | Mengambil data dashboard (ringkasan jumlah pengaduan)             | HTTP 200, empat status dan `total_pengaduan` bertipe integer, total sama dengan jumlah status |
+| 2   | Ringkasan ketika salah satu status tidak memiliki pengaduan       | Nilai `0` untuk status tersebut (seluruh nilai `0` jika tabel kosong)                         |
+| 3   | Tanpa parameter `status`                                          | Daftar tab Dalam Perbaikan, 10 data per halaman                                               |
+| 4   | Daftar pengaduan Dalam Perbaikan                                  | Semua item berstatus `dalam perbaikan`, `total_data` sama dengan ringkasan                    |
+| 5   | Daftar pengaduan Selesai                                          | Semua item berstatus `selesai`                                                                |
+| 6   | Daftar pengaduan Ditolak                                          | Semua item berstatus `ditolak` (admin dapat melihat pengaduan ditolak)                        |
+| 7   | Status `dalam_perbaikan` (garis bawah)                            | Hasil sama dengan `dalam perbaikan`                                                           |
+| 8   | Pencarian pada tab yang dipilih                                   | Semua item cocok dengan kata kunci dan berstatus sesuai tab                                   |
+| 9   | Pencarian dengan status tab lain                                  | Hanya pengaduan berstatus tab tersebut yang muncul                                            |
+| 10  | Pencarian tidak ditemukan                                         | HTTP 200, `pengaduan` = `[]`, `total_data` 0, `total_pages` 0, ringkasan tetap                |
+| 11  | Urutan `terlama`                                                  | Tanggal menaik                                                                                |
+| 12  | Pagination `limit=1` dan halaman melebihi total                   | Satu item dengan `total_pages` sesuai; halaman berlebih menghasilkan `[]`                     |
+| 13  | `status` kosong                                                   | Dianggap tidak dikirim (tab Dalam Perbaikan)                                                  |
+| 14  | `status` `diajukan`, `diproses`, tidak dikenal, atau berupa array | HTTP 400 `Status pengaduan tidak valid`                                                       |
+| 15  | `page` nol atau bukan angka                                       | HTTP 400 `Parameter page tidak valid`                                                         |
+| 16  | `limit` nol atau lebih dari 100                                   | HTTP 400 `Parameter limit tidak valid`                                                        |
+| 17  | `sort` tidak valid                                                | HTTP 400 `Parameter sort tidak valid`                                                         |
+| 18  | Kata kunci lebih dari 100 karakter                                | HTTP 400 `Kata kunci pencarian maksimal 100 karakter`                                         |
+| 19  | Ringkasan setelah seluruh pembacaan                               | Sama dengan ringkasan awal (endpoint hanya membaca)                                           |
+| 20  | Dashboard pengguna dibandingkan dengan ringkasan admin            | `total_data` dashboard pengguna = total pengaduan dikurangi yang ditolak                      |
+| 21  | Method POST                                                       | HTTP 405, header `Allow: GET`                                                                 |
+| 22  | Permintaan tanpa login                                            | HTTP 401 `Silakan login terlebih dahulu`                                                      |
+| 23  | Permintaan oleh akun pengguna biasa                               | HTTP 403 `Akun ini tidak memiliki akses admin`                                                |
+
+Kegagalan database (HTTP 500) tidak dapat dipicu melalui Postman dan hanya diverifikasi dari kode.
+
 ---
 
-# 17. Catatan Audit Sprint 3
+# 18. Catatan Audit Sprint 5
 
 Dokumentasi ini digunakan sebagai kontrak antara frontend dan backend.
 
 Sebelum kontrak dinyatakan final, lakukan pemeriksaan berikut.
 
-## 17.1 Checklist Audit Umum
+## 18.1 Checklist Audit Umum
 
 - [ ] Nama endpoint sesuai dengan file API aktual.
 - [ ] Method HTTP sesuai implementasi.
@@ -2148,7 +2359,7 @@ Sebelum kontrak dinyatakan final, lakukan pemeriksaan berikut.
 - [ ] Semua skenario pengujian memiliki bukti hasil.
 - [ ] Endpoint yang belum dibuat tidak dinyatakan sebagai endpoint aktif.
 
-## 17.2 Checklist Audit Fitur Vote
+## 18.2 Checklist Audit Fitur Vote
 
 Status `[x]` berarti terbukti dari kode backend, skema database, atau contoh response Postman pada arsip proyek. Status `[ ]` berarti belum ada bukti atau perlu keputusan tim.
 
@@ -2170,14 +2381,14 @@ Status `[x]` berarti terbukti dari kode backend, skema database, atau contoh res
 - [x] Penanganan kesalahan server (ada di kode; belum diuji lewat Postman).
 - [x] Detail Pengaduan memuat `vote.pilihan_user` dari session (kode backend, v1.4.3).
 - [x] `vote.pilihan_user` pada Detail Pengaduan terbukti lewat Postman (`DTL-01` 10 dari 10, `DTL-05` lulus, contoh response V07 tersimpan).
-- [x] Pengujian Postman disiapkan (subbab 16.8, folder 07 Vote).
+- [x] Pengujian Postman disiapkan (subbab 17.8, folder 07 Vote).
 - [ ] Dokumentasi kontrak API diserahkan kepada frontend.
 - [ ] Frontend dihubungkan ke endpoint Vote dengan format form data (subbab 11.15 nomor 1).
 - [x] Constraint unik (`id_pengaduan`, `id_user`) pada tabel `vote` dikonfirmasi terhadap skema database.
 - [x] Folder 07 Vote dijalankan penuh (15 langkah) dengan hasil lulus (Collection Runner: tidak ada test gagal pada folder 07).
 - [x] Vote akun uji dibersihkan dan `DTL-03` lulus (jumlah vote di database sama dengan `fixture_upvote` dan `fixture_downvote`).
 
-## 17.3 Checklist Audit Fitur Komentar
+## 18.3 Checklist Audit Fitur Komentar
 
 Status `[x]` berarti terbukti dari kode backend atau skema database. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
 
@@ -2194,13 +2405,13 @@ Status `[x]` berarti terbukti dari kode backend atau skema database. Status `[ ]
 - [x] Jumlah komentar pada Dashboard (`comment_count`) dihitung dari tabel `komentar`.
 - [x] Penanganan sesi tidak valid, pengaduan tidak ditemukan, input tidak valid, dan kegagalan database ada di kode.
 - [x] Endpoint edit dan hapus komentar tidak dibuat.
-- [x] Folder 08 Komentar dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
-- [x] Contoh response tersimpan di Postman untuk setiap request komentar.
-- [x] Batas 1000 karakter dikonfirmasi dengan tim dan FE.
-- [x] Dokumentasi kontrak API diserahkan kepada frontend.
-- [x] Frontend dihubungkan ke endpoint komentar (form komentar pada `detail-pengaduan.js` masih dinonaktifkan).
+- [ ] Folder 08 Komentar dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
+- [ ] Contoh response tersimpan di Postman untuk setiap request komentar.
+- [ ] Batas 1000 karakter dikonfirmasi dengan tim dan FE.
+- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
+- [ ] Frontend dihubungkan ke endpoint komentar (form komentar pada `detail-pengaduan.js` masih dinonaktifkan).
 
-## 17.4 Checklist Audit Fitur Riwayat
+## 18.4 Checklist Audit Fitur Riwayat
 
 Status `[x]` berarti terbukti dari kode backend atau pengujian logika query. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
 
@@ -2221,7 +2432,7 @@ Status `[x]` berarti terbukti dari kode backend atau pengujian logika query. Sta
 - [ ] Dokumentasi kontrak API diserahkan kepada frontend.
 - [ ] Halaman FE riwayat dibuat dan dihubungkan ke endpoint.
 
-## 17.5 Checklist Audit Fitur Login Admin
+## 18.5 Checklist Audit Fitur Login Admin
 
 Status `[x]` berarti terbukti dari kode backend atau simulasi logika validasi. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
 
@@ -2238,4 +2449,24 @@ Status `[x]` berarti terbukti dari kode backend atau simulasi logika validasi. S
 - [ ] Folder 10 Login Admin dijalankan penuh (21 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
 - [ ] Contoh response tersimpan di Postman untuk setiap request login admin.
 - [ ] Respons akun bukan admin (403 atau 401 umum) disepakati dengan FE.
+- [ ] Dokumentasi kontrak API diserahkan kepada frontend.
+
+## 18.6 Checklist Audit Fitur Dashboard Admin
+
+Status `[x]` berarti terbukti dari kode backend atau pengujian logika query. Status `[ ]` berarti menunggu bukti pengujian atau keputusan tim.
+
+- [x] Endpoint ringkasan jumlah pengaduan berdasarkan status tersedia (`ringkasan` pada `GET /dashboard_admin.php`).
+- [x] Endpoint daftar pengaduan Dalam Perbaikan, Selesai, dan Ditolak tersedia (parameter `status`).
+- [x] Mekanisme pencarian berdasarkan kata kunci tersedia dan dibatasi pada status yang diminta.
+- [x] Hasil pencarian hanya memuat data yang sesuai dengan kata kunci dan status.
+- [x] Perhitungan jumlah pengaduan dilakukan dari database dan tidak dipengaruhi filter.
+- [x] Autentikasi dan hak akses admin divalidasi (`AdminMiddleware`, role diperiksa ulang ke database).
+- [x] Daftar kosong dan hasil pencarian kosong ditangani (HTTP 200 dengan daftar kosong).
+- [x] Request tidak valid (HTTP 400) dan kegagalan pengambilan data (HTTP 500 tanpa data) ditangani.
+- [x] Endpoint hanya melakukan pembacaan data.
+- [x] Format respons API ditetapkan pada kontrak (bab 15).
+- [ ] Kriteria pencarian dan format request dan response disepakati dengan frontend.
+- [ ] Folder 11 Dashboard Admin dijalankan penuh (30 langkah) dengan hasil lulus, dibuktikan hasil Collection Runner.
+- [ ] Contoh response tersimpan di Postman untuk setiap request dashboard admin.
+- [ ] Perbaikan dashboard pengguna (pengaduan ditolak disembunyikan) terpasang pada server uji, sebagai prasyarat `DSA-25`.
 - [ ] Dokumentasi kontrak API diserahkan kepada frontend.
