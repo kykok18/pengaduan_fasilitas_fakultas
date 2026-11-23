@@ -223,9 +223,7 @@
                     class="profile-btn"
                     id="profileBtn">
 
-                    <span id="userInitial">
-                        R
-                    </span>
+                    <span id="userInitial"></span>
 
                 </div>
 
@@ -1062,6 +1060,33 @@
 
 <!-- API -->
 <script src="javascript/api.js"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const userInitial = document.getElementById("userInitial");
+
+    if (!userInitial) return;
+
+    // Menggunakan fungsi session yang sudah dipakai Dashboard
+    let currentUser = null;
+
+    if (typeof getUserSession === "function") {
+        currentUser = getUserSession();
+    }
+
+    // Mengambil nama pengguna yang sedang login
+    const nama = String(currentUser?.nama || "").trim();
+
+    if (nama) {
+        userInitial.textContent = nama.charAt(0).toUpperCase();
+    } else {
+        userInitial.textContent = "?";
+    }
+
+});
+</script>
 
 
 <!-- Riwayat Pengaduan US-10B-FE -->

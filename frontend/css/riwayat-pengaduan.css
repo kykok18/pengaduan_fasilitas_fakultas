@@ -1151,23 +1151,27 @@
 }
 
 
-/* PAGINATION */
+/* PAGINATION - PENYESUAIAN FIGMA */
 
 .riwayat-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: 12px;
 }
 
 .riwayat-pagination .page-btn {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
 }
 
 .riwayat-pagination .page-btn.active {
-    border-color: #0B5E3B;
-    font-weight: 600;
+    background: #FFFFFF;
+    border: 1px solid #0B5E3B;
+    border-radius: 5px;
+    color: #0B5E3B;
+    font-weight: 400;
 }
 
 .riwayat-pagination .page-btn:disabled {
@@ -1179,6 +1183,7 @@
     outline: 2px solid #0B5E3B;
     outline-offset: 2px;
 }
+
 
 
 /* EMPTY, LOADING, ERROR */
