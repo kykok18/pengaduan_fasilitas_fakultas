@@ -1,0 +1,1104 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Riwayat Pengaduan - FITK SIBER AHSAN</title>
+
+    <!-- FONT POPPINS -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+
+<!-- FONT INTER UNTUK PAGINATION -->
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap"
+    rel="stylesheet"
+>
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- FONT AWESOME -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- CSS DASHBOARD -->
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+    <!-- CSS RIWAYAT -->
+    <link
+        rel="stylesheet"
+        href="css/riwayat-pengaduan.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- ==========================================
+     SIDEBAR DETAIL PENGADUAN
+     ========================================== -->
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+        <img
+            src="img/logo-fitk.png"
+            alt="Logo FITK"
+            class="sidebar-logo"
+        >
+
+        <div class="sidebar-header-text">
+            <h3>FITK SIBER AHSAN</h3>
+            <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+            <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
+        </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <nav class="sidebar-nav">
+        <ul>
+
+            <li class="active">
+                <a href="dashboard.html">
+                    <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.606 17.3555L18.5081 9.23687L17.9653 8.6924C17.8416 8.56917 17.6744 8.5 17.5 8.5C17.3257 8.5 17.1585 8.56917 17.0348 8.6924L8.39408 17.3555C8.26736 17.4821 8.1672 17.6329 8.09953 17.799C8.03186 17.9651 7.99805 18.1431 8.00009 18.3225C8.00847 19.0625 8.62252 19.6532 9.36022 19.6532H10.2509V26.5H24.7492V19.6532H25.6587C26.0171 19.6532 26.3545 19.5123 26.6081 19.258C26.7329 19.1331 26.8319 18.9847 26.8992 18.8212C26.9664 18.6578 27.0007 18.4825 27 18.3057C27 17.9483 26.8596 17.6099 26.606 17.3555ZM18.6736 24.9864H16.3264V20.698H18.6736V24.9864ZM23.2402 18.1396V24.9864H20.0149V20.1934C20.0149 19.7289 19.6398 19.3526 19.1766 19.3526H15.8235C15.3603 19.3526 14.9852 19.7289 14.9852 20.1934V24.9864H11.7598V18.1396H9.74793L17.5021 10.3678L17.9862 10.8534L25.2542 18.1396H23.2402Z" fill="#0B5E3B"/>
+</svg>
+
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="buat-pengaduan.html">
+                    <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<mask id="stroke0_1420_1542" maskUnits="userSpaceOnUse" x="9.5" y="7.5" width="16" height="20" fill="black">
+<rect fill="white" x="9.5" y="7.5" width="16" height="20"/>
+<path d="M11.5 23.9V11.1C11.5 10.6757 11.658 10.2687 11.9393 9.96863C12.2206 9.66857 12.6022 9.5 13 9.5H18.67C19.0619 9.50005 19.4383 9.66373 19.7185 9.956L23.0485 13.4296C23.1914 13.5786 23.305 13.7565 23.3825 13.953C23.46 14.1494 23.5 14.3604 23.5 14.5736V23.9C23.5 24.3243 23.342 24.7313 23.0607 25.0314C22.7794 25.3314 22.3978 25.5 22 25.5H13C12.6022 25.5 12.2206 25.3314 11.9393 25.0314C11.658 24.7313 11.5 24.3243 11.5 23.9Z"/>
+</mask>
+<path d="M11.5 11.1V23.9C11.5 24.3243 11.658 24.7313 11.9393 25.0314C12.2206 25.3314 12.6022 25.5 13 25.5H22C22.3978 25.5 22.7794 25.3314 23.0607 25.0314C23.342 24.7313 23.5 24.3243 23.5 23.9V14.5736C23.5 14.3604 23.46 14.1494 23.3825 13.953C23.305 13.7565 23.1914 13.5786 23.0485 13.4296L19.7185 9.956C19.4383 9.66373 19.0619 9.50005 18.67 9.5H13C12.6022 9.5 12.2206 9.66857 11.9393 9.96863C11.658 10.2687 11.5 10.6757 11.5 11.1Z" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B" mask="url(#stroke0_1420_1542)"/>
+<use xlink:href="#stroke1_1420_1542" fill="#0B5E3B"/>
+<mask id="stroke2_1420_1542" maskUnits="userSpaceOnUse" x="13.5" y="14.9" width="8" height="9" fill="black">
+<rect fill="white" x="13.5" y="14.9" width="8" height="9"/>
+<use xlink:href="#stroke1_1420_1542"/>
+</mask>
+<path d="M14.7613 23.079C14.7274 23.0794 14.6938 23.0718 14.6625 23.0566C14.6311 23.0414 14.6025 23.019 14.5784 22.9905C14.5508 22.9578 14.5295 22.9182 14.5161 22.8745C14.5027 22.8308 14.4976 22.7841 14.501 22.7377L14.6101 21.1201C14.6147 21.045 14.6423 20.9745 14.6874 20.9221L18.5769 16.2629C18.7938 16.0202 19.082 15.89 19.3787 15.9006C19.6735 15.9034 19.9564 16.0404 20.1699 16.284C20.3747 16.5359 20.4925 16.8712 20.4997 17.2227C20.5068 17.5743 20.4029 17.9161 20.2086 18.1797L16.3156 22.8599C16.2721 22.9119 16.215 22.9446 16.1539 22.9526L14.7859 23.1L14.7613 23.079ZM15.1129 21.2844L15.0391 22.4386L16.0027 22.3333L19.8358 17.7331C19.9106 17.6272 19.9583 17.4977 19.9735 17.3602C19.9886 17.2227 19.9705 17.0828 19.9212 16.9573C19.872 16.8318 19.7937 16.7258 19.6956 16.652C19.5976 16.5782 19.4839 16.5396 19.3681 16.5409C19.292 16.5349 19.2156 16.5475 19.1437 16.5779C19.0717 16.6083 19.0057 16.6559 18.9496 16.7179L15.1129 21.2844Z" stroke-width="0.6" stroke-linecap="round" stroke="#0B5E3B" mask="url(#stroke2_1420_1542)"/>
+<path d="M19 9.5V12.7C19 13.1243 19.158 13.5313 19.4393 13.8314C19.7206 14.1314 20.1022 14.3 20.5 14.3H23.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
+<defs>
+<path id="stroke1_1420_1542" d="M14.7613 23.079C14.7274 23.0794 14.6938 23.0718 14.6625 23.0566C14.6311 23.0414 14.6025 23.019 14.5784 22.9905C14.5508 22.9578 14.5295 22.9182 14.5161 22.8745C14.5027 22.8308 14.4976 22.7841 14.501 22.7377L14.6101 21.1201C14.6147 21.045 14.6423 20.9745 14.6874 20.9221L18.5769 16.2629C18.7938 16.0202 19.082 15.89 19.3787 15.9006C19.6735 15.9034 19.9564 16.0404 20.1699 16.284C20.3747 16.5359 20.4925 16.8712 20.4997 17.2227C20.5068 17.5743 20.4029 17.9161 20.2086 18.1797L16.3156 22.8599C16.2721 22.9119 16.215 22.9446 16.1539 22.9526L14.7859 23.1L14.7613 23.079ZM15.1129 21.2844L15.0391 22.4386L16.0027 22.3333L19.8358 17.7331C19.9106 17.6272 19.9583 17.4977 19.9735 17.3602C19.9886 17.2227 19.9705 17.0828 19.9212 16.9573C19.872 16.8318 19.7937 16.7258 19.6956 16.652C19.5976 16.5782 19.4839 16.5396 19.3681 16.5409C19.292 16.5349 19.2156 16.5475 19.1437 16.5779C19.0717 16.6083 19.0057 16.6559 18.9496 16.7179L15.1129 21.2844Z"/>
+</defs>
+</svg>
+                    <span>Buat Pengaduan</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="riwayat-pengaduan.html">
+                    <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.6253 21.1091C11.3772 22.6298 12.597 23.8692 14.1054 24.6453C15.6027 25.4146 17.3102 25.6743 18.9685 25.3849C20.6319 25.0921 22.1558 24.2688 23.3125 23.0381C24.4796 21.7954 25.2228 20.2148 25.4352 18.5232C25.6506 16.8278 25.3258 15.1076 24.5072 13.6074C23.6961 12.1186 22.4282 10.9298 20.8903 10.2161C19.3629 9.50869 17.6464 9.31893 16.0014 9.67566C14.3569 10.0321 13.0094 10.8428 11.8947 12.1247C11.7605 12.2669 11.2413 12.8412 10.8102 13.7079M13.5 13.9443L10.292 14.5844L9.5 11.2775M17.5001 14.8333V18.389L20.1667 20.1669" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
+</svg>
+                    <span>Riwayat Pengaduan</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <!-- LOGOUT -->
+    <div class="sidebar-logout">
+        <a href="#" id="logoutBtn" aria-label="Logout">
+            <svg width="20" height="20" viewBox="0 0 24 24"
+                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 4H5V20H10"
+                      stroke="#D02316" stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M11 12H21M17 8L21 12L17 16"
+                      stroke="#D02316" stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+            <span>Logout</span>
+        </a>
+    </div>
+
+</aside>
+
+
+    <!-- ======================================
+         NAVBAR
+    ======================================= -->
+
+    <header class="navbar">
+
+        <div class="container nav-container">
+
+            <div class="nav-left">
+
+                <!-- MENU MOBILE -->
+                
+<!-- TOMBOL HAMBURGER -->
+<button
+    type="button"
+    class="detail-menu-toggle"
+    id="menuToggle"
+    aria-label="Buka sidebar"
+    aria-controls="sidebar"
+    aria-expanded="false">
+
+    <svg width="23" height="23" viewBox="0 0 24 24"
+         fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 6H20M4 12H20M4 18H20"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"/>
+    </svg>
+
+</button>
+
+
+
+                <!-- LOGO -->
+                <div class="logo">
+
+                    <img
+                        src="img/logo-fitk.png"
+                        alt="Logo FITK"
+                        class="logo-img"
+                    >
+
+                    <div class="logo-text">
+
+                        <span class="logo-title">
+                            FITK SIBER AHSAN
+                        </span>
+
+                        <span class="logo-sub">
+                            Fakultas Ilmu Tarbiyah dan Keguruan
+                        </span>
+
+                        <span class="logo-sub highlight">
+                            UIN Siber Syekh Nurjati Cirebon
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROFILE -->
+            <div class="nav-actions">
+
+                <div
+                    class="profile-btn"
+                    id="profileBtn">
+
+                    <span id="userInitial"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ======================================
+         MAIN CONTENT
+    ======================================= -->
+
+    <main class="riwayat-main container">
+
+
+        
+<!-- ==================================
+     HEADING RIWAYAT — SESUAI FIGMA
+=================================== -->
+
+<section class="riwayat-heading">
+
+    <!-- KEMBALI KE DASHBOARD -->
+    <a
+        href="dashboard.html"
+        class="riwayat-back">
+
+        <svg width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.09186 1.59321C6.24473 1.41362 6.32795 1.17609 6.32399 0.930656C6.32004 0.685223 6.22921 0.451052 6.07065 0.277478C5.91209 0.103903 5.69817 0.00447798 5.47397 0.000147597C5.24976 -0.00418278 5.03277 0.0869199 4.86872 0.254263L0.253098 5.3069C0.0910311 5.48453 9.53674e-07 5.72532 9.53674e-07 5.97637C9.53674e-07 6.22742 0.0910311 6.46821 0.253098 6.64584L4.86872 11.6985C4.94795 11.7916 5.04349 11.8662 5.14965 11.918C5.25581 11.9698 5.37041 11.9976 5.48661 11.9999C5.60281 12.0021 5.71823 11.9787 5.82599 11.9311C5.93375 11.8834 6.03164 11.8125 6.11382 11.7225C6.196 11.6326 6.26079 11.5254 6.30432 11.4074C6.34784 11.2895 6.36922 11.1631 6.36717 11.0359C6.36512 10.9087 6.33968 10.7833 6.29238 10.6671C6.24508 10.5508 6.17688 10.4463 6.09186 10.3595L2.95323 6.92374H14.1346C14.3641 6.92374 14.5842 6.82393 14.7465 6.64626C14.9088 6.46859 15 6.22763 15 5.97637C15 5.72511 14.9088 5.48414 14.7465 5.30648C14.5842 5.12881 14.3641 5.029 14.1346 5.029H2.95323L6.09186 1.59321Z" fill="#0B5E3B"/>
+</svg>
+
+
+
+        <span>Kembali ke Dashboard</span>
+
+    </a>
+
+    <!-- DESKRIPSI -->
+    <div class="riwayat-description">
+
+        Lihat seluruh pengaduan yang telah Anda buat
+        beserta status penanganannya
+
+    </div>
+
+</section>
+
+
+
+        
+<!-- ==================================
+     RINGKASAN RIWAYAT — FIGMA
+=================================== -->
+
+<section class="riwayat-summary"
+         aria-label="Ringkasan pengaduan">
+
+    <!-- TOTAL PENGADUAN -->
+    <div class="riwayat-summary-total">
+
+        <!-- ICON -->
+        <div class="riwayat-summary-icon">
+
+            
+<svg
+    width="12"
+    height="16"
+    viewBox="0 0 12 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+>
+    <path
+        d="M2 0.7H7.1L11.3 4.9V13.8
+           C11.3 14.63 10.63 15.3 9.8 15.3H2
+           C1.17 15.3 0.5 14.63 0.5 13.8V2.2
+           C0.5 1.37 1.17 0.7 2 0.7Z"
+        stroke="#0B5E3B"
+        stroke-width="1.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M7.1 0.7V4.1C7.1 4.54 7.46 4.9 7.9 4.9H11.3"
+        stroke="#0B5E3B"
+        stroke-width="1.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+</svg>
+
+
+        </div>
+
+        <!-- TOTAL INFO -->
+        <div class="riwayat-summary-info">
+
+            <h2>Total Pengaduan</h2>
+
+            <strong id="totalPengaduan">-</strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- DIVIDER -->
+    <div class="riwayat-summary-divider"></div>
+
+
+    <!-- STATISTIK STATUS -->
+    <div class="riwayat-status-list">
+
+        <!-- DIAJUKAN -->
+        <div class="riwayat-status-item">
+
+            <span class="status-dot dot-diajukan"></span>
+
+            <span class="riwayat-status-label">
+                Diajukan
+            </span>
+
+            <strong id="totalDiajukan">-</strong>
+
+        </div>
+
+        <!-- DALAM PERBAIKAN -->
+        <div class="riwayat-status-item">
+
+            <span class="status-dot dot-perbaikan"></span>
+
+            <span class="riwayat-status-label">
+                Dalam Perbaikan
+            </span>
+
+            <strong id="totalPerbaikan">-</strong>
+
+        </div>
+
+        <!-- SELESAI -->
+        <div class="riwayat-status-item">
+
+            <span class="status-dot dot-selesai"></span>
+
+            <span class="riwayat-status-label">
+                Selesai
+            </span>
+
+            <strong id="totalSelesai">-</strong>
+
+        </div>
+
+        <!-- DITOLAK -->
+        <div class="riwayat-status-item">
+
+            <span class="status-dot dot-ditolak"></span>
+
+            <span class="riwayat-status-label">
+                Ditolak
+            </span>
+
+            <strong id="totalDitolak">-</strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+        <!-- ==================================
+             PENCARIAN
+        =================================== -->
+
+        <section class="riwayat-search-row">
+
+            <!-- INPUT PENCARIAN -->
+            <label class="riwayat-search-box">
+
+                <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<use xlink:href="#stroke0_3150_2404" fill="black"/>
+<mask id="stroke1_3150_2404" fill="white">
+<use xlink:href="#stroke0_3150_2404"/>
+</mask>
+<path d="M14.9549 12.0656L10.0856 7.84547C10.8412 6.99884 11.25 5.96372 11.25 4.87498C11.25 3.57173 10.6631 2.34974 9.60183 1.42837C8.54059 0.506998 7.12684 0 5.62498 0C4.12311 0 2.70936 0.508623 1.64812 1.42837C0.584997 2.34811 0 3.57173 0 4.87498C0 6.1766 0.586872 7.40184 1.64812 8.32159C2.70936 9.24296 4.12123 9.74996 5.62498 9.74996C6.88122 9.74996 8.07372 9.39571 9.05059 8.74246L13.9199 12.9609C13.9342 12.9733 13.9512 12.9831 13.9698 12.9898C13.9885 12.9965 14.0085 13 14.0287 13C14.0489 13 14.0689 12.9965 14.0875 12.9898C14.1062 12.9831 14.1232 12.9733 14.1374 12.9609L14.9549 12.2541C14.9692 12.2417 14.9806 12.227 14.9883 12.2108C14.996 12.1947 15 12.1773 15 12.1598C15 12.1423 14.996 12.125 14.9883 12.1088C14.9806 12.0926 14.9692 12.0779 14.9549 12.0656ZM8.59496 7.44897C7.79997 8.13634 6.74622 8.51496 5.62498 8.51496C4.50373 8.51496 3.44999 8.13634 2.65499 7.44897C1.86187 6.75997 1.42499 5.84672 1.42499 4.87498C1.42499 3.90323 1.86187 2.98836 2.65499 2.30099C3.44999 1.61362 4.50373 1.23499 5.62498 1.23499C6.74622 1.23499 7.80184 1.61199 8.59496 2.30099C9.38808 2.98999 9.82496 3.90323 9.82496 4.87498C9.82496 5.84672 9.38808 6.7616 8.59496 7.44897Z" stroke-width="0.03125" stroke="#0B5E3B" mask="url(#stroke1_3150_2404)"/>
+<defs>
+<path id="stroke0_3150_2404" d="M14.9549 12.0656L10.0856 7.84547C10.8412 6.99884 11.25 5.96372 11.25 4.87498C11.25 3.57173 10.6631 2.34974 9.60183 1.42837C8.54059 0.506998 7.12684 0 5.62498 0C4.12311 0 2.70936 0.508623 1.64812 1.42837C0.584997 2.34811 0 3.57173 0 4.87498C0 6.1766 0.586872 7.40184 1.64812 8.32159C2.70936 9.24296 4.12123 9.74996 5.62498 9.74996C6.88122 9.74996 8.07372 9.39571 9.05059 8.74246L13.9199 12.9609C13.9342 12.9733 13.9512 12.9831 13.9698 12.9898C13.9885 12.9965 14.0085 13 14.0287 13C14.0489 13 14.0689 12.9965 14.0875 12.9898C14.1062 12.9831 14.1232 12.9733 14.1374 12.9609L14.9549 12.2541C14.9692 12.2417 14.9806 12.227 14.9883 12.2108C14.996 12.1947 15 12.1773 15 12.1598C15 12.1423 14.996 12.125 14.9883 12.1088C14.9806 12.0926 14.9692 12.0779 14.9549 12.0656ZM8.59496 7.44897C7.79997 8.13634 6.74622 8.51496 5.62498 8.51496C4.50373 8.51496 3.44999 8.13634 2.65499 7.44897C1.86187 6.75997 1.42499 5.84672 1.42499 4.87498C1.42499 3.90323 1.86187 2.98836 2.65499 2.30099C3.44999 1.61362 4.50373 1.23499 5.62498 1.23499C6.74622 1.23499 7.80184 1.61199 8.59496 2.30099C9.38808 2.98999 9.82496 3.90323 9.82496 4.87498C9.82496 5.84672 9.38808 6.7616 8.59496 7.44897Z"/>
+</defs>
+</svg>
+
+
+                <input
+                    type="search"
+                    id="riwayatSearch"
+                    placeholder="Cari Pengaduan"
+                    aria-label="Cari pengaduan"
+                    autocomplete="off"
+                >
+
+            </label>
+
+
+            <!-- TOMBOL BUAT PENGADUAN -->
+            <a
+                href="buat-pengaduan.html"
+                class="riwayat-btn-create">
+
+                Buat Pengaduan
+
+            </a>
+
+        </section>
+
+
+        <!-- ==================================
+             FILTER STATUS
+        =================================== -->
+
+        <nav
+            class="riwayat-filters"
+            aria-label="Filter status pengaduan">
+
+
+            <!-- SEMUA -->
+            <button
+                type="button"
+                class="riwayat-chip active"
+                data-filter="semua"
+                aria-pressed="true">
+
+                Semua
+
+            </button>
+
+
+            <!-- DIAJUKAN -->
+            <button
+                type="button"
+                class="riwayat-chip"
+                data-filter="diajukan"
+                aria-pressed="false">
+
+                Diajukan
+
+            </button>
+
+
+            <!-- DALAM PERBAIKAN -->
+            <button
+                type="button"
+                class="riwayat-chip"
+                data-filter="dalam perbaikan"
+                aria-pressed="false">
+
+                Dalam Perbaikan
+
+            </button>
+
+
+            <!-- SELESAI -->
+            <button
+                type="button"
+                class="riwayat-chip"
+                data-filter="selesai"
+                aria-pressed="false">
+
+                Selesai
+
+            </button>
+
+
+            <!-- DITOLAK -->
+            <button
+                type="button"
+                class="riwayat-chip"
+                data-filter="ditolak"
+                aria-pressed="false">
+
+                Ditolak
+
+            </button>
+
+        </nav>
+
+
+
+<!-- ==================================
+     LOADING RIWAYAT — SVG FIGMA
+=================================== -->
+
+<section
+    id="riwayatLoading"
+    class="riwayat-state riwayat-loading"
+    aria-live="polite"
+    aria-busy="true">
+
+    <div class="riwayat-loading-content">
+
+        <!-- ICON LOADING -->
+        <div class="riwayat-loading-icon">
+
+            <svg
+                width="91"
+                height="94"
+                viewBox="0 0 91 94"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-label="Sedang memuat">
+
+                <!-- LINGKARAN LUAR: DIAM -->
+                <ellipse
+                    cx="45.5"
+                    cy="47"
+                    rx="44"
+                    ry="45.5"
+                    stroke="#0B5E3B"
+                    stroke-width="1"
+                />
+
+                <!-- SPINNER DALAM: BERPUTAR -->
+                <g class="riwayat-spinner-rotate">
+
+                    <!-- BACKGROUND SPINNER -->
+                    <path
+                        d="M65.5 47C65.5 58.0457 56.5457 67 45.5 67C34.4543 67 25.5 58.0457 25.5 47C25.5 35.9543 34.4543 27 45.5 27C56.5457 27 65.5 35.9543 65.5 47ZM29.8609 47C29.8609 55.6373 36.8627 62.6391 45.5 62.6391C54.1373 62.6391 61.1391 55.6373 61.1391 47C61.1391 38.3627 54.1373 31.3609 45.5 31.3609C36.8627 31.3609 29.8609 38.3627 29.8609 47Z"
+                        fill="#D9D9D9"
+                    />
+
+                    <!-- GRADIENT SPINNER -->
+                    <path
+                        d="M65.5 47C65.5 58.0457 56.5457 67 45.5 67C34.4543 67 25.5 58.0457 25.5 47C25.5 35.9543 34.4543 27 45.5 27C56.5457 27 65.5 35.9543 65.5 47ZM29.8609 47C29.8609 55.6373 36.8627 62.6391 45.5 62.6391C54.1373 62.6391 61.1391 55.6373 61.1391 47C61.1391 38.3627 54.1373 31.3609 45.5 31.3609C36.8627 31.3609 29.8609 38.3627 29.8609 47Z"
+                        fill="url(#riwayatLoadingGradient)"
+                        fill-opacity="0.2"
+                    />
+
+                    <!-- BAGIAN HIJAU SPINNER -->
+                    <path
+                        d="M47.5 64.0376C47.5 65.1214 48.3812 66.0111 49.4585 65.8931C51.7235 65.6452 53.9271 64.9688 55.9494 63.8936C58.5511 62.5105 60.7734 60.5099 62.4214 58.0674C64.0693 55.6249 65.0925 52.8153 65.401 49.885C65.6409 47.6072 65.4432 45.3107 64.8252 43.1176C64.5312 42.0744 63.3764 41.5904 62.3714 41.9961C61.3664 42.4018 60.8952 43.5441 61.1573 44.5957C61.5534 46.1846 61.6704 47.8355 61.4978 49.474C61.2565 51.7653 60.4565 53.9624 59.1679 55.8723C57.8792 57.7822 56.1415 59.3466 54.1071 60.4281C52.6523 61.2015 51.0777 61.7111 49.4561 61.9386C48.3828 62.0893 47.5 62.9538 47.5 64.0376Z"
+                        fill="#0B5E3B"
+                    />
+
+                </g>
+
+                <defs>
+                    <linearGradient
+                        id="riwayatLoadingGradient"
+                        x1="45.5"
+                        y1="27"
+                        x2="45.5"
+                        y2="67"
+                        gradientUnits="userSpaceOnUse">
+
+                        <stop
+                            stop-color="#0B5E3B"
+                            stop-opacity="0"
+                        />
+
+                        <stop
+                            offset="1"
+                            stop-color="#0B5E3B"
+                        />
+
+                    </linearGradient>
+                </defs>
+
+            </svg>
+
+        </div>
+
+        <!-- TEKS LOADING -->
+        <div class="riwayat-loading-text">
+
+            <h3>Loading...</h3>
+
+            <p>
+                Mohon tunggu sebentar, data pengaduan
+                sedang dimuat.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+        
+<!-- ==================================
+     EMPTY STATE — SESUAI FIGMA
+=================================== -->
+
+<section
+    id="riwayatEmpty"
+    class="riwayat-state riwayat-empty"
+    hidden>
+
+    <div class="riwayat-empty-content">
+
+        <!-- ICON DAN INFORMASI -->
+        <div class="riwayat-empty-info">
+
+            <!-- ICON PENGADUAN -->
+            
+<!-- ICON PENGADUAN — SVG ASLI FIGMA -->
+<div class="riwayat-empty-icon">
+
+    <svg
+        width="91"
+        height="94"
+        viewBox="0 0 91 94"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true">
+
+        
+<!-- Lingkaran luar: tidak terpotong -->
+<ellipse
+    cx="45.5"
+    cy="47"
+    rx="44"
+    ry="45.5"
+    stroke="#0B5E3B"
+    stroke-width="1"
+/>
+
+
+        <path
+            d="M27 28.2V65.8C27 67.0465 27.4873 68.242 28.3546 69.1234C29.222 70.0048 30.3984 70.5 31.625 70.5H59.375C60.6016 70.5 61.778 70.0048 62.6454 69.1234C63.5127 68.242 64 67.0465 64 65.8V38.4037C63.9999 37.7776 63.8767 37.1578 63.6377 36.5807C63.3986 36.0036 63.0485 35.4809 62.6079 35.0432L52.3404 24.8395C51.4763 23.9809 50.3159 23.5002 49.1075 23.5H31.625C30.3984 23.5 29.222 23.9952 28.3546 24.8766C27.4873 25.758 27 26.9535 27 28.2Z"
+            stroke="#0B5E3B"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        />
+
+        <path
+            d="M37.0556 63.3874C36.9512 63.3887 36.8477 63.3664 36.7509 63.3218C36.6542 63.2772 36.5661 63.2112 36.4917 63.1276C36.4065 63.0315 36.3409 62.9151 36.2997 62.7868C36.2585 62.6584 36.2426 62.5213 36.2532 62.3851L36.5893 57.6332C36.6037 57.4126 36.6886 57.2056 36.8279 57.0516L48.8203 43.3653C49.4891 42.6524 50.3777 42.2698 51.2925 42.3011C52.2015 42.3091 53.0738 42.7118 53.7322 43.4272C54.3636 44.1672 54.7268 45.1521 54.7489 46.1848C54.771 47.2174 54.4505 48.2214 53.8515 48.9958L41.8482 62.744C41.7139 62.8967 41.538 62.9927 41.3494 63.0162L37.1315 63.4493L37.0556 63.3874ZM38.1399 58.1159L37.9122 61.5065L40.8832 61.1971L52.7021 47.6841C52.9325 47.3728 53.0798 46.9926 53.1265 46.5886C53.1732 46.1846 53.1173 45.7739 52.9654 45.4051C52.8135 45.0363 52.5721 44.725 52.2698 44.5082C51.9675 44.2914 51.617 44.1782 51.26 44.182C51.0253 44.1643 50.7898 44.2012 50.568 44.2906C50.3462 44.3799 50.1426 44.5198 49.9697 44.7018L38.1399 58.1159Z"
+            fill="#0B5E3B"
+            stroke="#0B5E3B"
+        />
+
+        <path
+            d="M50.125 23.5V32.9C50.125 34.1465 50.6123 35.342 51.4796 36.2234C52.347 37.1048 53.5234 37.6 54.75 37.6H64"
+            stroke="#0B5E3B"
+            stroke-width="2"
+            stroke-linejoin="round"
+        />
+
+    </svg>
+
+</div>
+
+
+            <!-- TEKS -->
+            <div class="riwayat-empty-text">
+
+                <h3>
+                    Belum Ada Pengaduan
+                </h3>
+
+                <p>
+                    Anda belum memiliki riwayat pengaduan.
+                    Silakan buat pengaduan untuk melaporkan
+                    fasilitas yang perlu diperbaiki.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- TOMBOL BUAT PENGADUAN -->
+        <a
+            href="buat-pengaduan.html"
+            class="riwayat-empty-btn">
+
+            Buat Pengaduan
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+
+<!-- ==================================
+     NOT FOUND STATE — SESUAI FIGMA
+=================================== -->
+
+<section
+    id="riwayatNotFound"
+    class="riwayat-state riwayat-not-found"
+    hidden>
+
+    <div class="riwayat-not-found-content">
+
+        <!-- ICON PENGADUAN TIDAK DITEMUKAN -->
+        <div class="riwayat-not-found-icon">
+
+            <svg
+                width="91"
+                height="94"
+                viewBox="0 0 91 94"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+
+                <!-- LINGKARAN LUAR -->
+                <ellipse
+                    cx="45.5"
+                    cy="47"
+                    rx="44"
+                    ry="45.5"
+                    stroke="#0B5E3B"
+                    stroke-width="1"
+                />
+
+                <!-- KACA PEMBESAR ASLI FIGMA -->
+                <path
+                    d="M62.6311 60.6089L52.3106 51.4654C54.3734 49.2824 55.5016 46.5253 55.4969 43.6785C55.4969 36.9619 49.3276 31.5 41.7485 31.5C34.1693 31.5 28 36.9619 28 43.6785C28 50.3951 34.1693 55.857 41.7485 55.857C44.9631 55.8589 48.076 54.8593 50.5425 53.0331L60.8647 62.1766C61.0998 62.3837 61.4179 62.5 61.7496 62.5C62.0812 62.5 62.3993 62.3837 62.6345 62.1766C62.8685 61.969 63 61.6876 63 61.3942C63 61.1008 62.8685 60.8194 62.6345 60.6118L62.6311 60.6089ZM41.7485 53.6428C38.7665 53.6388 35.9079 52.5878 33.7993 50.72C31.6907 48.8522 30.5041 46.32 30.4997 43.6785C30.5041 41.037 31.6907 38.5049 33.7993 36.637C35.9079 34.7692 38.7665 33.7182 41.7485 33.7143C44.7305 33.7182 47.5891 34.7692 49.6977 36.637C51.8063 38.5049 52.9928 41.037 52.9972 43.6785C52.9928 46.32 51.8063 48.8522 49.6977 50.72C47.5891 52.5878 44.7305 53.6388 41.7485 53.6428Z"
+                    fill="#0B5E3B"
+                />
+
+            </svg>
+
+        </div>
+
+        <!-- TEKS NOT FOUND -->
+        <div class="riwayat-not-found-text">
+
+            <h3>Pengaduan Tidak Ditemukan</h3>
+
+            <p>
+                Maaf, pengaduan yang Anda cari tidak
+                ditemukan. Silakan coba kata kunci lain
+                atau periksa kembali pencarian Anda.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+        
+<!-- ==========================================
+     ERROR STATE — US-10B-FE
+     SESUAI FIGMA
+=========================================== -->
+
+<section
+    id="riwayatError"
+    class="riwayat-state riwayat-error"
+    aria-live="polite"
+    hidden
+>
+    <div class="riwayat-error-content">
+
+        <!-- FRAME 782: ICON DAN TEKS -->
+        <div class="riwayat-error-info">
+
+            <!-- ICON GAGAL ASLI FIGMA -->
+            <div class="riwayat-error-icon">
+                <svg
+                    width="91"
+                    height="94"
+                    viewBox="0 0 91 94"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    role="img"
+                    aria-label="Gagal memuat pengaduan"
+                >
+                    <mask
+                        id="stroke0_3006_2392"
+                        fill="white"
+                    >
+                        <path
+                            d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"
+                        />
+                    </mask>
+
+                    <ellipse
+                        cx="45.5"
+                        cy="47"
+                        rx="45.5"
+                        ry="47"
+                        stroke-width="2"
+                        stroke="#D02316"
+                        mask="url(#stroke0_3006_2392)"
+                    />
+
+                    <path
+                        d="M73.5 47C73.5 62.464 60.964 75 45.5 75C30.036 75 17.5 62.464 17.5 47C17.5 31.536 30.036 19 45.5 19C60.964 19 73.5 31.536 73.5 47Z"
+                        stroke-width="2"
+                        stroke="#D02316"
+                    />
+
+                    <path
+                        d="M45.5 33V49.8M45.5 59.6V61"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke="#D02316"
+                    />
+                </svg>
+            </div>
+
+            <!-- JUDUL DAN DESKRIPSI -->
+            <div class="riwayat-error-text">
+                <h3>Gagal Memuat Pengaduan</h3>
+
+                <p>
+                    Terjadi kesalahan saat memuat riwayat pengaduan. Periksa koneksi internet Anda dan coba lagi.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- TOMBOL RETRY -->
+        <button
+            type="button"
+            id="riwayatRetry"
+            class="riwayat-btn-retry"
+        >
+            Coba Lagi
+        </button>
+
+    </div>
+</section>
+
+
+
+        <!-- ==================================
+             DAFTAR RIWAYAT
+        =================================== -->
+
+        <section
+            id="riwayatList"
+            class="riwayat-list"
+            aria-label="Daftar riwayat pengaduan"
+            hidden>
+
+            <!--
+                Card riwayat akan dibuat
+                otomatis oleh JavaScript.
+
+                Data berasal dari:
+                response.data.pengaduan
+
+                Desain card menggunakan:
+                .report-card-dash
+            -->
+
+        </section>
+
+
+        
+<!-- ==================================
+     PAGINATION — SESUAI FIGMA
+=================================== -->
+
+<nav
+    id="riwayatPagination"
+    class="riwayat-pagination"
+    aria-label="Halaman riwayat pengaduan"
+    hidden>
+
+    <!-- PREV -->
+    <button
+        type="button"
+        id="riwayatPrev"
+        class="page-btn prev"
+        disabled>
+
+        <i
+            class="fas fa-chevron-left"
+            aria-hidden="true">
+        </i>
+
+        <span>Prev</span>
+
+    </button>
+
+    <!-- Nomor halaman otomatis dari JS -->
+
+    <!-- NEXT -->
+    <button
+        type="button"
+        id="riwayatNext"
+        class="page-btn next"
+        disabled>
+
+        <span>Next</span>
+
+        <i
+            class="fas fa-chevron-right"
+            aria-hidden="true">
+        </i>
+
+    </button>
+
+</nav>
+
+
+    </main>
+
+    <!-- ==========================================
+     MODAL LOGOUT
+     ========================================== -->
+
+<div class="modal-overlay" id="logoutModalOverlay">
+
+    <!-- Konfirmasi Logout -->
+    <div class="logout-modal" id="logoutConfirmState">
+        <div class="modal-icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24"
+     fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 4H5V20H10"
+          stroke="#D02316"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M11 12H21M17 8L21 12L17 16"
+          stroke="#D02316"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+</svg>
+        </div>
+
+        <h3>Konfirmasi Logout</h3>
+        <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+
+        <div class="modal-actions">
+            <button type="button"
+                    class="btn-modal-cancel"
+                    id="btnCancelLogout">
+                Batal
+            </button>
+
+            <button type="button"
+                    class="btn-modal-confirm"
+                    id="btnConfirmLogout">
+                Ya, Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Logout -->
+    <div class="logout-modal"
+         id="logoutLoadingState"
+         style="display:none;">
+
+        <div class="modal-icon-circle">
+            <svg width="20" height="20" viewBox="0 0 24 24"
+     fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 4H5V20H10"
+          stroke="#D02316"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M11 12H21M17 8L21 12L17 16"
+          stroke="#D02316"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+</svg>
+        </div>
+
+        <h3>Konfirmasi Logout</h3>
+        <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
+        <div class="modal-loading-text">Loading...</div>
+    </div>
+
+    <!-- Logout Gagal -->
+    <div class="logout-modal"
+         id="logoutErrorState"
+         style="display:none;">
+
+        <div class="modal-icon-error">
+            <i class="fas fa-exclamation"></i>
+        </div>
+
+        <h3>Logout Gagal</h3>
+        <p>Terjadi kesalahan saat keluar dari akun. Silakan coba kembali.</p>
+
+        <button type="button"
+                class="btn-modal-retry"
+                id="btnRetryLogout">
+            Coba Lagi
+        </button>
+    </div>
+</div>
+
+<!-- Notifikasi Logout Berhasil -->
+<div class="toast-success"
+     id="logoutSuccessToast"
+     style="display:none;">
+
+    <div class="toast-icon">
+        <svg width="41" height="41"
+             viewBox="0 0 41 41"
+             xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20.5" cy="20.5" r="20"
+                    fill="#15A367"/>
+            <path d="M11 21L18 28L30 14"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+    </div>
+
+    <div class="toast-content">
+        <h4>Logout Berhasil</h4>
+        <p>
+            Anda berhasil logout dari akun ini.
+        </p>
+    </div>
+</div>
+
+
+
+    <!-- ======================================
+         JAVASCRIPT
+    ======================================= -->
+
+<!-- API -->
+<script src="javascript/api.js"></script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const userInitial = document.getElementById("userInitial");
+
+    if (!userInitial) return;
+
+    // Menggunakan fungsi session yang sudah dipakai Dashboard
+    let currentUser = null;
+
+    if (typeof getUserSession === "function") {
+        currentUser = getUserSession();
+    }
+
+    // Mengambil nama pengguna yang sedang login
+    const nama = String(currentUser?.nama || "").trim();
+
+    if (nama) {
+        userInitial.textContent = nama.charAt(0).toUpperCase();
+    } else {
+        userInitial.textContent = "?";
+    }
+
+});
+</script>
+
+
+<!-- Riwayat Pengaduan US-10B-FE -->
+<script src="javascript/riwayat-pengaduan.js"></script>
+
+<!-- Offline Support -->
+<script src="javascript/offline-support.js"></script>
+
+<!-- Logout -->
+<script src="javascript/logout.js"></script>
+
+
+
+</body>
+</html>

@@ -290,3 +290,25 @@ function formatJumlah(value) {
 
     return hasil + "K";
 }
+
+
+/* ============================================================
+   LOGIN ADMIN — US-11B-FE
+   ============================================================ */
+
+/**
+ * Login khusus admin.
+ *
+ * Endpoint:
+ * POST /backend/api/login-admin.php
+ *
+ * Backend memverifikasi email, password,
+ * role admin, serta membuat PHP Session.
+ */
+async function apiLoginAdmin(email, password) {
+    return apiRequest("login_admin.php", {
+        email,
+        password
+    });
+}
+

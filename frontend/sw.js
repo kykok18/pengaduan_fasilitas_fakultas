@@ -4,47 +4,48 @@
    Offline support untuk halaman frontend
    ========================================== */
 
-const CACHE_VERSION = "fitk-static-v3-20261110";
+const CACHE_VERSION = "fitk-static-v5-20261123";
 const SCOPE = new URL(self.registration.scope);
 
-// File wajib agar halaman utama bisa dimuat offline.
+
 const CORE_FILES = [
     "dashboard.html",
     "buat-pengaduan.html",
     "detail-pengaduan.html",
+    "riwayat-pengaduan.html",
 
     "css/dashboard.css",
     "css/buat-pengaduan.css",
     "css/detail-pengaduan.css",
+    "css/riwayat-pengaduan.css",
     "css/skeleton.css",
 
     "javascript/api.js",
     "javascript/dashboard.js",
     "javascript/buat-pengaduan.js",
     "javascript/detail-pengaduan.js",
+    "javascript/riwayat-pengaduan.js",
     "javascript/logout.js",
     "javascript/offline-support.js",
 
     "img/logo-fitk.png"
 ];
 
-// File tambahan. Tidak menggagalkan instalasi jika belum ada.
+// File tambahan tidak menggagalkan instalasi
 const OPTIONAL_FILES = [
     "index.html",
     "login.html",
     "register.html",
-    "riwayat-pengaduan.html",
 
     "css/login.css",
     "css/register.css",
-    "css/riwayat-pengaduan.css",
     "css/style.css",
 
     "javascript/login.js",
     "javascript/register.js",
-    "javascript/riwayat-pengaduan.js",
     "javascript/app.js"
 ];
+
 
 const ALL_FILES = [...CORE_FILES, ...OPTIONAL_FILES];
 

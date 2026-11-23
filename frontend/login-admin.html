@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login Admin — FITK SIBER AHSAN</title>
+
+    <!-- POPPINS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS LOGIN ADMIN -->
+    <link
+        rel="stylesheet"
+        href="css/login-admin.css"
+    >
+</head>
+
+<body>
+
+    <main class="admin-login-page">
+
+        <!-- ======================================
+             PANEL KIRI — IDENTITAS FITK
+        ======================================= -->
+        <section
+            class="admin-brand-panel"
+            aria-label="Identitas FITK Siber Ahsan"
+        >
+
+            <div class="admin-brand-content">
+
+                <div class="admin-brand-logo">
+                    <img
+                        src="img/logo-fitk.png"
+                        alt="Logo FITK Siber Ahsan"
+                    >
+                </div>
+
+                <div class="admin-brand-text">
+                    <h2>
+                        FAKULTAS ILMU TARBIYAH DAN KEGURUAN
+                    </h2>
+
+                    <p>
+                        UIN SIBER SYEKH NURJATI CIREBON
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             PANEL KANAN — LOGIN ADMIN
+        ======================================= -->
+        <section class="admin-form-panel">
+
+            <div class="admin-form-container">
+
+                <!-- HEADER -->
+                <div class="admin-login-header">
+
+                    <h1>
+                        Selamat Datang, Admin!
+                    </h1>
+
+                    <p>
+                        Masuk untuk mengelola pengaduan<br>
+                        fasilitas FITK
+                    </p>
+
+                </div>
+
+
+                <!-- FORM LOGIN -->
+                <form
+                    id="adminLoginForm"
+                    class="admin-login-form"
+                    novalidate
+                >
+
+                    <div class="admin-fields">
+
+                        <!-- EMAIL -->
+                        <div class="admin-form-group">
+
+                            <label for="adminEmail">
+                                E-mail
+                            </label>
+
+                            <input
+                                type="email"
+                                id="adminEmail"
+                                name="email"
+                                placeholder="Masukkan E-mail"
+                                autocomplete="username"
+                                maxlength="254"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+                        <div class="admin-form-group">
+
+                            <label for="adminPassword">
+                                Password
+                            </label>
+
+                            <div class="admin-password-wrapper">
+
+                                <input
+                                    type="password"
+                                    id="adminPassword"
+                                    name="password"
+                                    placeholder="Masukkan Password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    id="toggleAdminPassword"
+                                    class="admin-password-toggle"
+                                    aria-label="Tampilkan password"
+                                    aria-pressed="false"
+                                >
+
+                                    <!-- ICON EYE -->
+                                    <svg
+                                        width="24"
+                                        height="18"
+                                        viewBox="0 0 24 18"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            d="M1 9C3.5 4.5 7.2 2 12 2C16.8 2 20.5 4.5 23 9C20.5 13.5 16.8 16 12 16C7.2 16 3.5 13.5 1 9Z"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linejoin="round"
+                                        />
+
+                                        <circle
+                                            cx="12"
+                                            cy="9"
+                                            r="3.5"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        />
+                                    </svg>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TOMBOL LOGIN -->
+                    <button
+                        type="submit"
+                        id="adminLoginButton"
+                        class="admin-login-button"
+                    >
+
+                        <span
+                            id="adminLoginSpinner"
+                            class="admin-login-spinner"
+                            hidden
+                        ></span>
+
+                        <span id="adminLoginButtonText">
+                            Login
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <!-- NOTIFIKASI LOGIN -->
+                <div
+                    id="adminLoginMessage"
+                    class="admin-login-message"
+                    role="alert"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+<!-- ==========================================
+     NOTIFIKASI LOGIN ADMIN BERHASIL
+     US-11B-FE — FIGMA DESKTOP
+=========================================== -->
+
+<div
+    id="adminSuccessToast"
+    class="admin-success-toast"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    hidden
+>
+
+    <!-- ICON BERHASIL -->
+    <div class="admin-success-icon-frame">
+
+        <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+        >
+            <circle
+                cx="20"
+                cy="20"
+                r="20"
+                fill="#15A367"
+            />
+
+            <path
+                d="M11 20.5L17.5 27L29 14"
+                stroke="#FFFFFF"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+
+    </div>
+
+    <!-- TEKS NOTIFIKASI -->
+    <div class="admin-success-text">
+
+        <h3>LOGIN BERHASIL!</h3>
+
+        <p>
+            Login berhasil Anda akan dialihkan ke dashboard.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+    <!-- API -->
+    <script src="javascript/api.js"></script>
+
+    <!-- LOGIN ADMIN -->
+    <script src="javascript/login-admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,726 @@
+
+/* ============================================================
+   LOGIN ADMIN — US-11B-FE
+   FITK SIBER AHSAN
+
+   DESKTOP FIGMA: 1440 x 1024
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #E6F4EA;
+    color: #000000;
+}
+
+/* ============================================================
+   HALAMAN UTAMA — DUA PANEL
+   ============================================================ */
+
+.admin-login-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* ============================================================
+   PANEL KIRI — BRANDING
+   ============================================================ */
+
+.admin-brand-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 0;
+    min-height: 100vh;
+
+    background: #E6F4EA;
+}
+
+.admin-brand-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 529px;
+    max-width: calc(100% - 40px);
+
+    gap: 28px;
+}
+
+/* FRAME LOGO FIGMA: 269 x 237 */
+
+.admin-brand-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 269px;
+    height: 237px;
+
+    flex-shrink: 0;
+}
+
+.admin-brand-logo img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+/* IDENTITAS FAKULTAS */
+
+.admin-brand-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 529px;
+    max-width: 100%;
+    height: 112px;
+}
+
+.admin-brand-text h2,
+.admin-brand-text p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 56px;
+
+    padding: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 36px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.admin-brand-text h2 {
+    color: #0B5E3B;
+}
+
+.admin-brand-text p {
+    color: #D59A29;
+}
+
+/* ============================================================
+   PANEL KANAN — FORM LOGIN
+   ============================================================ */
+
+.admin-form-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 0;
+    min-height: 100vh;
+
+    background: #FFFFFF;
+}
+
+/* FIGMA:
+   width: 588px
+   padding: 10px
+   konten dalam: 568px
+*/
+
+.admin-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 588px;
+    max-width: 100%;
+
+    padding: 10px;
+    gap: 60px;
+}
+
+/* ============================================================
+   HEADER LOGIN
+   ============================================================ */
+
+.admin-login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    min-height: 131px;
+
+    gap: 10px;
+}
+
+.admin-login-header h1 {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 54px;
+
+    color: #0B5E3B;
+    white-space: nowrap;
+}
+
+.admin-login-header p {
+    margin: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+
+    color: #000000;
+}
+
+/* ============================================================
+   FORM LOGIN
+   ============================================================ */
+
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+
+    gap: 60px;
+}
+
+/* FRAME 796: DUA FIELD */
+
+.admin-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+    gap: 30px;
+}
+
+/* FRAME 795 / 794 */
+
+.admin-form-group {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    gap: 0;
+}
+
+/* LABEL FIGMA: 14px BOLD */
+
+.admin-form-group label {
+    display: flex;
+    align-items: center;
+
+    width: max-content;
+    height: 41px;
+
+    padding: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+
+    color: #000000;
+}
+
+/* ============================================================
+   INPUT EMAIL
+   ============================================================ */
+
+.admin-form-group > input,
+.admin-password-wrapper {
+    width: 100%;
+    height: 54px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+}
+
+/* INPUT UMUM */
+
+.admin-form-group input {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+
+    color: #000000;
+
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.admin-form-group > input {
+    display: block;
+    padding: 0 10px;
+}
+
+.admin-form-group input::placeholder {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+
+    color: #A2A2A2;
+    opacity: 1;
+}
+
+.admin-form-group > input:focus,
+.admin-password-wrapper:focus-within {
+    border-color: #0B5E3B;
+}
+
+.admin-form-group > input:focus {
+    box-shadow: 0 0 0 2px rgba(11, 94, 59, 0.08);
+}
+
+/* ============================================================
+   INPUT PASSWORD DAN ICON EYE
+   ============================================================ */
+
+.admin-password-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 0 10px;
+    gap: 10px;
+}
+
+.admin-password-wrapper input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.admin-password-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 35px;
+
+    width: 35px;
+    height: 35px;
+
+    background: transparent;
+    border: none;
+
+    color: #000000;
+    cursor: pointer;
+}
+
+.admin-password-toggle svg {
+    width: 24px;
+    height: 18px;
+}
+
+.admin-password-toggle:focus-visible {
+    outline: 2px solid #0B5E3B;
+    outline-offset: 2px;
+    border-radius: 5px;
+}
+
+/* ============================================================
+   VALIDASI INPUT
+   ============================================================ */
+
+.admin-form-group > input.is-invalid,
+.admin-password-wrapper.is-invalid {
+    border-color: #D02316;
+}
+
+.admin-form-group > input.is-invalid:focus,
+.admin-password-wrapper.is-invalid:focus-within {
+    border-color: #D02316;
+}
+
+/* ============================================================
+   TOMBOL LOGIN
+   ============================================================ */
+
+.admin-login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 54px;
+    min-height: 54px;
+
+    padding: 10px;
+    gap: 10px;
+
+    background: #0B5E3B;
+    border: none;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+
+    color: #FFFFFF;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.admin-login-button:hover:not(:disabled) {
+    background: #08492E;
+}
+
+.admin-login-button:focus-visible {
+    outline: 2px solid #0B5E3B;
+    outline-offset: 3px;
+}
+
+.admin-login-button:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   LOADING SPINNER
+   ============================================================ */
+
+.admin-login-spinner {
+    display: inline-block;
+
+    width: 20px;
+    height: 20px;
+
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #FFFFFF;
+    border-radius: 50%;
+
+    animation: adminLoginSpin 0.8s linear infinite;
+}
+
+.admin-login-spinner[hidden] {
+    display: none !important;
+}
+
+@keyframes adminLoginSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================================
+   NOTIFIKASI LOGIN
+   ============================================================ */
+
+.admin-login-message {
+    width: 100%;
+
+    margin-top: -40px;
+    padding: 10px 14px;
+
+    border: 1px solid #D02316;
+    border-radius: 10px;
+
+    background: #FFF2F0;
+    color: #D02316;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.admin-login-message[hidden] {
+    display: none !important;
+}
+
+.admin-login-message.is-success {
+    background: #E6F4EA;
+    border-color: #0B5E3B;
+    color: #0B5E3B;
+}
+
+
+/* ============================================================
+   SUCCESS TOAST — LOGIN ADMIN
+   FIGMA DESKTOP 1440 x 1024
+   ============================================================ */
+
+.admin-success-toast {
+    box-sizing: border-box;
+
+    position: fixed;
+    top: 57px;
+    right: 57px;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 600px;
+    max-width: calc(100vw - 40px);
+    height: 72px;
+
+    margin: 0;
+    padding: 0;
+
+    background: #FFFFFF;
+
+    border: 1px solid #D9D9D9;
+    border-radius: 10px;
+}
+
+/* Sembunyikan sebelum login berhasil */
+.admin-success-toast[hidden] {
+    display: none !important;
+}
+
+/* FRAME ICON: 70 x 70 */
+.admin-success-icon-frame {
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 0 0 70px;
+
+    width: 70px;
+    height: 70px;
+
+    padding: 5px;
+}
+
+/* ICON CENTANG: 40 x 40 */
+.admin-success-icon-frame svg {
+    display: block;
+
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+}
+
+/* FRAME TEKS */
+.admin-success-text {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    flex: 1;
+    min-width: 0;
+
+    padding: 0;
+    margin: 0;
+    gap: 0;
+}
+
+/* JUDUL */
+.admin-success-text h3 {
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+
+    color: #15A367;
+}
+
+/* DESKRIPSI */
+.admin-success-text p {
+    margin: 0;
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px;
+
+    color: #15A367;
+}
+
+/* Fallback laptop dengan lebar lebih kecil */
+@media (max-width: 1250px) {
+    .admin-success-toast {
+        right: 30px;
+        max-width: calc(100vw - 60px);
+    }
+}
+
+@media (max-width: 760px) {
+    .admin-success-toast {
+        top: 20px;
+        right: 20px;
+
+        width: calc(100vw - 40px);
+        height: auto;
+        min-height: 72px;
+    }
+
+    .admin-success-text p {
+        font-size: 12px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE DESKTOP / LAPTOP
+   Mengikuti desktop Figma tanpa memotong konten.
+   ============================================================ */
+
+@media (max-width: 1250px) {
+
+    .admin-brand-content {
+        max-width: calc(100% - 30px);
+    }
+
+    .admin-brand-text h2,
+    .admin-brand-text p {
+        font-size: clamp(13px, 1.7vw, 24px);
+        white-space: normal;
+    }
+
+    .admin-form-container {
+        max-width: calc(100% - 50px);
+    }
+
+    .admin-login-header h1 {
+        font-size: clamp(24px, 2.6vw, 36px);
+        white-space: normal;
+    }
+
+    .admin-login-header p {
+        font-size: clamp(14px, 1.6vw, 20px);
+    }
+}
+
+/* FALLBACK UNTUK LAYAR SEMPIT
+   Desain utama tetap desktop.
+*/
+
+@media (max-width: 760px) {
+
+    .admin-login-page {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-brand-panel {
+        min-height: auto;
+        padding: 40px 20px 20px;
+    }
+
+    .admin-brand-content {
+        gap: 12px;
+    }
+
+    .admin-brand-logo {
+        width: 150px;
+        height: 135px;
+    }
+
+    .admin-brand-text {
+        height: auto;
+    }
+
+    .admin-brand-text h2,
+    .admin-brand-text p {
+        height: auto;
+        padding: 4px;
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    .admin-form-panel {
+        min-height: auto;
+        padding: 40px 20px 60px;
+        align-items: flex-start;
+    }
+
+    .admin-form-container {
+        width: 100%;
+        max-width: 568px;
+        padding: 0;
+        gap: 30px;
+    }
+
+    .admin-login-header {
+        min-height: auto;
+    }
+
+    .admin-login-header h1 {
+        font-size: 28px;
+        line-height: 40px;
+    }
+
+    .admin-login-header p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .admin-login-form {
+        gap: 30px;
+    }
+
+    .admin-fields {
+        gap: 16px;
+    }
+
+    .admin-login-button {
+        font-size: 16px;
+    }
+
+    .admin-login-message {
+        margin-top: -15px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-login-spinner {
+        animation-duration: 1.5s;
+    }
+}

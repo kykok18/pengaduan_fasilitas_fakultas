@@ -319,8 +319,49 @@ let isSendingComment = false;
 
   // Mengambil ID pengaduan dari URL.
   // Contoh: detail-pengaduan.html?id_pengaduan=12
-  const params = new URLSearchParams(window.location.search);
-  const idPengaduan = params.get(DETAIL_ID_PARAM);
+
+// =========================================================
+// KONFIGURASI DETAIL DAN ASAL NAVIGASI
+// =========================================================
+
+// Parameter dari URL
+const params = new URLSearchParams(window.location.search);
+
+// ID pengaduan dari URL
+const idPengaduan = params.get("id_pengaduan");
+
+// Mengetahui asal halaman
+const fromRiwayat = params.get("from") === "riwayat";
+
+// Elemen tombol kembali
+const detailBackLink = document.getElementById("detailBackLink");
+const detailBackText = document.getElementById("detailBackText");
+
+// Mengatur tombol kembali berdasarkan asal akses
+if (detailBackLink && detailBackText) {
+
+    if (fromRiwayat) {
+
+        detailBackLink.href = "riwayat-pengaduan.html";
+
+        detailBackText.textContent =
+            "Kembali ke Riwayat Pengaduan";
+
+    } else {
+
+        detailBackLink.href = "dashboard.html";
+
+        detailBackText.textContent =
+            "Kembali ke Dashboard";
+
+    }
+}
+
+// Endpoint berdasarkan asal akses
+const activeDetailEndpoint = fromRiwayat
+    ? "riwayat.php"
+    : DETAIL_ENDPOINT;
+
 
   // Untuk membatalkan request sebelumnya.
   let activeController = null;
@@ -781,13 +822,19 @@ if (isDummyPreview) {
         [DETAIL_ID_PARAM]: idPengaduan
       });
 
-      const apiUrl =
-        `${API_BASE_URL}/${DETAIL_ENDPOINT}?${query.toString()}`;
+
+// =========================================================
+// ENDPOINT DETAIL BERDASARKAN ASAL HALAMAN
+// =========================================================
+
+const apiUrl =
+    `${API_BASE_URL.replace(/\/+$/, "")}/${activeDetailEndpoint}?${query.toString()}`;
+
 
       // Meminta data detail menggunakan GET.
       const response = await fetch(apiUrl, {
         method: "GET",
-        credentials: "same-origin",
+        credentials: "include",
         headers: {
           Accept: "application/json"
         },
