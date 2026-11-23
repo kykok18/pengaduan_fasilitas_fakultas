@@ -2389,3 +2389,47 @@
 }
 
 
+/* ==========================================
+   RESPONSIVE SUMMARY
+   DESAIN FIGMA TETAP DIPERTAHANKAN
+   ========================================== */
+
+@media (max-width: 390px) {
+
+    .riwayat-main .riwayat-summary {
+        grid-template-columns: 135px 1px 103px;
+    }
+
+    .riwayat-main .riwayat-summary-total {
+        zoom: 0.9;
+    }
+
+    .riwayat-main .riwayat-status-list {
+        zoom: 0.9;
+    }
+}
+
+@media (max-width: 350px) {
+
+    .riwayat-main .riwayat-summary {
+        grid-template-columns: 114px 1px 87px;
+    }
+
+    .riwayat-main .riwayat-summary-total {
+        zoom: 0.76;
+    }
+
+    .riwayat-main .riwayat-status-list {
+        zoom: 0.76;
+    }
+}
+
+
+/* Geser hanya bagian Total Pengaduan ke kiri */
+@media screen and (max-width: 390px) {
+    .riwayat-main .riwayat-summary-total {
+        position: relative !important;
+        left: -12px !important;
+    }
+}
+
