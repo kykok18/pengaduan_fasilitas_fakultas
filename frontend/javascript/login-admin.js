@@ -188,12 +188,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         }
 
-        // Format E-mail tidak valid
-        if (!emailInput.checkValidity()) {
-            showEmailError("Format E-mail tidak valid.");
-            emailInput.focus();
-            return false;
-        }
+        
+
+/* ================================================
+   VALIDASI FORMAT E-MAIL — SESUAI FIGMA
+   ================================================ */
+
+const emailPattern = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
+
+if (
+    !emailInput.checkValidity() ||
+    !emailPattern.test(email)
+) {
+    hideMessage();
+
+    showEmailError("Format E-mail tidak sesuai.");
+
+    emailInput.focus();
+    return false;
+}
+
+
 
         // Panjang Password maksimal 100 byte
         if (new TextEncoder().encode(password).length > 100) {
