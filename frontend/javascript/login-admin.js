@@ -213,27 +213,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. LOADING LOGIN
     // ========================================================
 
-    function setLoading(loading) {
-        isSubmitting = loading;
 
-        loginButton.disabled = loading;
-        emailInput.readOnly = loading;
-        passwordInput.readOnly = loading;
+function setLoading(loading) {
+    const loginButton = document.querySelector(".admin-login-btn");
 
-        if (togglePassword) {
-            togglePassword.disabled = loading;
-        }
+    if (!loginButton) return;
 
-        loginSpinner.hidden = !loading;
+    loginButton.disabled = loading;
+    loginButton.classList.toggle("is-loading", loading);
 
-        loginButtonText.textContent =
-            loading ? "Memproses..." : "Login";
+    loginButton.textContent = loading
+        ? "Loading..."
+        : "Login";
+}
 
-        loginForm.setAttribute(
-            "aria-busy",
-            String(loading)
-        );
-    }
 
 
     // ========================================================

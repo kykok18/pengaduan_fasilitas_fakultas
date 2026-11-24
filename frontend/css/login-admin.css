@@ -745,3 +745,33 @@ body {
         top: 57px;
     }
 }
+
+
+/* ==========================================
+   LOGIN ADMIN — LOADING BUTTON (FIGMA)
+   ========================================== */
+
+.admin-login-btn:disabled,
+.admin-login-btn.is-loading {
+    background: #D9D9D9;
+    color: #FFFFFF;
+
+    opacity: 1;
+    cursor: not-allowed;
+
+    border-radius: 10px;
+}
+
+/* Tulisan Loading */
+.admin-login-btn.is-loading {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+}
+
+/* Hilangkan spinner saat loading */
+.admin-login-btn.is-loading .spinner,
+.admin-login-btn.is-loading .login-spinner {
+    display: none;
+}
