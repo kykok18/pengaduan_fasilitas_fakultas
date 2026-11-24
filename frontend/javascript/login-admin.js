@@ -255,27 +255,27 @@ document.addEventListener("DOMContentLoaded", () => {
 const eyeOpen = document.getElementById("adminEyeOpen");
 const eyeClosed = document.getElementById("adminEyeClosed");
 
+
 function updatePasswordIcon() {
     const isHidden = passwordInput.type === "password";
 
-    if (eyeOpen) {
-        eyeOpen.hidden = isHidden;
-    }
+    // Password disembunyikan → mata tertutup
+    eyeClosed.hidden = !isHidden;
 
-    if (eyeClosed) {
-        eyeClosed.hidden = !isHidden;
-    }
+    // Password terlihat → mata terbuka
+    eyeOpen.hidden = isHidden;
 
-    togglePassword?.setAttribute(
+    togglePassword.setAttribute(
         "aria-label",
         isHidden ? "Tampilkan password" : "Sembunyikan password"
     );
 
-    togglePassword?.setAttribute(
+    togglePassword.setAttribute(
         "aria-pressed",
         String(!isHidden)
     );
 }
+
 
 togglePassword?.addEventListener("click", () => {
     passwordInput.type =
