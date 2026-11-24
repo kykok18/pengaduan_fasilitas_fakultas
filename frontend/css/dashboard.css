@@ -2146,3 +2146,25 @@ min-width: 0;
         display: none;
     }
 }
+
+
+/* ==========================================
+   PAGINATION DASHBOARD — MOBILE KECIL
+   ========================================== */
+
+@media screen and (max-width: 390px) {
+
+    .dashboard-main .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        max-width: 100%;
+
+        gap: 12px;
+        flex-wrap: nowrap;
+
+        overflow-x: hidden;
+    }
+}

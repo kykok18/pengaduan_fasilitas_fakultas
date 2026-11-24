@@ -572,6 +572,47 @@ card.href =
             );
         };
 
+        window.addEventListener("resize", () => {
+    if (totalPages > 1) {
+        renderPagination();
+    }
+});
+
+
+/* ==========================================
+   PAGINATION KHUSUS HP KECIL
+   Maksimal 2 nomor halaman agar tidak geser
+   ========================================== */
+
+if (window.innerWidth <= 390) {
+
+    const visiblePages = 2;
+
+    const startPage = Math.max(
+        1,
+        Math.min(
+            currentPage,
+            totalPages - visiblePages + 1
+        )
+    );
+
+    const endPage = Math.min(
+        totalPages,
+        startPage + visiblePages - 1
+    );
+
+    for (let page = startPage; page <= endPage; page++) {
+        addPage(
+            String(page),
+            page,
+            page === currentPage
+        );
+    }
+
+    return;
+}
+
+
         if (first > 1) {
             addPage("1", 1);
 

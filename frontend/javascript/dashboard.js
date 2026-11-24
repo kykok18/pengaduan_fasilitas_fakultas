@@ -483,7 +483,10 @@ if (gambarCard) {
             // 9. PAGINATION
             // =========================================================
 
-            const renderPagination = (paginationData) => {
+                    const renderPagination = (paginationData = {
+                        current_page: currentPage,
+                        total_pages: totalPages
+                    }) => {
                 if (!pagination || !paginationData) return;
 
                 currentPage = Number(paginationData.current_page) || 1;
@@ -534,15 +537,44 @@ if (gambarCard) {
                 
 /* Maksimal 4 tombol angka pagination */
 
-const MAX_VISIBLE = 4;
+
+/* ==========================================
+   PAGINATION RESPONSIVE DASHBOARD
+   Mobile kecil: maksimal 2 nomor
+   Desktop: maksimal 4 nomor
+   ========================================== */
+
+const isSmallMobile = window.innerWidth <= 390;
+
+const MAX_VISIBLE = isSmallMobile ? 2 : 4;
 
 if (totalPages <= MAX_VISIBLE) {
-    // Jika jumlah halaman 4 atau kurang.
+
     for (let page = 1; page <= totalPages; page++) {
         addPageButton(page);
     }
+
+} else if (isSmallMobile) {
+
+    // Tampilkan dua nomor berurutan
+    // dan pastikan halaman aktif tetap terlihat.
+    const startPage = Math.max(
+        1,
+        Math.min(currentPage, totalPages - 1)
+    );
+
+    const endPage = Math.min(
+        totalPages,
+        startPage + 1
+    );
+
+    for (let page = startPage; page <= endPage; page++) {
+        addPageButton(page);
+    }
+
 } else {
-    // Nomor awal mengikuti halaman aktif.
+
+    // Mekanisme desktop tetap seperti sebelumnya.
     const startPage = Math.min(
         currentPage,
         totalPages - (MAX_VISIBLE - 1)
@@ -553,20 +585,17 @@ if (totalPages <= MAX_VISIBLE) {
         totalPages
     );
 
-    // Jika masih jauh dari halaman terakhir,
-    // tampilkan 3 nomor + ... + halaman terakhir.
     if (endPage < totalPages) {
+
         for (let page = startPage; page < endPage; page++) {
             addPageButton(page);
         }
 
-        if (endPage < totalPages) {
-    addDots();
-}
-
+        addDots();
         addPageButton(totalPages);
+
     } else {
-        // Jika sudah mendekati halaman terakhir.
+
         for (let page = startPage; page <= totalPages; page++) {
             addPageButton(page);
         }
@@ -668,6 +697,24 @@ if (totalPages <= MAX_VISIBLE) {
 
 
         };
+
+
+// Perbarui nomor pagination saat ukuran layar berubah.
+// Tidak memanggil API dan tidak mengubah halaman aktif.
+let lastPaginationMode = window.innerWidth <= 390;
+
+window.addEventListener("resize", () => {
+    const isSmallMobile = window.innerWidth <= 390;
+
+    if (isSmallMobile === lastPaginationMode) return;
+
+    lastPaginationMode = isSmallMobile;
+
+    if (totalPages > 1) {
+        renderPagination();
+    }
+});
+
 
         // =========================================================
         // 11. FILTER STATUS
