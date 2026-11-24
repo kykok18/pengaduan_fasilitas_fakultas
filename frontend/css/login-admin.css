@@ -724,3 +724,24 @@ body {
         animation-duration: 1.5s;
     }
 }
+
+
+/* ==========================================
+   POSISI NOTIFIKASI LOGIN BERHASIL
+   ========================================== */
+
+.admin-success-toast {
+    position: fixed;
+    top: 20px;
+    right: 57px;
+    left: auto;
+    transform: none;
+    z-index: 1000;
+}
+
+
+@media screen and (min-height: 900px) {
+    .admin-success-toast {
+        top: 57px;
+    }
+}
