@@ -130,11 +130,26 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        if (!email && !password) {
-            showMessage("Email dan password harus diisi");
-            markInvalid(emailInput);
-            return false;
-        }
+        
+if (!email && !password) {
+    showMessage("Email dan password harus diisi");
+
+    // E-mail menjadi merah
+    markInvalid(emailInput);
+
+    // Password juga menjadi merah
+    passwordInput
+        .closest(".admin-password-wrapper")
+        ?.classList.add("is-invalid");
+
+    passwordInput.setAttribute(
+        "aria-invalid",
+        "true"
+    );
+
+    return false;
+}
+
 
         if (!email) {
             showMessage("Email harus diisi");
