@@ -998,13 +998,18 @@ body {
     color: #D02316;
 }
 
-/* Ukuran ikon error sesuai SVG Figma */
+
 .admin-field-error svg {
     display: block;
     width: 18px;
     height: 18px;
+    min-width: 18px;
+    min-height: 18px;
     flex: 0 0 18px;
+    flex-shrink: 0;
+    overflow: visible;
 }
+
 
 /* Pesan tetap tersembunyi jika tidak ada error */
 .admin-field-error[hidden] {
