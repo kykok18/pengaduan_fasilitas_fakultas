@@ -829,13 +829,18 @@ body {
     color: #D02316;
 }
 
-/* Ikon error SVG dari Figma */
+
 .admin-field-error svg {
     display: block;
     width: 18px;
     height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    flex: 0 0 18px;
     flex-shrink: 0;
+    overflow: visible;
 }
+
 
 /* Sembunyikan pesan saat tidak ada error */
 .admin-field-error[hidden] {
@@ -922,13 +927,18 @@ body {
     color: #D02316;
 }
 
-/* Icon error 18 x 18px */
+
 .admin-field-error svg {
     display: block;
     width: 18px;
     height: 18px;
+    min-width: 18px;
+    min-height: 18px;
     flex: 0 0 18px;
+    flex-shrink: 0;
+    overflow: visible;
 }
+
 
 /* Sembunyikan pesan saat tidak ada error */
 .admin-field-error[hidden] {
