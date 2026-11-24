@@ -972,3 +972,41 @@ body {
         gap: 25px;
     }
 }
+
+
+/* ============================================================
+   FINAL — ERROR MESSAGE LOGIN ADMIN SESUAI FIGMA
+   ============================================================ */
+
+.admin-field-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 8px;
+    padding: 0 10px;
+    gap: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+    color: #D02316;
+}
+
+/* Ukuran ikon error sesuai SVG Figma */
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+/* Pesan tetap tersembunyi jika tidak ada error */
+.admin-field-error[hidden] {
+    display: none !important;
+}
