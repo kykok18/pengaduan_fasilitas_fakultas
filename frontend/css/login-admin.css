@@ -802,3 +802,96 @@ body {
 #adminLoginSpinner[hidden] {
     display: none;
 }
+
+
+/* ============================================================
+   VALIDASI E-MAIL DAN PASSWORD — SESUAI FIGMA
+   ============================================================ */
+
+/* Pesan error berada tepat di bawah input */
+.admin-field-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 2px;
+    padding: 0 10px;
+    gap: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #D02316;
+}
+
+/* Ikon error SVG dari Figma */
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* Sembunyikan pesan saat tidak ada error */
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+/* Border input E-mail ketika error */
+#adminEmail.is-invalid,
+#adminEmail.is-invalid:focus {
+    border: 1px solid #D02316;
+    box-shadow: none;
+}
+
+/* Border input Password ketika error */
+.admin-password-wrapper.is-invalid,
+.admin-password-wrapper.is-invalid:focus-within {
+    border: 1px solid #D02316;
+}
+
+/* Ukuran dan jarak utama mengikuti Figma */
+.admin-fields {
+    gap: 30px;
+}
+
+.admin-login-form {
+    gap: 60px;
+}
+
+/* Loading tombol sesuai Figma */
+#adminLoginButton.is-loading,
+#adminLoginButton:disabled {
+    background: #D9D9D9;
+    color: #FFFFFF;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+#adminLoginButton.is-loading #adminLoginButtonText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+/* Spinner tidak digunakan pada desain Figma */
+#adminLoginSpinner {
+    display: none !important;
+}
+
+@media (max-width: 760px) {
+    .admin-fields {
+        gap: 16px;
+    }
+
+    .admin-login-form {
+        gap: 30px;
+    }
+}
