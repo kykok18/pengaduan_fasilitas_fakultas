@@ -895,3 +895,80 @@ body {
         gap: 30px;
     }
 }
+
+
+/* ============================================================
+   PENYESUAIAN VALIDASI LOGIN ADMIN — FIGMA
+   ============================================================ */
+
+/* Teks error dan icon sesuai Figma */
+.admin-field-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 14px;
+    padding: 0 10px;
+    gap: 18px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #D02316;
+}
+
+/* Icon error 18 x 18px */
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+/* Sembunyikan pesan saat tidak ada error */
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+/* Saat pesan validasi muncul,
+   rapatkan jarak E-mail dan Password */
+.admin-fields:has(.admin-field-error:not([hidden])) {
+    gap: 0;
+}
+
+/* Saat pesan validasi muncul,
+   sesuaikan jarak ke tombol Login */
+.admin-login-form:has(.admin-field-error:not([hidden])) {
+    gap: 25px;
+}
+
+/* Input tetap berukuran sesuai Figma */
+.admin-form-group > input,
+.admin-password-wrapper {
+    height: 54px;
+    border-radius: 10px;
+}
+
+/* Pertahankan border merah saat error */
+#adminEmail.is-invalid,
+#adminEmail.is-invalid:focus,
+.admin-password-wrapper.is-invalid,
+.admin-password-wrapper.is-invalid:focus-within {
+    border-color: #D02316;
+}
+
+/* Tampilan responsif tetap mengikuti layout */
+@media (max-width: 760px) {
+    .admin-fields:has(.admin-field-error:not([hidden])) {
+        gap: 0;
+    }
+
+    .admin-login-form:has(.admin-field-error:not([hidden])) {
+        gap: 25px;
+    }
+}
