@@ -1074,3 +1074,72 @@ body {
 .admin-password-toggle #adminEyeClosed[hidden] {
     display: none !important;
 }
+
+
+/* ============================================================
+   FIX POSISI FORM LOGIN — TIDAK BERGESER SAAT ERROR
+   ============================================================ */
+
+/* Pertahankan jarak asli Figma */
+.admin-fields,
+.admin-fields:has(.admin-field-error:not([hidden])) {
+    gap: 30px;
+}
+
+.admin-login-form,
+.admin-login-form:has(.admin-field-error:not([hidden])) {
+    gap: 60px;
+}
+
+/* Pesan error tidak menambah tinggi form */
+.admin-form-group {
+    position: relative;
+}
+
+/* Posisi pesan error di bawah input */
+.admin-field-error {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 5px;
+    padding: 0 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+    color: #D02316;
+}
+
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+/* Icon error tetap sesuai Figma */
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 760px) {
+    .admin-fields,
+    .admin-fields:has(.admin-field-error:not([hidden])) {
+        gap: 30px;
+    }
+
+    .admin-login-form,
+    .admin-login-form:has(.admin-field-error:not([hidden])) {
+        gap: 60px;
+    }
+}
