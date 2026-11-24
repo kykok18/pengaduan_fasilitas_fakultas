@@ -2,7 +2,6 @@
 /* ============================================================
    LOGIN ADMIN — US-11B-FE
    FITK SIBER AHSAN
-   VALIDASI SESUAI FIGMA
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,6 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const togglePassword =
         document.getElementById("toggleAdminPassword");
+
+    const eyeOpen =
+        document.getElementById("adminEyeOpen");
+
+    const eyeClosed =
+        document.getElementById("adminEyeClosed");
 
     const loginButton =
         document.getElementById("adminLoginButton");
@@ -53,6 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
         !emailInput ||
         !passwordInput ||
         !passwordWrapper ||
+        !togglePassword ||
+        !eyeOpen ||
+        !eyeClosed ||
         !loginButton ||
         !loginButtonText ||
         !loginSpinner ||
@@ -61,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         !passwordError
     ) {
         console.error(
-            "Elemen Login Admin tidak lengkap. Periksa HTML."
+            "Elemen Login Admin tidak lengkap. Periksa login-admin.html."
         );
         return;
     }
@@ -96,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ========================================================
-    // 4. VALIDASI SESUAI FIGMA
+    // 4. VALIDASI INPUT SESUAI FIGMA
     // ========================================================
 
     function clearEmailError() {
@@ -116,14 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
         clearPasswordError();
     }
 
-    // Menampilkan error tepat di bawah input E-mail
     function showEmailError(message = "E-mail wajib diisi.") {
         emailInput.classList.add("is-invalid");
-
-        emailInput.setAttribute(
-            "aria-invalid",
-            "true"
-        );
+        emailInput.setAttribute("aria-invalid", "true");
 
         const errorText = emailError.querySelector("span");
 
@@ -134,16 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
         emailError.hidden = false;
     }
 
-    // Menampilkan error tepat di bawah input Password
     function showPasswordError(
         message = "Password wajib diisi."
     ) {
         passwordWrapper.classList.add("is-invalid");
-
-        passwordInput.setAttribute(
-            "aria-invalid",
-            "true"
-        );
+        passwordInput.setAttribute("aria-invalid", "true");
 
         const errorText = passwordError.querySelector("span");
 
@@ -161,72 +159,54 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        // KONDISI 1:
-        // E-mail dan Password sama-sama kosong
+        // Kedua field kosong
         if (!email && !password) {
             showEmailError();
             showPasswordError();
-
             emailInput.focus();
             return false;
         }
 
-        // KONDISI 2:
-        // Hanya E-mail yang kosong
+        // E-mail kosong
         if (!email) {
             showEmailError();
-
             emailInput.focus();
             return false;
         }
 
-        // KONDISI 3:
-        // Hanya Password yang kosong
+        // Password kosong
         if (!password) {
             showPasswordError();
-
             passwordInput.focus();
             return false;
         }
 
-        // Validasi panjang E-mail
+        // Panjang E-mail maksimal 254 byte
         if (new TextEncoder().encode(email).length > 254) {
-            showEmailError(
-                "E-mail maksimal 254 karakter."
-            );
-
+            showEmailError("E-mail maksimal 254 karakter.");
             emailInput.focus();
             return false;
         }
 
-        // Validasi format E-mail
+        // Format E-mail tidak valid
         if (!emailInput.checkValidity()) {
-            showEmailError(
-                "Format E-mail tidak valid."
-            );
-
+            showEmailError("Format E-mail tidak valid.");
             emailInput.focus();
             return false;
         }
 
-        // Validasi panjang Password
-        if (
-            new TextEncoder().encode(password).length > 100
-        ) {
-            showPasswordError(
-                "Password maksimal 100 karakter."
-            );
-
+        // Panjang Password maksimal 100 byte
+        if (new TextEncoder().encode(password).length > 100) {
+            showPasswordError("Password maksimal 100 karakter.");
             passwordInput.focus();
             return false;
         }
 
-        // Validasi karakter kontrol Password
+        // Password mengandung karakter kontrol
         if (/[\x00-\x1F\x7F]/.test(password)) {
             showPasswordError(
                 "Password mengandung karakter tidak valid."
             );
-
             passwordInput.focus();
             return false;
         }
@@ -235,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ========================================================
-    // 5. HAPUS ERROR PER FIELD SAAT DIKETIK
+    // 5. HAPUS ERROR SAAT INPUT BERUBAH
     // ========================================================
 
     emailInput.addEventListener("input", () => {
@@ -249,47 +229,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ========================================================
-    // 6. SHOW / HIDE PASSWORD
+    // 6. SHOW / HIDE PASSWORD — FIGMA
     // ========================================================
 
-const eyeOpen = document.getElementById("adminEyeOpen");
-const eyeClosed = document.getElementById("adminEyeClosed");
+    function updatePasswordIcon() {
+        const isHidden = passwordInput.type === "password";
 
+        // Password tersembunyi -> ikon mata tertutup
+        eyeClosed.hidden = !isHidden;
 
-function updatePasswordIcon() {
-    const isHidden = passwordInput.type === "password";
+        // Password terlihat -> ikon mata terbuka
+        eyeOpen.hidden = isHidden;
 
-    // Password disembunyikan → mata tertutup
-    eyeClosed.hidden = !isHidden;
+        togglePassword.setAttribute(
+            "aria-label",
+            isHidden
+                ? "Tampilkan password"
+                : "Sembunyikan password"
+        );
 
-    // Password terlihat → mata terbuka
-    eyeOpen.hidden = isHidden;
+        togglePassword.setAttribute(
+            "aria-pressed",
+            String(!isHidden)
+        );
+    }
 
-    togglePassword.setAttribute(
-        "aria-label",
-        isHidden ? "Tampilkan password" : "Sembunyikan password"
-    );
+    togglePassword.addEventListener("click", () => {
+        passwordInput.type =
+            passwordInput.type === "password"
+                ? "text"
+                : "password";
 
-    togglePassword.setAttribute(
-        "aria-pressed",
-        String(!isHidden)
-    );
-}
+        updatePasswordIcon();
+        passwordInput.focus();
+    });
 
-
-togglePassword?.addEventListener("click", () => {
-    passwordInput.type =
-        passwordInput.type === "password" ? "text" : "password";
-
+    // Mengatur ikon ketika halaman pertama dibuka
     updatePasswordIcon();
-    passwordInput.focus();
-});
-
-updatePasswordIcon();
-
 
     // ========================================================
-    // 7. LOADING TOMBOL LOGIN
+    // 7. LOADING LOGIN — FIGMA
     // ========================================================
 
     function setLoading(loading) {
@@ -303,7 +282,7 @@ updatePasswordIcon();
         loginButtonText.textContent =
             loading ? "Loading..." : "Login";
 
-        // Spinner tidak ditampilkan sesuai Figma
+        // Figma tidak menggunakan spinner
         loginSpinner.hidden = true;
 
         loginButton.setAttribute(
@@ -316,145 +295,141 @@ updatePasswordIcon();
     // 8. PROSES LOGIN ADMIN
     // ========================================================
 
-    loginForm.addEventListener(
-        "submit",
-        async (event) => {
-            event.preventDefault();
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-            if (isSubmitting || isRedirecting) {
+        if (isSubmitting || isRedirecting) {
+            return;
+        }
+
+        // Validasi sebelum request API
+        if (!validateForm()) {
+            return;
+        }
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        isSubmitting = true;
+        setLoading(true);
+
+        try {
+            if (typeof apiLoginAdmin !== "function") {
+                throw new Error(
+                    "Fungsi API Login Admin tidak tersedia."
+                );
+            }
+
+            // Backend melakukan autentikasi PHP Session
+            const result = await apiLoginAdmin(
+                email,
+                password
+            );
+
+            // ================================================
+            // LOGIN BERHASIL
+            // ================================================
+
+            if (
+                result.ok === true &&
+                result.status === "success" &&
+                result.data?.role === "admin"
+            ) {
+                isRedirecting = true;
+
+                hideMessage();
+                clearValidation();
+
+                if (successToast) {
+                    successToast.hidden = false;
+                }
+
+                setLoading(true);
+
+                window.setTimeout(() => {
+                    window.location.replace(
+                        ADMIN_REDIRECT
+                    );
+                }, 1800);
+
                 return;
             }
 
-            // Validasi sebelum menghubungi API
-            if (!validateForm()) {
-                return;
-            }
+            // ================================================
+            // LOGIN DITOLAK / REQUEST GAGAL
+            // ================================================
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-
-            isSubmitting = true;
-            setLoading(true);
-
-            try {
-                if (typeof apiLoginAdmin !== "function") {
-                    throw new Error(
-                        "Fungsi API Login Admin tidak tersedia."
-                    );
-                }
-
-                // Login melalui API backend
-                const result = await apiLoginAdmin(
-                    email,
-                    password
-                );
-
-                // ============================================
-                // LOGIN BERHASIL
-                // ============================================
-
-                if (
-                    result.ok === true &&
-                    result.status === "success" &&
-                    result.data?.role === "admin"
-                ) {
-                    isRedirecting = true;
-
-                    hideMessage();
-                    clearValidation();
-
-                    if (successToast) {
-                        successToast.hidden = false;
-                    }
-
-                    // Pertahankan tombol loading
-                    setLoading(true);
-
-                    window.setTimeout(() => {
-                        window.location.replace(
-                            ADMIN_REDIRECT
-                        );
-                    }, 1800);
-
-                    return;
-                }
-
-                // ============================================
-                // LOGIN DITOLAK
-                // ============================================
-
-                if (result.ok === true) {
-                    showMessage(
-                        "Respons autentikasi admin tidak valid."
-                    );
-                    return;
-                }
-
-                switch (result.httpStatus) {
-                    case 400:
-                        showMessage(
-                            result.message ||
-                            "Data login tidak valid."
-                        );
-                        break;
-
-                    case 401:
-                        showMessage(
-                            result.message ||
-                            "Email atau password salah."
-                        );
-                        break;
-
-                    case 403:
-                        showMessage(
-                            result.message ||
-                            "Akun ini tidak memiliki akses admin."
-                        );
-                        break;
-
-                    case 413:
-                        showMessage(
-                            "Data login terlalu besar."
-                        );
-                        break;
-
-                    case 500:
-                        showMessage(
-                            "Terjadi kesalahan pada server. " +
-                            "Silakan coba lagi."
-                        );
-                        break;
-
-                    case 0:
-                        showMessage(
-                            "Tidak dapat terhubung ke server. " +
-                            "Periksa koneksi Anda."
-                        );
-                        break;
-
-                    default:
-                        showMessage(
-                            result.message ||
-                            "Login gagal diproses. Silakan coba lagi."
-                        );
-                }
-
-            } catch (error) {
-                console.error(
-                    "Terjadi kesalahan saat login admin:",
-                    error
-                );
-
+            if (result.ok === true) {
                 showMessage(
-                    "Login gagal diproses. Silakan coba lagi."
+                    "Respons autentikasi admin tidak valid."
                 );
+                return;
+            }
 
-            } finally {
-                if (!isRedirecting) {
-                    isSubmitting = false;
-                    setLoading(false);
-                }
+            switch (result.httpStatus) {
+                case 400:
+                    showMessage(
+                        result.message ||
+                        "Data login tidak valid."
+                    );
+                    break;
+
+                case 401:
+                    showMessage(
+                        result.message ||
+                        "Email atau password salah."
+                    );
+                    break;
+
+                case 403:
+                    showMessage(
+                        result.message ||
+                        "Akun ini tidak memiliki akses admin."
+                    );
+                    break;
+
+                case 413:
+                    showMessage(
+                        "Data login terlalu besar."
+                    );
+                    break;
+
+                case 500:
+                    showMessage(
+                        "Terjadi kesalahan pada server. " +
+                        "Silakan coba lagi."
+                    );
+                    break;
+
+                case 0:
+                    showMessage(
+                        "Tidak dapat terhubung ke server. " +
+                        "Periksa koneksi Anda."
+                    );
+                    break;
+
+                default:
+                    showMessage(
+                        result.message ||
+                        "Login gagal diproses. Silakan coba lagi."
+                    );
+            }
+
+        } catch (error) {
+            console.error(
+                "Terjadi kesalahan saat login admin:",
+                error
+            );
+
+            showMessage(
+                "Login gagal diproses. Silakan coba lagi."
+            );
+
+        } finally {
+            if (!isRedirecting) {
+                isSubmitting = false;
+                setLoading(false);
             }
         }
-    );
+    });
 });

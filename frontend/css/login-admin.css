@@ -1048,3 +1048,31 @@ body {
     width: 35px;
     height: 35px;
 }
+
+
+/* ========================================================
+   ICON MATA LOGIN ADMIN — FIGMA 35 x 35
+   ======================================================== */
+
+.admin-password-toggle {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.admin-password-toggle #adminEyeOpen,
+.admin-password-toggle #adminEyeClosed {
+    display: block;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+}
+
+.admin-password-toggle #adminEyeOpen[hidden],
+.admin-password-toggle #adminEyeClosed[hidden] {
+    display: none !important;
+}
