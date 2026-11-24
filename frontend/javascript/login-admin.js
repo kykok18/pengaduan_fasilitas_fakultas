@@ -209,23 +209,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    // ========================================================
-    // 6. LOADING LOGIN
-    // ========================================================
 
+/* ========================================================
+   6. LOADING LOGIN ADMIN — SESUAI FIGMA
+   ======================================================== */
 
 function setLoading(loading) {
-    const loginButton = document.querySelector(".admin-login-btn");
-
-    if (!loginButton) return;
-
     loginButton.disabled = loading;
     loginButton.classList.toggle("is-loading", loading);
 
-    loginButton.textContent = loading
+    // Hanya mengubah teks, bukan seluruh isi tombol.
+    loginButtonText.textContent = loading
         ? "Loading..."
         : "Login";
+
+    // Figma tidak menampilkan spinner saat loading.
+    loginSpinner.hidden = true;
+
+    // Informasi loading untuk aksesibilitas.
+    loginButton.setAttribute(
+        "aria-busy",
+        String(loading)
+    );
 }
+
 
 
 
@@ -264,7 +271,7 @@ function setLoading(loading) {
 
         const email = emailInput.value.trim();
         const password = passwordInput.value;
-
+        isSubmitting = true;
         setLoading(true);
 
         try {
@@ -395,6 +402,7 @@ if (
 
         } finally {
     if (!isRedirecting) {
+        isSubmitting = false;
         setLoading(false);
     }
 }
