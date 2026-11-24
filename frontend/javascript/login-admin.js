@@ -252,27 +252,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. SHOW / HIDE PASSWORD
     // ========================================================
 
-    togglePassword?.addEventListener("click", () => {
-        const isHidden =
-            passwordInput.type === "password";
+const eyeOpen = document.getElementById("adminEyeOpen");
+const eyeClosed = document.getElementById("adminEyeClosed");
 
-        passwordInput.type =
-            isHidden ? "text" : "password";
+function updatePasswordIcon() {
+    const isHidden = passwordInput.type === "password";
 
-        togglePassword.setAttribute(
-            "aria-pressed",
-            String(isHidden)
-        );
+    if (eyeOpen) {
+        eyeOpen.hidden = isHidden;
+    }
 
-        togglePassword.setAttribute(
-            "aria-label",
-            isHidden
-                ? "Sembunyikan password"
-                : "Tampilkan password"
-        );
+    if (eyeClosed) {
+        eyeClosed.hidden = !isHidden;
+    }
 
-        passwordInput.focus();
-    });
+    togglePassword?.setAttribute(
+        "aria-label",
+        isHidden ? "Tampilkan password" : "Sembunyikan password"
+    );
+
+    togglePassword?.setAttribute(
+        "aria-pressed",
+        String(!isHidden)
+    );
+}
+
+togglePassword?.addEventListener("click", () => {
+    passwordInput.type =
+        passwordInput.type === "password" ? "text" : "password";
+
+    updatePasswordIcon();
+    passwordInput.focus();
+});
+
+updatePasswordIcon();
+
 
     // ========================================================
     // 7. LOADING TOMBOL LOGIN

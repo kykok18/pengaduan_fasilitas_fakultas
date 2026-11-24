@@ -1025,3 +1025,26 @@ body {
 .admin-field-error[hidden] {
     display: none !important;
 }
+
+
+/* ICON SHOW / HIDE PASSWORD FIGMA */
+
+.admin-password-toggle {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+}
+
+.admin-password-toggle svg[hidden] {
+    display: none !important;
+}
+
+.admin-password-toggle #adminEyeOpen {
+    width: 24px;
+    height: 18px;
+}
+
+.admin-password-toggle #adminEyeClosed {
+    width: 35px;
+    height: 35px;
+}
