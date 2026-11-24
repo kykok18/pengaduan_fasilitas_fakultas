@@ -1076,3 +1076,30 @@ body {
 .admin-password-toggle #adminEyeClosed[hidden] {
     display: none !important;
 }
+
+
+/* =========================================
+   PERBAIKAN IKON SHOW / HIDE PASSWORD
+   ========================================= */
+
+.admin-password-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    padding: 0;
+}
+
+.admin-password-toggle #adminEyeOpen,
+.admin-password-toggle #adminEyeClosed {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+}
+
+.admin-password-toggle #adminEyeOpen[hidden],
+.admin-password-toggle #adminEyeClosed[hidden] {
+    display: none !important;
+}

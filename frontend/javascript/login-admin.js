@@ -232,27 +232,39 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. SHOW / HIDE PASSWORD — FIGMA
     // ========================================================
 
-    function updatePasswordIcon() {
-        const isHidden = passwordInput.type === "password";
 
-        // Password tersembunyi -> ikon mata tertutup
-        eyeClosed.hidden = !isHidden;
+function updatePasswordIcon() {
+    const isHidden = passwordInput.type === "password";
 
-        // Password terlihat -> ikon mata terbuka
-        eyeOpen.hidden = isHidden;
+    // Password disembunyikan: mata tertutup muncul
+    eyeClosed.hidden = !isHidden;
+    eyeClosed.style.setProperty(
+        "display",
+        isHidden ? "block" : "none",
+        "important"
+    );
 
-        togglePassword.setAttribute(
-            "aria-label",
-            isHidden
-                ? "Tampilkan password"
-                : "Sembunyikan password"
-        );
+    // Password terlihat: mata terbuka muncul
+    eyeOpen.hidden = isHidden;
+    eyeOpen.style.setProperty(
+        "display",
+        isHidden ? "none" : "block",
+        "important"
+    );
 
-        togglePassword.setAttribute(
-            "aria-pressed",
-            String(!isHidden)
-        );
-    }
+    togglePassword.setAttribute(
+        "aria-label",
+        isHidden
+            ? "Tampilkan password"
+            : "Sembunyikan password"
+    );
+
+    togglePassword.setAttribute(
+        "aria-pressed",
+        String(!isHidden)
+    );
+}
+
 
     togglePassword.addEventListener("click", () => {
         passwordInput.type =
