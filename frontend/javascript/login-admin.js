@@ -2,19 +2,13 @@
 /* ============================================================
    LOGIN ADMIN — US-11B-FE
    FITK SIBER AHSAN
-
-   Endpoint:
-   POST /backend/api/login-admin.php
-
-   Autentikasi:
-   PHP Session oleh backend
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
     "use strict";
 
     // ========================================================
-    // 1. ELEMENT HALAMAN
+    // 1. ELEMENT HTML
     // ========================================================
 
     const loginForm =
@@ -29,6 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const togglePassword =
         document.getElementById("toggleAdminPassword");
 
+    const eyeOpen =
+        document.getElementById("adminEyeOpen");
+
+    const eyeClosed =
+        document.getElementById("adminEyeClosed");
+
     const loginButton =
         document.getElementById("adminLoginButton");
 
@@ -41,25 +41,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginMessage =
         document.getElementById("adminLoginMessage");
 
-    const successToast =
-    document.getElementById("adminSuccessToast");
+    const emailError =
+        document.getElementById("adminEmailError");
 
+    const passwordError =
+        document.getElementById("adminPasswordError");
+
+    const successToast =
+        document.getElementById("adminSuccessToast");
+
+    const passwordWrapper =
+        passwordInput?.closest(".admin-password-wrapper");
 
     if (
         !loginForm ||
         !emailInput ||
         !passwordInput ||
+        !passwordWrapper ||
+        !togglePassword ||
+        !eyeOpen ||
+        !eyeClosed ||
         !loginButton ||
         !loginButtonText ||
         !loginSpinner ||
-        !loginMessage
+        !loginMessage ||
+        !emailError ||
+        !passwordError
     ) {
         console.error(
-            "Elemen halaman Login Admin tidak lengkap."
+            "Elemen Login Admin tidak lengkap. Periksa login-admin.html."
         );
         return;
     }
-
 
     // ========================================================
     // 2. KONFIGURASI
@@ -70,9 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let isSubmitting = false;
     let isRedirecting = false;
 
-
     // ========================================================
-    // 3. NOTIFIKASI
+    // 3. NOTIFIKASI UMUM / BACKEND
     // ========================================================
 
     function hideMessage() {
@@ -80,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loginMessage.textContent = "";
         loginMessage.classList.remove("is-success");
     }
-
 
     function showMessage(message, type = "error") {
         loginMessage.textContent = message;
@@ -92,179 +103,233 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    // ========================================================
+    // 4. VALIDASI INPUT SESUAI FIGMA
+    // ========================================================
 
-    // ========================================================
-    // 4. VALIDASI INPUT
-    // ========================================================
+    function clearEmailError() {
+        emailInput.classList.remove("is-invalid");
+        emailInput.removeAttribute("aria-invalid");
+        emailError.hidden = true;
+    }
+
+    function clearPasswordError() {
+        passwordWrapper.classList.remove("is-invalid");
+        passwordInput.removeAttribute("aria-invalid");
+        passwordError.hidden = true;
+    }
 
     function clearValidation() {
-        emailInput.classList.remove("is-invalid");
-
-        const passwordWrapper =
-            passwordInput.closest(".admin-password-wrapper");
-
-        passwordWrapper?.classList.remove("is-invalid");
-
-        emailInput.removeAttribute("aria-invalid");
-        passwordInput.removeAttribute("aria-invalid");
+        clearEmailError();
+        clearPasswordError();
     }
 
+    function showEmailError(message = "E-mail wajib diisi.") {
+        emailInput.classList.add("is-invalid");
+        emailInput.setAttribute("aria-invalid", "true");
 
-    function markInvalid(input) {
-        input.setAttribute("aria-invalid", "true");
+        const errorText = emailError.querySelector("span");
 
-        if (input === passwordInput) {
-            input.closest(".admin-password-wrapper")
-                ?.classList.add("is-invalid");
-        } else {
-            input.classList.add("is-invalid");
+        if (errorText) {
+            errorText.textContent = message;
         }
 
-        input.focus();
+        emailError.hidden = false;
     }
 
+    function showPasswordError(
+        message = "Password wajib diisi."
+    ) {
+        passwordWrapper.classList.add("is-invalid");
+        passwordInput.setAttribute("aria-invalid", "true");
+
+        const errorText = passwordError.querySelector("span");
+
+        if (errorText) {
+            errorText.textContent = message;
+        }
+
+        passwordError.hidden = false;
+    }
 
     function validateForm() {
         clearValidation();
+        hideMessage();
 
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
+        // Kedua field kosong
         if (!email && !password) {
-            showMessage("Email dan password harus diisi");
-            markInvalid(emailInput);
+            showEmailError();
+            showPasswordError();
+            emailInput.focus();
             return false;
         }
 
+        // E-mail kosong
         if (!email) {
-            showMessage("Email harus diisi");
-            markInvalid(emailInput);
+            showEmailError();
+            emailInput.focus();
             return false;
         }
 
+        // Password kosong
         if (!password) {
-            showMessage("Password harus diisi");
-            markInvalid(passwordInput);
+            showPasswordError();
+            passwordInput.focus();
             return false;
         }
 
+        // Panjang E-mail maksimal 254 byte
         if (new TextEncoder().encode(email).length > 254) {
-            showMessage("Email maksimal 254 karakter");
-            markInvalid(emailInput);
+            showEmailError("E-mail maksimal 254 karakter.");
+            emailInput.focus();
             return false;
         }
 
-        if (!emailInput.checkValidity()) {
-            showMessage("Format email tidak valid");
-            markInvalid(emailInput);
-            return false;
-        }
+        
 
-        // PHP strlen() menghitung byte, bukan jumlah karakter.
+/* ================================================
+   VALIDASI FORMAT E-MAIL — SESUAI FIGMA
+   ================================================ */
+
+const emailPattern = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
+
+if (
+    !emailInput.checkValidity() ||
+    !emailPattern.test(email)
+) {
+    hideMessage();
+
+    showEmailError("Format E-mail tidak sesuai.");
+
+    emailInput.focus();
+    return false;
+}
+
+
+
+        // Panjang Password maksimal 100 byte
         if (new TextEncoder().encode(password).length > 100) {
-            showMessage("Password maksimal 100 karakter");
-            markInvalid(passwordInput);
+            showPasswordError("Password maksimal 100 karakter.");
+            passwordInput.focus();
             return false;
         }
 
+        // Password mengandung karakter kontrol
         if (/[\x00-\x1F\x7F]/.test(password)) {
-            showMessage(
-                "Password mengandung karakter yang tidak valid"
+            showPasswordError(
+                "Password mengandung karakter tidak valid."
             );
-
-            markInvalid(passwordInput);
+            passwordInput.focus();
             return false;
         }
 
         return true;
     }
 
+    // ========================================================
+    // 5. HAPUS ERROR SAAT INPUT BERUBAH
+    // ========================================================
+
+    emailInput.addEventListener("input", () => {
+        clearEmailError();
+        hideMessage();
+    });
+
+    passwordInput.addEventListener("input", () => {
+        clearPasswordError();
+        hideMessage();
+    });
 
     // ========================================================
-    // 5. SHOW / HIDE PASSWORD
+    // 6. SHOW / HIDE PASSWORD — FIGMA
     // ========================================================
 
-    togglePassword?.addEventListener("click", () => {
 
-        const isHidden =
-            passwordInput.type === "password";
+function updatePasswordIcon() {
+    const isHidden = passwordInput.type === "password";
 
-        passwordInput.type = isHidden
-            ? "text"
-            : "password";
+    // Password disembunyikan: mata tertutup muncul
+    eyeClosed.hidden = !isHidden;
+    eyeClosed.style.setProperty(
+        "display",
+        isHidden ? "block" : "none",
+        "important"
+    );
 
-        togglePassword.setAttribute(
-            "aria-pressed",
-            String(isHidden)
-        );
+    // Password terlihat: mata terbuka muncul
+    eyeOpen.hidden = isHidden;
+    eyeOpen.style.setProperty(
+        "display",
+        isHidden ? "none" : "block",
+        "important"
+    );
 
-        togglePassword.setAttribute(
-            "aria-label",
-            isHidden
-                ? "Sembunyikan password"
-                : "Tampilkan password"
-        );
+    togglePassword.setAttribute(
+        "aria-label",
+        isHidden
+            ? "Tampilkan password"
+            : "Sembunyikan password"
+    );
 
+    togglePassword.setAttribute(
+        "aria-pressed",
+        String(!isHidden)
+    );
+}
+
+
+    togglePassword.addEventListener("click", () => {
+        passwordInput.type =
+            passwordInput.type === "password"
+                ? "text"
+                : "password";
+
+        updatePasswordIcon();
         passwordInput.focus();
     });
 
+    // Mengatur ikon ketika halaman pertama dibuka
+    updatePasswordIcon();
 
     // ========================================================
-    // 6. LOADING LOGIN
+    // 7. LOADING LOGIN — FIGMA
     // ========================================================
 
     function setLoading(loading) {
-        isSubmitting = loading;
-
         loginButton.disabled = loading;
-        emailInput.readOnly = loading;
-        passwordInput.readOnly = loading;
 
-        if (togglePassword) {
-            togglePassword.disabled = loading;
-        }
-
-        loginSpinner.hidden = !loading;
+        loginButton.classList.toggle(
+            "is-loading",
+            loading
+        );
 
         loginButtonText.textContent =
-            loading ? "Memproses..." : "Login";
+            loading ? "Loading..." : "Login";
 
-        loginForm.setAttribute(
+        // Figma tidak menggunakan spinner
+        loginSpinner.hidden = true;
+
+        loginButton.setAttribute(
             "aria-busy",
             String(loading)
         );
     }
 
-
     // ========================================================
-    // 7. HAPUS PESAN SAAT INPUT BERUBAH
-    // ========================================================
-
-    emailInput.addEventListener("input", () => {
-        hideMessage();
-        clearValidation();
-    });
-
-    passwordInput.addEventListener("input", () => {
-        hideMessage();
-        clearValidation();
-    });
-
-
-    // ========================================================
-    // 8. KIRIM LOGIN ADMIN KE BACKEND
+    // 8. PROSES LOGIN ADMIN
     // ========================================================
 
     loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        if (isSubmitting) {
+        if (isSubmitting || isRedirecting) {
             return;
         }
 
-        hideMessage();
-
-        // Tidak mengirim request jika input tidak valid.
+        // Validasi sebelum request API
         if (!validateForm()) {
             return;
         }
@@ -272,67 +337,56 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
+        isSubmitting = true;
         setLoading(true);
 
         try {
-
             if (typeof apiLoginAdmin !== "function") {
                 throw new Error(
                     "Fungsi API Login Admin tidak tersedia."
                 );
             }
 
+            // Backend melakukan autentikasi PHP Session
             const result = await apiLoginAdmin(
                 email,
                 password
             );
 
+            // ================================================
+            // LOGIN BERHASIL
+            // ================================================
 
-            
-// =================================================
-// LOGIN BERHASIL — NOTIFIKASI FIGMA
-// =================================================
+            if (
+                result.ok === true &&
+                result.status === "success" &&
+                result.data?.role === "admin"
+            ) {
+                isRedirecting = true;
 
-if (
-    result.ok === true &&
-    result.status === "success" &&
-    result.data?.role === "admin"
-) {
-    // Backend sudah memverifikasi kredensial,
-    // role admin, dan membuat PHP Session.
+                hideMessage();
+                clearValidation();
 
-    isRedirecting = true;
+                if (successToast) {
+                    successToast.hidden = false;
+                }
 
-    // Sembunyikan pesan error sebelumnya.
-    hideMessage();
+                setLoading(true);
 
-    // Tampilkan notifikasi berhasil sesuai Figma.
-    if (successToast) {
-        successToast.hidden = false;
-    }
+                window.setTimeout(() => {
+                    window.location.replace(
+                        ADMIN_REDIRECT
+                    );
+                }, 1800);
 
-    // Pertahankan loading agar tidak ada
-    // pengiriman formulir kedua.
-    setLoading(true);
+                return;
+            }
 
-    // Berikan waktu notifikasi terlihat,
-    // kemudian arahkan ke Dashboard Admin.
-    window.setTimeout(() => {
-        window.location.replace(ADMIN_REDIRECT);
-    }, 1800);
-
-    return;
-}
-
-
-
-            // =================================================
+            // ================================================
             // LOGIN DITOLAK / REQUEST GAGAL
-            // =================================================
+            // ================================================
 
             if (result.ok === true) {
-                // Respons sukses tanpa konfirmasi role admin
-                // tidak boleh digunakan untuk redirect.
                 showMessage(
                     "Respons autentikasi admin tidak valid."
                 );
@@ -340,7 +394,6 @@ if (
             }
 
             switch (result.httpStatus) {
-
                 case 400:
                     showMessage(
                         result.message ||
@@ -378,7 +431,7 @@ if (
                 case 0:
                     showMessage(
                         "Tidak dapat terhubung ke server. " +
-                        "Periksa koneksi internet Anda."
+                        "Periksa koneksi Anda."
                     );
                     break;
 
@@ -390,7 +443,6 @@ if (
             }
 
         } catch (error) {
-
             console.error(
                 "Terjadi kesalahan saat login admin:",
                 error
@@ -401,11 +453,10 @@ if (
             );
 
         } finally {
-    if (!isRedirecting) {
-        setLoading(false);
-    }
-}
-
+            if (!isRedirecting) {
+                isSubmitting = false;
+                setLoading(false);
+            }
+        }
     });
-
 });

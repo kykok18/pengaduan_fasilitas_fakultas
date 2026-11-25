@@ -450,10 +450,50 @@ commentsCard.hidden = false;
       stateIcon.appendChild(spinner);
     }
 
-    if (type === "error") {
-      stateIcon.classList.add("is-error");
-      retryBtn.hidden = false;
-    }
+    
+if (type === "error") {
+    stateIcon.classList.add("is-error");
+    retryBtn.hidden = false;
+
+    stateIcon.innerHTML = `
+        <svg
+            width="91"
+            height="94"
+            viewBox="0 0 91 94"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+        >
+            <mask id="stroke0_3523_2976" fill="white">
+                <path d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"/>
+            </mask>
+
+            <ellipse
+                cx="45.5"
+                cy="47"
+                rx="45.5"
+                ry="47"
+                stroke-width="2"
+                stroke="#D02316"
+                mask="url(#stroke0_3523_2976)"
+            />
+
+            <path
+                d="M73.5 47C73.5 62.464 60.964 75 45.5 75C30.036 75 17.5 62.464 17.5 47C17.5 31.536 30.036 19 45.5 19C60.964 19 73.5 31.536 73.5 47Z"
+                stroke-width="2"
+                stroke="#D02316"
+            />
+
+            <path
+                d="M45.5 33V49.8M45.5 59.6V61"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke="#D02316"
+            />
+        </svg>
+    `;
+}
+
 
     if (type === "not-found") {
       stateIcon.classList.add("is-not-found");

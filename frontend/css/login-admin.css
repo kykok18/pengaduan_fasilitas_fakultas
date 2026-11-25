@@ -295,15 +295,6 @@ body {
     opacity: 1;
 }
 
-.admin-form-group > input:focus,
-.admin-password-wrapper:focus-within {
-    border-color: #0B5E3B;
-}
-
-.admin-form-group > input:focus {
-    box-shadow: 0 0 0 2px rgba(11, 94, 59, 0.08);
-}
-
 /* ============================================================
    INPUT PASSWORD DAN ICON EYE
    ============================================================ */
@@ -722,5 +713,424 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .admin-login-spinner {
         animation-duration: 1.5s;
+    }
+}
+
+
+/* ==========================================
+   POSISI NOTIFIKASI LOGIN BERHASIL
+   ========================================== */
+
+.admin-success-toast {
+    position: fixed;
+    top: 20px;
+    right: 57px;
+    left: auto;
+    transform: none;
+    z-index: 1000;
+}
+
+
+@media screen and (min-height: 900px) {
+    .admin-success-toast {
+        top: 57px;
+    }
+}
+
+
+
+/* ==========================================
+   LOGIN ADMIN — LOADING SESUAI FIGMA
+   ========================================== */
+
+#adminLoginButton.is-loading {
+    background: #D9D9D9;
+    color: #FFFFFF;
+    opacity: 1;
+    cursor: not-allowed;
+    border-radius: 10px;
+}
+
+#adminLoginButton.is-loading #adminLoginButtonText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+/* Spinner tidak ditampilkan */
+#adminLoginSpinner,
+#adminLoginSpinner[hidden] {
+    display: none;
+}
+
+
+/* ============================================================
+   VALIDASI E-MAIL DAN PASSWORD — SESUAI FIGMA
+   ============================================================ */
+
+/* Pesan error berada tepat di bawah input */
+.admin-field-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 2px;
+    padding: 0 10px;
+    gap: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #D02316;
+}
+
+
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    flex: 0 0 18px;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+
+/* Sembunyikan pesan saat tidak ada error */
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+/* Border input E-mail ketika error */
+#adminEmail.is-invalid,
+#adminEmail.is-invalid:focus {
+    border: 1px solid #D02316;
+    box-shadow: none;
+}
+
+/* Border input Password ketika error */
+.admin-password-wrapper.is-invalid,
+.admin-password-wrapper.is-invalid:focus-within {
+    border: 1px solid #D02316;
+}
+
+/* Ukuran dan jarak utama mengikuti Figma */
+.admin-fields {
+    gap: 30px;
+}
+
+.admin-login-form {
+    gap: 60px;
+}
+
+/* Loading tombol sesuai Figma */
+#adminLoginButton.is-loading,
+#adminLoginButton:disabled {
+    background: #D9D9D9;
+    color: #FFFFFF;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+#adminLoginButton.is-loading #adminLoginButtonText {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+/* Spinner tidak digunakan pada desain Figma */
+#adminLoginSpinner {
+    display: none !important;
+}
+
+@media (max-width: 760px) {
+    .admin-fields {
+        gap: 16px;
+    }
+
+    .admin-login-form {
+        gap: 30px;
+    }
+}
+
+
+/* ============================================================
+   PENYESUAIAN VALIDASI LOGIN ADMIN — FIGMA
+   ============================================================ */
+
+/* Teks error dan icon sesuai Figma */
+.admin-field-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 14px;
+    padding: 0 10px;
+    gap: 18px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #D02316;
+}
+
+
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    flex: 0 0 18px;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+
+/* Sembunyikan pesan saat tidak ada error */
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+/* Saat pesan validasi muncul,
+   rapatkan jarak E-mail dan Password */
+.admin-fields:has(.admin-field-error:not([hidden])) {
+    gap: 0;
+}
+
+/* Saat pesan validasi muncul,
+   sesuaikan jarak ke tombol Login */
+.admin-login-form:has(.admin-field-error:not([hidden])) {
+    gap: 25px;
+}
+
+/* Input tetap berukuran sesuai Figma */
+.admin-form-group > input,
+.admin-password-wrapper {
+    height: 54px;
+    border-radius: 10px;
+}
+
+/* Pertahankan border merah saat error */
+#adminEmail.is-invalid,
+#adminEmail.is-invalid:focus,
+.admin-password-wrapper.is-invalid,
+.admin-password-wrapper.is-invalid:focus-within {
+    border-color: #D02316;
+}
+
+/* Tampilan responsif tetap mengikuti layout */
+@media (max-width: 760px) {
+    .admin-fields:has(.admin-field-error:not([hidden])) {
+        gap: 0;
+    }
+
+    .admin-login-form:has(.admin-field-error:not([hidden])) {
+        gap: 25px;
+    }
+}
+
+
+/* ============================================================
+   FINAL — ERROR MESSAGE LOGIN ADMIN SESUAI FIGMA
+   ============================================================ */
+
+.admin-field-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 8px;
+    padding: 0 10px;
+    gap: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+    color: #D02316;
+}
+
+
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    flex: 0 0 18px;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+
+/* Pesan tetap tersembunyi jika tidak ada error */
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+
+/* ICON SHOW / HIDE PASSWORD FIGMA */
+
+.admin-password-toggle {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+}
+
+.admin-password-toggle svg[hidden] {
+    display: none !important;
+}
+
+.admin-password-toggle #adminEyeOpen {
+    width: 24px;
+    height: 18px;
+}
+
+.admin-password-toggle #adminEyeClosed {
+    width: 35px;
+    height: 35px;
+}
+
+
+/* ========================================================
+   ICON MATA LOGIN ADMIN — FIGMA 35 x 35
+   ======================================================== */
+
+.admin-password-toggle {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.admin-password-toggle #adminEyeOpen,
+.admin-password-toggle #adminEyeClosed {
+    display: block;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+}
+
+.admin-password-toggle #adminEyeOpen[hidden],
+.admin-password-toggle #adminEyeClosed[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================
+   PERBAIKAN IKON SHOW / HIDE PASSWORD
+   ========================================= */
+
+.admin-password-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    padding: 0;
+}
+
+.admin-password-toggle #adminEyeOpen,
+.admin-password-toggle #adminEyeClosed {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+}
+
+.admin-password-toggle #adminEyeOpen[hidden],
+.admin-password-toggle #adminEyeClosed[hidden] {
+    display: none !important;
+}
+
+
+/* ============================================================
+   FIX POSISI FORM LOGIN — TIDAK BERGESER SAAT ERROR
+   ============================================================ */
+
+/* Pertahankan jarak asli Figma */
+.admin-fields,
+.admin-fields:has(.admin-field-error:not([hidden])) {
+    gap: 30px;
+}
+
+.admin-login-form,
+.admin-login-form:has(.admin-field-error:not([hidden])) {
+    gap: 60px;
+}
+
+/* Pesan error tidak menambah tinggi form */
+.admin-form-group {
+    position: relative;
+}
+
+/* Posisi pesan error di bawah input */
+.admin-field-error {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+    min-height: 21px;
+
+    margin-top: 5px;
+    padding: 0 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 21px;
+    color: #D02316;
+}
+
+.admin-field-error[hidden] {
+    display: none !important;
+}
+
+/* Icon error tetap sesuai Figma */
+.admin-field-error svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 760px) {
+    .admin-fields,
+    .admin-fields:has(.admin-field-error:not([hidden])) {
+        gap: 30px;
+    }
+
+    .admin-login-form,
+    .admin-login-form:has(.admin-field-error:not([hidden])) {
+        gap: 60px;
     }
 }

@@ -1215,22 +1215,37 @@ padding: 11px 10px;
 }
 
 
+/* ERROR ICON - SVG SESUAI FIGMA */
+
 .detail-state-icon.is-error {
-  border-color: #E21B12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 91px;
+    height: 94px;
+    flex: 0 0 94px;
+
+    padding: 0;
+    margin-bottom: 15px;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
 }
 
 .detail-state-icon.is-error::before {
-  content: "!";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 54px;
-  height: 54px;
-  border: 3px solid #E21B12;
-  border-radius: 50%;
-  color: #E21B12;
-  font-size: 34px;
+    content: none;
+    display: none;
 }
+
+.detail-state-icon.is-error svg {
+    display: block;
+    width: 91px;
+    height: 94px;
+    flex-shrink: 0;
+}
+
 
 .detail-state-icon.is-not-found::before {
     content: none;

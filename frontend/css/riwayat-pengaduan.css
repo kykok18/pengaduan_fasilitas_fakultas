@@ -428,6 +428,15 @@
 }
 
 
+/* Sembunyikan tombol silang bawaan input search */
+.riwayat-main input[type="search"]::-webkit-search-cancel-button,
+.riwayat-main input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+
 /* ==========================================
    FILTER CHIPS — SESUAI FIGMA
    ========================================== */
@@ -594,44 +603,76 @@
     font-weight: 400;
 }
 
-/* Tombol Prev dan Next */
+
+/* ==========================================
+   PAGINATION PREV & NEXT — SESUAI FIGMA
+   ========================================== */
+
 .riwayat-pagination .page-btn.prev,
 .riwayat-pagination .page-btn.next {
+    box-sizing: border-box;
+
     display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
     flex: 0 0 68px;
-
     width: 68px;
     height: 32px;
 
-    gap: 5px;
     padding: 0;
+    gap: 4px;
 
     background: #FFFFFF;
     border: 1px solid transparent;
     border-radius: 7px;
 
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
-    line-height: 100%;
+    font-weight: 400;
+    line-height: 16px;
+
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
-/* Ikon panah */
+/* Teks Prev dan Next */
+.riwayat-pagination .page-btn.prev span,
+.riwayat-pagination .page-btn.next span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 16px;
+    padding: 0;
+    margin: 0;
+
+    font: inherit;
+    line-height: 16px;
+    white-space: nowrap;
+}
+
+/* Chevron */
 .riwayat-pagination .page-btn.prev i,
 .riwayat-pagination .page-btn.next i {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
+    flex: 0 0 13px;
+    width: 13px;
+    height: 16px;
+
+    padding: 0;
+    margin: 0;
+
     font-size: 13px;
     line-height: 1;
 
     color: currentColor;
 }
+
 
 /* Tombol tidak aktif */
 .riwayat-pagination .page-btn:disabled {
@@ -2309,3 +2350,178 @@
 }
 
 
+
+/* ==========================================
+   PAGINATION RIWAYAT — UKURAN FIGMA
+   ========================================== */
+
+.riwayat-main .riwayat-pagination {
+    gap: 12px;
+}
+
+/* Nomor halaman: 32 × 32 */
+.riwayat-main .riwayat-pagination .page-btn:not(.prev):not(.next) {
+    flex: 0 0 32px;
+    width: 32px;
+    min-width: 32px;
+    max-width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+/* Prev dan Next: 68 × 32 */
+.riwayat-main .riwayat-pagination .page-btn.prev,
+.riwayat-main .riwayat-pagination .page-btn.next {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 68px;
+    width: 68px;
+    min-width: 68px;
+    max-width: 68px;
+    height: 32px;
+
+    padding: 0;
+    gap: 4px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+/* Teks dan panah sejajar di tengah */
+.riwayat-main .riwayat-pagination .page-btn.prev span,
+.riwayat-main .riwayat-pagination .page-btn.next span {
+    line-height: 16px;
+}
+
+.riwayat-main .riwayat-pagination .page-btn.prev i,
+.riwayat-main .riwayat-pagination .page-btn.next i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* Mobile: jangan kecilkan tombol Figma */
+@media (max-width: 767px) {
+    .riwayat-main .riwayat-pagination {
+        width: 100%;
+        max-width: 100%;
+        justify-content: safe center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .riwayat-main .riwayat-pagination::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+
+/* ==========================================
+   RESPONSIVE SUMMARY
+   DESAIN FIGMA TETAP DIPERTAHANKAN
+   ========================================== */
+
+@media (max-width: 390px) {
+
+    .riwayat-main .riwayat-summary {
+        grid-template-columns: 135px 1px 103px;
+    }
+
+    .riwayat-main .riwayat-summary-total {
+        zoom: 0.9;
+    }
+
+    .riwayat-main .riwayat-status-list {
+        zoom: 0.9;
+    }
+}
+
+@media (max-width: 350px) {
+
+    .riwayat-main .riwayat-summary {
+        grid-template-columns: 114px 1px 87px;
+    }
+
+    .riwayat-main .riwayat-summary-total {
+        zoom: 0.76;
+    }
+
+    .riwayat-main .riwayat-status-list {
+        zoom: 0.76;
+    }
+}
+
+
+/* Geser hanya bagian Total Pengaduan ke kiri */
+@media screen and (max-width: 390px) {
+    .riwayat-main .riwayat-summary-total {
+        position: relative !important;
+        left: -12px !important;
+    }
+}
+
+
+/* ==========================================
+   FIX LEBAR SUMMARY & CARD RIWAYAT
+   ========================================== */
+
+@media screen and (max-width: 767px) {
+
+    /* Ringkasan Total Pengaduan */
+    .riwayat-main .riwayat-summary {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /* Wadah daftar pengaduan */
+    .riwayat-main .riwayat-list {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+        align-items: stretch;
+    }
+
+    /* Setiap kartu pengaduan */
+    .riwayat-main .riwayat-list .report-card-dash {
+        display: flex;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+}
+
+
+/* Pagination mobile tetap di tengah */
+@media screen and (max-width: 390px) {
+
+    .riwayat-main .riwayat-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        max-width: 100%;
+
+        gap: 12px;
+        overflow-x: hidden;
+        flex-wrap: nowrap;
+    }
+}

@@ -1,383 +1,410 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — Pengaduan Fasilitas FITK</title>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard — Pengaduan Fasilitas FITK</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="css/skeleton.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-</head>
-<body>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <img src="img/logo-fitk.png" alt="Logo FITK" class="sidebar-logo">
-            <div class="sidebar-header-text">
-                <h3>FITK SIBER AHSAN</h3>
-                <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
-                <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
-            </div>
-        </div>
-        <div class="sidebar-divider"></div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li class="active">
-                    <a href="dashboard.html">
-                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M26.606 17.3555L18.5081 9.23687L17.9653 8.6924C17.8416 8.56917 17.6744 8.5 17.5 8.5C17.3257 8.5 17.1585 8.56917 17.0348 8.6924L8.39408 17.3555C8.26736 17.4821 8.1672 17.6329 8.09953 17.799C8.03186 17.9651 7.99805 18.1431 8.00009 18.3225C8.00847 19.0625 8.62252 19.6532 9.36022 19.6532H10.2509V26.5H24.7492V19.6532H25.6587C26.0171 19.6532 26.3545 19.5123 26.6081 19.258C26.7329 19.1331 26.8319 18.9847 26.8992 18.8212C26.9664 18.6578 27.0007 18.4825 27 18.3057C27 17.9483 26.8596 17.6099 26.606 17.3555ZM18.6736 24.9864H16.3264V20.698H18.6736V24.9864ZM23.2402 18.1396V24.9864H20.0149V20.1934C20.0149 19.7289 19.6398 19.3526 19.1766 19.3526H15.8235C15.3603 19.3526 14.9852 19.7289 14.9852 20.1934V24.9864H11.7598V18.1396H9.74793L17.5021 10.3678L17.9862 10.8534L25.2542 18.1396H23.2402Z" fill="#0B5E3B"/>
-</svg>
-
-
-
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="buat-pengaduan.html">
-                       <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<mask id="stroke0_1420_1542" maskUnits="userSpaceOnUse" x="9.5" y="7.5" width="16" height="20" fill="black">
-<rect fill="white" x="9.5" y="7.5" width="16" height="20"/>
-<path d="M11.5 23.9V11.1C11.5 10.6757 11.658 10.2687 11.9393 9.96863C12.2206 9.66857 12.6022 9.5 13 9.5H18.67C19.0619 9.50005 19.4383 9.66373 19.7185 9.956L23.0485 13.4296C23.1914 13.5786 23.305 13.7565 23.3825 13.953C23.46 14.1494 23.5 14.3604 23.5 14.5736V23.9C23.5 24.3243 23.342 24.7313 23.0607 25.0314C22.7794 25.3314 22.3978 25.5 22 25.5H13C12.6022 25.5 12.2206 25.3314 11.9393 25.0314C11.658 24.7313 11.5 24.3243 11.5 23.9Z"/>
-</mask>
-<path d="M11.5 11.1V23.9C11.5 24.3243 11.658 24.7313 11.9393 25.0314C12.2206 25.3314 12.6022 25.5 13 25.5H22C22.3978 25.5 22.7794 25.3314 23.0607 25.0314C23.342 24.7313 23.5 24.3243 23.5 23.9V14.5736C23.5 14.3604 23.46 14.1494 23.3825 13.953C23.305 13.7565 23.1914 13.5786 23.0485 13.4296L19.7185 9.956C19.4383 9.66373 19.0619 9.50005 18.67 9.5H13C12.6022 9.5 12.2206 9.66857 11.9393 9.96863C11.658 10.2687 11.5 10.6757 11.5 11.1Z" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B" mask="url(#stroke0_1420_1542)"/>
-<use xlink:href="#stroke1_1420_1542" fill="#0B5E3B"/>
-<mask id="stroke2_1420_1542" maskUnits="userSpaceOnUse" x="13.5" y="14.9" width="8" height="9" fill="black">
-<rect fill="white" x="13.5" y="14.9" width="8" height="9"/>
-<use xlink:href="#stroke1_1420_1542"/>
-</mask>
-<path d="M14.7613 23.079C14.7274 23.0794 14.6938 23.0718 14.6625 23.0566C14.6311 23.0414 14.6025 23.019 14.5784 22.9905C14.5508 22.9578 14.5295 22.9182 14.5161 22.8745C14.5027 22.8308 14.4976 22.7841 14.501 22.7377L14.6101 21.1201C14.6147 21.045 14.6423 20.9745 14.6874 20.9221L18.5769 16.2629C18.7938 16.0202 19.082 15.89 19.3787 15.9006C19.6735 15.9034 19.9564 16.0404 20.1699 16.284C20.3747 16.5359 20.4925 16.8712 20.4997 17.2227C20.5068 17.5743 20.4029 17.9161 20.2086 18.1797L16.3156 22.8599C16.2721 22.9119 16.215 22.9446 16.1539 22.9526L14.7859 23.1L14.7613 23.079ZM15.1129 21.2844L15.0391 22.4386L16.0027 22.3333L19.8358 17.7331C19.9106 17.6272 19.9583 17.4977 19.9735 17.3602C19.9886 17.2227 19.9705 17.0828 19.9212 16.9573C19.872 16.8318 19.7937 16.7258 19.6956 16.652C19.5976 16.5782 19.4839 16.5396 19.3681 16.5409C19.292 16.5349 19.2156 16.5475 19.1437 16.5779C19.0717 16.6083 19.0057 16.6559 18.9496 16.7179L15.1129 21.2844Z" stroke-width="0.6" stroke-linecap="round" stroke="#0B5E3B" mask="url(#stroke2_1420_1542)"/>
-<path d="M19 9.5V12.7C19 13.1243 19.158 13.5313 19.4393 13.8314C19.7206 14.1314 20.1022 14.3 20.5 14.3H23.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
-<defs>
-<path id="stroke1_1420_1542" d="M14.7613 23.079C14.7274 23.0794 14.6938 23.0718 14.6625 23.0566C14.6311 23.0414 14.6025 23.019 14.5784 22.9905C14.5508 22.9578 14.5295 22.9182 14.5161 22.8745C14.5027 22.8308 14.4976 22.7841 14.501 22.7377L14.6101 21.1201C14.6147 21.045 14.6423 20.9745 14.6874 20.9221L18.5769 16.2629C18.7938 16.0202 19.082 15.89 19.3787 15.9006C19.6735 15.9034 19.9564 16.0404 20.1699 16.284C20.3747 16.5359 20.4925 16.8712 20.4997 17.2227C20.5068 17.5743 20.4029 17.9161 20.2086 18.1797L16.3156 22.8599C16.2721 22.9119 16.215 22.9446 16.1539 22.9526L14.7859 23.1L14.7613 23.079ZM15.1129 21.2844L15.0391 22.4386L16.0027 22.3333L19.8358 17.7331C19.9106 17.6272 19.9583 17.4977 19.9735 17.3602C19.9886 17.2227 19.9705 17.0828 19.9212 16.9573C19.872 16.8318 19.7937 16.7258 19.6956 16.652C19.5976 16.5782 19.4839 16.5396 19.3681 16.5409C19.292 16.5349 19.2156 16.5475 19.1437 16.5779C19.0717 16.6083 19.0057 16.6559 18.9496 16.7179L15.1129 21.2844Z"/>
-</defs>
-</svg>
-
-                        <span>Buat Pengaduan</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="riwayat-pengaduan.html">
-                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10.6253 21.1091C11.3772 22.6298 12.597 23.8692 14.1054 24.6453C15.6027 25.4146 17.3102 25.6743 18.9685 25.3849C20.6319 25.0921 22.1558 24.2688 23.3125 23.0381C24.4796 21.7954 25.2228 20.2148 25.4352 18.5232C25.6506 16.8278 25.3258 15.1076 24.5072 13.6074C23.6961 12.1186 22.4282 10.9298 20.8903 10.2161C19.3629 9.50869 17.6464 9.31893 16.0014 9.67566C14.3569 10.0321 13.0094 10.8428 11.8947 12.1247C11.7605 12.2669 11.2413 12.8412 10.8102 13.7079M13.5 13.9443L10.292 14.5844L9.5 11.2775M17.5001 14.8333V18.389L20.1667 20.1669" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
-</svg>
-
-                        <span>Riwayat Pengaduan</span>
-                    </a>
-                </li>
-            </ul>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
-        </nav>
+        <link rel="stylesheet" href="css/skeleton.css">
+        <link rel="stylesheet" href="css/dashboard.css">
+    </head>
+    <body>
 
-        <!-- MENU LOGOUT SIDEBAR -->
-        <div class="sidebar-logout">
-            <a href="#" id="logoutBtn" aria-label="Logout">
-                
-<svg width="20" height="20" viewBox="0 0 24 24"
-     fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 4H5V20H10"
-          stroke="#D02316"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"/>
-    <path d="M11 12H21M17 8L21 12L17 16"
-          stroke="#D02316"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"/>
-</svg>
-                <span>Logout</span>
-            </a>
-        </div>
-
-    </aside>
-
-
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="container nav-container">
-            <div class="nav-left">
-                <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
-                <div class="logo">
-                    <img src="img/logo-fitk.png" alt="Logo FITK" class="logo-img">
-                    <div class="logo-text">
-                        <span class="logo-title">FITK SIBER AHSAN</span>
-                        <span class="logo-sub">Fakultas Ilmu Tarbiyah dan Keguruan</span>
-                        <span class="logo-sub highlight">UIN Siber Syekh Nurjati Cirebon</span>
-                    </div>
+        <!-- SIDEBAR -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo-fitk.png" alt="Logo FITK" class="sidebar-logo">
+                <div class="sidebar-header-text">
+                    <h3>FITK SIBER AHSAN</h3>
+                    <p>Fakultas Ilmu Tarbiyah dan Keguruan</p>
+                    <p class="highlight">UIN Siber Syekh Nurjati Cirebon</p>
                 </div>
             </div>
-            <div class="nav-actions">
-                <div class="profile-btn" id="profileBtn"><span id="userInitial">R</span></div>
-            </div>
-        </div>
-    </header>
-
-
-    <!-- MAIN CONTENT -->
-    <main class="container dashboard-main">
-        
-        <!-- Welcome Section -->
-        <div class="welcome-section">
-            <h1 id="welcomeText">Halo, Pengguna!</h1>
-            <p>Yuk, laporkan fasilitas yang perlu diperbaiki.</p>
-        </div>
-
-        <!-- Search & CTA Row -->
-        <div class="search-cta-row">
-            <div class="search-box">
-                <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<use xlink:href="#stroke0_1788_1419" fill="black"/>
-<mask id="stroke1_1788_1419" fill="white">
-<use xlink:href="#stroke0_1788_1419"/>
-</mask>
-<path d="M14.9549 12.0656L10.0856 7.84547C10.8412 6.99884 11.25 5.96372 11.25 4.87498C11.25 3.57173 10.6631 2.34974 9.60183 1.42837C8.54059 0.506998 7.12684 0 5.62498 0C4.12311 0 2.70936 0.508623 1.64812 1.42837C0.584997 2.34811 0 3.57173 0 4.87498C0 6.1766 0.586872 7.40184 1.64812 8.32159C2.70936 9.24296 4.12123 9.74996 5.62498 9.74996C6.88122 9.74996 8.07372 9.39571 9.05059 8.74246L13.9199 12.9609C13.9342 12.9733 13.9512 12.9831 13.9698 12.9898C13.9885 12.9965 14.0085 13 14.0287 13C14.0489 13 14.0689 12.9965 14.0875 12.9898C14.1062 12.9831 14.1232 12.9733 14.1374 12.9609L14.9549 12.2541C14.9692 12.2417 14.9806 12.227 14.9883 12.2108C14.996 12.1947 15 12.1773 15 12.1598C15 12.1423 14.996 12.125 14.9883 12.1088C14.9806 12.0926 14.9692 12.0779 14.9549 12.0656ZM8.59496 7.44897C7.79997 8.13634 6.74622 8.51496 5.62498 8.51496C4.50373 8.51496 3.44999 8.13634 2.65499 7.44897C1.86187 6.75997 1.42499 5.84672 1.42499 4.87498C1.42499 3.90323 1.86187 2.98836 2.65499 2.30099C3.44999 1.61362 4.50373 1.23499 5.62498 1.23499C6.74622 1.23499 7.80184 1.61199 8.59496 2.30099C9.38808 2.98999 9.82496 3.90323 9.82496 4.87498C9.82496 5.84672 9.38808 6.7616 8.59496 7.44897Z" stroke-width="0.03125" stroke="#0B5E3B" mask="url(#stroke1_1788_1419)"/>
-<defs>
-<path id="stroke0_1788_1419" d="M14.9549 12.0656L10.0856 7.84547C10.8412 6.99884 11.25 5.96372 11.25 4.87498C11.25 3.57173 10.6631 2.34974 9.60183 1.42837C8.54059 0.506998 7.12684 0 5.62498 0C4.12311 0 2.70936 0.508623 1.64812 1.42837C0.584997 2.34811 0 3.57173 0 4.87498C0 6.1766 0.586872 7.40184 1.64812 8.32159C2.70936 9.24296 4.12123 9.74996 5.62498 9.74996C6.88122 9.74996 8.07372 9.39571 9.05059 8.74246L13.9199 12.9609C13.9342 12.9733 13.9512 12.9831 13.9698 12.9898C13.9885 12.9965 14.0085 13 14.0287 13C14.0489 13 14.0689 12.9965 14.0875 12.9898C14.1062 12.9831 14.1232 12.9733 14.1374 12.9609L14.9549 12.2541C14.9692 12.2417 14.9806 12.227 14.9883 12.2108C14.996 12.1947 15 12.1773 15 12.1598C15 12.1423 14.996 12.125 14.9883 12.1088C14.9806 12.0926 14.9692 12.0779 14.9549 12.0656ZM8.59496 7.44897C7.79997 8.13634 6.74622 8.51496 5.62498 8.51496C4.50373 8.51496 3.44999 8.13634 2.65499 7.44897C1.86187 6.75997 1.42499 5.84672 1.42499 4.87498C1.42499 3.90323 1.86187 2.98836 2.65499 2.30099C3.44999 1.61362 4.50373 1.23499 5.62498 1.23499C6.74622 1.23499 7.80184 1.61199 8.59496 2.30099C9.38808 2.98999 9.82496 3.90323 9.82496 4.87498C9.82496 5.84672 9.38808 6.7616 8.59496 7.44897Z"/>
-</defs>
-</svg>
-
-                <input type="text" id="searchInput" placeholder="Cari Pengaduan">
-            </div>
-            <a href="buat-pengaduan.html" class="btn-cta-top">Buat Pengaduan</a>
-        </div>
-
-        <!-- Filter Chips -->
-        <div class="filter-chips">
-            <button class="chip active" data-filter="semua">
-    Semua
-</button>
-
-<button class="chip" data-filter="diajukan">
-    Diajukan
-</button>
+            <div class="sidebar-divider"></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="dashboard.html">
+                            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M26.606 17.3555L18.5081 9.23687L17.9653 8.6924C17.8416 8.56917 17.6744 8.5 17.5 8.5C17.3257 8.5 17.1585 8.56917 17.0348 8.6924L8.39408 17.3555C8.26736 17.4821 8.1672 17.6329 8.09953 17.799C8.03186 17.9651 7.99805 18.1431 8.00009 18.3225C8.00847 19.0625 8.62252 19.6532 9.36022 19.6532H10.2509V26.5H24.7492V19.6532H25.6587C26.0171 19.6532 26.3545 19.5123 26.6081 19.258C26.7329 19.1331 26.8319 18.9847 26.8992 18.8212C26.9664 18.6578 27.0007 18.4825 27 18.3057C27 17.9483 26.8596 17.6099 26.606 17.3555ZM18.6736 24.9864H16.3264V20.698H18.6736V24.9864ZM23.2402 18.1396V24.9864H20.0149V20.1934C20.0149 19.7289 19.6398 19.3526 19.1766 19.3526H15.8235C15.3603 19.3526 14.9852 19.7289 14.9852 20.1934V24.9864H11.7598V18.1396H9.74793L17.5021 10.3678L17.9862 10.8534L25.2542 18.1396H23.2402Z" fill="#0B5E3B"/>
+    </svg>
 
 
 
-<button class="chip" data-filter="dalam perbaikan">
-    Dalam Perbaikan
-</button>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="buat-pengaduan.html">
+                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <mask id="stroke0_1420_1542" maskUnits="userSpaceOnUse" x="9.5" y="7.5" width="16" height="20" fill="black">
+    <rect fill="white" x="9.5" y="7.5" width="16" height="20"/>
+    <path d="M11.5 23.9V11.1C11.5 10.6757 11.658 10.2687 11.9393 9.96863C12.2206 9.66857 12.6022 9.5 13 9.5H18.67C19.0619 9.50005 19.4383 9.66373 19.7185 9.956L23.0485 13.4296C23.1914 13.5786 23.305 13.7565 23.3825 13.953C23.46 14.1494 23.5 14.3604 23.5 14.5736V23.9C23.5 24.3243 23.342 24.7313 23.0607 25.0314C22.7794 25.3314 22.3978 25.5 22 25.5H13C12.6022 25.5 12.2206 25.3314 11.9393 25.0314C11.658 24.7313 11.5 24.3243 11.5 23.9Z"/>
+    </mask>
+    <path d="M11.5 11.1V23.9C11.5 24.3243 11.658 24.7313 11.9393 25.0314C12.2206 25.3314 12.6022 25.5 13 25.5H22C22.3978 25.5 22.7794 25.3314 23.0607 25.0314C23.342 24.7313 23.5 24.3243 23.5 23.9V14.5736C23.5 14.3604 23.46 14.1494 23.3825 13.953C23.305 13.7565 23.1914 13.5786 23.0485 13.4296L19.7185 9.956C19.4383 9.66373 19.0619 9.50005 18.67 9.5H13C12.6022 9.5 12.2206 9.66857 11.9393 9.96863C11.658 10.2687 11.5 10.6757 11.5 11.1Z" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B" mask="url(#stroke0_1420_1542)"/>
+    <use xlink:href="#stroke1_1420_1542" fill="#0B5E3B"/>
+    <mask id="stroke2_1420_1542" maskUnits="userSpaceOnUse" x="13.5" y="14.9" width="8" height="9" fill="black">
+    <rect fill="white" x="13.5" y="14.9" width="8" height="9"/>
+    <use xlink:href="#stroke1_1420_1542"/>
+    </mask>
+    <path d="M14.7613 23.079C14.7274 23.0794 14.6938 23.0718 14.6625 23.0566C14.6311 23.0414 14.6025 23.019 14.5784 22.9905C14.5508 22.9578 14.5295 22.9182 14.5161 22.8745C14.5027 22.8308 14.4976 22.7841 14.501 22.7377L14.6101 21.1201C14.6147 21.045 14.6423 20.9745 14.6874 20.9221L18.5769 16.2629C18.7938 16.0202 19.082 15.89 19.3787 15.9006C19.6735 15.9034 19.9564 16.0404 20.1699 16.284C20.3747 16.5359 20.4925 16.8712 20.4997 17.2227C20.5068 17.5743 20.4029 17.9161 20.2086 18.1797L16.3156 22.8599C16.2721 22.9119 16.215 22.9446 16.1539 22.9526L14.7859 23.1L14.7613 23.079ZM15.1129 21.2844L15.0391 22.4386L16.0027 22.3333L19.8358 17.7331C19.9106 17.6272 19.9583 17.4977 19.9735 17.3602C19.9886 17.2227 19.9705 17.0828 19.9212 16.9573C19.872 16.8318 19.7937 16.7258 19.6956 16.652C19.5976 16.5782 19.4839 16.5396 19.3681 16.5409C19.292 16.5349 19.2156 16.5475 19.1437 16.5779C19.0717 16.6083 19.0057 16.6559 18.9496 16.7179L15.1129 21.2844Z" stroke-width="0.6" stroke-linecap="round" stroke="#0B5E3B" mask="url(#stroke2_1420_1542)"/>
+    <path d="M19 9.5V12.7C19 13.1243 19.158 13.5313 19.4393 13.8314C19.7206 14.1314 20.1022 14.3 20.5 14.3H23.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
+    <defs>
+    <path id="stroke1_1420_1542" d="M14.7613 23.079C14.7274 23.0794 14.6938 23.0718 14.6625 23.0566C14.6311 23.0414 14.6025 23.019 14.5784 22.9905C14.5508 22.9578 14.5295 22.9182 14.5161 22.8745C14.5027 22.8308 14.4976 22.7841 14.501 22.7377L14.6101 21.1201C14.6147 21.045 14.6423 20.9745 14.6874 20.9221L18.5769 16.2629C18.7938 16.0202 19.082 15.89 19.3787 15.9006C19.6735 15.9034 19.9564 16.0404 20.1699 16.284C20.3747 16.5359 20.4925 16.8712 20.4997 17.2227C20.5068 17.5743 20.4029 17.9161 20.2086 18.1797L16.3156 22.8599C16.2721 22.9119 16.215 22.9446 16.1539 22.9526L14.7859 23.1L14.7613 23.079ZM15.1129 21.2844L15.0391 22.4386L16.0027 22.3333L19.8358 17.7331C19.9106 17.6272 19.9583 17.4977 19.9735 17.3602C19.9886 17.2227 19.9705 17.0828 19.9212 16.9573C19.872 16.8318 19.7937 16.7258 19.6956 16.652C19.5976 16.5782 19.4839 16.5396 19.3681 16.5409C19.292 16.5349 19.2156 16.5475 19.1437 16.5779C19.0717 16.6083 19.0057 16.6559 18.9496 16.7179L15.1129 21.2844Z"/>
+    </defs>
+    </svg>
 
+                            <span>Buat Pengaduan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="riwayat-pengaduan.html">
+                            <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10.6253 21.1091C11.3772 22.6298 12.597 23.8692 14.1054 24.6453C15.6027 25.4146 17.3102 25.6743 18.9685 25.3849C20.6319 25.0921 22.1558 24.2688 23.3125 23.0381C24.4796 21.7954 25.2228 20.2148 25.4352 18.5232C25.6506 16.8278 25.3258 15.1076 24.5072 13.6074C23.6961 12.1186 22.4282 10.9298 20.8903 10.2161C19.3629 9.50869 17.6464 9.31893 16.0014 9.67566C14.3569 10.0321 13.0094 10.8428 11.8947 12.1247C11.7605 12.2669 11.2413 12.8412 10.8102 13.7079M13.5 13.9443L10.292 14.5844L9.5 11.2775M17.5001 14.8333V18.389L20.1667 20.1669" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
+    </svg>
 
-<button class="chip" data-filter="selesai">
-    Selesai
-</button>
-
-        </div>
-
-        <!-- 0. STATE LOADING -->
-        <div class="loading-state" id="loadingState">
-            <div class="loading-icon-wrapper">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1768_3226)">
-<path opacity="0.1" d="M42 24C42 33.9411 33.9411 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C33.9411 6 42 14.0589 42 24Z" stroke-width="4" stroke="#0B5E3B"/>
-<path d="M24 6.00003C19.3592 5.99168 14.896 7.7841 11.55 11" stroke-width="4" stroke-linecap="round" stroke="#0B5E3B"/>
-</g>
-<defs>
-<clipPath id="clip0_1768_3226">
-<rect width="48" height="48" fill="white"/>
-</clipPath>
-</defs>
-</svg>
- 
-            </div>
-            <h3>Loading...</h3>
-            <p>Mohon tunggu sebentar, data pengaduan sedang dimuat.</p>
-        </div>
-
-        <!-- 1. STATE ERROR -->
-        <div class="error-state" id="errorState">
-            <div class="error-icon-wrapper"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M57 29C57 44.464 44.464 57 29 57C13.536 57 1 44.464 1 29C1 13.536 13.536 1 29 1C44.464 1 57 13.536 57 29Z" stroke-width="2" stroke="#D02316"/>
-<path d="M29 15V31.8M29 41.6V43" stroke-width="2" stroke-linecap="round" stroke="#D02316"/>
-</svg>
-
-</div>
-            <h3>Gagal Memuat Pengaduan</h3>
-            <p>Terjadi kesalahan saat memuat data<br>pengaduan. Periksa koneksi internet Anda<br>dan coba lagi.</p>
-            <button class="btn-retry" id="btnRetry">Coba Lagi</button>
-        </div>
-
-        <!-- 2. STATE KOSONG -->
-        <div class="empty-state" id="emptyState">
-            <div class="empty-icon-wrapper">
-                <svg width="39" height="49" viewBox="0 0 39 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 5.7V43.3C1 44.5465 1.48728 45.742 2.35463 46.6234C3.22199 47.5048 4.39837 48 5.625 48H33.375C34.6016 48 35.778 47.5048 36.6454 46.6234C37.5127 45.742 38 44.5465 38 43.3V15.9037C37.9999 15.2776 37.8767 14.6578 37.6377 14.0807C37.3986 13.5036 37.0485 12.9809 36.6079 12.5432L26.3404 2.3395C25.4763 1.48095 24.3159 1.00015 23.1075 1H5.625C4.39837 1 3.22199 1.49518 2.35463 2.3766C1.48728 3.25802 1 4.45348 1 5.7Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
-<path d="M11.0556 40.8874C10.9512 40.8887 10.8477 40.8664 10.7509 40.8218C10.6542 40.7772 10.5661 40.7112 10.4917 40.6276C10.4065 40.5315 10.3409 40.4151 10.2997 40.2868C10.2585 40.1584 10.2426 40.0213 10.2532 39.8851L10.5893 35.1332C10.6037 34.9126 10.6886 34.7056 10.8279 34.5516L22.8203 20.8653C23.4891 20.1524 24.3777 19.7698 25.2925 19.8011C26.2015 19.8091 27.0738 20.2118 27.7322 20.9272C28.3636 21.6672 28.7268 22.6521 28.7489 23.6848C28.771 24.7174 28.4505 25.7214 27.8515 26.4958L15.8482 40.244C15.7139 40.3967 15.538 40.4927 15.3494 40.5162L11.1315 40.9493L11.0556 40.8874ZM12.1399 35.6159L11.9122 39.0065L14.8832 38.6971L26.7021 25.1841C26.9325 24.8728 27.0798 24.4926 27.1265 24.0886C27.1732 23.6846 27.1173 23.2739 26.9654 22.9051C26.8135 22.5363 26.5721 22.225 26.2698 22.0082C25.9675 21.7914 25.617 21.6782 25.26 21.682C25.0253 21.6643 24.7898 21.7012 24.568 21.7906C24.3462 21.8799 24.1426 22.0198 23.9697 22.2018L12.1399 35.6159Z" fill="#0B5E3B" stroke="#0B5E3B"/>
-<path d="M24.125 1V10.4C24.125 11.6465 24.6123 12.842 25.4796 13.7234C26.347 14.6048 27.5234 15.1 28.75 15.1H38" stroke-width="2" stroke-linejoin="round" stroke="#0B5E3B"/>
-</svg>
-
-
-            </div>
-            <h3>Belum Ada Pengaduan</h3>
-            <p>Saat ini belum ada pengaduan fasilitas dari seluruh pengguna. Jadilah yang pertama untuk menyampaikan pengaduan.</p>
-            <a href="buat-pengaduan.html" class="btn-empty-action">Buat Pengaduan</a>
-        </div>
-
-       <!-- 3. STATE PENGADUAN TIDAK DITEMUKAN -->
-<div class="not-found-state" id="notFoundState">
-    <div class="not-found-icon-wrapper">
-        <svg width="35" height="31" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M34.6311 29.1089L24.3106 19.9654C26.3734 17.7824 27.5016 15.0253 27.4969 12.1785C27.4969 5.46188 21.3276 0 13.7485 0C6.16931 0 0 5.46188 0 12.1785C0 18.8951 6.16931 24.357 13.7485 24.357C16.9631 24.3589 20.076 23.3593 22.5425 21.5331L32.8647 30.6766C33.0998 30.8837 33.4179 31 33.7496 31C34.0812 31 34.3993 30.8837 34.6345 30.6766C34.8685 30.469 35 30.1876 35 29.8942C35 29.6008 34.8685 29.3194 34.6345 29.1118L34.6311 29.1089ZM13.7485 22.1428C10.7665 22.1388 7.90787 21.0878 5.79927 19.22C3.69068 17.3522 2.50413 14.82 2.49972 12.1785C2.50413 9.53703 3.69068 7.00486 5.79927 5.13705C7.90787 3.26923 10.7665 2.21818 13.7485 2.21428C16.7305 2.21818 19.5891 3.26923 21.6977 5.13705C23.8063 7.00486 24.9928 9.53703 24.9972 12.1785C24.9928 14.82 23.8063 17.3522 21.6977 19.22C19.5891 21.0878 16.7305 22.1388 13.7485 22.1428Z" fill="#0B5E3B"/>
-        </svg>
-    </div>
-
-    <h3>Pengaduan Tidak Ditemukan</h3>
-    <p>
-        Maaf, pengaduan yang Anda cari tidak ditemukan.
-        Silakan coba kata kunci lain<br>atau periksa kembali pencarian Anda.
-    </p>
-</div>
-
-<!-- 4. LIST DATA -->
-<div class="reports-list" id="reportsContainer">
-    <!-- Data akan dimuat lewat JS -->
-</div>  
-
-        
-<!-- Pagination -->
-<div class="pagination" id="pagination" style="display: none;">
-
-    <!-- Tombol Previous -->
-    <button class="page-btn prev" id="prevPage" type="button">
-        <i class="fas fa-chevron-left"></i>
-        <span>Prev</span>
-    </button>
-
-    <!-- Nomor halaman dibuat otomatis oleh JavaScript -->
-
-    <!-- Tombol Next -->
-    <button class="page-btn next" id="nextPage" type="button">
-        <span>Next</span>
-        <i class="fas fa-chevron-right"></i>
-    </button>
-
-</div>
-
-
-
-    <!-- ... (Kode HTML sebelumnya tetap sama sampai bagian MAIN CONTENT) ... -->
-
-    </main>
-
-    <!-- ========================================== -->
-    <!-- MODAL KONFIRMASI & NOTIFIKASI LOGOUT       -->
-    <!-- ========================================== -->
-    
-    <!-- Overlay Gelap -->
-    <div class="modal-overlay" id="logoutModalOverlay">
-        
-        <!-- State 1: Konfirmasi -->
-        <div class="logout-modal" id="logoutConfirmState" style="display: none;">
-            <div class="modal-icon-circle">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g clip-path="url(#clip0_2426_6310)">
-<use xlink:href="#stroke0_2426_6310" fill="#D02316"/>
-<mask id="stroke1_2426_6310" fill="white">
-<use xlink:href="#stroke0_2426_6310"/>
-</mask>
-<path d="M8.33302 2.70703C8.49878 2.70703 8.65775 2.77288 8.77496 2.89009C8.89217 3.0073 8.95802 3.16627 8.95802 3.33203C8.95802 3.49779 8.89217 3.65676 8.77496 3.77397C8.65775 3.89118 8.49878 3.95703 8.33302 3.95703H4.79102V16.04H8.33302C8.49266 16.0491 8.6428 16.1189 8.75263 16.2351C8.86246 16.3513 8.92365 16.5051 8.92365 16.665C8.92365 16.8249 8.86246 16.9788 8.75263 17.095C8.6428 17.2112 8.49266 17.281 8.33302 17.29H4.16602C4.00026 17.29 3.84128 17.2242 3.72407 17.107C3.60686 16.9898 3.54102 16.8308 3.54102 16.665V3.33203C3.54102 2.98703 3.82102 2.70703 4.16602 2.70703H8.33302Z" stroke-width="8" stroke="#D02316" mask="url(#stroke1_2426_6310)"/>
-<use xlink:href="#stroke2_2426_6310" fill="#D02316"/>
-<mask id="stroke3_2426_6310" fill="white">
-<use xlink:href="#stroke2_2426_6310"/>
-</mask>
-<path d="M17.083 9.37402C17.1651 9.37402 17.2464 9.39019 17.3222 9.4216C17.398 9.45301 17.4669 9.49905 17.5249 9.55708C17.583 9.61512 17.629 9.68402 17.6604 9.75985C17.6918 9.83568 17.708 9.91695 17.708 9.99902C17.708 10.0811 17.6918 10.1624 17.6604 10.2382C17.629 10.314 17.583 10.3829 17.5249 10.441C17.4669 10.499 17.398 10.545 17.3222 10.5764C17.2464 10.6079 17.1651 10.624 17.083 10.624H8.33301C8.25093 10.624 8.16966 10.6079 8.09383 10.5764C8.018 10.545 7.9491 10.499 7.89107 10.441C7.83303 10.3829 7.78699 10.314 7.75558 10.2382C7.72417 10.1624 7.70801 10.0811 7.70801 9.99902C7.70801 9.91695 7.72417 9.83568 7.75558 9.75985C7.78699 9.68402 7.83303 9.61512 7.89107 9.55708C7.9491 9.49905 8.018 9.45301 8.09383 9.4216C8.16966 9.39019 8.25093 9.37402 8.33301 9.37402H17.083Z" stroke-width="8" stroke="#D02316" mask="url(#stroke3_2426_6310)"/>
-<use xlink:href="#stroke4_2426_6310" fill="#D02316"/>
-<mask id="stroke5_2426_6310" fill="white">
-<use xlink:href="#stroke4_2426_6310"/>
-</mask>
-<path d="M13.3072 6.223C13.4246 6.10569 13.5838 6.03979 13.7497 6.03979C13.9157 6.03979 14.0748 6.10569 14.1922 6.223L17.5252 9.557C17.5833 9.61504 17.6293 9.68394 17.6608 9.75978C17.6922 9.83562 17.7083 9.91691 17.7083 9.999C17.7083 10.0811 17.6922 10.1624 17.6608 10.2382C17.6293 10.3141 17.5833 10.383 17.5252 10.441L14.1922 13.774C14.0734 13.8833 13.917 13.9424 13.7556 13.9391C13.5942 13.9357 13.4403 13.8702 13.3261 13.7561C13.2119 13.642 13.1462 13.4882 13.1426 13.3268C13.1391 13.1655 13.1981 13.0089 13.3072 12.89L16.1992 9.998L13.3072 7.108C13.1899 6.99061 13.124 6.83145 13.124 6.6655C13.124 6.49954 13.1899 6.34038 13.3072 6.223Z" stroke-width="8" stroke="#D02316" mask="url(#stroke5_2426_6310)"/>
-</g>
-<defs>
-<clipPath id="clip0_2426_6310">
-<rect width="20" height="20" fill="white"/>
-</clipPath>
-<path id="stroke0_2426_6310" d="M8.33302 2.70703C8.49878 2.70703 8.65775 2.77288 8.77496 2.89009C8.89217 3.0073 8.95802 3.16627 8.95802 3.33203C8.95802 3.49779 8.89217 3.65676 8.77496 3.77397C8.65775 3.89118 8.49878 3.95703 8.33302 3.95703H4.79102V16.04H8.33302C8.49266 16.0491 8.6428 16.1189 8.75263 16.2351C8.86246 16.3513 8.92365 16.5051 8.92365 16.665C8.92365 16.8249 8.86246 16.9788 8.75263 17.095C8.6428 17.2112 8.49266 17.281 8.33302 17.29H4.16602C4.00026 17.29 3.84128 17.2242 3.72407 17.107C3.60686 16.9898 3.54102 16.8308 3.54102 16.665V3.33203C3.54102 2.98703 3.82102 2.70703 4.16602 2.70703H8.33302Z"/>
-<path id="stroke2_2426_6310" d="M17.083 9.37402C17.1651 9.37402 17.2464 9.39019 17.3222 9.4216C17.398 9.45301 17.4669 9.49905 17.525 9.55708C17.583 9.61512 17.629 9.68402 17.6604 9.75985C17.6918 9.83568 17.708 9.91695 17.708 9.99902C17.708 10.0811 17.6918 10.1624 17.6604 10.2382C17.629 10.314 17.583 10.3829 17.525 10.441C17.4669 10.499 17.398 10.545 17.3222 10.5764C17.2464 10.6079 17.1651 10.624 17.083 10.624H8.33301C8.25093 10.624 8.16966 10.6079 8.09383 10.5764C8.018 10.545 7.9491 10.499 7.89107 10.441C7.83303 10.3829 7.78699 10.314 7.75558 10.2382C7.72417 10.1624 7.70801 10.0811 7.70801 9.99902C7.70801 9.91695 7.72417 9.83568 7.75558 9.75985C7.78699 9.68402 7.83303 9.61512 7.89107 9.55708C7.9491 9.49905 8.018 9.45301 8.09383 9.4216C8.16966 9.39019 8.25093 9.37402 8.33301 9.37402H17.083Z"/>
-<path id="stroke4_2426_6310" d="M13.3072 6.223C13.4246 6.10569 13.5838 6.03979 13.7497 6.03979C13.9157 6.03979 14.0748 6.10569 14.1922 6.223L17.5252 9.557C17.5833 9.61504 17.6293 9.68394 17.6608 9.75978C17.6922 9.83562 17.7083 9.91691 17.7083 9.999C17.7083 10.0811 17.6922 10.1624 17.6608 10.2382C17.6293 10.3141 17.5833 10.383 17.5252 10.441L14.1922 13.774C14.0734 13.8833 13.917 13.9424 13.7556 13.9391C13.5942 13.9357 13.4403 13.8702 13.3261 13.7561C13.2119 13.642 13.1462 13.4882 13.1426 13.3268C13.1391 13.1655 13.1981 13.0089 13.3072 12.89L16.1992 9.998L13.3072 7.108C13.1899 6.99061 13.124 6.83145 13.124 6.6655C13.124 6.49954 13.1899 6.34038 13.3072 6.223Z"/>
-</defs>
-</svg>
-
-
-            </div>
+                            <span>Riwayat Pengaduan</span>
+                        </a>
+                    </li>
+                </ul>
             
-<!-- Kelompok teks Konfirmasi Logout -->
-<div class="modal-text-group">
-    <h3>Konfirmasi Logout</h3>
-    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
-</div>
+            </nav>
 
-            <div class="modal-actions">
-                <button class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
-                <button class="btn-modal-confirm" id="btnConfirmLogout">Ya, Logout</button>
+            <!-- MENU LOGOUT SIDEBAR -->
+            <div class="sidebar-logout">
+                <a href="#" id="logoutBtn" aria-label="Logout">
+                    
+    <svg width="20" height="20" viewBox="0 0 24 24"
+        fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 4H5V20H10"
+            stroke="#D02316"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+        <path d="M11 12H21M17 8L21 12L17 16"
+            stroke="#D02316"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
+                    <span>Logout</span>
+                </a>
             </div>
+
+        </aside>
+
+
+        <!-- NAVBAR -->
+        <header class="navbar">
+            <div class="container nav-container">
+                <div class="nav-left">
+                    <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
+                    <div class="logo">
+                        <img src="img/logo-fitk.png" alt="Logo FITK" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-title">FITK SIBER AHSAN</span>
+                            <span class="logo-sub">Fakultas Ilmu Tarbiyah dan Keguruan</span>
+                            <span class="logo-sub highlight">UIN Siber Syekh Nurjati Cirebon</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-actions">
+                    <div class="profile-btn" id="profileBtn"><span id="userInitial">R</span></div>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="container dashboard-main">
+            
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <h1 id="welcomeText">Halo, Pengguna!</h1>
+                <p>Yuk, laporkan fasilitas yang perlu diperbaiki.</p>
+            </div>
+
+            <!-- Search & CTA Row -->
+            <div class="search-cta-row">
+                <div class="search-box">
+                    <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <use xlink:href="#stroke0_1788_1419" fill="black"/>
+    <mask id="stroke1_1788_1419" fill="white">
+    <use xlink:href="#stroke0_1788_1419"/>
+    </mask>
+    <path d="M14.9549 12.0656L10.0856 7.84547C10.8412 6.99884 11.25 5.96372 11.25 4.87498C11.25 3.57173 10.6631 2.34974 9.60183 1.42837C8.54059 0.506998 7.12684 0 5.62498 0C4.12311 0 2.70936 0.508623 1.64812 1.42837C0.584997 2.34811 0 3.57173 0 4.87498C0 6.1766 0.586872 7.40184 1.64812 8.32159C2.70936 9.24296 4.12123 9.74996 5.62498 9.74996C6.88122 9.74996 8.07372 9.39571 9.05059 8.74246L13.9199 12.9609C13.9342 12.9733 13.9512 12.9831 13.9698 12.9898C13.9885 12.9965 14.0085 13 14.0287 13C14.0489 13 14.0689 12.9965 14.0875 12.9898C14.1062 12.9831 14.1232 12.9733 14.1374 12.9609L14.9549 12.2541C14.9692 12.2417 14.9806 12.227 14.9883 12.2108C14.996 12.1947 15 12.1773 15 12.1598C15 12.1423 14.996 12.125 14.9883 12.1088C14.9806 12.0926 14.9692 12.0779 14.9549 12.0656ZM8.59496 7.44897C7.79997 8.13634 6.74622 8.51496 5.62498 8.51496C4.50373 8.51496 3.44999 8.13634 2.65499 7.44897C1.86187 6.75997 1.42499 5.84672 1.42499 4.87498C1.42499 3.90323 1.86187 2.98836 2.65499 2.30099C3.44999 1.61362 4.50373 1.23499 5.62498 1.23499C6.74622 1.23499 7.80184 1.61199 8.59496 2.30099C9.38808 2.98999 9.82496 3.90323 9.82496 4.87498C9.82496 5.84672 9.38808 6.7616 8.59496 7.44897Z" stroke-width="0.03125" stroke="#0B5E3B" mask="url(#stroke1_1788_1419)"/>
+    <defs>
+    <path id="stroke0_1788_1419" d="M14.9549 12.0656L10.0856 7.84547C10.8412 6.99884 11.25 5.96372 11.25 4.87498C11.25 3.57173 10.6631 2.34974 9.60183 1.42837C8.54059 0.506998 7.12684 0 5.62498 0C4.12311 0 2.70936 0.508623 1.64812 1.42837C0.584997 2.34811 0 3.57173 0 4.87498C0 6.1766 0.586872 7.40184 1.64812 8.32159C2.70936 9.24296 4.12123 9.74996 5.62498 9.74996C6.88122 9.74996 8.07372 9.39571 9.05059 8.74246L13.9199 12.9609C13.9342 12.9733 13.9512 12.9831 13.9698 12.9898C13.9885 12.9965 14.0085 13 14.0287 13C14.0489 13 14.0689 12.9965 14.0875 12.9898C14.1062 12.9831 14.1232 12.9733 14.1374 12.9609L14.9549 12.2541C14.9692 12.2417 14.9806 12.227 14.9883 12.2108C14.996 12.1947 15 12.1773 15 12.1598C15 12.1423 14.996 12.125 14.9883 12.1088C14.9806 12.0926 14.9692 12.0779 14.9549 12.0656ZM8.59496 7.44897C7.79997 8.13634 6.74622 8.51496 5.62498 8.51496C4.50373 8.51496 3.44999 8.13634 2.65499 7.44897C1.86187 6.75997 1.42499 5.84672 1.42499 4.87498C1.42499 3.90323 1.86187 2.98836 2.65499 2.30099C3.44999 1.61362 4.50373 1.23499 5.62498 1.23499C6.74622 1.23499 7.80184 1.61199 8.59496 2.30099C9.38808 2.98999 9.82496 3.90323 9.82496 4.87498C9.82496 5.84672 9.38808 6.7616 8.59496 7.44897Z"/>
+    </defs>
+    </svg>
+
+                    <input type="text" id="searchInput" placeholder="Cari Pengaduan">
+                </div>
+                <a href="buat-pengaduan.html" class="btn-cta-top">Buat Pengaduan</a>
+            </div>
+
+            <!-- Filter Chips -->
+            <div class="filter-chips">
+                <button class="chip active" data-filter="semua">
+        Semua
+    </button>
+
+    <button class="chip" data-filter="diajukan">
+        Diajukan
+    </button>
+
+
+
+    <button class="chip" data-filter="dalam perbaikan">
+        Dalam Perbaikan
+    </button>
+
+
+    <button class="chip" data-filter="selesai">
+        Selesai
+    </button>
+
+            </div>
+
+            <!-- 0. STATE LOADING -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-icon-wrapper">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_1768_3226)">
+    <path opacity="0.1" d="M42 24C42 33.9411 33.9411 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C33.9411 6 42 14.0589 42 24Z" stroke-width="4" stroke="#0B5E3B"/>
+    <path d="M24 6.00003C19.3592 5.99168 14.896 7.7841 11.55 11" stroke-width="4" stroke-linecap="round" stroke="#0B5E3B"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_1768_3226">
+    <rect width="48" height="48" fill="white"/>
+    </clipPath>
+    </defs>
+    </svg>
+    
+                </div>
+                <h3>Loading...</h3>
+                <p>Mohon tunggu sebentar, data pengaduan sedang dimuat.</p>
+            </div>
+
+            <!-- 1. STATE ERROR -->
+            <div class="error-state" id="errorState">
+                <div class="error-icon-wrapper"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M57 29C57 44.464 44.464 57 29 57C13.536 57 1 44.464 1 29C1 13.536 13.536 1 29 1C44.464 1 57 13.536 57 29Z" stroke-width="2" stroke="#D02316"/>
+    <path d="M29 15V31.8M29 41.6V43" stroke-width="2" stroke-linecap="round" stroke="#D02316"/>
+    </svg>
+
+    </div>
+                <h3>Gagal Memuat Pengaduan</h3>
+                <p>Terjadi kesalahan saat memuat data<br>pengaduan. Periksa koneksi internet Anda<br>dan coba lagi.</p>
+                <button class="btn-retry" id="btnRetry">Coba Lagi</button>
+            </div>
+
+            <!-- 2. STATE KOSONG -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon-wrapper">
+                    <svg width="39" height="49" viewBox="0 0 39 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1 5.7V43.3C1 44.5465 1.48728 45.742 2.35463 46.6234C3.22199 47.5048 4.39837 48 5.625 48H33.375C34.6016 48 35.778 47.5048 36.6454 46.6234C37.5127 45.742 38 44.5465 38 43.3V15.9037C37.9999 15.2776 37.8767 14.6578 37.6377 14.0807C37.3986 13.5036 37.0485 12.9809 36.6079 12.5432L26.3404 2.3395C25.4763 1.48095 24.3159 1.00015 23.1075 1H5.625C4.39837 1 3.22199 1.49518 2.35463 2.3766C1.48728 3.25802 1 4.45348 1 5.7Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#0B5E3B"/>
+    <path d="M11.0556 40.8874C10.9512 40.8887 10.8477 40.8664 10.7509 40.8218C10.6542 40.7772 10.5661 40.7112 10.4917 40.6276C10.4065 40.5315 10.3409 40.4151 10.2997 40.2868C10.2585 40.1584 10.2426 40.0213 10.2532 39.8851L10.5893 35.1332C10.6037 34.9126 10.6886 34.7056 10.8279 34.5516L22.8203 20.8653C23.4891 20.1524 24.3777 19.7698 25.2925 19.8011C26.2015 19.8091 27.0738 20.2118 27.7322 20.9272C28.3636 21.6672 28.7268 22.6521 28.7489 23.6848C28.771 24.7174 28.4505 25.7214 27.8515 26.4958L15.8482 40.244C15.7139 40.3967 15.538 40.4927 15.3494 40.5162L11.1315 40.9493L11.0556 40.8874ZM12.1399 35.6159L11.9122 39.0065L14.8832 38.6971L26.7021 25.1841C26.9325 24.8728 27.0798 24.4926 27.1265 24.0886C27.1732 23.6846 27.1173 23.2739 26.9654 22.9051C26.8135 22.5363 26.5721 22.225 26.2698 22.0082C25.9675 21.7914 25.617 21.6782 25.26 21.682C25.0253 21.6643 24.7898 21.7012 24.568 21.7906C24.3462 21.8799 24.1426 22.0198 23.9697 22.2018L12.1399 35.6159Z" fill="#0B5E3B" stroke="#0B5E3B"/>
+    <path d="M24.125 1V10.4C24.125 11.6465 24.6123 12.842 25.4796 13.7234C26.347 14.6048 27.5234 15.1 28.75 15.1H38" stroke-width="2" stroke-linejoin="round" stroke="#0B5E3B"/>
+    </svg>
+
+
+                </div>
+                <h3>Belum Ada Pengaduan</h3>
+                <p>Saat ini belum ada pengaduan fasilitas dari seluruh pengguna. Jadilah yang pertama untuk menyampaikan pengaduan.</p>
+                <a href="buat-pengaduan.html" class="btn-empty-action">Buat Pengaduan</a>
+            </div>
+
+        <!-- 3. STATE PENGADUAN TIDAK DITEMUKAN -->
+    <div class="not-found-state" id="notFoundState">
+        <div class="not-found-icon-wrapper">
+            <svg width="35" height="31" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M34.6311 29.1089L24.3106 19.9654C26.3734 17.7824 27.5016 15.0253 27.4969 12.1785C27.4969 5.46188 21.3276 0 13.7485 0C6.16931 0 0 5.46188 0 12.1785C0 18.8951 6.16931 24.357 13.7485 24.357C16.9631 24.3589 20.076 23.3593 22.5425 21.5331L32.8647 30.6766C33.0998 30.8837 33.4179 31 33.7496 31C34.0812 31 34.3993 30.8837 34.6345 30.6766C34.8685 30.469 35 30.1876 35 29.8942C35 29.6008 34.8685 29.3194 34.6345 29.1118L34.6311 29.1089ZM13.7485 22.1428C10.7665 22.1388 7.90787 21.0878 5.79927 19.22C3.69068 17.3522 2.50413 14.82 2.49972 12.1785C2.50413 9.53703 3.69068 7.00486 5.79927 5.13705C7.90787 3.26923 10.7665 2.21818 13.7485 2.21428C16.7305 2.21818 19.5891 3.26923 21.6977 5.13705C23.8063 7.00486 24.9928 9.53703 24.9972 12.1785C24.9928 14.82 23.8063 17.3522 21.6977 19.22C19.5891 21.0878 16.7305 22.1388 13.7485 22.1428Z" fill="#0B5E3B"/>
+            </svg>
         </div>
 
-        <!-- State 2: Loading -->
-        <div class="logout-modal" id="logoutLoadingState" style="display: none;">
-            <div class="modal-icon-circle">
+        <h3>Pengaduan Tidak Ditemukan</h3>
+        <p>
+            Maaf, pengaduan yang Anda cari tidak ditemukan.
+            Silakan coba kata kunci lain<br>atau periksa kembali pencarian Anda.
+        </p>
+    </div>
+
+    <!-- 4. LIST DATA -->
+    <div class="reports-list" id="reportsContainer">
+        <!-- Data akan dimuat lewat JS -->
+    </div>  
+
+            
+    <!-- Pagination -->
+    <div class="pagination" id="pagination" style="display: none;">
+
+        <!-- Tombol Previous -->
+        <button class="page-btn prev" id="prevPage" type="button">
+            <i class="fas fa-chevron-left"></i>
+            <span>Prev</span>
+        </button>
+
+        <!-- Nomor halaman dibuat otomatis oleh JavaScript -->
+
+        <!-- Tombol Next -->
+        <button class="page-btn next" id="nextPage" type="button">
+            <span>Next</span>
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+    </div>
+
+
+
+        <!-- ... (Kode HTML sebelumnya tetap sama sampai bagian MAIN CONTENT) ... -->
+
+        </main>
+
+        <!-- ========================================== -->
+        <!-- MODAL KONFIRMASI & NOTIFIKASI LOGOUT       -->
+        <!-- ========================================== -->
+        
+        <!-- Overlay Gelap -->
+        <div class="modal-overlay" id="logoutModalOverlay">
+            
+            <!-- State 1: Konfirmasi -->
+            <div class="logout-modal" id="logoutConfirmState" style="display: none;">
+                <div class="modal-icon-circle">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g clip-path="url(#clip0_2426_6310)">
+    <use xlink:href="#stroke0_2426_6310" fill="#D02316"/>
+    <mask id="stroke1_2426_6310" fill="white">
+    <use xlink:href="#stroke0_2426_6310"/>
+    </mask>
+    <path d="M8.33302 2.70703C8.49878 2.70703 8.65775 2.77288 8.77496 2.89009C8.89217 3.0073 8.95802 3.16627 8.95802 3.33203C8.95802 3.49779 8.89217 3.65676 8.77496 3.77397C8.65775 3.89118 8.49878 3.95703 8.33302 3.95703H4.79102V16.04H8.33302C8.49266 16.0491 8.6428 16.1189 8.75263 16.2351C8.86246 16.3513 8.92365 16.5051 8.92365 16.665C8.92365 16.8249 8.86246 16.9788 8.75263 17.095C8.6428 17.2112 8.49266 17.281 8.33302 17.29H4.16602C4.00026 17.29 3.84128 17.2242 3.72407 17.107C3.60686 16.9898 3.54102 16.8308 3.54102 16.665V3.33203C3.54102 2.98703 3.82102 2.70703 4.16602 2.70703H8.33302Z" stroke-width="8" stroke="#D02316" mask="url(#stroke1_2426_6310)"/>
+    <use xlink:href="#stroke2_2426_6310" fill="#D02316"/>
+    <mask id="stroke3_2426_6310" fill="white">
+    <use xlink:href="#stroke2_2426_6310"/>
+    </mask>
+    <path d="M17.083 9.37402C17.1651 9.37402 17.2464 9.39019 17.3222 9.4216C17.398 9.45301 17.4669 9.49905 17.5249 9.55708C17.583 9.61512 17.629 9.68402 17.6604 9.75985C17.6918 9.83568 17.708 9.91695 17.708 9.99902C17.708 10.0811 17.6918 10.1624 17.6604 10.2382C17.629 10.314 17.583 10.3829 17.5249 10.441C17.4669 10.499 17.398 10.545 17.3222 10.5764C17.2464 10.6079 17.1651 10.624 17.083 10.624H8.33301C8.25093 10.624 8.16966 10.6079 8.09383 10.5764C8.018 10.545 7.9491 10.499 7.89107 10.441C7.83303 10.3829 7.78699 10.314 7.75558 10.2382C7.72417 10.1624 7.70801 10.0811 7.70801 9.99902C7.70801 9.91695 7.72417 9.83568 7.75558 9.75985C7.78699 9.68402 7.83303 9.61512 7.89107 9.55708C7.9491 9.49905 8.018 9.45301 8.09383 9.4216C8.16966 9.39019 8.25093 9.37402 8.33301 9.37402H17.083Z" stroke-width="8" stroke="#D02316" mask="url(#stroke3_2426_6310)"/>
+    <use xlink:href="#stroke4_2426_6310" fill="#D02316"/>
+    <mask id="stroke5_2426_6310" fill="white">
+    <use xlink:href="#stroke4_2426_6310"/>
+    </mask>
+    <path d="M13.3072 6.223C13.4246 6.10569 13.5838 6.03979 13.7497 6.03979C13.9157 6.03979 14.0748 6.10569 14.1922 6.223L17.5252 9.557C17.5833 9.61504 17.6293 9.68394 17.6608 9.75978C17.6922 9.83562 17.7083 9.91691 17.7083 9.999C17.7083 10.0811 17.6922 10.1624 17.6608 10.2382C17.6293 10.3141 17.5833 10.383 17.5252 10.441L14.1922 13.774C14.0734 13.8833 13.917 13.9424 13.7556 13.9391C13.5942 13.9357 13.4403 13.8702 13.3261 13.7561C13.2119 13.642 13.1462 13.4882 13.1426 13.3268C13.1391 13.1655 13.1981 13.0089 13.3072 12.89L16.1992 9.998L13.3072 7.108C13.1899 6.99061 13.124 6.83145 13.124 6.6655C13.124 6.49954 13.1899 6.34038 13.3072 6.223Z" stroke-width="8" stroke="#D02316" mask="url(#stroke5_2426_6310)"/>
+    </g>
+    <defs>
+    <clipPath id="clip0_2426_6310">
+    <rect width="20" height="20" fill="white"/>
+    </clipPath>
+    <path id="stroke0_2426_6310" d="M8.33302 2.70703C8.49878 2.70703 8.65775 2.77288 8.77496 2.89009C8.89217 3.0073 8.95802 3.16627 8.95802 3.33203C8.95802 3.49779 8.89217 3.65676 8.77496 3.77397C8.65775 3.89118 8.49878 3.95703 8.33302 3.95703H4.79102V16.04H8.33302C8.49266 16.0491 8.6428 16.1189 8.75263 16.2351C8.86246 16.3513 8.92365 16.5051 8.92365 16.665C8.92365 16.8249 8.86246 16.9788 8.75263 17.095C8.6428 17.2112 8.49266 17.281 8.33302 17.29H4.16602C4.00026 17.29 3.84128 17.2242 3.72407 17.107C3.60686 16.9898 3.54102 16.8308 3.54102 16.665V3.33203C3.54102 2.98703 3.82102 2.70703 4.16602 2.70703H8.33302Z"/>
+    <path id="stroke2_2426_6310" d="M17.083 9.37402C17.1651 9.37402 17.2464 9.39019 17.3222 9.4216C17.398 9.45301 17.4669 9.49905 17.525 9.55708C17.583 9.61512 17.629 9.68402 17.6604 9.75985C17.6918 9.83568 17.708 9.91695 17.708 9.99902C17.708 10.0811 17.6918 10.1624 17.6604 10.2382C17.629 10.314 17.583 10.3829 17.525 10.441C17.4669 10.499 17.398 10.545 17.3222 10.5764C17.2464 10.6079 17.1651 10.624 17.083 10.624H8.33301C8.25093 10.624 8.16966 10.6079 8.09383 10.5764C8.018 10.545 7.9491 10.499 7.89107 10.441C7.83303 10.3829 7.78699 10.314 7.75558 10.2382C7.72417 10.1624 7.70801 10.0811 7.70801 9.99902C7.70801 9.91695 7.72417 9.83568 7.75558 9.75985C7.78699 9.68402 7.83303 9.61512 7.89107 9.55708C7.9491 9.49905 8.018 9.45301 8.09383 9.4216C8.16966 9.39019 8.25093 9.37402 8.33301 9.37402H17.083Z"/>
+    <path id="stroke4_2426_6310" d="M13.3072 6.223C13.4246 6.10569 13.5838 6.03979 13.7497 6.03979C13.9157 6.03979 14.0748 6.10569 14.1922 6.223L17.5252 9.557C17.5833 9.61504 17.6293 9.68394 17.6608 9.75978C17.6922 9.83562 17.7083 9.91691 17.7083 9.999C17.7083 10.0811 17.6922 10.1624 17.6608 10.2382C17.6293 10.3141 17.5833 10.383 17.5252 10.441L14.1922 13.774C14.0734 13.8833 13.917 13.9424 13.7556 13.9391C13.5942 13.9357 13.4403 13.8702 13.3261 13.7561C13.2119 13.642 13.1462 13.4882 13.1426 13.3268C13.1391 13.1655 13.1981 13.0089 13.3072 12.89L16.1992 9.998L13.3072 7.108C13.1899 6.99061 13.124 6.83145 13.124 6.6655C13.124 6.49954 13.1899 6.34038 13.3072 6.223Z"/>
+    </defs>
+    </svg>
+
+
+                </div>
                 
-<svg width="20" height="20" viewBox="0 0 24 24"
-     fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 4H5V20H10"
-          stroke="#D02316"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"/>
-    <path d="M11 12H21M17 8L21 12L17 16"
-          stroke="#D02316"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"/>
-</svg>
-
-
-            </div>
-            <div class="modal-text-group">
-    <h3>Konfirmasi Logout</h3>
-    <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
-</div>
-            <div class="modal-loading-text">Loading...</div>
-        </div>
-
-        <!-- State 3: Gagal -->
-        <div class="logout-modal" id="logoutErrorState" style="display: none;">
-            <div class="modal-icon-error">
-                <i class="fas fa-exclamation"></i>
-            </div>
-            <div class="modal-text-group">
-    <h3>Logout Gagal</h3>
-    <p>Terjadi kesalahan saat keluar dari akun. Silakan coba kembali.</p>
-</div>
-            <button class="btn-modal-retry" id="btnRetryLogout">Coba Lagi</button>
-        </div>
+    <!-- Kelompok teks Konfirmasi Logout -->
+    <div class="modal-text-group">
+        <h3>Konfirmasi Logout</h3>
+        <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
     </div>
 
-    <!-- Notifikasi Berhasil (Toast) -->
-    <div class="toast-success" id="logoutSuccessToast" style="display: none;">
-        <div class="toast-icon">
-            <!-- SVG dari Figma -->
-            <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M20.1667 0C9.02917 0 0 9.02917 0 20.1667C0 31.3042 9.02917 40.3333 20.1667 40.3333C31.3042 40.3333 40.3333 31.3042 40.3333 20.1667C40.3333 9.02917 31.3042 0 20.1667 0ZM28.908 16.7567C29.069 16.5727 29.1915 16.3584 29.2684 16.1263C29.3453 15.8943 29.375 15.6492 29.3558 15.4055C29.3366 15.1618 29.2689 14.9244 29.1566 14.7072C29.0442 14.4901 28.8896 14.2976 28.7018 14.1411C28.514 13.9846 28.2968 13.8673 28.063 13.7959C27.8292 13.7246 27.5835 13.7008 27.3403 13.7259C27.0971 13.7509 26.8614 13.8243 26.647 13.9418C26.4327 14.0593 26.2439 14.2185 26.092 14.41L18.2087 23.8682L14.1295 19.7872C13.7837 19.4532 13.3206 19.2684 12.8399 19.2726C12.3592 19.2768 11.8994 19.4696 11.5595 19.8095C11.2196 20.1494 11.0268 20.6092 11.0226 21.0899C11.0184 21.5706 11.2032 22.0337 11.5372 22.3795L17.0372 27.8795C17.2173 28.0595 17.433 28.2 17.6704 28.2921C17.9079 28.3842 18.1619 28.4257 18.4163 28.4142C18.6707 28.4026 18.92 28.3382 19.1481 28.225C19.3762 28.1118 19.5783 27.9523 19.7413 27.7567L28.908 16.7567Z" fill-rule="evenodd" clip-rule="evenodd" fill="#15A367"/>
-</svg>
+                <div class="modal-actions">
+                    <button class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
+                    <button class="btn-modal-confirm" id="btnConfirmLogout">Ya, Logout</button>
+                </div>
+            </div>
 
-        </div>
-        <div class="toast-content">
-            <h4>Logout Berhasil</h4>
-            <p>Anda berhasil logout dari akun ini.</p>
-        </div>
+            <!-- State 2: Loading -->
+            <div class="logout-modal" id="logoutLoadingState" style="display: none;">
+                <div class="modal-icon-circle">
+                    
+    <svg width="20" height="20" viewBox="0 0 24 24"
+        fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 4H5V20H10"
+            stroke="#D02316"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+        <path d="M11 12H21M17 8L21 12L17 16"
+            stroke="#D02316"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
+
+
+                </div>
+                <div class="modal-text-group">
+        <h3>Konfirmasi Logout</h3>
+        <p>Apakah Anda yakin ingin keluar dari akun Anda?</p>
     </div>
+                <div class="modal-loading-text">Loading...</div>
+            </div>
+
+            <!-- State 3: Gagal -->
+            <div class="logout-modal" id="logoutErrorState" style="display: none;">
+                <div class="modal-icon-error">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <div class="modal-text-group">
+        <h3>Logout Gagal</h3>
+        <p>Terjadi kesalahan saat keluar dari akun. Silakan coba kembali.</p>
+    </div>
+                <button class="btn-modal-retry" id="btnRetryLogout">Coba Lagi</button>
+            </div>
+        </div>
+
+        <!-- Notifikasi Berhasil (Toast) -->
+        <div class="toast-success" id="logoutSuccessToast" style="display: none;">
+            <div class="toast-icon">
+                <!-- SVG dari Figma -->
+                <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20.1667 0C9.02917 0 0 9.02917 0 20.1667C0 31.3042 9.02917 40.3333 20.1667 40.3333C31.3042 40.3333 40.3333 31.3042 40.3333 20.1667C40.3333 9.02917 31.3042 0 20.1667 0ZM28.908 16.7567C29.069 16.5727 29.1915 16.3584 29.2684 16.1263C29.3453 15.8943 29.375 15.6492 29.3558 15.4055C29.3366 15.1618 29.2689 14.9244 29.1566 14.7072C29.0442 14.4901 28.8896 14.2976 28.7018 14.1411C28.514 13.9846 28.2968 13.8673 28.063 13.7959C27.8292 13.7246 27.5835 13.7008 27.3403 13.7259C27.0971 13.7509 26.8614 13.8243 26.647 13.9418C26.4327 14.0593 26.2439 14.2185 26.092 14.41L18.2087 23.8682L14.1295 19.7872C13.7837 19.4532 13.3206 19.2684 12.8399 19.2726C12.3592 19.2768 11.8994 19.4696 11.5595 19.8095C11.2196 20.1494 11.0268 20.6092 11.0226 21.0899C11.0184 21.5706 11.2032 22.0337 11.5372 22.3795L17.0372 27.8795C17.2173 28.0595 17.433 28.2 17.6704 28.2921C17.9079 28.3842 18.1619 28.4257 18.4163 28.4142C18.6707 28.4026 18.92 28.3382 19.1481 28.225C19.3762 28.1118 19.5783 27.9523 19.7413 27.7567L28.908 16.7567Z" fill-rule="evenodd" clip-rule="evenodd" fill="#15A367"/>
+    </svg>
+
+            </div>
+            <div class="toast-content">
+                <h4>Logout Berhasil</h4>
+                <p>Anda berhasil logout dari akun ini.</p>
+            </div>
+        </div>
 
 
-<script src="javascript/api.js"></script>
-<script src="javascript/dashboard.js"></script>
-<script src="javascript/offline-support.js"></script>
-<script src="javascript/logout.js"></script>
+    <script src="javascript/api.js"></script>
+    <script src="javascript/dashboard.js"></script>
+    <script src="javascript/offline-support.js"></script>
+    <script src="javascript/logout.js"></script>
 
-</body>
-</html>
+
+<script>
+(function () {
+    const titles = {
+        "dashboard.html": "Dashboard — Pengaduan Fasilitas FITK",
+        "buat-pengaduan.html": "Buat Pengaduan — FITK",
+        "riwayat-pengaduan.html": "Riwayat Pengaduan — FITK",
+        "detail-pengaduan.html": "Detail Pengaduan — FITK"
+    };
+
+    function updatePageTitle() {
+        const currentPage = window.location.pathname
+            .split("/")
+            .pop()
+            .toLowerCase();
+
+        if (titles[currentPage]) {
+            document.title = titles[currentPage];
+        }
+    }
+
+    updatePageTitle();
+
+    window.addEventListener("pageshow", updatePageTitle);
+})();
+</script>
+
+    </body>
+    </html>
