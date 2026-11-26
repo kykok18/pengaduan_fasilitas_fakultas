@@ -100,13 +100,14 @@ body {
    ============================================================ */
 .register-card {
     width: 100%;
-    max-width: 390px;                    /* Sesuai Figma */
-    margin: 0 auto;                       /* Center */
-    background-color: var(--white);
-    border-radius: 16px;
-    padding: 28px 20px;
+    max-width: 361px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    padding: 20px 15px;
     box-sizing: border-box;
 }
+
 
 .register-title {
     font-size: 16px;
@@ -121,18 +122,26 @@ body {
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 0;
+    margin-bottom: 20px;
 }
+
+
 
 .form-group label {
+    display: flex;
+    align-items: center;
+    height: 35px;
+    margin-top: 0;
+    padding: 10px;
+
+    font-family: 'Poppins', sans-serif;
     font-size: 10px;
     font-weight: 600;
-    color: var(--text-dark);
-    margin-top: 15px;
-    padding-left: 10px; /* Silakan ganti angkanya (misal 10px, 12px, dll) */
-
+    line-height: 15px;
+    color: #0B5E3B;
 }
+
 
 .form-group label span {
     color: #0a4f2a;
@@ -387,20 +396,27 @@ body {
 /* ============================================================
    TOMBOL REGISTRASI
    ============================================================ */
+
 .btn-register {
     width: 100%;
-    background-color: var(--text-dark);
-    color: var(--white);
+    height: 57px;
+    padding: 10px;
+    margin-top: 20px;
+
+    background-color: #0B5E3B;
+    color: #FFFFFF;
     border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 500;
+    border-radius: 10px;
+
     font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22px;
+
     cursor: pointer;
-    margin-top: 25px;
     transition: background-color 0.2s ease;
 }
+
 
 
 /* ============================================================
@@ -572,4 +588,16 @@ body {
     color: #A2A2A2;
     pointer-events: none;
     cursor: not-allowed;
+}
+
+
+/* ==========================================
+   POSISI SEMUA NOTIFIKASI REGISTRASI
+   MOBILE — NAIK 20px
+   ========================================== */
+
+@media (max-width: 767px) {
+    .form-message:not([hidden]) {
+        transform: translateY(-20px);
+    }
 }
