@@ -155,23 +155,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value;
         let valid = true;
 
-        // Memeriksa email kosong, format tidak sesuai, atau valid.
-        
-if (!email) {
+
+/* ============================================================
+   VALIDASI E-MAIL LOGIN — DEFECT D-03
+   Ekstensi yang diizinkan:
+   .com, .id, .ac.id, .org
+   ============================================================ */
+
+const emailPattern =
+    /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
+
+if (!email.trim()) {
     setEmailError('E-mail wajib diisi.');
     valid = false;
 
-} else if (/\s/.test(email)) {
-    setEmailError('Format E-mail tidak sesuai.');
-    valid = false;
-
-} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+} else if (
+    !emailPattern.test(email) ||
+    email.includes('..') ||
+    email.startsWith('.') ||
+    email.split('@')[0].endsWith('.')
+) {
     setEmailError('Format E-mail tidak sesuai.');
     valid = false;
 
 } else {
     setEmailError('');
 }
+
 
 
         // Password wajib diisi. Kecocokannya diperiksa backend.
@@ -384,15 +394,59 @@ if (!email) {
 
     });
 
-    // =========================
-    // RESET ERROR SAAT MENGETIK
-    // =========================
 
     // Menghapus pesan error ketika pengguna memperbaiki email.
-    emailInput.addEventListener('input', () => {
+    
+
+/* ============================================================
+   VALIDASI E-MAIL LANGSUNG — DEFECT D-03
+   Hanya menerima .com, .id, .ac.id, .org
+   ============================================================ */
+
+function checkEmailDomain() {
+    const email = emailInput.value.trim();
+
+    const emailPattern =
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
+
+    // Belum diisi: jangan munculkan error saat halaman dibuka
+    if (!email) {
         setEmailError('');
-        hideMessage();
-    });
+        return;
+    }
+
+    // Tolak email dengan format atau ekstensi yang salah
+    const invalidEmail =
+        !emailPattern.test(email) ||
+        email.includes('..') ||
+        email.startsWith('.') ||
+        email.split('@')[0].endsWith('.');
+
+    if (invalidEmail) {
+        setEmailError('Format E-mail tidak sesuai.');
+    } else {
+        setEmailError('');
+    }
+}
+
+// Saat pengguna mengetik
+emailInput.addEventListener('input', () => {
+    hideMessage();
+    checkEmailDomain();
+});
+
+// Saat nilai E-mail berubah
+emailInput.addEventListener('change', checkEmailDomain);
+
+// Saat pengguna keluar dari kolom E-mail
+emailInput.addEventListener('blur', checkEmailDomain);
+
+// Saat halaman dibuka dengan E-mail yang sudah terisi
+window.addEventListener('load', () => {
+    checkEmailDomain();
+});
+
+
 
     // Menghapus pesan error ketika pengguna memperbaiki password.
     passwordInput.addEventListener('input', () => {
