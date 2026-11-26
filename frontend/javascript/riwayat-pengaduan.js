@@ -557,22 +557,10 @@ const renderPagination = () => {
         pagination.insertBefore(element, nextBtn);
     };
 
-    if (window.innerWidth <= 390) {
-        // HP kecil: dua nomor berurutan
-        const start = Math.max(
-            1,
-            Math.min(currentPage, totalPages - 1)
-        );
+    
+    // Maksimal 4 nomor halaman di SEMUA ukuran layar
+    if (totalPages <= 4) {
 
-        for (
-            let page = start;
-            page <= Math.min(start + 1, totalPages);
-            page++
-        ) {
-            addPage(page, page);
-        }
-
-    } else if (totalPages <= 4) {
         // Jika maksimal empat halaman, tampilkan semua
         for (let page = 1; page <= totalPages; page++) {
             addPage(page, page);

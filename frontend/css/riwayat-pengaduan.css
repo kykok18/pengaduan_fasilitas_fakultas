@@ -2525,3 +2525,19 @@
         flex-wrap: nowrap;
     }
 }
+
+
+/* Pagination Riwayat — 4 nomor tetap muat di HP */
+@media screen and (max-width: 390px) {
+    .riwayat-main .riwayat-pagination {
+        gap: 6px;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .riwayat-main .riwayat-pagination {
+        gap: 1px;
+    }
+}

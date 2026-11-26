@@ -560,23 +560,9 @@ const renderPagination = (paginationData = {
         }
     };
 
-    // HP kecil: tetap hanya dua tombol angka
-    if (window.innerWidth <= 390) {
-        const start = Math.max(
-            1,
-            Math.min(currentPage, totalPages - 1)
-        );
 
-        for (
-            let page = start;
-            page <= Math.min(start + 1, totalPages);
-            page++
-        ) {
-            addPageButton(page);
-        }
-
-    // Desktop: tampilkan semua jika maksimal 4 halaman
-    } else if (totalPages <= 4) {
+    // Maksimal 4 nomor halaman di SEMUA ukuran layar
+    if (totalPages <= 4) {
         for (let page = 1; page <= totalPages; page++) {
             addPageButton(page);
         }
