@@ -227,30 +227,50 @@ function validateFullname() {
 }
 
 
+
 /* ============================================================
-   VALIDASI EMAIL
+   VALIDASI E-MAIL — PERBAIKAN DEFECT D-03
+   Ekstensi yang diizinkan: .com, .id, .ac.id, .org
    ============================================================ */
+
 function validateEmail() {
+    const value = emailInput.value.trim();
 
-    
-const value = emailInput.value.trim();
-
-const emailPattern =
-    /^[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
-
-if (!emailPattern.test(value)) {
-    showError(emailInput, 'Format E-mail tidak valid.');
-    return false;
-}
-
-    if (!emailPattern.test(value)) {
-        showError(emailInput, 'Format e-mail tidak valid.');
+    // E-mail wajib diisi
+    if (!value) {
+        showError(emailInput, "E-mail wajib diisi.");
         return false;
     }
 
+    // Memeriksa format dan membatasi ekstensi domain.
+    // Contoh valid:
+    // admin@gmail.com
+    // mahasiswa@kampus.ac.id
+    // pegawai@instansi.id
+    // pengguna@organisasi.org
+
+    const emailPattern =
+        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
+
+    // Menolak format yang salah atau ekstensi di luar whitelist
+    if (
+        !emailPattern.test(value) ||
+        value.includes("..") ||
+        value.startsWith(".") ||
+        value.split("@")[0].endsWith(".")
+    ) {
+        showError(
+            emailInput,
+            "Format E-mail tidak sesuai."
+        );
+        return false;
+    }
+
+    // Validasi berhasil
     clearError(emailInput);
     return true;
 }
+
 
     /* ============================================================
    VALIDASI PASSWORD
