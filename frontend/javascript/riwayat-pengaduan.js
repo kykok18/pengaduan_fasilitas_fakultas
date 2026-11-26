@@ -501,149 +501,126 @@ card.href =
     // 9. PAGINATION
     // ==========================================
 
-    const renderPagination = () => {
-        if (!pagination || !prevBtn || !nextBtn) {
-            return;
-        }
+    
+/* =====================================================
+   PAGINATION RIWAYAT PENGADUAN
+   Desktop: 4 nomor
+   HP kecil: 2 nomor
+   ===================================================== */
 
-        pagination
-            .querySelectorAll("[data-riwayat-page]")
-            .forEach((element) => element.remove());
+const renderPagination = () => {
+    if (!pagination || !prevBtn || !nextBtn) return;
 
-        prevBtn.disabled = currentPage <= 1;
-        nextBtn.disabled = currentPage >= totalPages;
+    pagination
+        .querySelectorAll("[data-riwayat-page]")
+        .forEach((element) => element.remove());
 
-        if (totalPages <= 1) return;
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
 
-        const first = Math.max(
-            1,
-            Math.min(
-                currentPage - 1,
-                totalPages - MAX_VISIBLE_PAGES + 1
-            )
+    if (totalPages <= 1) return;
+
+    const addPage = (label, page = null) => {
+        const element = document.createElement(
+            page === null ? "span" : "button"
         );
 
-        const last = Math.min(
-            totalPages,
-            first + MAX_VISIBLE_PAGES - 1
-        );
+        element.dataset.riwayatPage = "true";
+        element.textContent = String(label);
 
-        const addPage = (
-            label,
-            page = null,
-            active = false
-        ) => {
-            const element = document.createElement(
-                page === null ? "span" : "button"
+        if (page === null) {
+            element.className = "page-dots";
+            element.setAttribute("aria-hidden", "true");
+
+        } else {
+            element.type = "button";
+            element.className = "page-btn";
+
+            element.setAttribute(
+                "aria-label",
+                `Halaman ${page}`
             );
 
-            element.dataset.riwayatPage = "true";
-            element.textContent = label;
-
-            if (page === null) {
-                element.className = "page-dots";
-            } else {
-                element.type = "button";
-
-                element.className =
-                    `page-btn${active ? " active" : ""}`;
-
+            if (page === currentPage) {
+                element.classList.add("active");
                 element.setAttribute(
-                    "aria-label",
-                    `Halaman ${page}`
-                );
-
-                if (active) {
-                    element.setAttribute(
-                        "aria-current",
-                        "page"
-                    );
-                }
-
-                element.addEventListener(
-                    "click",
-                    () => goToPage(page)
+                    "aria-current",
+                    "page"
                 );
             }
 
-            pagination.insertBefore(
-                element,
-                nextBtn
-            );
-        };
+            element.addEventListener("click", () => {
+                goToPage(page);
+            });
+        }
 
-        window.addEventListener("resize", () => {
+        pagination.insertBefore(element, nextBtn);
+    };
+
+    if (window.innerWidth <= 390) {
+        // HP kecil: dua nomor berurutan
+        const start = Math.max(
+            1,
+            Math.min(currentPage, totalPages - 1)
+        );
+
+        for (
+            let page = start;
+            page <= Math.min(start + 1, totalPages);
+            page++
+        ) {
+            addPage(page, page);
+        }
+
+    } else if (totalPages <= 4) {
+        // Jika maksimal empat halaman, tampilkan semua
+        for (let page = 1; page <= totalPages; page++) {
+            addPage(page, page);
+        }
+
+    } else {
+        const start = Math.max(
+            1,
+            Math.min(currentPage, totalPages - 3)
+        );
+
+        if (start + 3 >= totalPages) {
+            for (
+                let page = start;
+                page <= totalPages;
+                page++
+            ) {
+                addPage(page, page);
+            }
+        } else {
+            for (
+                let page = start;
+                page <= start + 2;
+                page++
+            ) {
+                addPage(page, page);
+            }
+
+            addPage("…");
+            addPage(totalPages, totalPages);
+        }
+    }
+};
+
+// Render ulang hanya saat berpindah mode desktop/HP
+let isMobilePagination = window.innerWidth <= 390;
+
+window.addEventListener("resize", () => {
+    const isMobileNow = window.innerWidth <= 390;
+
+    if (isMobileNow === isMobilePagination) return;
+
+    isMobilePagination = isMobileNow;
+
     if (totalPages > 1) {
         renderPagination();
     }
 });
-
-
-/* ==========================================
-   PAGINATION KHUSUS HP KECIL
-   Maksimal 2 nomor halaman agar tidak geser
-   ========================================== */
-
-if (window.innerWidth <= 390) {
-
-    const visiblePages = 2;
-
-    const startPage = Math.max(
-        1,
-        Math.min(
-            currentPage,
-            totalPages - visiblePages + 1
-        )
-    );
-
-    const endPage = Math.min(
-        totalPages,
-        startPage + visiblePages - 1
-    );
-
-    for (let page = startPage; page <= endPage; page++) {
-        addPage(
-            String(page),
-            page,
-            page === currentPage
-        );
-    }
-
-    return;
-}
-
-
-        if (first > 1) {
-            addPage("1", 1);
-
-            if (first > 2) {
-                addPage("…");
-            }
-        }
-
-        for (
-            let page = first;
-            page <= last;
-            page++
-        ) {
-            addPage(
-                String(page),
-                page,
-                page === currentPage
-            );
-        }
-
-        if (last < totalPages) {
-            if (last < totalPages - 1) {
-                addPage("…");
-            }
-
-            addPage(
-                String(totalPages),
-                totalPages
-            );
-        }
-    };
 
     // ==========================================
     // 10. HAPUS DATA TERLINDUNGI
