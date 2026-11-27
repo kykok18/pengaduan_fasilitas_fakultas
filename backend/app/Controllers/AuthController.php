@@ -191,13 +191,15 @@ class AuthController
         }
 
         // Ambil data JSON dari request
-        $data = json_decode($rawBody);
+        $data = json_decode(file_get_contents("php://input"), true);
 
+        // Validasi format JSON
         if (json_last_error() !== JSON_ERROR_NONE) {
             errorResponse("Format JSON tidak valid", 400);
         }
 
-        if (!is_object($data)) {
+        // Validasi data request
+        if (!is_array($data)) {
             errorResponse("Data request tidak valid", 400);
         }
 
