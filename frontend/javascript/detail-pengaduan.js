@@ -1,1330 +1,709 @@
 
+/*
+ * Detail Pengaduan — file utama
+ * Voting dan komentar berada di file terpisah.
+ */
+
+// Tunggu sampai HTML siap supaya pencarian elemen (ID/class) tidak gagal.
 document.addEventListener("DOMContentLoaded", () => {
-  
 
-  // =========================================================
-  // 1. MENGAMBIL ELEMEN HTML
-  // =========================================================
-
-  const stateBox = document.getElementById("detailState");
-  const stateIcon = document.getElementById("detailStateIcon");
-  const stateTitle = document.getElementById("detailStateTitle");
-  const stateDesc = document.getElementById("detailStateDesc");
-  const retryBtn = document.getElementById("detailRetryBtn");
-
-  const detailContent = document.getElementById("detailContent");
-  const commentsCard = document.getElementById("detailCommentsCard");
-  const detailCard = document.querySelector(".detail-card");
-
-  const detailImage = document.getElementById("detailImage");
-  const imageFallback = document.getElementById("detailImageFallback");
-
-  const detailCategory = document.getElementById("detailCategory");
-  const detailStatus = document.getElementById("detailStatus");
-  const detailTitle = document.getElementById("detailTitle");
-  const detailLocation = document.getElementById("detailLocation");
-  const detailDate = document.getElementById("detailDate");
-  const detailDescription = document.getElementById("detailDescription");
-
-  const detailLikes = document.getElementById("detailLikes");
-  const detailDislikes = document.getElementById("detailDislikes");
-  
-  // ==========================================
-// ELEMEN TOMBOL UPVOTE DAN DOWNVOTE
-// ==========================================
-
-// Mengambil dua tombol voting dari HTML.
-const voteButtons = document.querySelectorAll(
-    ".detail-vote-btn"
-);
-
-let activeVote = null;
-let totalUpvote = 0;
-let totalDownvote = 0;
-
-let latestVote = null;
-let voteQueue = Promise.resolve();
-let voteVersion = 0;
-
-// Mengatur tombol selama proses voting.
-
-
-const setVoteLoading = (loading) => {
-    isVoting = loading;
-
-    voteButtons.forEach((button) => {
-        button.disabled = loading;
-        button.setAttribute("aria-busy", String(loading));
-    });
-};
-
-
-
-// Menandai pilihan suara pengguna.
-const setActiveVote = (voteType) => {
-    activeVote = voteType;
-
-    voteButtons.forEach((button) => {
-        const isActive = button.dataset.vote === voteType;
-
-        button.classList.toggle("active", isActive);
-        button.setAttribute(
-            "aria-pressed",
-            String(isActive)
-        );
-    });
-};
-
-const renderVoteUI = () => {
-    detailLikes.textContent = formatJumlah(totalUpvote);
-    detailDislikes.textContent = formatJumlah(totalDownvote);
-
-    setActiveVote(latestVote);
-};
-
-  const commentsList = document.getElementById("detailCommentsList");
-  const commentsTitle = document.getElementById("detailCommentsTitle");
-
-  // Menyimpan daftar komentar yang sudah dikonfirmasi backend.
-let komentarSaatIni = [];
-let isSendingComment = false;
-
-  const avatarLetter = document.getElementById("detailAvatarLetter");
-
-  
-
-
-  // ==========================================
-  // NOTIFIKASI SUARA GAGAL DIKIRIM
-  // ==========================================
-
-  let voteErrorTimeout = null;
-
-  const showVoteError = () => {
-      let alert = document.getElementById("voteErrorAlert");
-
-      // Gunakan elemen HTML yang sudah ada.
-      // Buat hanya jika elemen belum tersedia.
-      if (!alert) {
-          alert = document.createElement("div");
-          alert.id = "voteErrorAlert";
-          document.body.appendChild(alert);
-      }
-
-      alert.classList.add("vote-error-alert");
-
-      clearTimeout(voteErrorTimeout);
-
-      alert.innerHTML = `
-          <div class="vote-error-icon">
-              <svg width="40" height="40"
-                   viewBox="0 0 40 40"
-                   xmlns="http://www.w3.org/2000/svg"
-                   aria-hidden="true">
-                  <circle cx="20" cy="20" r="20" fill="#C41B1B"/>
-                  <path d="M13 13L27 27M27 13L13 27"
-                        stroke="#FFFFFF"
-                        stroke-width="4"
-                        stroke-linecap="round"/>
-              </svg>
-          </div>
-
-          <div class="vote-error-content">
-              <strong>SUARA GAGAL DIKIRIM</strong>
-              <p>
-                  Terjadi kesalahan saat mengirim suara.
-                  Silakan coba lagi.
-              </p>
-          </div>
-      `;
-
-      alert.hidden = false;
-
-      voteErrorTimeout = setTimeout(() => {
-          alert.hidden = true;
-      }, 4000);
-  };
-
-
-  // ==========================================
-  // NOTIFIKASI KOMENTAR GAGAL DIKIRIM
-  // ==========================================
-
-  let commentErrorTimeout = null;
-
-  const showCommentError = () => {
-      let alert = document.getElementById("commentErrorAlert");
-
-      if (!alert) {
-          alert = document.createElement("div");
-          alert.id = "commentErrorAlert";
-          alert.className = "vote-error-alert";
-          alert.setAttribute("role", "alert");
-          alert.hidden = true;
-
-          alert.innerHTML = `
-              <div class="vote-error-icon">
-                  <svg width="40" height="40"
-                       viewBox="0 0 40 40"
-                       xmlns="http://www.w3.org/2000/svg"
-                       aria-hidden="true">
-                      <circle cx="20" cy="20" r="20"
-                              fill="#C41B1B"/>
-                      <path d="M13 13L27 27M27 13L13 27"
-                            stroke="#FFFFFF"
-                            stroke-width="4"
-                            stroke-linecap="round"/>
-                  </svg>
-              </div>
-
-              <div class="vote-error-content">
-                  <strong>KOMENTAR GAGAL DIKIRIM</strong>
-                  <p>
-                      Terjadi kesalahan saat mengirim komentar.
-                      Silakan coba lagi
-                  </p>
-              </div>
-          `;
-
-          document.body.appendChild(alert);
-      }
-
-      clearTimeout(commentErrorTimeout);
-
-      alert.hidden = false;
-
-      commentErrorTimeout = setTimeout(() => {
-          alert.hidden = true;
-      }, 4000);
-  };
-
-
-
-  // ==========================================
-  // NOTIFIKASI KOMENTAR BERHASIL DIKIRIM
-  // ==========================================
-
-  let commentSuccessTimeout = null;
-
-  const showCommentSuccess = () => {
-      let alert = document.getElementById("commentSuccessAlert");
-
-      if (!alert) {
-          alert = document.createElement("div");
-
-          alert.id = "commentSuccessAlert";
-          alert.className = "vote-error-alert comment-success-alert";
-          alert.setAttribute("role", "status");
-          alert.setAttribute("aria-live", "polite");
-          alert.hidden = true;
-
-          alert.innerHTML = `
-              <div class="vote-error-icon">
-                  <svg
-    width="41"
-    height="41"
-    viewBox="0 0 41 41"
-    xmlns="http://www.w3.org/2000/svg"
-    style="display: block; filter: none; box-shadow: none;"
->
-    <circle
-        cx="20.5"
-        cy="20.5"
-        r="20"
-        fill="#15A367"
-        stroke="none"
-    />
-
-    <path
-        d="M11.5 20.5L17 26L29 14"
-        fill="none"
-        stroke="#FFFFFF"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        style="
-            fill: none !important;
-            stroke: #FFFFFF !important;
-            filter: none !important;
-        "
-    />
-</svg>
-              </div>
-
-              <div class="vote-error-content">
-                  <strong>KOMENTAR BERHASIL DIKIRIM</strong>
-                  <p>Komentar Anda berhasil ditambahkan.</p>
-              </div>
-          `;
-
-          document.body.appendChild(alert);
-      }
-
-      clearTimeout(commentSuccessTimeout);
-
-      alert.hidden = false;
-
-      commentSuccessTimeout = setTimeout(() => {
-          alert.hidden = true;
-      }, 4000);
-  };
-
-
- // ==========================================
- // SIDEBAR DETAIL PENGADUAN
- // ==========================================
-
- const menuToggle = document.getElementById("menuToggle");
- const sidebar = document.getElementById("sidebar");
- const sidebarOverlay = document.getElementById("sidebarOverlay");
-
- if (menuToggle && sidebar && sidebarOverlay) {
-
-     const closeSidebar = () => {
-         sidebar.classList.remove("active");
-         sidebarOverlay.classList.remove("active");
-
-         menuToggle.setAttribute("aria-expanded", "false");
-         document.body.style.overflow = "";
-     };
-
-     menuToggle.addEventListener("click", () => {
-         sidebar.classList.add("active");
-         sidebarOverlay.classList.add("active");
-
-         menuToggle.setAttribute("aria-expanded", "true");
-         document.body.style.overflow = "hidden";
-     });
-
-     sidebarOverlay.addEventListener("click", closeSidebar);
-
-     document.addEventListener("keydown", (event) => {
-         if (event.key === "Escape") {
-             closeSidebar();
-         }
-     });
- }
-
-
-  // =========================================================
-  // 2. KONFIGURASI API
-  // =========================================================
-
-  // Endpoint asli dari backend.
-  const DETAIL_ENDPOINT = "detail_pengaduan.php";
-
-  // Nama parameter yang digunakan backend.
-  const DETAIL_ID_PARAM = "id_pengaduan";
-
-
-  // Mengambil ID pengaduan dari URL.
-  // Contoh: detail-pengaduan.html?id_pengaduan=12
-
-// =========================================================
-// KONFIGURASI DETAIL DAN ASAL NAVIGASI
-// =========================================================
-
-// Parameter dari URL
-const params = new URLSearchParams(window.location.search);
-
-// ID pengaduan dari URL
-const idPengaduan = params.get("id_pengaduan");
-
-// Mengetahui asal halaman
-const fromRiwayat = params.get("from") === "riwayat";
-
-// Elemen tombol kembali
-const detailBackLink = document.getElementById("detailBackLink");
-const detailBackText = document.getElementById("detailBackText");
-
-// Mengatur tombol kembali berdasarkan asal akses
-if (detailBackLink && detailBackText) {
-
-    if (fromRiwayat) {
-
-        detailBackLink.href = "riwayat-pengaduan.html";
-
-        detailBackText.textContent =
-            "Kembali ke Riwayat Pengaduan";
-
-    } else {
-
-        detailBackLink.href = "dashboard.html";
-
-        detailBackText.textContent =
-            "Kembali ke Dashboard";
-
-    }
-}
-
-// Endpoint berdasarkan asal akses
-const activeDetailEndpoint = fromRiwayat
-    ? "riwayat.php"
-    : DETAIL_ENDPOINT;
-
-
-  // Untuk membatalkan request sebelumnya.
-  let activeController = null;
-
-  // =========================================================
-  // 3. INFORMASI PENGGUNA
-  // =========================================================
-
-  // Nama pengguna hanya digunakan untuk tampilan navbar.
-  // Validasi autentikasi tetap dilakukan oleh backend.
-  try {
-    if (typeof getUserSession === "function") {
-      const user = getUserSession();
-
-      if (user && user.nama) {
-        avatarLetter.textContent = user.nama
-          .trim()
-          .charAt(0)
-          .toUpperCase();
-      }
-    }
-  } catch (error) {
-    console.error("Gagal membaca data pengguna:", error);
-  }
-
-  // =========================================================
-  // 4. MENGOSONGKAN DATA DETAIL SEBELUM REQUEST
-  // =========================================================
-
-  const clearDetail = () => {
-
-    detailContent.hidden = true;
-    commentsCard.hidden = true;
-
-    detailImage.hidden = true;
-    detailImage.onload = null;
-    detailImage.onerror = null;
-    detailImage.removeAttribute("src");
-
-    imageFallback.hidden = true;
-
-    detailCategory.textContent = "";
-    detailStatus.textContent = "";
-    detailStatus.removeAttribute("data-status");
-
-    detailTitle.textContent = "";
-    detailLocation.textContent = "";
-    detailDate.textContent = "";
-    detailDescription.textContent = "";
-
-    detailLikes.textContent = "0";
-    detailDislikes.textContent = "0";
-
-    commentsList.replaceChildren();
-    commentsTitle.textContent = "Komentar(0)";
-  };
-
-  // =========================================================
-  // 5. TAMPILAN LOADING DAN ERROR
-  // =========================================================
-
-  const showState = (type, title, description) => {
-
-    clearDetail();
-    // Aktifkan layout loading/error sesuai Figma
-detailCard.classList.add("is-state");
-
-// Tampilkan card putih kedua tanpa isi komentar
-commentsCard.classList.add("is-state-placeholder");
-commentsCard.hidden = false;
-
-    stateBox.hidden = false;
-
-    stateTitle.textContent = title;
-    stateDesc.textContent = description;
-
-    stateIcon.className = "detail-state-icon";
-    stateIcon.replaceChildren();
-
-    retryBtn.hidden = true;
-
-    if (type === "loading") {
-      const spinner = document.createElement("div");
-      spinner.className = "detail-spinner";
-
-      stateIcon.appendChild(spinner);
+    // ==================================================
+    // 1. MENGAMBIL ELEMEN HTML
+    // ==================================================
+
+    const stateBox = document.getElementById("detailState"); // wadah tampilan loading/error
+    const stateIcon = document.getElementById("detailStateIcon"); // ikon untuk loading/error
+    const stateTitle = document.getElementById("detailStateTitle"); // judul pesan kondisi halaman
+    const stateDesc = document.getElementById("detailStateDesc"); // deskripsi pesan kondisi halaman
+    const retryBtn = document.getElementById("detailRetryBtn"); // tombol Coba Lagi
+
+    const detailContent = document.getElementById("detailContent"); // isi detail pengaduan
+    const commentsCard = document.getElementById("detailCommentsCard"); // kartu/area komentar
+    const detailCard = document.querySelector(".detail-card"); // kartu utama pengaduan
+
+    const detailImage = document.getElementById("detailImage"); // elemen gambar pengaduan
+    const imageFallback = document.getElementById("detailImageFallback"); // pengganti jika gambar tidak ada
+
+    const detailCategory = document.getElementById("detailCategory"); // label kategori fasilitas
+    const detailStatus = document.getElementById("detailStatus"); // label status pengaduan
+    const detailTitle = document.getElementById("detailTitle"); // judul pengaduan
+    const detailLocation = document.getElementById("detailLocation"); // lokasi fasilitas
+    const detailDate = document.getElementById("detailDate"); // tanggal pengaduan
+    const detailDescription = document.getElementById("detailDescription"); // deskripsi masalah
+
+    const detailLikes = document.getElementById("detailLikes"); // angka upvote
+    const detailDislikes = document.getElementById("detailDislikes"); // angka downvote
+
+    const commentsList = document.getElementById("detailCommentsList"); // tempat daftar komentar
+    const commentsTitle = document.getElementById("detailCommentsTitle"); // judul dan jumlah komentar
+    const avatarLetter = document.getElementById("detailAvatarLetter"); // huruf avatar akun
+
+
+    // ==================================================
+    // 2. SIDEBAR
+    // ==================================================
+
+    const menuToggle = document.getElementById("menuToggle"); // tombol hamburger
+    const sidebar = document.getElementById("sidebar"); // menu samping
+    const sidebarOverlay = document.getElementById("sidebarOverlay"); // lapisan gelap saat menu terbuka
+
+    // Jalankan fungsi sidebar hanya jika ketiga elemennya memang ada.
+    if (menuToggle && sidebar && sidebarOverlay) {
+
+        // Fungsi ini menutup menu samping.
+        const closeSidebar = () => {
+            sidebar.classList.remove("active");
+            sidebarOverlay.classList.remove("active");
+
+            menuToggle.setAttribute("aria-expanded", "false");
+            document.body.style.overflow = "";
+        };
+
+        // Saat hamburger diklik, tampilkan sidebar dan overlay.
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.add("active");
+            sidebarOverlay.classList.add("active");
+
+            menuToggle.setAttribute("aria-expanded", "true");
+            document.body.style.overflow = "hidden";
+        });
+
+        // Klik area gelap di luar sidebar untuk menutup menu.
+        sidebarOverlay.addEventListener("click", closeSidebar);
+
+        // Tutup juga sidebar saat tombol Escape ditekan.
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeSidebar();
+            }
+        });
     }
 
-    
-if (type === "error") {
-    stateIcon.classList.add("is-error");
-    retryBtn.hidden = false;
 
-    stateIcon.innerHTML = `
-        <svg
-            width="91"
-            height="94"
-            viewBox="0 0 91 94"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-        >
-            <mask id="stroke0_3523_2976" fill="white">
-                <path d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"/>
-            </mask>
+    // ==================================================
+    // 3. KONFIGURASI API & NAVIGASI
+    // ==================================================
 
-            <ellipse
-                cx="45.5"
-                cy="47"
-                rx="45.5"
-                ry="47"
-                stroke-width="2"
-                stroke="#D02316"
-                mask="url(#stroke0_3523_2976)"
-            />
+    const DETAIL_ENDPOINT = "detail_pengaduan.php"; // endpoint PHP yang menyediakan data detail
+    const DETAIL_ID_PARAM = "id_pengaduan"; // nama parameter ID yang dikirim ke backend
 
-            <path
-                d="M73.5 47C73.5 62.464 60.964 75 45.5 75C30.036 75 17.5 62.464 17.5 47C17.5 31.536 30.036 19 45.5 19C60.964 19 73.5 31.536 73.5 47Z"
-                stroke-width="2"
-                stroke="#D02316"
-            />
+    const params = new URLSearchParams(window.location.search); // membaca parameter URL
 
-            <path
-                d="M45.5 33V49.8M45.5 59.6V61"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke="#D02316"
-            />
-        </svg>
-    `;
-}
+    const idPengaduan = params.get("id_pengaduan"); // ID pengaduan yang sedang dibuka
+    const fromRiwayat = params.get("from") === "riwayat"; // apakah halaman dibuka dari Riwayat
 
+    const detailBackLink = document.getElementById("detailBackLink"); // tautan tombol Kembali
+    const detailBackText = document.getElementById("detailBackText"); // teks tombol Kembali
 
-    if (type === "not-found") {
-      stateIcon.classList.add("is-not-found");
+    if (detailBackLink && detailBackText) {
+
+        // Tombol Kembali menyesuaikan dari mana pengguna datang.
+        if (fromRiwayat) {
+            detailBackLink.href = "riwayat-pengaduan.html";
+            detailBackText.textContent =
+                "Kembali ke Riwayat Pengaduan";
+        } else {
+            detailBackLink.href = "dashboard.html";
+            detailBackText.textContent = "Kembali ke Dashboard";
+        }
     }
 
-    if (type === "forbidden") {
-      stateIcon.classList.add("is-forbidden");
-    }
-  };
+    // Jika dari Riwayat gunakan riwayat.php, jika dari Dashboard gunakan detail_pengaduan.php.
+    const activeDetailEndpoint = fromRiwayat
+        ? "riwayat.php"
+        : DETAIL_ENDPOINT;
 
-  const showLoading = () => {
-    showState(
-      "loading",
-      "Loading...",
-      "Mohon tunggu sebentar, detail pengaduan sedang dimuat."
-    );
-  };
-
-  const showError = (message) => {
-    showState(
-      "error",
-      "Gagal Memuat Pengaduan",
-      message ||
-        "Terjadi kesalahan saat memuat<br>detail pengaduan. Periksa koneksi internet Anda<br>dan coba lagi."
-    );
-  };
-
-  
-const showNotFound = () => {
-    showState(
-        "not-found",
-        "Pengaduan Tidak Ditemukan",
-        "Pengaduan yang Anda akses tidak ditemukan atau sudah tidak tersedia dalam sistem."
-    );
-
-    stateIcon.innerHTML = `
-        <svg width="91" height="94" viewBox="0 0 91 94" fill="none" xmlns="http://www.w3.org/2000/svg">
-<mask id="stroke0_3235_4218" fill="white">
-<path d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"/>
-</mask>
-<ellipse cx="45.5" cy="47" rx="45.5" ry="47" stroke-width="2" stroke="#0B5E3B" mask="url(#stroke0_3235_4218)"/>
-<path d="M62.6311 60.6089L52.3106 51.4654C54.3734 49.2824 55.5016 46.5253 55.4969 43.6785C55.4969 36.9619 49.3276 31.5 41.7485 31.5C34.1693 31.5 28 36.9619 28 43.6785C28 50.3951 34.1693 55.857 41.7485 55.857C44.9631 55.8589 48.076 54.8593 50.5425 53.0331L60.8647 62.1766C61.0998 62.3837 61.4179 62.5 61.7496 62.5C62.0812 62.5 62.3993 62.3837 62.6345 62.1766C62.8685 61.969 63 61.6876 63 61.3942C63 61.1008 62.8685 60.8194 62.6345 60.6118L62.6311 60.6089ZM41.7485 53.6428C38.7665 53.6388 35.9079 52.5878 33.7993 50.72C31.6907 48.8522 30.5041 46.32 30.4997 43.6785C30.5041 41.037 31.6907 38.5049 33.7993 36.637C35.9079 34.7692 38.7665 33.7182 41.7485 33.7143C44.7305 33.7182 47.5891 34.7692 49.6977 36.637C51.8063 38.5049 52.9928 41.037 52.9972 43.6785C52.9928 46.32 51.8063 48.8522 49.6977 50.72C47.5891 52.5878 44.7305 53.6388 41.7485 53.6428Z" fill="#0B5E3B"/>
-</svg>
-
-    `;
-};
+    let activeController = null; // menyimpan request aktif agar bisa dibatalkan
 
 
-  const showForbidden = () => {
-    showState(
-      "forbidden",
-      "Akses Ditolak",
-      "Anda tidak memiliki izin untuk melihat pengaduan ini."
-    );
-  };
-
-
-  // ==========================================
-  // FORMAT JUMLAH UPVOTE, DOWNVOTE, KOMENTAR
-  // ==========================================
-
-  const formatJumlah = (jumlah) => {
-      const angka = Number(jumlah) || 0;
-
-      if (angka >= 10000) {
-          return `${Math.floor(angka / 1000)}K`;
-      }
-
-      if (angka >= 1000) {
-          return `${Math.floor(angka / 100) / 10}K`;
-      }
-
-      return String(angka);
-  };
-
-  // =========================================================
-  // 6. FORMAT TANGGAL
-  // =========================================================
-
-  // Mengubah tanggal database menjadi format Indonesia.
-  const formatTanggal = (value) => {
-
-    if (!value) return "-";
-
-    // MySQL sering mengirim tanggal dengan pemisah spasi.
-    const normalized = String(value).replace(" ", "T");
-    const date = new Date(normalized);
-
-    if (Number.isNaN(date.getTime())) {
-      return String(value);
-    }
-
-    return new Intl.DateTimeFormat("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    }).format(date);
-  };
-
-  // =========================================================
-  // 7. MENAMPILKAN FOTO PENGADUAN
-  // =========================================================
-
-
-
-const renderFoto = (fotoUrl) => {
-    detailImage.onload = null;
-    detailImage.onerror = null;
-    detailImage.removeAttribute("src");
-
-    detailImage.hidden = true;
-    imageFallback.hidden = false;
-
-    // Jika foto tidak tersedia.
-    if (!fotoUrl || typeof fotoUrl !== "string") {
-        return;
-    }
+    // ==================================================
+    // 4. INFORMASI PENGGUNA
+    // ==================================================
 
     try {
-        const url = new URL(fotoUrl, window.location.href);
 
-        if (!["http:", "https:"].includes(url.protocol)) {
+        // Pastikan fungsi pembaca sesi tersedia dari api.js sebelum digunakan.
+        if (typeof getUserSession === "function") {
+            const user = getUserSession(); // membaca informasi sesi pengguna
+
+            if (user && user.nama) {
+
+                // Buat avatar huruf dari karakter pertama nama pengguna.
+                avatarLetter.textContent = user.nama
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase();
+            }
+        }
+    } catch (error) {
+        console.error("Gagal membaca data pengguna:", error); // catat error untuk developer di Console
+    }
+
+
+    // ==================================================
+    // 5. MENGOSONGKAN DATA DETAIL
+    // ==================================================
+
+    // Kosongkan data lama supaya tidak tercampur dengan pengaduan baru.
+    const clearDetail = () => {
+        detailContent.hidden = true; // sembunyikan detail lama
+        commentsCard.hidden = true; // sembunyikan komentar lama
+
+        detailImage.hidden = true; // sementara sembunyikan foto
+        detailImage.onload = null; // hapus penanganan foto berhasil sebelumnya
+        detailImage.onerror = null; // hapus penanganan foto gagal sebelumnya
+        detailImage.removeAttribute("src"); // hapus alamat foto lama
+
+        imageFallback.hidden = true; // sembunyikan gambar pengganti
+
+        detailCategory.textContent = ""; // kosongkan kategori
+        detailStatus.textContent = ""; // kosongkan status
+        detailStatus.removeAttribute("data-status"); // hapus atribut warna status sebelumnya
+
+        detailTitle.textContent = ""; // kosongkan judul
+        detailLocation.textContent = ""; // kosongkan lokasi
+        detailDate.textContent = ""; // kosongkan tanggal
+        detailDescription.textContent = ""; // kosongkan deskripsi
+
+        detailLikes.textContent = "0"; // reset angka upvote di layar
+        detailDislikes.textContent = "0"; // reset angka downvote di layar
+
+        commentsList.replaceChildren(); // hapus komentar yang sudah tampil
+        commentsTitle.textContent = "Komentar(0)"; // reset jumlah komentar
+    };
+
+
+    // ==================================================
+    // 6. TAMPILAN LOADING / ERROR
+    // ==================================================
+
+    // Atur tampilan ketika halaman sedang loading atau gagal.
+    const showState = (type, title, description) => {
+        clearDetail();
+
+        detailCard.classList.add("is-state"); // aktifkan gaya tampilan loading/error
+        commentsCard.classList.add("is-state-placeholder"); // tampilkan card komentar sebagai placeholder
+        commentsCard.hidden = false; // tampilkan card komentar
+
+        stateBox.hidden = false; // tampilkan pesan kondisi halaman
+
+        stateTitle.textContent = title; // isi judul pesan
+        stateDesc.textContent = description; // isi deskripsi pesan
+
+        stateIcon.className = "detail-state-icon"; // reset class ikon
+        stateIcon.replaceChildren(); // kosongkan ikon sebelumnya
+
+        retryBtn.hidden = true; // awalannya sembunyikan tombol Coba Lagi
+
+        // Saat memuat, tambahkan ikon spinner.
+        if (type === "loading") {
+            const spinner = document.createElement("div");
+            spinner.className = "detail-spinner"; // CSS akan membuat animasi putar
+
+            stateIcon.appendChild(spinner); // pasang animasi loading ke halaman
+        }
+
+        // Jika terjadi error umum, tampilkan ikon merah dan tombol Coba Lagi.
+        if (type === "error") {
+            stateIcon.classList.add("is-error"); // gunakan gaya ikon error
+            retryBtn.hidden = false; // tampilkan tombol Coba Lagi
+
+            // Kode SVG di bawah hanya menggambar ikon; bukan request API.
+            stateIcon.innerHTML = `
+                <svg
+                    width="91"
+                    height="94"
+                    viewBox="0 0 91 94"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                >
+                    <mask id="stroke0_3523_2976" fill="white">
+                        <path d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"/>
+                    </mask>
+
+                    <ellipse
+                        cx="45.5"
+                        cy="47"
+                        rx="45.5"
+                        ry="47"
+                        stroke-width="2"
+                        stroke="#D02316"
+                        mask="url(#stroke0_3523_2976)"
+                    />
+
+                    <path
+                        d="M73.5 47C73.5 62.464 60.964 75 45.5 75C30.036 75 17.5 62.464 17.5 47C17.5 31.536 30.036 19 45.5 19C60.964 19 73.5 31.536 73.5 47Z"
+                        stroke-width="2"
+                        stroke="#D02316"
+                    />
+
+                    <path
+                        d="M45.5 33V49.8M45.5 59.6V61"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke="#D02316"
+                    />
+                </svg>
+            `;
+        }
+
+        if (type === "not-found") {
+            stateIcon.classList.add("is-not-found"); // gunakan gaya data tidak ditemukan
+        }
+
+        if (type === "forbidden") {
+            stateIcon.classList.add("is-forbidden"); // gunakan gaya akses ditolak
+        }
+    };
+
+    // Pesan yang ditampilkan selama menunggu data.
+    const showLoading = () => {
+        showState(
+            "loading",
+            "Loading...",
+            "Mohon tunggu sebentar, detail pengaduan sedang dimuat."
+        );
+    };
+
+    // Pesan gagal memuat dari pesan server atau pesan standar.
+    const showError = (message) => {
+        showState(
+            "error",
+            "Gagal Memuat Pengaduan",
+            message ||
+                "Terjadi kesalahan saat memuat<br>detail pengaduan. Periksa koneksi internet Anda<br>dan coba lagi."
+        );
+    };
+
+    // Pesan untuk ID pengaduan yang tidak ada.
+    const showNotFound = () => {
+        showState(
+            "not-found",
+            "Pengaduan Tidak Ditemukan",
+            "Pengaduan yang Anda akses tidak ditemukan atau sudah tidak tersedia dalam sistem."
+        );
+
+        // Kode SVG di bawah hanya menggambar ikon; bukan request API.
+        stateIcon.innerHTML = `
+            <svg
+                width="91"
+                height="94"
+                viewBox="0 0 91 94"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <mask id="stroke0_3235_4218" fill="white">
+                    <path d="M91 47C91 72.9574 70.629 94 45.5 94C20.371 94 0 72.9574 0 47C0 21.0426 20.371 0 45.5 0C70.629 0 91 21.0426 91 47Z"/>
+                </mask>
+
+                <ellipse
+                    cx="45.5"
+                    cy="47"
+                    rx="45.5"
+                    ry="47"
+                    stroke-width="2"
+                    stroke="#0B5E3B"
+                    mask="url(#stroke0_3235_4218)"
+                />
+
+                <path
+                    d="M62.6311 60.6089L52.3106 51.4654C54.3734 49.2824 55.5016 46.5253 55.4969 43.6785C55.4969 36.9619 49.3276 31.5 41.7485 31.5C34.1693 31.5 28 36.9619 28 43.6785C28 50.3951 34.1693 55.857 41.7485 55.857C44.9631 55.8589 48.076 54.8593 50.5425 53.0331L60.8647 62.1766C61.0998 62.3837 61.4179 62.5 61.7496 62.5C62.0812 62.5 62.3993 62.3837 62.6345 62.1766C62.8685 61.969 63 61.6876 63 61.3942C63 61.1008 62.8685 60.8194 62.6345 60.6118L62.6311 60.6089ZM41.7485 53.6428C38.7665 53.6388 35.9079 52.5878 33.7993 50.72C31.6907 48.8522 30.5041 46.32 30.4997 43.6785C30.5041 41.037 31.6907 38.5049 33.7993 36.637C35.9079 34.7692 38.7665 33.7182 41.7485 33.7143C44.7305 33.7182 47.5891 34.7692 49.6977 36.637C51.8063 38.5049 52.9928 41.037 52.9972 43.6785C52.9928 46.32 51.8063 48.8522 49.6977 50.72C47.5891 52.5878 44.7305 53.6388 41.7485 53.6428Z"
+                    fill="#0B5E3B"
+                />
+            </svg>
+        `;
+    };
+
+    // Pesan ketika backend menolak izin akses.
+    const showForbidden = () => {
+        showState(
+            "forbidden",
+            "Akses Ditolak",
+            "Anda tidak memiliki izin untuk melihat pengaduan ini."
+        );
+    };
+
+
+    // ==================================================
+    // 7. FORMAT JUMLAH DAN TANGGAL
+    // ==================================================
+
+    // Ringkas angka besar: misalnya 1500 menjadi 1.5K.
+    const formatJumlah = (jumlah) => {
+        const angka = Number(jumlah) || 0; // ubah nilai menjadi angka
+
+        if (angka >= 10000) {
+            return `${Math.floor(angka / 1000)}K`;
+        }
+
+        if (angka >= 1000) {
+            return `${Math.floor(angka / 100) / 10}K`;
+        }
+
+        return String(angka);
+    };
+
+    // Ubah tanggal agar terbaca dengan format Indonesia.
+    const formatTanggal = (value) => {
+        if (!value) return "-"; // jika tanggal kosong, tampilkan tanda -
+
+        const normalized = String(value).replace(" ", "T"); // sesuaikan format tanggal dari backend
+        const date = new Date(normalized); // ubah teks menjadi objek tanggal
+
+        if (Number.isNaN(date.getTime())) {
+            return String(value); // jika tanggal tidak valid, tampilkan aslinya
+        }
+
+        return new Intl.DateTimeFormat("id-ID", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }).format(date);
+    };
+
+
+    // ==================================================
+    // 8. HUBUNGKAN MODUL VOTING DAN KOMENTAR
+    // ==================================================
+
+    // Hubungkan file utama ke modul upvote/downvote.
+    const voting = window.FITKDetailVote.create({
+        detailLikes,
+        detailDislikes,
+        formatJumlah,
+        idPengaduan,
+        loadDetail: () => loadDetail()
+    });
+
+    // Hubungkan file utama ke modul komentar.
+    const komentarModul = window.FITKDetailKomentar.create({
+        commentsList,
+        commentsTitle,
+        commentsCard,
+        formatJumlah,
+        formatTanggal: (tanggal) => formatTanggal(tanggal),
+        idPengaduan
+    });
+
+    const renderKomentar = komentarModul.renderKomentar; // ambil fungsi untuk menampilkan daftar komentar
+
+
+    // ==================================================
+    // 9. MENAMPILKAN FOTO PENGADUAN
+    // ==================================================
+
+    // Tampilkan foto dari backend, gunakan fallback kalau gagal.
+    const renderFoto = (fotoUrl) => {
+        detailImage.onload = null; // hapus penanganan foto berhasil sebelumnya
+        detailImage.onerror = null; // hapus penanganan foto gagal sebelumnya
+        detailImage.removeAttribute("src"); // hapus alamat foto lama
+
+        detailImage.hidden = true; // sementara sembunyikan foto
+        imageFallback.hidden = false; // tampilkan pengganti selama foto belum berhasil
+
+        // Jangan lanjut jika alamat foto kosong atau bukan teks.
+        if (!fotoUrl || typeof fotoUrl !== "string") {
             return;
         }
 
-        detailImage.onload = () => {
-            detailImage.hidden = false;
-            imageFallback.hidden = true;
-        };
-
-        // Jika gambar gagal dimuat, tampilkan teks fallback.
-        detailImage.onerror = () => {
-            detailImage.hidden = true;
-            imageFallback.hidden = false;
-        };
-
-        detailImage.src = url.href;
-
-    } catch (error) {
-        console.error("URL foto tidak valid:", error);
-    }
-};
-
-
-  // =========================================================
-  // 8. MENAMPILKAN KOMENTAR DARI BACKEND
-  // =========================================================
-
-  const renderKomentar = (komentar) => {
-
-    commentsList.replaceChildren();
-
-    // Urutkan komentar dari yang paling baru ke paling lama.
-const parseWaktuKomentar = (tanggal) => {
-    const waktu = new Date(
-        String(tanggal || "").replace(" ", "T")
-    ).getTime();
-
-    return Number.isNaN(waktu) ? 0 : waktu;
-};
-
-const daftarKomentar = Array.isArray(komentar)
-    ? [...komentar].sort((a, b) =>
-        parseWaktuKomentar(b.created_at) -
-        parseWaktuKomentar(a.created_at)
-      )
-    : [];
-
-komentarSaatIni = [...daftarKomentar];
-
-    commentsTitle.textContent =
-    `Komentar(${formatJumlah(daftarKomentar.length)})`;
-
-
-    // ==========================================
-    // KONDISI BELUM ADA KOMENTAR
-    // ==========================================
-
-    const tidakAdaKomentar = daftarKomentar.length === 0;
-
-    commentsCard.classList.toggle(
-        "is-empty-comments",
-        tidakAdaKomentar
-    );
-
-    if (tidakAdaKomentar) {
-        const emptyState = document.createElement("div");
-        emptyState.className = "detail-empty-comments";
-
-        emptyState.innerHTML = `
-            <svg width="31" height="25"
-                 viewBox="0 0 31 25"
-                 xmlns="http://www.w3.org/2000/svg"
-                 aria-hidden="true">
-                <path
-                    d="M15.5 1C7.5 1 1 6.1 1 12.4c0 3.2 1.7 6.1 4.5 8.2L3 24l6.5-2.3c1.9.7 3.9 1.1 6 1.1 8 0 14.5-5.1 14.5-11.4S23.5 1 15.5 1Z"
-                    fill="#B0B0B0"
-                />
-            </svg>
-
-            <p>Belum ada komentar pada pengaduan ini.</p>
-        `;
-
-        commentsList.appendChild(emptyState);
-        return;
-    }
-
-
-    daftarKomentar.forEach((item) => {
-
-      const card = document.createElement("div");
-      card.className = "detail-comment-item";
-
-      const header = document.createElement("div");
-      header.className = "detail-comment-header";
-
-      const author = document.createElement("strong");
-      author.className = "detail-comment-author";
-
-      // Nama field sesuai Model Pengaduan.php.
-      author.textContent = item.nama || "Pengguna";
-
-      const date = document.createElement("span");
-      date.className = "detail-comment-date";
-
-      date.textContent = formatTanggal(item.created_at);
-
-      const description = document.createElement("p");
-      description.className = "detail-comment-text";
-
-      // Isi komentar sesuai respons backend.
-      description.textContent = item.isi_komentar || "";
-
-      header.appendChild(author);
-      header.appendChild(date);
-
-      card.appendChild(header);
-      card.appendChild(description);
-
-      commentsList.appendChild(card);
-    });
-  };
-
-  // =========================================================
-  // 9. MENAMPILKAN INFORMASI DETAIL
-  // =========================================================
-
-  const renderDetail = (data) => {
-
-    // Backend membagi hasil menjadi beberapa objek.
-    const pengaduan = data.pengaduan;
-    const vote = data.vote || {};
-    const komentar = data.komentar || [];
-
-    // Kembalikan layout normal setelah detail berhasil dimuat
-detailCard.classList.remove("is-state");
-commentsCard.classList.remove("is-state-placeholder");
-
-    // Sembunyikan Loading.
-    stateBox.hidden = true;
-
-    // Tampilkan informasi detail.
-    detailContent.hidden = false;
-    commentsCard.hidden = false;
-
-    // Kategori berasal dari tabel fasilitas.
-    detailCategory.textContent =
-      pengaduan.nama_fasilitas || "-";
-
-    // Status berasal dari tabel pengaduan.
-    const status = String(pengaduan.status || "-").trim();
-
-detailStatus.textContent =
-    status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-
-detailStatus.dataset.status = status.toLowerCase();
-
-    // Data utama pengaduan.
-    detailTitle.textContent = pengaduan.judul || "-";
-    detailLocation.textContent = pengaduan.lokasi || "-";
-
-    detailDate.textContent =
-      formatTanggal(pengaduan.created_at);
-
-    // textContent mencegah teks pengguna
-    // diperlakukan sebagai kode HTML.
-    detailDescription.textContent =
-      pengaduan.deskripsi || "-";
-
-totalUpvote = Number(vote.upvote) || 0;
-totalDownvote = Number(vote.downvote) || 0;
-
-// Khusus preview localhost untuk pengujian tampilan 1.000 upvote.
-const paramsPreview = new URLSearchParams(window.location.search);
-const isDummyPreview =
-    ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
-    paramsPreview.get("preview") === "1";
-
-if (isDummyPreview) {
-    totalUpvote = 1000;
-}
-
-latestVote = vote.pilihan_user ?? null;
-activeVote = latestVote;
-
-renderVoteUI();
-
-
-// Tombol hanya aktif untuk detail asli dari backend.
-setVoteLoading(false);
-
-if (isDummyPreview) {
-    voteButtons.forEach((button) => {
-        button.disabled = true;
-    });
-}
-
-
-    // Foto bukti pengaduan.
-    renderFoto(pengaduan.foto);
-
-    // Daftar komentar.
-    renderKomentar(komentar);
-
-
-    // Aktifkan form komentar setelah detail berhasil dimuat.
-    const commentInput = document.getElementById("detailCommentInput");
-    const commentSubmit = document.getElementById("detailCommentSubmit");
-
-    if (commentInput && commentSubmit) {
-        commentInput.disabled = false;
-        commentSubmit.disabled = false;
-    }
-
-  };
-
-  // =========================================================
-  // 10. MENGAMBIL DATA DETAIL DARI API
-  // =========================================================
-
-  const loadDetail = async () => {
-
-    // Memastikan ID pengaduan berupa angka positif.
-    if (
-      !idPengaduan ||
-      !/^[1-9]\d*$/.test(idPengaduan)
-    ) {
-      showNotFound();
-      return;
-    }
-
-    // Membatalkan request lama jika masih berjalan.
-    if (activeController) {
-      activeController.abort();
-    }
-
-    const controller = new AbortController();
-    activeController = controller;
-
-    showLoading();
-
-    try {
-
-      // Menyusun parameter sesuai kontrak backend.
-      const query = new URLSearchParams({
-        [DETAIL_ID_PARAM]: idPengaduan
-      });
-
-
-// =========================================================
-// ENDPOINT DETAIL BERDASARKAN ASAL HALAMAN
-// =========================================================
-
-const apiUrl =
-    `${API_BASE_URL.replace(/\/+$/, "")}/${activeDetailEndpoint}?${query.toString()}`;
-
-
-      // Meminta data detail menggunakan GET.
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json"
-        },
-        signal: controller.signal
-      });
-
-      // Abaikan respons jika request sudah dibatalkan.
-      if (controller !== activeController) {
-        return;
-      }
-
-      // HTTP 401: sesi login tidak valid.
-      if (response.status === 401) {
-        clearUserSession();
-        window.location.replace("login.html");
-        return;
-      }
-
-      // HTTP 404: pengaduan tidak ditemukan.
-      if (response.status === 404) {
-        showNotFound();
-        return;
-      }
-
-      // HTTP 403: akses tidak diizinkan.
-      if (response.status === 403) {
-        showForbidden();
-        return;
-      }
-
-      // HTTP 400: ID tidak valid.
-      if (response.status === 400) {
-        showNotFound();
-        return;
-      }
-
-      // HTTP 500 atau kesalahan HTTP lainnya.
-      if (!response.ok) {
-        throw new Error(
-          `Gagal mengambil detail pengaduan (HTTP ${response.status}).`
-        );
-      }
-
-      // Mengubah respons JSON menjadi objek JavaScript.
-      let result;
-
-      try {
-        result = await response.json();
-      } catch {
-        throw new Error(
-          "Respons server tidak valid (bukan JSON)."
-        );
-      }
-
-      // Memeriksa status aplikasi dari backend.
-      if (result.status !== "success") {
-        throw new Error(
-          result.message ||
-          "Gagal memuat detail pengaduan."
-        );
-      }
-
-      // Struktur hasil dari getDetailPengaduan().
-      const data = result.data;
-
-      if (
-        !data ||
-        !data.pengaduan ||
-        typeof data.pengaduan !== "object" ||
-        Array.isArray(data.pengaduan)
-      ) {
-        throw new Error(
-          "Struktur data detail dari backend tidak sesuai."
-        );
-      }
-
-      // Memastikan detail benar-benar milik ID yang diminta.
-      if (
-        String(data.pengaduan.id_pengaduan) !==
-        String(idPengaduan)
-      ) {
-        throw new Error(
-          "ID pengaduan pada respons tidak sesuai."
-        );
-      }
-
-      // Tampilkan data dari backend.
-      renderDetail(data);
-
-    } catch (error) {
-
-      if (error.name === "AbortError") {
-        return;
-      }
-
-      if (controller !== activeController) {
-        return;
-      }
-
-      console.error("Gagal memuat detail pengaduan:", error);
-
-      if (!navigator.onLine) {
-        showError(
-          "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
-        );
-      } else {
-        showError(error.message);
-      }
-
-    } finally {
-
-      if (controller === activeController) {
-        activeController = null;
-      }
-
-    }
-  };
-
-  
-// =========================================================
-// INTEGRASI UPVOTE / DOWNVOTE
-// =========================================================
-
-const kirimVote = (tipeVote) => {
-    if (!["upvote", "downvote"].includes(tipeVote)) return;
-
-    if (!idPengaduan || !/^[1-9]\d*$/.test(idPengaduan)) {
-        return;
-    }
-
-    const pilihanSebelumnya = latestVote;
-
-    // Klik pilihan yang sama = membatalkan vote.
-    const pilihanBaru =
-        pilihanSebelumnya === tipeVote ? null : tipeVote;
-
-    latestVote = pilihanBaru;
-
-    const versiSekarang = ++voteVersion;
-
-    // Perbarui jumlah secara langsung.
-    if (pilihanSebelumnya === "upvote") {
-        totalUpvote = Math.max(0, totalUpvote - 1);
-    }
-
-    if (pilihanSebelumnya === "downvote") {
-        totalDownvote = Math.max(0, totalDownvote - 1);
-    }
-
-    if (pilihanBaru === "upvote") {
-        totalUpvote++;
-    }
-
-    if (pilihanBaru === "downvote") {
-        totalDownvote++;
-    }
-
-    renderVoteUI();
-
-    // Kirim request secara berurutan.
-    voteQueue = voteQueue
-        .then(async () => {
-            const body = new URLSearchParams({
-                id_pengaduan: idPengaduan,
-                tipe_vote: tipeVote
-            });
-
-            const response = await fetch(
-                `${API_BASE_URL}/vote.php`,
-                {
-                    method: "POST",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type":
-                            "application/x-www-form-urlencoded",
-                        "Accept": "application/json"
-                    },
-                    body: body.toString()
-                }
-            );
-
-            if (response.status === 401) {
-                clearUserSession();
-                window.location.replace("login.html");
+        try {
+            // Ubah URL relatif menjadi URL lengkap.
+            const url = new URL(fotoUrl, window.location.href);
+
+            // Hanya izinkan alamat HTTP/HTTPS untuk gambar.
+            if (!["http:", "https:"].includes(url.protocol)) {
                 return;
             }
 
-            const result = await response.json();
+            // Jalankan ketika gambar berhasil diunduh.
+            detailImage.onload = () => {
+                detailImage.hidden = false;
+                imageFallback.hidden = true; // sembunyikan gambar pengganti
+            };
 
-            if (
-                !response.ok ||
-                result.status !== "success" ||
-                !result.data?.vote
-            ) {
-                throw new Error(
-                    result.message || "Gagal mengirim vote."
-                );
-            }
+            // Jalankan ketika gambar tidak bisa dimuat.
+            detailImage.onerror = () => {
+                detailImage.hidden = true; // sembunyikan foto yang gagal dimuat
+                imageFallback.hidden = false; // tampilkan gambar pengganti
+            };
 
-            const vote = result.data.vote;
+            detailImage.src = url.href; // mulai memuat foto
 
-            const upvote = Number(vote.upvote);
-            const downvote = Number(vote.downvote);
-
-            if (
-                !Number.isSafeInteger(upvote) ||
-                !Number.isSafeInteger(downvote) ||
-                upvote < 0 ||
-                downvote < 0
-            ) {
-                throw new Error("Jumlah vote tidak valid.");
-            }
-
-            if (versiSekarang === voteVersion) {
-    totalUpvote = upvote;
-    totalDownvote = downvote;
-
-    latestVote = vote.pilihan_user ?? null;
-    renderVoteUI();
-}
-        })
-        .catch((error) => {
-            console.error("Gagal mengirim vote:", error);
-
-            // Sinkronisasi ulang jika request gagal.
-            if (versiSekarang === voteVersion) {
-                showVoteError();
-                loadDetail();
-            }
-        });
-};
-
-// ==========================================
-// EVENT LISTENER UPVOTE DAN DOWNVOTE
-// ==========================================
-
-voteButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        kirimVote(button.dataset.vote);
-    });
-});
+        } catch (error) {
+            console.error("URL foto tidak valid:", error); // catat URL foto yang bermasalah
+        }
+    };
 
 
+    // ==================================================
+    // 10. MENAMPILKAN DETAIL PENGADUAN
+    // ==================================================
 
-  // =========================================================
-  // 11. TOMBOL COBA LAGI
-  // =========================================================
+    // Fungsi ini MENGISI TAMPILAN dari data yang sudah diterima.
+    const renderDetail = (data) => {
+        const pengaduan = data.pengaduan; // data utama pengaduan dari backend
+        const vote = data.vote || {}; // data upvote/downvote; default objek kosong
+        const komentar = data.komentar || []; // daftar komentar; default array kosong
 
-  if (retryBtn) {
-    retryBtn.addEventListener("click", () => {
-        loadDetail();
-    });
-}
+        detailCard.classList.remove("is-state"); // keluar dari mode loading/error
+        commentsCard.classList.remove("is-state-placeholder"); // keluar dari mode placeholder
 
-  // =========================================================
-  // 12. FORM KOMENTAR
-  // =========================================================
+        stateBox.hidden = true; // sembunyikan pesan loading/error
+        detailContent.hidden = false; // tampilkan data detail
+        commentsCard.hidden = false; // tampilkan card komentar
 
-  // Tampilan komentar sudah tersedia.
-  // Pengiriman komentar belum diaktifkan karena
-  // endpoint POST komentar belum dikonfirmasi.
+        detailCategory.textContent =
+            pengaduan.nama_fasilitas || "-";
 
-  const commentForm = document.getElementById(
-    "detailCommentForm"
-  );
+        
+        const status = String(pengaduan.status || "-").trim();
 
-  
-commentForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+        // Menampilkan status dengan huruf kapital yang sesuai.
+        detailStatus.textContent =
+            status.toLowerCase() === "dalam perbaikan"
+                ? "Dalam Perbaikan"
+                : status.charAt(0).toUpperCase() +
+                status.slice(1).toLowerCase();
 
-    // Mencegah request komentar berulang.
-    if (isSendingComment) return;
-
-    const commentInput = commentForm.querySelector("textarea");
-    const commentBtn = commentForm.querySelector('button[type="submit"]');
-
-    if (!commentInput || !commentBtn) return;
-
-    // Bersihkan spasi di awal dan akhir.
-    const isiKomentar = commentInput.value.trim();
-
-    
-// Validasi komentar kosong atau hanya spasi.
-if (!isiKomentar) {
-    const commentError = document.getElementById("detailCommentError");
-
-    if (commentError) {
-        commentError.querySelector("span").textContent =
-            "Komentar wajib diisi.";
-
-        commentError.hidden = false;
-    }
-
-    commentBtn.classList.add("is-empty");
-    return;
-}
+        // Tetap menggunakan status asli untuk warna badge CSS.
+        detailStatus.dataset.status = status.toLowerCase();
 
 
-    // Sesuai batas maksimal backend.
-    if ([...isiKomentar].length > 1000) {
-        commentInput.setCustomValidity(
-            "Komentar maksimal 1000 karakter."
-        );
-        commentInput.reportValidity();
-        return;
-    }
+        detailTitle.textContent = pengaduan.judul || "-"; // tampilkan judul
+        detailLocation.textContent = pengaduan.lokasi || "-"; // tampilkan lokasi
 
-    commentInput.setCustomValidity("");
-
-    if (!idPengaduan || !/^[1-9]\d*$/.test(idPengaduan)) {
-        showCommentError();
-        return;
-    }
-
-    isSendingComment = true;
-    commentBtn.disabled = true;
-    commentBtn.textContent = "Loading...";
-
-    try {
-        const body = new URLSearchParams({
-            id_pengaduan: idPengaduan,
-            isi_komentar: isiKomentar
-        });
-
-        const response = await fetch(
-            `${API_BASE_URL}/komentar.php`,
-            {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Accept": "application/json"
-                },
-                body: body.toString()
-            }
+        detailDate.textContent = formatTanggal(
+            pengaduan.created_at
         );
 
-        // Session sudah tidak valid.
-        if (response.status === 401) {
-            clearUserSession();
-            window.location.replace("login.html");
+        detailDescription.textContent =
+            pengaduan.deskripsi || "-";
+
+        // Voting ditampilkan melalui modul vote
+        const paramsPreview =
+            new URLSearchParams(window.location.search);
+
+        // Mode preview hanya berlaku di localhost dengan ?preview=1.
+        const isDummyPreview =
+            ["localhost", "127.0.0.1"].includes(
+                window.location.hostname
+            ) &&
+            paramsPreview.get("preview") === "1";
+
+        voting.renderFromBackend(vote, isDummyPreview); // kirim data ke modul upvote/downvote
+
+        // Foto tetap menggunakan fungsi utama
+        renderFoto(pengaduan.foto); // tampilkan foto pengaduan
+
+        // Komentar ditampilkan melalui modul komentar
+        renderKomentar(komentar); // tampilkan komentar
+
+        const commentInput =
+            document.getElementById("detailCommentInput");
+
+        const commentSubmit =
+            document.getElementById("detailCommentSubmit");
+
+        if (commentInput && commentSubmit) {
+            commentInput.disabled = false; // aktifkan kolom komentar
+            commentSubmit.disabled = false; // aktifkan tombol kirim komentar
+        }
+    };
+
+
+    // ==================================================
+    // 11. MENGAMBIL DETAIL DARI BACKEND
+    // ==================================================
+
+    // Fungsi ini MENGAMBIL DATA dari backend, bukan menampilkan saja.
+    const loadDetail = async () => {
+
+        // Pastikan ID pengaduan ada dan merupakan bilangan bulat positif.
+        if (
+            !idPengaduan ||
+            !/^[1-9]\d*$/.test(idPengaduan)
+        ) {
+            showNotFound();
             return;
         }
 
-        const result = await response.json();
+        // Jika request lama masih berjalan, hentikan agar tidak bentrok.
+        if (activeController) {
+            activeController.abort(); // batalkan request sebelumnya
+        }
 
-        // Periksa konfirmasi dari backend.
-        if (
-            !response.ok ||
-            result.status !== "success" ||
-            !result.data?.komentar ||
-            String(result.data.id_pengaduan) !== String(idPengaduan)
-        ) {
-            throw new Error(
-                result.message || "Gagal mengirim komentar."
+        const controller = new AbortController(); // buat pengontrol request baru
+        activeController = controller; // tandai request ini sebagai yang aktif
+
+        showLoading(); // tampilkan Loading sebelum GET
+
+        try {
+
+            // Masukkan ID pengaduan sebagai parameter URL untuk API.
+            const query = new URLSearchParams({
+                [DETAIL_ID_PARAM]: idPengaduan
+            });
+
+            // Gabungkan alamat API, endpoint PHP, dan ID pengaduan.
+            const apiUrl =
+                `${API_BASE_URL.replace(/\/+$/, "")}/${activeDetailEndpoint}?${query.toString()}`;
+
+            // GET: meminta data, tidak mengirim vote/komentar.
+            const response = await fetch(apiUrl, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json"
+                },
+                signal: controller.signal
+            });
+
+            // Abaikan respons lama yang sudah tidak aktif.
+            if (controller !== activeController) {
+                return;
+            }
+
+            // 401: pengguna perlu login ulang.
+            if (response.status === 401) {
+                clearUserSession(); // hapus sesi lokal ketika tidak terautentikasi
+                window.location.replace("login.html"); // arahkan pengguna ke login
+                return;
+            }
+
+            // 404: pengaduan tidak ditemukan.
+            if (response.status === 404) {
+                showNotFound();
+                return;
+            }
+
+            // 403: pengguna tidak diizinkan melihat pengaduan.
+            if (response.status === 403) {
+                showForbidden();
+                return;
+            }
+
+            // 400: parameter request tidak diterima; tampilkan not found seperti kode asli.
+            if (response.status === 400) {
+                showNotFound();
+                return;
+            }
+
+            // Tangani respons HTTP yang gagal.
+            if (!response.ok) {
+                throw new Error(
+                    `Gagal mengambil detail pengaduan (HTTP ${response.status}).`
+                );
+            }
+
+            // Variabel untuk menampung isi JSON dari API.
+            let result;
+
+            try {
+                result = await response.json(); // ubah JSON dari backend menjadi objek JavaScript
+            } catch {
+                throw new Error(
+                    "Respons server tidak valid (bukan JSON)."
+                );
+            }
+
+            // Periksa apakah backend mengembalikan status sukses.
+            if (result.status !== "success") {
+                throw new Error(
+                    result.message || "Gagal memuat detail pengaduan."
+                );
+            }
+
+            const data = result.data; // ambil isi data dari respons
+
+            // Pastikan struktur data pengaduan benar.
+            if (
+                !data ||
+                !data.pengaduan ||
+                typeof data.pengaduan !== "object" ||
+                Array.isArray(data.pengaduan)
+            ) {
+                throw new Error(
+                    "Struktur data detail dari backend tidak sesuai."
+                );
+            }
+
+            // Pastikan ID pada respons sama dengan ID yang diminta.
+            if (
+                String(data.pengaduan.id_pengaduan) !==
+                String(idPengaduan)
+            ) {
+                throw new Error(
+                    "ID pengaduan pada respons tidak sesuai."
+                );
+            }
+
+            renderDetail(data); // tampilkan data setelah lolos validasi
+
+        } catch (error) {
+
+            // Pembatalan request bukan error yang perlu ditampilkan.
+            if (error.name === "AbortError") {
+                return;
+            }
+
+            // Abaikan kesalahan dari request yang bukan terbaru.
+            if (controller !== activeController) {
+                return;
+            }
+
+            console.error(
+                "Gagal memuat detail pengaduan:",
+                error
             );
+
+            // Jika browser mendeteksi offline, tampilkan pesan koneksi.
+            if (!navigator.onLine) {
+                showError(
+                    "Terjadi kesalahan saat memuat detail pengaduan. Periksa koneksi internet Anda dan coba lagi."
+                );
+            } else {
+                showError(error.message);
+            }
+
+        } finally {
+
+            // Bersihkan penanda request setelah selesai.
+            if (controller === activeController) {
+                activeController = null; // kosongkan penanda request aktif
+            }
         }
-
-        // Komentar hanya ditampilkan setelah backend
-        // mengonfirmasi penyimpanan berhasil.
-        const komentarBaru = result.data.komentar;
-
-        renderKomentar([
-            komentarBaru,
-            ...komentarSaatIni
-        ]);
-
-        // Jumlah komentar mengikuti respons backend.
-        commentsTitle.textContent =
-            `Komentar(${formatJumlah(result.data.total_komentar)})`;
-
-        // Kosongkan input setelah berhasil.
-        commentInput.value = "";
-        commentBtn.classList.remove("is-empty");
-
-if (commentError) {
-    commentError.hidden = true;
-}
-
-        // Tampilkan notifikasi setelah backend
-        // mengonfirmasi komentar berhasil disimpan.
-        showCommentSuccess();
+    };
 
 
-    } catch (error) {
-        console.error("Gagal mengirim komentar:", error);
+    // ==================================================
+    // 12. TOMBOL COBA LAGI
+    // ==================================================
 
-        // Jangan menampilkan komentar sebagai tersimpan.
-        showCommentError();
-
-    } finally {
-        isSendingComment = false;
-        commentBtn.disabled = false;
-        commentBtn.textContent = "Kirim";
-    }
-});
-
-
-// ==========================================
-// UPDATE TAMPILAN VALIDASI KOMENTAR
-// ==========================================
-
-const commentInput = commentForm.querySelector("textarea");
-const commentBtn = commentForm.querySelector('button[type="submit"]');
-const commentError = document.getElementById("detailCommentError");
-
-
-const updateCommentState = () => {
-    if (!commentInput || !commentBtn) return;
-
-    const adaIsi = commentInput.value.trim() !== "";
-
-    // Saat pengguna mengetik komentar valid,
-    // tombol kembali hijau dan error menghilang.
-    if (adaIsi) {
-        commentBtn.classList.remove("is-empty");
-
-        if (commentError) {
-            commentError.hidden = true;
-        }
+    // Hubungkan tombol Coba Lagi ke fungsi pengambilan data.
+    if (retryBtn) {
+        retryBtn.addEventListener("click", () => {
+            loadDetail(); // minta detail terbaru dari backend
+        });
     }
 
-    commentInput.setCustomValidity("");
-};
 
+    // ==================================================
+    // 13. PREVIEW LOCALHOST / LOAD DETAIL
+    // ==================================================
 
-// Menyesuaikan tombol saat pengguna mengetik.
-commentInput?.addEventListener("input", updateCommentState);
-
-// Kondisi awal: tombol tetap hijau.
-commentBtn.classList.remove("is-empty");
-
-
-
-  // =========================================================
-  // 13. MEMUAT DATA SAAT HALAMAN DIBUKA
-  // =========================================================
-
-  
-    // ==========================================
-    // PREVIEW DETAIL PENGADUAN (KHUSUS LOCALHOST)
-    // ==========================================
-
+    // Cek apakah halaman sedang preview khusus localhost.
     const isPreview =
-        ["localhost", "127.0.0.1"].includes(window.location.hostname) &&
-        new URLSearchParams(window.location.search).get("preview") === "1";
+        ["localhost", "127.0.0.1"].includes(
+            window.location.hostname
+        ) &&
+        new URLSearchParams(window.location.search)
+            .get("preview") === "1";
 
+    // Gunakan data contoh untuk mengecek tampilan tanpa API.
     if (isPreview) {
-        // Data contoh untuk menguji tampilan Figma.
-        // Tidak dikirim dan tidak disimpan ke database.
+
+        // Berikut data dummy: judul AC, jumlah vote, dan komentar contoh.
         renderDetail({
             pengaduan: {
                 id_pengaduan: 1,
@@ -1333,47 +712,51 @@ commentBtn.classList.remove("is-empty");
                 lokasi: "Ruang 202, Lantai 2",
                 deskripsi:
                     "AC tidak dingin, saat perkuliahan ruangan kurang nyaman terasa pengap, terutama pada siang hari. Mohon segera dicek dan diperbaiki.",
-                foto: new URL("img/foto-ac.jpeg", window.location.href).href,
+                foto: new URL(
+                    "img/foto-ac.jpeg",
+                    window.location.href
+                ).href,
                 status: "Diajukan",
                 created_at: "2026-09-03 10:00:00"
             },
-
             vote: {
                 upvote: 10,
                 downvote: 1
             },
-
             komentar: [
                 {
                     nama: "Salsa",
-                    isi_komentar: "Saat perkuliahan ruangan sangat panas",
+                    isi_komentar:
+                        "Saat perkuliahan ruangan sangat panas",
                     created_at: "2026-09-05 10:00:00"
                 }
             ],
-
             penanganan: []
         });
 
     } else {
-        // Mode normal tetap menggunakan API backend.
-        loadDetail();
+        loadDetail(); // minta detail terbaru dari backend
     }
 
 
-  // Memuat ulang detail saat halaman dikembalikan
-  // dari Back/Forward Cache browser.
-  window.addEventListener("pageshow", (event) => {
-    if (event.persisted) {
-      loadDetail();
-    }
-  });
+    // ==================================================
+    // 14. NAVIGASI BROWSER
+    // ==================================================
 
-  // Membatalkan request saat meninggalkan halaman.
-  window.addEventListener("pagehide", () => {
-    if (activeController) {
-      activeController.abort();
-      activeController = null;
-    }
-  });
+    // Jika halaman dipulihkan dari back-forward cache, muat data terbaru.
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            loadDetail(); // minta detail terbaru dari backend
+        }
+    });
 
+    // Saat keluar dari halaman, hentikan request yang belum selesai.
+    window.addEventListener("pagehide", () => {
+
+        // Jika request lama masih berjalan, hentikan agar tidak bentrok.
+        if (activeController) {
+            activeController.abort(); // batalkan request sebelumnya
+            activeController = null; // kosongkan penanda request aktif
+        }
+    });
 });
