@@ -1,82 +1,105 @@
-/* FITK SIBER AHSAN — registrasi Service Worker dan sinyal offline.
- * Letakkan setelah script dashboard.js/detail-pengaduan.js/buat-pengaduan.js.
+
+/*
+ * FITK SIBER AHSAN
+ * Registrasi Service Worker dan sinyal offline
  */
+
 (() => {
-  'use strict';
+    "use strict";
 
-  if ('serviceWorker' in navigator && window.isSecureContext) {
-    window.addEventListener('load', () => {
-      const swURL = new URL('./sw.js', document.baseURI);
-      navigator.serviceWorker.register(swURL.href, {
-        scope: new URL('./', document.baseURI).pathname
-      }).catch(error => console.warn('Service Worker tidak terpasang:', error));
-    });
-  }
+    // ==================================================
+    // REGISTER SERVICE WORKER
+    // ==================================================
 
-  // `offline` membantu UI berubah TANPA refresh. Saat refresh offline,
-  // Service Worker yang memberikan shell HTML/CSS/JS dari cache.
+    if ("serviceWorker" in navigator && window.isSecureContext) {
+        window.addEventListener("load", () => {
+            const swURL = new URL("./sw.js", document.baseURI);
 
-function onOffline() {
-    document.documentElement.dataset.network = 'offline';
-
-    // Dashboard: gunakan mekanisme yang sudah ada.
-    const dashboardRetry =
-        document.getElementById('btnRetry');
-
-    if (
-        dashboardRetry &&
-        document.getElementById('errorState')
-    ) {
-        dashboardRetry.click();
-        return;
+            navigator.serviceWorker.register(swURL.href, {
+                scope: new URL("./", document.baseURI).pathname
+            }).catch((error) => {
+                console.warn(
+                    "Service Worker tidak terpasang:",
+                    error
+                );
+            });
+        });
     }
 
-    // Detail Pengaduan: mekanisme existing.
-    const detailRetry =
-        document.getElementById('detailRetryBtn');
+    // ==================================================
+    // SAAT KONEKSI OFFLINE
+    // ==================================================
 
-    if (
-        detailRetry &&
-        document.getElementById('detailState')
-    ) {
-        detailRetry.click();
-        return;
-    }
+    function onOffline() {
+        document.documentElement.dataset.network = "offline";
 
-    // Riwayat Pengaduan — US-10B-FE.
-    // JS riwayat menerima sinyal ini untuk
-    // menampilkan state error tanpa request tambahan.
-    if (
-        document.getElementById('riwayatList') &&
-        document.getElementById('riwayatError')
-    ) {
+        // Dashboard
+        const dashboardRetry =
+            document.getElementById("btnRetry");
+
+        if (
+            dashboardRetry &&
+            document.getElementById("errorState")
+        ) {
+            dashboardRetry.click();
+            return;
+        }
+
+        // Detail Pengaduan
+        const detailRetry =
+            document.getElementById("detailRetryBtn");
+
+        if (
+            detailRetry &&
+            document.getElementById("detailState")
+        ) {
+            detailRetry.click();
+            return;
+        }
+
+        // Riwayat Pengaduan
+        if (
+            document.getElementById("riwayatList") &&
+            document.getElementById("riwayatError")
+        ) {
+            window.dispatchEvent(
+                new CustomEvent("fitk:offline")
+            );
+            return;
+        }
+
+        // Halaman lainnya
         window.dispatchEvent(
-            new CustomEvent('fitk:offline')
+            new CustomEvent("fitk:offline")
         );
-        return;
     }
 
-    // Halaman lain: hanya kirim sinyal.
-    window.dispatchEvent(
-        new CustomEvent('fitk:offline')
-    );
-}
+    // ==================================================
+    // SAAT KONEKSI ONLINE
+    // ==================================================
 
+    function onOnline() {
+        document.documentElement.dataset.network = "online";
 
-  function onOnline() {
-    document.documentElement.dataset.network = 'online';
-    // Sengaja tidak auto-submit ulang form atau POST voting.
-    window.dispatchEvent(new CustomEvent('fitk:online'));
-    // Tidak auto-submit POST. Pengguna menekan Coba Lagi untuk GET terbaru.
-  }
-
-  window.addEventListener('offline', onOffline);
-  window.addEventListener('online', onOnline);
-  if (!navigator.onLine) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', onOffline, { once: true });
-    } else {
-      onOffline();
+        // Tidak otomatis mengirim ulang POST voting atau komentar.
+        window.dispatchEvent(
+            new CustomEvent("fitk:online")
+        );
     }
-  }
+
+    window.addEventListener("offline", onOffline);
+    window.addEventListener("online", onOnline);
+
+    // Periksa keadaan awal saat halaman dibuka
+    if (!navigator.onLine) {
+        if (document.readyState === "loading") {
+            document.addEventListener(
+                "DOMContentLoaded",
+                onOffline,
+                { once: true }
+            );
+        } else {
+            onOffline();
+        }
+    }
 })();

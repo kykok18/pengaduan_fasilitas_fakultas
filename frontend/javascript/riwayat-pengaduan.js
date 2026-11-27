@@ -225,37 +225,94 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
 
+    
     // ==========================================
     // 5. URL FOTO PENGADUAN
     // ==========================================
 
+    // Mengubah path foto dari backend menjadi URL lengkap.
     const getFotoURL = (fotoPath) => {
+
+        // Jika tidak ada foto, gunakan fallback yang sudah ada.
         if (!fotoPath) return "";
 
         try {
+            // Mengambil path foto dari respons backend.
             const path = String(fotoPath).trim();
+
+            if (!path) return "";
+
+            // Mengambil alamat API Riwayat.
+            const endpoint = new URL(
+                getEndpoint(),
+                document.baseURI
+            );
+
+            // Menentukan folder utama proyek.
+            // Contoh:
+            // localhost/pengaduan_fasilitas_fakultas/
+            //
+            // Struktur API:
+            // backend/api/riwayat.php
+            const projectRoot = new URL("../../", endpoint);
 
             let url;
 
+            // Jika backend sudah mengirim URL lengkap.
             if (/^https?:\/\//i.test(path)) {
+
                 url = new URL(path);
+
             } else {
-                const endpoint = new URL(
-                    getEndpoint(),
-                    document.baseURI
+
+                // Menghapus slash di awal path.
+                let cleanPath = path.replace(/^\/+/, "");
+
+                // Menghindari nama folder proyek terduplikasi.
+                const projectPrefix =
+                    projectRoot.pathname.replace(/^\/|\/$/g, "");
+
+                if (
+                    projectPrefix &&
+                    cleanPath.startsWith(projectPrefix + "/")
+                ) {
+                    cleanPath = cleanPath.slice(
+                        projectPrefix.length + 1
+                    );
+                }
+
+                // Mengubah path backend/uploads menjadi uploads.
+                cleanPath = cleanPath.replace(
+                    /^backend\/uploads\//,
+                    "uploads/"
                 );
 
-                const backendRoot = new URL(
-                    "../",
-                    endpoint
-                );
-
-                url = new URL(
-                    path.replace(/^\/+/, ""),
-                    backendRoot
-                );
+                // Membentuk URL foto dari folder utama proyek.
+                url = new URL(cleanPath, projectRoot);
             }
 
+            // Memperbaiki URL lengkap jika masih menunjuk
+            // ke folder backend/uploads yang lama.
+            const wrongPath = new URL(
+                "backend/uploads/",
+                projectRoot
+            ).pathname;
+
+            const correctPath = new URL(
+                "uploads/",
+                projectRoot
+            ).pathname;
+
+            if (
+                url.origin === projectRoot.origin &&
+                url.pathname.startsWith(wrongPath)
+            ) {
+                url.pathname =
+                    correctPath +
+                    url.pathname.slice(wrongPath.length);
+            }
+
+            // Hanya menerima alamat HTTP atau HTTPS.
             if (
                 url.protocol !== "http:" &&
                 url.protocol !== "https:"
@@ -263,17 +320,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 return "";
             }
 
+            // Mengembalikan URL foto yang sudah diperbaiki.
             return url.href;
 
         } catch (error) {
+
             console.warn(
                 "URL foto pengaduan tidak valid:",
                 error
             );
 
+            // Jika URL gagal diproses,
+            // tampilkan placeholder melalui kode yang sudah ada.
             return "";
         }
     };
+
 
     // ==========================================
     // 6. TAMPILKAN STATE HALAMAN
@@ -471,25 +533,48 @@ card.href =
                 </div>
             `;
 
-            // Foto pengaduan dan fallback
-            const img = card.querySelector(
-                ".report-image img"
-            );
+        
+    // ==========================================
+    // FOTO PENGADUAN DAN FALLBACK
+    // ==========================================
 
-            const placeholderURL = new URL(
-                "img/foto-placeholder.png",
-                document.baseURI
-            ).href;
+    // Mengambil elemen gambar dari kartu Riwayat.
+    const img = card.querySelector(".report-image img");
 
-            img.addEventListener("error", () => {
-                if (img.src !== placeholderURL) {
-                    img.src = placeholderURL;
-                }
-            });
+    // Menentukan gambar pengganti jika foto gagal dimuat.
+    const placeholderURL = new URL(
+        "img/foto-placeholder.png",
+        document.baseURI
+    ).href;
 
-            img.src =
-                getFotoURL(item.foto) ||
-                placeholderURL;
+    // Membentuk URL foto menggunakan fungsi getFotoURL().
+    const fotoURL = getFotoURL(item.foto);
+
+    // DEBUG: melihat data dan alamat foto dari backend.
+    console.log("[RIWAYAT FOTO]", {
+        id: item.id_pengaduan,
+        fotoDariBackend: item.foto,
+        urlFoto: fotoURL
+    });
+
+    // Jika foto gagal dimuat, tampilkan placeholder.
+    img.addEventListener("error", () => {
+
+        // DEBUG: melihat alamat yang gagal dibuka browser.
+        console.warn("[RIWAYAT FOTO GAGAL]", {
+            id: item.id_pengaduan,
+            urlGagal: img.src
+        });
+
+        if (img.src !== placeholderURL) {
+            img.src = placeholderURL;
+        }
+    });
+
+    // Menampilkan foto asli jika tersedia.
+    // Jika kosong, gunakan placeholder.
+    img.src = fotoURL || placeholderURL;
+
 
             fragment.appendChild(card);
         });
@@ -501,149 +586,114 @@ card.href =
     // 9. PAGINATION
     // ==========================================
 
-    const renderPagination = () => {
-        if (!pagination || !prevBtn || !nextBtn) {
-            return;
-        }
+    
+/* =====================================================
+   PAGINATION RIWAYAT PENGADUAN
+   Desktop: 4 nomor
+   HP kecil: 2 nomor
+   ===================================================== */
 
-        pagination
-            .querySelectorAll("[data-riwayat-page]")
-            .forEach((element) => element.remove());
+const renderPagination = () => {
+    if (!pagination || !prevBtn || !nextBtn) return;
 
-        prevBtn.disabled = currentPage <= 1;
-        nextBtn.disabled = currentPage >= totalPages;
+    pagination
+        .querySelectorAll("[data-riwayat-page]")
+        .forEach((element) => element.remove());
 
-        if (totalPages <= 1) return;
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
 
-        const first = Math.max(
-            1,
-            Math.min(
-                currentPage - 1,
-                totalPages - MAX_VISIBLE_PAGES + 1
-            )
+    if (totalPages <= 1) return;
+
+    const addPage = (label, page = null) => {
+        const element = document.createElement(
+            page === null ? "span" : "button"
         );
 
-        const last = Math.min(
-            totalPages,
-            first + MAX_VISIBLE_PAGES - 1
-        );
+        element.dataset.riwayatPage = "true";
+        element.textContent = String(label);
 
-        const addPage = (
-            label,
-            page = null,
-            active = false
-        ) => {
-            const element = document.createElement(
-                page === null ? "span" : "button"
+        if (page === null) {
+            element.className = "page-dots";
+            element.setAttribute("aria-hidden", "true");
+
+        } else {
+            element.type = "button";
+            element.className = "page-btn";
+
+            element.setAttribute(
+                "aria-label",
+                `Halaman ${page}`
             );
 
-            element.dataset.riwayatPage = "true";
-            element.textContent = label;
-
-            if (page === null) {
-                element.className = "page-dots";
-            } else {
-                element.type = "button";
-
-                element.className =
-                    `page-btn${active ? " active" : ""}`;
-
+            if (page === currentPage) {
+                element.classList.add("active");
                 element.setAttribute(
-                    "aria-label",
-                    `Halaman ${page}`
-                );
-
-                if (active) {
-                    element.setAttribute(
-                        "aria-current",
-                        "page"
-                    );
-                }
-
-                element.addEventListener(
-                    "click",
-                    () => goToPage(page)
+                    "aria-current",
+                    "page"
                 );
             }
 
-            pagination.insertBefore(
-                element,
-                nextBtn
-            );
-        };
+            element.addEventListener("click", () => {
+                goToPage(page);
+            });
+        }
 
-        window.addEventListener("resize", () => {
+        pagination.insertBefore(element, nextBtn);
+    };
+
+    
+    // Maksimal 4 nomor halaman di SEMUA ukuran layar
+    if (totalPages <= 4) {
+
+        // Jika maksimal empat halaman, tampilkan semua
+        for (let page = 1; page <= totalPages; page++) {
+            addPage(page, page);
+        }
+
+    } else {
+        const start = Math.max(
+            1,
+            Math.min(currentPage, totalPages - 3)
+        );
+
+        if (start + 3 >= totalPages) {
+            for (
+                let page = start;
+                page <= totalPages;
+                page++
+            ) {
+                addPage(page, page);
+            }
+        } else {
+            for (
+                let page = start;
+                page <= start + 2;
+                page++
+            ) {
+                addPage(page, page);
+            }
+
+            addPage("…");
+            addPage(totalPages, totalPages);
+        }
+    }
+};
+
+// Render ulang hanya saat berpindah mode desktop/HP
+let isMobilePagination = window.innerWidth <= 390;
+
+window.addEventListener("resize", () => {
+    const isMobileNow = window.innerWidth <= 390;
+
+    if (isMobileNow === isMobilePagination) return;
+
+    isMobilePagination = isMobileNow;
+
     if (totalPages > 1) {
         renderPagination();
     }
 });
-
-
-/* ==========================================
-   PAGINATION KHUSUS HP KECIL
-   Maksimal 2 nomor halaman agar tidak geser
-   ========================================== */
-
-if (window.innerWidth <= 390) {
-
-    const visiblePages = 2;
-
-    const startPage = Math.max(
-        1,
-        Math.min(
-            currentPage,
-            totalPages - visiblePages + 1
-        )
-    );
-
-    const endPage = Math.min(
-        totalPages,
-        startPage + visiblePages - 1
-    );
-
-    for (let page = startPage; page <= endPage; page++) {
-        addPage(
-            String(page),
-            page,
-            page === currentPage
-        );
-    }
-
-    return;
-}
-
-
-        if (first > 1) {
-            addPage("1", 1);
-
-            if (first > 2) {
-                addPage("…");
-            }
-        }
-
-        for (
-            let page = first;
-            page <= last;
-            page++
-        ) {
-            addPage(
-                String(page),
-                page,
-                page === currentPage
-            );
-        }
-
-        if (last < totalPages) {
-            if (last < totalPages - 1) {
-                addPage("…");
-            }
-
-            addPage(
-                String(totalPages),
-                totalPages
-            );
-        }
-    };
 
     // ==========================================
     // 10. HAPUS DATA TERLINDUNGI

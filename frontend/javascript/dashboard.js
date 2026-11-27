@@ -193,23 +193,33 @@ const getStatusInfo = (status) => {
         }
     };
 
-            const getFotoURL = (fotoPath) => {
-    if (!fotoPath) return '';
 
-    // Jika backend sudah mengirim URL lengkap
+const getFotoURL = (fotoPath) => {
+
+    // Jika backend tidak mengirim foto
+    if (!fotoPath) return "";
+
+    // Jika sudah berupa URL lengkap, gunakan langsung
     if (/^https?:\/\//i.test(fotoPath)) {
         return fotoPath;
     }
 
-    // API_BASE_URL mengarah ke folder backend/api
-    const backendRoot = API_BASE_URL.replace(/\/api\/?$/, '/');
+    // Arahkan ke folder utama proyek,
+    // bukan ke folder backend
+    const projectRoot = API_BASE_URL.replace(
+        /\/backend\/api\/?$/,
+        "/"
+    );
 
-    // Bersihkan slash di awal path foto
-    const cleanPath = String(fotoPath).replace(/^\/+/, '');
+    // Bersihkan slash di awal alamat foto
+    const cleanPath = String(fotoPath)
+        .replace(/^\/+/, "")
+        .replace(/^backend\//, "");
 
-    // Gabungkan URL backend dengan path foto
-    return new URL(cleanPath, backendRoot).href;
+    // Gabungkan folder proyek dengan path foto
+    return new URL(cleanPath, projectRoot).href;
 };
+
 
 
         // =========================================================
@@ -332,6 +342,10 @@ reportsContainer.style.display = 'flex';
 const foto = item.foto
     ? escapeHTML(getFotoURL(item.foto))
     : fotoPlaceholder;
+
+console.log("Foto dari backend:", item.foto);
+console.log("URL foto yang digunakan:", foto);
+
 
                 const card = document.createElement('div');
                 card.className = 'report-card-dash';
@@ -479,133 +493,128 @@ if (gambarCard) {
             });
         };
 
-        // =========================================================
-            // 9. PAGINATION
-            // =========================================================
+        
+/* =====================================================
+   PAGINATION DASHBOARD
+   5 data / halaman
+   Desktop: maksimal 4 tombol nomor
+   HP kecil: maksimal 2 tombol nomor
+   ===================================================== */
 
-                    const renderPagination = (paginationData = {
-                        current_page: currentPage,
-                        total_pages: totalPages
-                    }) => {
-                if (!pagination || !paginationData) return;
+const renderPagination = (paginationData = {
+    current_page: currentPage,
+    total_pages: totalPages
+}) => {
+    if (!pagination || !paginationData) return;
 
-                currentPage = Number(paginationData.current_page) || 1;
-                totalPages = Number(paginationData.total_pages) || 1;
-
-                if (prevPage) {
-                    prevPage.disabled = currentPage <= 1;
-                }
-
-                if (nextPage) {
-                    nextPage.disabled = currentPage >= totalPages;
-                }
-
-                // Hapus nomor halaman dan titik-titik yang lama.
-                pagination.querySelectorAll('.page-number, .page-dots')
-                    .forEach(element => element.remove());
-
-                // Buat nomor halaman secara dinamis.
-                const addPageButton = (page) => {
-                    const button = document.createElement('button');
-
-                    button.type = 'button';
-                    button.className = 'page-btn page-number';
-                    button.dataset.page = page;
-                    button.textContent = page;
-                    button.classList.toggle('active', page === currentPage);
-
-                    if (nextPage) {
-                        pagination.insertBefore(button, nextPage);
-                    } else {
-                        pagination.appendChild(button);
-                    }
-                };
-
-                const addDots = () => {
-                    const dots = document.createElement('span');
-                    dots.className = 'page-dots';
-                    dots.textContent = '...';
-
-                    if (nextPage) {
-                        pagination.insertBefore(dots, nextPage);
-                    } else {
-                        pagination.appendChild(dots);
-                    }
-                };
-
-                // Jika halaman maksimal 5, tampilkan semuanya.
-                
-/* Maksimal 4 tombol angka pagination */
-
-
-/* ==========================================
-   PAGINATION RESPONSIVE DASHBOARD
-   Mobile kecil: maksimal 2 nomor
-   Desktop: maksimal 4 nomor
-   ========================================== */
-
-const isSmallMobile = window.innerWidth <= 390;
-
-const MAX_VISIBLE = isSmallMobile ? 2 : 4;
-
-if (totalPages <= MAX_VISIBLE) {
-
-    for (let page = 1; page <= totalPages; page++) {
-        addPageButton(page);
-    }
-
-} else if (isSmallMobile) {
-
-    // Tampilkan dua nomor berurutan
-    // dan pastikan halaman aktif tetap terlihat.
-    const startPage = Math.max(
+    currentPage = Number(paginationData.current_page) || 1;
+    totalPages = Math.max(
         1,
-        Math.min(currentPage, totalPages - 1)
+        Number(paginationData.total_pages) || 1
     );
 
-    const endPage = Math.min(
-        totalPages,
-        startPage + 1
+    currentPage = Math.max(
+        1,
+        Math.min(currentPage, totalPages)
     );
 
-    for (let page = startPage; page <= endPage; page++) {
-        addPageButton(page);
+    if (prevPage) {
+        prevPage.disabled = currentPage <= 1;
     }
 
-} else {
+    if (nextPage) {
+        nextPage.disabled = currentPage >= totalPages;
+    }
 
-    // Mekanisme desktop tetap seperti sebelumnya.
-    const startPage = Math.min(
-        currentPage,
-        totalPages - (MAX_VISIBLE - 1)
-    );
+    // Hapus tombol angka dan titik-titik lama
+    pagination
+        .querySelectorAll(".page-number, .page-dots")
+        .forEach((element) => element.remove());
 
-    const endPage = Math.min(
-        startPage + MAX_VISIBLE - 1,
-        totalPages
-    );
+    if (totalPages <= 1) {
+        pagination.style.display = "none";
+        return;
+    }
 
-    if (endPage < totalPages) {
+    const addPageButton = (page) => {
+        const button = document.createElement("button");
 
-        for (let page = startPage; page < endPage; page++) {
-            addPageButton(page);
+        button.type = "button";
+        button.className = "page-btn page-number";
+        button.dataset.page = String(page);
+        button.textContent = String(page);
+
+        if (page === currentPage) {
+            button.classList.add("active");
+            button.setAttribute("aria-current", "page");
         }
 
-        addDots();
-        addPageButton(totalPages);
+        button.setAttribute(
+            "aria-label",
+            `Halaman ${page}`
+        );
+
+        if (nextPage) {
+            pagination.insertBefore(button, nextPage);
+        } else {
+            pagination.appendChild(button);
+        }
+    };
+
+    const addDots = () => {
+        const dots = document.createElement("span");
+
+        dots.className = "page-dots";
+        dots.textContent = "…";
+
+        if (nextPage) {
+            pagination.insertBefore(dots, nextPage);
+        } else {
+            pagination.appendChild(dots);
+        }
+    };
+
+
+    // Maksimal 4 nomor halaman di SEMUA ukuran layar
+    if (totalPages <= 4) {
+        for (let page = 1; page <= totalPages; page++) {
+            addPageButton(page);
+        }
 
     } else {
+        // Geser nomor mulai dari halaman aktif
+        const start = Math.max(
+            1,
+            Math.min(currentPage, totalPages - 3)
+        );
 
-        for (let page = startPage; page <= totalPages; page++) {
-            addPageButton(page);
+        if (start + 3 >= totalPages) {
+            // Empat halaman terakhir
+            for (
+                let page = start;
+                page <= totalPages;
+                page++
+            ) {
+                addPageButton(page);
+            }
+        } else {
+            // Tiga halaman berurutan + ... + terakhir
+            for (
+                let page = start;
+                page <= start + 2;
+                page++
+            ) {
+                addPageButton(page);
+            }
+
+            addDots();
+            addPageButton(totalPages);
         }
     }
-}
 
+    pagination.style.display = "flex";
+};
 
-                // Sembunyikan pagination jika hanya ada satu halaman.
-                pagination.style.display = totalPages <= 1 ? 'none' : 'flex';
-            };
 
         // =========================================================
         // 10. AMBIL DATA DARI API

@@ -2031,13 +2031,17 @@ min-width: 0;
     color: #0B5E3B;
 }
 
-/* Nomor halaman aktif */
-.pagination .page-btn.active {
+
+/* Nomor halaman aktif — FIX DASHBOARD */
+.pagination .page-btn.page-number.active,
+.pagination .page-btn.page-number[aria-current="page"] {
+    background: #FFFFFF;
     border: 1px solid #0B5E3B;
     border-radius: 5px;
-    background: #FFFFFF;
     color: #0B5E3B;
+    box-sizing: border-box;
 }
+
 
 /* Tombol Prev dan Next: 68 × 32 */
 .pagination .page-btn.prev,
@@ -2167,4 +2171,54 @@ min-width: 0;
 
         overflow-x: hidden;
     }
+}
+
+
+/* Pagination Dashboard — 4 nomor tetap muat di HP */
+@media screen and (max-width: 390px) {
+    .dashboard-main .pagination {
+        gap: 6px;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .dashboard-main .pagination {
+        gap: 1px;
+    }
+}
+
+/* Border hijau pada nomor yang aktif */
+#pagination .page-btn.page-number.active,
+#pagination .page-btn.page-number[aria-current="page"] {
+    border: 1px solid #0B5E3B;
+    background: #FFFFFF;
+    color: #0B5E3B;
+}
+
+
+/* =====================================================
+   REVISI SQA — BADGE STATUS DASHBOARD
+   Samakan ukuran badge dengan Riwayat Pengaduan.
+   ===================================================== */
+
+.report-card-dash .report-content-header .badge-status {
+    box-sizing: border-box;
+
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: 43px;
+
+    height: 14px;
+    padding: 0 5px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 12px;
+    white-space: nowrap;
 }
