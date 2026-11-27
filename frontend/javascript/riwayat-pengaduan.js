@@ -225,37 +225,94 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
 
+    
     // ==========================================
     // 5. URL FOTO PENGADUAN
     // ==========================================
 
+    // Mengubah path foto dari backend menjadi URL lengkap.
     const getFotoURL = (fotoPath) => {
+
+        // Jika tidak ada foto, gunakan fallback yang sudah ada.
         if (!fotoPath) return "";
 
         try {
+            // Mengambil path foto dari respons backend.
             const path = String(fotoPath).trim();
+
+            if (!path) return "";
+
+            // Mengambil alamat API Riwayat.
+            const endpoint = new URL(
+                getEndpoint(),
+                document.baseURI
+            );
+
+            // Menentukan folder utama proyek.
+            // Contoh:
+            // localhost/pengaduan_fasilitas_fakultas/
+            //
+            // Struktur API:
+            // backend/api/riwayat.php
+            const projectRoot = new URL("../../", endpoint);
 
             let url;
 
+            // Jika backend sudah mengirim URL lengkap.
             if (/^https?:\/\//i.test(path)) {
+
                 url = new URL(path);
+
             } else {
-                const endpoint = new URL(
-                    getEndpoint(),
-                    document.baseURI
+
+                // Menghapus slash di awal path.
+                let cleanPath = path.replace(/^\/+/, "");
+
+                // Menghindari nama folder proyek terduplikasi.
+                const projectPrefix =
+                    projectRoot.pathname.replace(/^\/|\/$/g, "");
+
+                if (
+                    projectPrefix &&
+                    cleanPath.startsWith(projectPrefix + "/")
+                ) {
+                    cleanPath = cleanPath.slice(
+                        projectPrefix.length + 1
+                    );
+                }
+
+                // Mengubah path backend/uploads menjadi uploads.
+                cleanPath = cleanPath.replace(
+                    /^backend\/uploads\//,
+                    "uploads/"
                 );
 
-                const backendRoot = new URL(
-                    "../",
-                    endpoint
-                );
-
-                url = new URL(
-                    path.replace(/^\/+/, ""),
-                    backendRoot
-                );
+                // Membentuk URL foto dari folder utama proyek.
+                url = new URL(cleanPath, projectRoot);
             }
 
+            // Memperbaiki URL lengkap jika masih menunjuk
+            // ke folder backend/uploads yang lama.
+            const wrongPath = new URL(
+                "backend/uploads/",
+                projectRoot
+            ).pathname;
+
+            const correctPath = new URL(
+                "uploads/",
+                projectRoot
+            ).pathname;
+
+            if (
+                url.origin === projectRoot.origin &&
+                url.pathname.startsWith(wrongPath)
+            ) {
+                url.pathname =
+                    correctPath +
+                    url.pathname.slice(wrongPath.length);
+            }
+
+            // Hanya menerima alamat HTTP atau HTTPS.
             if (
                 url.protocol !== "http:" &&
                 url.protocol !== "https:"
@@ -263,17 +320,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 return "";
             }
 
+            // Mengembalikan URL foto yang sudah diperbaiki.
             return url.href;
 
         } catch (error) {
+
             console.warn(
                 "URL foto pengaduan tidak valid:",
                 error
             );
 
+            // Jika URL gagal diproses,
+            // tampilkan placeholder melalui kode yang sudah ada.
             return "";
         }
     };
+
 
     // ==========================================
     // 6. TAMPILKAN STATE HALAMAN
