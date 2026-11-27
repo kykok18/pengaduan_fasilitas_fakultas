@@ -533,25 +533,48 @@ card.href =
                 </div>
             `;
 
-            // Foto pengaduan dan fallback
-            const img = card.querySelector(
-                ".report-image img"
-            );
+        
+    // ==========================================
+    // FOTO PENGADUAN DAN FALLBACK
+    // ==========================================
 
-            const placeholderURL = new URL(
-                "img/foto-placeholder.png",
-                document.baseURI
-            ).href;
+    // Mengambil elemen gambar dari kartu Riwayat.
+    const img = card.querySelector(".report-image img");
 
-            img.addEventListener("error", () => {
-                if (img.src !== placeholderURL) {
-                    img.src = placeholderURL;
-                }
-            });
+    // Menentukan gambar pengganti jika foto gagal dimuat.
+    const placeholderURL = new URL(
+        "img/foto-placeholder.png",
+        document.baseURI
+    ).href;
 
-            img.src =
-                getFotoURL(item.foto) ||
-                placeholderURL;
+    // Membentuk URL foto menggunakan fungsi getFotoURL().
+    const fotoURL = getFotoURL(item.foto);
+
+    // DEBUG: melihat data dan alamat foto dari backend.
+    console.log("[RIWAYAT FOTO]", {
+        id: item.id_pengaduan,
+        fotoDariBackend: item.foto,
+        urlFoto: fotoURL
+    });
+
+    // Jika foto gagal dimuat, tampilkan placeholder.
+    img.addEventListener("error", () => {
+
+        // DEBUG: melihat alamat yang gagal dibuka browser.
+        console.warn("[RIWAYAT FOTO GAGAL]", {
+            id: item.id_pengaduan,
+            urlGagal: img.src
+        });
+
+        if (img.src !== placeholderURL) {
+            img.src = placeholderURL;
+        }
+    });
+
+    // Menampilkan foto asli jika tersedia.
+    // Jika kosong, gunakan placeholder.
+    img.src = fotoURL || placeholderURL;
+
 
             fragment.appendChild(card);
         });
