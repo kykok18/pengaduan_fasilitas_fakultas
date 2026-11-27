@@ -247,9 +247,7 @@ inputDeskripsi.addEventListener("input", aturPosisiDeskripsi);
   let notificationHideTimer;
 
   const showNotification = (type, title, desc) => {
-
-    // Menghentikan timer sebelumnya agar notifikasi
-    // yang baru tidak terganggu oleh timer lama.
+    
     clearTimeout(notificationTimer);
     clearTimeout(notificationHideTimer);
 

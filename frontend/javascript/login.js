@@ -40,6 +40,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+
+    // ==================================================
+    // D-06: MENCEGAH SPASI PADA INPUT EMAIL
+    // ==================================================
+
+    // Mencegah spasi ketika pengguna mengetik.
+    emailInput.addEventListener('beforeinput', (event) => {
+        if (
+            typeof event.data === 'string' &&
+            /\s/.test(event.data) &&
+            event.cancelable
+        ) {
+            event.preventDefault();
+        }
+    });
+
+    // Mencegah tombol Spacebar.
+    emailInput.addEventListener('keydown', (event) => {
+        if (event.key === ' ' || event.key === 'Spacebar') {
+            event.preventDefault();
+        }
+    });
+
+    // Mencegah paste email yang mengandung spasi.
+    emailInput.addEventListener('paste', (event) => {
+        const teks = event.clipboardData?.getData('text') || '';
+
+        if (/\s/.test(teks)) {
+            event.preventDefault();
+        }
+    });
+
+
     // =========================
     // IKON NOTIFIKASI SVG
     // =========================
@@ -165,22 +198,31 @@ document.addEventListener('DOMContentLoaded', () => {
 const emailPattern =
     /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
 
-if (!email.trim()) {
-    setEmailError('E-mail wajib diisi.');
-    valid = false;
 
-} else if (
-    !emailPattern.test(email) ||
-    email.includes('..') ||
-    email.startsWith('.') ||
-    email.split('@')[0].endsWith('.')
-) {
-    setEmailError('Format E-mail tidak sesuai.');
-    valid = false;
+        // Email wajib diisi.
+        if (!email.trim()) {
+            setEmailError('E-mail wajib diisi.');
+            valid = false;
 
-} else {
-    setEmailError('');
-}
+        // D-06: Email tidak boleh mengandung spasi.
+        } else if (/\s/.test(email)) {
+            setEmailError('E-mail tidak boleh mengandung spasi.');
+            valid = false;
+
+        // Memeriksa format email.
+        } else if (
+            !emailPattern.test(email) ||
+            email.includes('..') ||
+            email.startsWith('.') ||
+            email.split('@')[0].endsWith('.')
+        ) {
+            setEmailError('Format E-mail tidak sesuai.');
+            valid = false;
+
+        } else {
+            setEmailError('');
+        }
+
 
 
 
@@ -398,36 +440,45 @@ if (!email.trim()) {
     // Menghapus pesan error ketika pengguna memperbaiki email.
     
 
-/* ============================================================
-   VALIDASI E-MAIL LANGSUNG — DEFECT D-03
-   Hanya menerima .com, .id, .ac.id, .org
-   ============================================================ */
 
-function checkEmailDomain() {
-    const email = emailInput.value.trim();
+    // ==================================================
+    // VALIDASI EMAIL LANGSUNG — DEFECT D-06
+    // ==================================================
 
-    const emailPattern =
-        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
+    function checkEmailDomain() {
 
-    // Belum diisi: jangan munculkan error saat halaman dibuka
-    if (!email) {
-        setEmailError('');
-        return;
+        // Mengambil email tanpa menghapus spasi.
+        const email = emailInput.value;
+
+        const emailPattern =
+            /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
+
+        // Jika kosong, jangan tampilkan error.
+        if (!email.trim()) {
+            setEmailError('');
+            return;
+        }
+
+        // Menolak email yang mengandung spasi.
+        if (/\s/.test(email)) {
+            setEmailError('E-mail tidak boleh mengandung spasi.');
+            return;
+        }
+
+        // Memeriksa format email.
+        const invalidEmail =
+            !emailPattern.test(email) ||
+            email.includes('..') ||
+            email.startsWith('.') ||
+            email.split('@')[0].endsWith('.');
+
+        if (invalidEmail) {
+            setEmailError('Format E-mail tidak sesuai.');
+        } else {
+            setEmailError('');
+        }
     }
 
-    // Tolak email dengan format atau ekstensi yang salah
-    const invalidEmail =
-        !emailPattern.test(email) ||
-        email.includes('..') ||
-        email.startsWith('.') ||
-        email.split('@')[0].endsWith('.');
-
-    if (invalidEmail) {
-        setEmailError('Format E-mail tidak sesuai.');
-    } else {
-        setEmailError('');
-    }
-}
 
 // Saat pengguna mengetik
 emailInput.addEventListener('input', () => {

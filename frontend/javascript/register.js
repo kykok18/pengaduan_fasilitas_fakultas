@@ -33,6 +33,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
     const fullnameInput = document.getElementById('fullname');
     const emailInput = document.getElementById('email');
+
+// ==================================================
+// D-06: MENCEGAH SPASI PADA INPUT EMAIL
+// ==================================================
+
+// Mencegah karakter spasi masuk melalui keyboard.
+emailInput.addEventListener("beforeinput", (event) => {
+    if (
+        typeof event.data === "string" &&
+        /\s/.test(event.data) &&
+        event.cancelable
+    ) {
+        event.preventDefault();
+    }
+});
+
+// Mencegah penekanan tombol Spacebar.
+emailInput.addEventListener("keydown", (event) => {
+    if (event.key === " " || event.key === "Spacebar") {
+        event.preventDefault();
+    }
+});
+
+// Mencegah paste teks yang mengandung spasi.
+emailInput.addEventListener("paste", (event) => {
+    const teks = event.clipboardData?.getData("text") || "";
+
+    if (/\s/.test(teks)) {
+        event.preventDefault();
+    }
+});
+
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const formMessage = document.getElementById('formMessage');
@@ -233,26 +265,32 @@ function validateFullname() {
    Ekstensi yang diizinkan: .com, .id, .ac.id, .org
    ============================================================ */
 
-function validateEmail() {
-    const value = emailInput.value.trim();
 
-    // E-mail wajib diisi
-    if (!value) {
+function validateEmail() {
+
+    // Ambil nilai email asli tanpa menghapus spasi.
+    const value = emailInput.value;
+
+    // Email wajib diisi.
+    if (!value.trim()) {
         showError(emailInput, "E-mail wajib diisi.");
         return false;
     }
 
-    // Memeriksa format dan membatasi ekstensi domain.
-    // Contoh valid:
-    // admin@gmail.com
-    // mahasiswa@kampus.ac.id
-    // pegawai@instansi.id
-    // pengguna@organisasi.org
+    // D-06: Email tidak boleh mengandung spasi.
+    if (/\s/.test(value)) {
+        showError(
+            emailInput,
+            "E-mail tidak boleh mengandung spasi."
+        );
+        return false;
+    }
 
+    // Format email yang diperbolehkan.
     const emailPattern =
         /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.(?:com|id|ac\.id|org)$/i;
 
-    // Menolak format yang salah atau ekstensi di luar whitelist
+    // Memeriksa format email.
     if (
         !emailPattern.test(value) ||
         value.includes("..") ||
@@ -266,7 +304,7 @@ function validateEmail() {
         return false;
     }
 
-    // Validasi berhasil
+    // Email berhasil melewati validasi.
     clearError(emailInput);
     return true;
 }
@@ -365,12 +403,6 @@ function validateConfirmPassword() {
         updateButtonState();
     });;
 
-    emailInput.addEventListener("input", () => {
-    emailInput.value = emailInput.value.replace(
-        /[^A-Za-z0-9@._-]/g,
-        ""
-    );
-});
 
     
 passwordInput.addEventListener('input', () => {
@@ -425,12 +457,6 @@ let emailValidationTimeout;
 
 emailInput.addEventListener('input', () => {
     hideMessage();
-
-    // Pertahankan filter karakter email
-    emailInput.value = emailInput.value.replace(
-        /[^A-Za-z0-9@._-]/g,
-        ''
-    );
 
     // Batalkan pemeriksaan sebelumnya
     clearTimeout(emailValidationTimeout);
@@ -521,11 +547,11 @@ confirmPasswordInput.addEventListener('input', () => {
 
         try {
             const response = await apiRegister(
-                fullnameInput.value.trim(),
-                emailInput.value.trim(),
-                passwordInput.value,
-                confirmPasswordInput.value
-            );
+            fullnameInput.value.trim(),
+            emailInput.value,
+            passwordInput.value,
+            confirmPasswordInput.value
+        );
 
             submitBtn.textContent = originalText;
             delete submitBtn.dataset.loading;
