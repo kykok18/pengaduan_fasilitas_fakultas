@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Atur tampilan ketika halaman sedang loading atau gagal.
     const showState = (type, title, description) => {
-        clearDetail();
+        clearDetail();  
 
         detailCard.classList.add("is-state"); // aktifkan gaya tampilan loading/error
         commentsCard.classList.add("is-state-placeholder"); // tampilkan card komentar sebagai placeholder
