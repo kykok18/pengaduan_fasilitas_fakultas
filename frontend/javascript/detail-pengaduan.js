@@ -389,51 +389,89 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderKomentar = komentarModul.renderKomentar; // ambil fungsi untuk menampilkan daftar komentar
 
 
+    
     // ==================================================
     // 9. MENAMPILKAN FOTO PENGADUAN
     // ==================================================
 
-    // Tampilkan foto dari backend, gunakan fallback kalau gagal.
+    // Menampilkan foto pengaduan dari folder uploads.
     const renderFoto = (fotoUrl) => {
-        detailImage.onload = null; // hapus penanganan foto berhasil sebelumnya
-        detailImage.onerror = null; // hapus penanganan foto gagal sebelumnya
-        detailImage.removeAttribute("src"); // hapus alamat foto lama
 
-        detailImage.hidden = true; // sementara sembunyikan foto
-        imageFallback.hidden = false; // tampilkan pengganti selama foto belum berhasil
+        // Menghapus pengaturan foto sebelumnya.
+        detailImage.onload = null;
+        detailImage.onerror = null;
+        detailImage.removeAttribute("src");
 
-        // Jangan lanjut jika alamat foto kosong atau bukan teks.
+        // Sembunyikan foto dan tampilkan fallback sementara.
+        detailImage.hidden = true;
+        imageFallback.hidden = false;
+
+        // Jika backend tidak memberikan foto, hentikan proses.
         if (!fotoUrl || typeof fotoUrl !== "string") {
             return;
         }
 
         try {
-            // Ubah URL relatif menjadi URL lengkap.
-            const url = new URL(fotoUrl, window.location.href);
+            // Mengambil alamat folder utama proyek dari API_BASE_URL.
+            // Contoh:
+            // http://localhost/pengaduan_fasilitas_fakultas/
+            const projectRoot = new URL(
+                API_BASE_URL.replace(/\/backend\/api\/?$/, "/")
+            );
 
-            // Hanya izinkan alamat HTTP/HTTPS untuk gambar.
+            // Membentuk URL foto berdasarkan folder utama proyek.
+            let url = new URL(fotoUrl, projectRoot);
+
+            // Lokasi lama yang salah:
+            // backend/uploads/pengaduan/
+            const wrongPath = new URL(
+                "backend/uploads/",
+                projectRoot
+            ).pathname;
+
+            // Lokasi yang benar:
+            // uploads/pengaduan/
+            const correctPath = new URL(
+                "uploads/",
+                projectRoot
+            ).pathname;
+
+            // Jika backend mengirim URL dengan folder backend/uploads,
+            // arahkan ke uploads yang berada di folder utama proyek.
+            if (
+                url.origin === projectRoot.origin &&
+                url.pathname.startsWith(wrongPath)
+            ) {
+                url.pathname =
+                    correctPath +
+                    url.pathname.slice(wrongPath.length);
+            }
+
+            // Hanya izinkan URL HTTP atau HTTPS.
             if (!["http:", "https:"].includes(url.protocol)) {
                 return;
             }
 
-            // Jalankan ketika gambar berhasil diunduh.
+            // Jika foto berhasil dimuat, tampilkan gambar.
             detailImage.onload = () => {
                 detailImage.hidden = false;
-                imageFallback.hidden = true; // sembunyikan gambar pengganti
+                imageFallback.hidden = true;
             };
 
-            // Jalankan ketika gambar tidak bisa dimuat.
+            // Jika foto gagal dimuat, tampilkan fallback.
             detailImage.onerror = () => {
-                detailImage.hidden = true; // sembunyikan foto yang gagal dimuat
-                imageFallback.hidden = false; // tampilkan gambar pengganti
+                detailImage.hidden = true;
+                imageFallback.hidden = false;
             };
 
-            detailImage.src = url.href; // mulai memuat foto
+            // Memasukkan alamat gambar ke elemen HTML.
+            detailImage.src = url.href;
 
         } catch (error) {
-            console.error("URL foto tidak valid:", error); // catat URL foto yang bermasalah
+            console.error("URL foto tidak valid:", error);
         }
     };
+
 
 
     // ==================================================

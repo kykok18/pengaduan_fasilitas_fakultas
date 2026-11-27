@@ -193,23 +193,33 @@ const getStatusInfo = (status) => {
         }
     };
 
-            const getFotoURL = (fotoPath) => {
-    if (!fotoPath) return '';
 
-    // Jika backend sudah mengirim URL lengkap
+const getFotoURL = (fotoPath) => {
+
+    // Jika backend tidak mengirim foto
+    if (!fotoPath) return "";
+
+    // Jika sudah berupa URL lengkap, gunakan langsung
     if (/^https?:\/\//i.test(fotoPath)) {
         return fotoPath;
     }
 
-    // API_BASE_URL mengarah ke folder backend/api
-    const backendRoot = API_BASE_URL.replace(/\/api\/?$/, '/');
+    // Arahkan ke folder utama proyek,
+    // bukan ke folder backend
+    const projectRoot = API_BASE_URL.replace(
+        /\/backend\/api\/?$/,
+        "/"
+    );
 
-    // Bersihkan slash di awal path foto
-    const cleanPath = String(fotoPath).replace(/^\/+/, '');
+    // Bersihkan slash di awal alamat foto
+    const cleanPath = String(fotoPath)
+        .replace(/^\/+/, "")
+        .replace(/^backend\//, "");
 
-    // Gabungkan URL backend dengan path foto
-    return new URL(cleanPath, backendRoot).href;
+    // Gabungkan folder proyek dengan path foto
+    return new URL(cleanPath, projectRoot).href;
 };
+
 
 
         // =========================================================
@@ -332,6 +342,10 @@ reportsContainer.style.display = 'flex';
 const foto = item.foto
     ? escapeHTML(getFotoURL(item.foto))
     : fotoPlaceholder;
+
+console.log("Foto dari backend:", item.foto);
+console.log("URL foto yang digunakan:", foto);
+
 
                 const card = document.createElement('div');
                 card.className = 'report-card-dash';
